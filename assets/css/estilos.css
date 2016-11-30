@@ -7012,9 +7012,6 @@ button.close {
     display: none !important;
   }
 }
-body {
-  background: #008000;
-}
 /*
 rupture.scale = 0px 400px 600px 768px 1023px 1200px
 rupture.mobile-cutoff =600px
