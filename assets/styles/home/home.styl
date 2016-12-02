@@ -1,28 +1,29 @@
 .wrap-login
-	absolute:top left
 	height:100%
 	width:100%
 	background:lighten($blackColor,4%)
 	&__header
-		absolute:top left
 		background:$blackColor
 		width:100%
-		color:#fff
 		min-height:180px
 		border-bottom:1px solid #fff
+		h3
+			color:#fff
+			font-size:20px
+			text-align:center
+		img
+			margin:20px auto 0px
+			border-radius:50%
 	&__body
 		position:relative
-		padding-top:180px
-		// padding-bottom:50px
-		top:50%
-		transform:translateY(-50%)
-		max-width:400px
+		background:lighten($blackColor,4%)
 		display:block
 		margin:0 auto
 		.login-form
-			border:1px solid rgba($blackColor,100%)
-			box-shadow:1px 1px 5px rgba($blackColor,100%)
+			
 			padding:20px
+			max-width:400px
+			margin: 0 auto
 			border-radius:5px
 			.btn-submit-login
 				width:100%
@@ -33,9 +34,26 @@
 			label
 				color:lighten($grayColor,20%)
 	&__footer
-		padding:20px
+		background:lighten($blackColor,4%)
 		color:#fff
-		absolute:bottom left
 		width:100%
 		height:50px
 		text-align:center
+	+above(3)
+		&__header
+			absolute:top left
+			width:100%
+			h3
+				text-align:left
+		&__body
+			background:none
+			padding-top:180px
+			padding-bottom:50px
+			top:50%
+			transform:translateY(-50%)
+			.login-form
+				border:1px solid rgba($blackColor,100%)
+				box-shadow:1px 1px 5px rgba($blackColor,100%)
+		&__footer
+			absolute: bottom left
+

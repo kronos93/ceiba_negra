@@ -7032,40 +7032,35 @@ iframe {
   width: 100%;
 }
 .wrap-login {
-  position: absolute;
-  top: 0;
-  left: 0;
   height: 100%;
   width: 100%;
   background: #1e252f;
 }
 .wrap-login__header {
-  position: absolute;
-  top: 0;
-  left: 0;
   background: #171c24;
   width: 100%;
   min-height: 180px;
   border-bottom: 1px solid #fff;
 }
+.wrap-login__header h3 {
+  color: #fff;
+  font-size: 20px;
+  text-align: center;
+}
+.wrap-login__header img {
+  margin: 20px auto 0px;
+  border-radius: 50%;
+}
 .wrap-login__body {
   position: relative;
-  padding-top: 180px;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-  -moz-transform: translateY(-50%);
-  -o-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
-  max-width: 400px;
+  background: #1e252f;
   display: block;
   margin: 0 auto;
 }
 .wrap-login__body .login-form {
-  border: 1px solid #171c24;
-  -webkit-box-shadow: 1px 1px 5px #171c24;
-  box-shadow: 1px 1px 5px #171c24;
   padding: 20px;
+  max-width: 400px;
+  margin: 0 auto;
   border-radius: 5px;
 }
 .wrap-login__body .login-form .btn-submit-login {
@@ -7079,19 +7074,41 @@ iframe {
   color: #5e6c79;
 }
 .wrap-login__footer {
-  padding: 20px;
+  background: #1e252f;
   color: #fff;
-  position: absolute;
-  bottom: 0;
-  left: 0;
   width: 100%;
   height: 50px;
   text-align: center;
 }
-/*
-rupture.scale = 0px 400px 600px 768px 1023px 1200px
-rupture.mobile-cutoff =600px
-rupture.tablet-cutoff = 768px
-rupture.desktop-cutoff = 1023px
-rupture.hd-cutoff = 1400px
-rupture.scale-names = 'xs' 's' 'm' 'l' 'xl' 'hd'*/
+@media only screen and (min-width: 600px) {
+  .wrap-login__header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+  .wrap-login__header h3 {
+    text-align: left;
+  }
+  .wrap-login__body {
+    background: none;
+    padding-top: 180px;
+    padding-bottom: 50px;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
+  .wrap-login__body .login-form {
+    border: 1px solid #171c24;
+    -webkit-box-shadow: 1px 1px 5px #171c24;
+    box-shadow: 1px 1px 5px #171c24;
+  }
+  .wrap-login__footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+}
