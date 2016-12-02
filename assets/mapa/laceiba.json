@@ -1,0 +1,402 @@
+{
+	"mapwidth": "1000",
+	"mapheight": "600",
+	"categories": [
+		{
+			"id": "manzana11",
+			"title": "Manzana Numero 11",
+			"color": "#3FBB9B",
+			"show": "true"
+		},
+		{
+			"id": "manzana12",
+			"title": "Manzana Numero 12",
+			"color": "#3FBB9B",
+			"show": "true"
+		},
+		{
+			"id": "manzana13",
+			"title": "Manzana Numero 13",
+			"color": "#3FBB9B",
+			"show": "true"
+		}
+	],
+	"levels": [
+		{
+			"id": "landmarks-lotes",
+			"title": "Manzana 11",
+			"map": "../img/mall/mapaprueba.svg",
+			"locations": [
+				{
+					"id": "m11lote1",
+					"title": "Lote Numero 1",
+					"action": "tooltip",
+					"about": "Maximiliano Tec Cocom",
+					"description": "Pued",
+					"category": "manzana11",
+					"x": "0.7514",
+					"y": "0.5310"
+				},
+				{
+					"id": "m11lote2",
+					"title": "Lote Numero 2",
+					"about": "Samuel Rojas Too",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.7700",
+					"y": "0.4167"
+				},
+				{
+					"id": "m11lote3",
+					"title": "Lote Numero 3",
+					"about": "Nestor Betaza",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m11lote4",
+					"title": "Lote Numero 4",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m11lote5",
+					"title": "Lote Numero 5",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m11lote6",
+					"title": "Lote Numero 6",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m11lote7",
+					"title": "Lote Numero 7",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m11lote8",
+					"title": "Lote Numero 8",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m11lote9",
+					"title": "Lote Numero 9",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m11lote10",
+					"title": "Lote Numero 10",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m11lote11",
+					"title": "Lote Numero 11",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m11lote12",
+					"title": "Lote Numero 12",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m11lote13",
+					"title": "Lote Numero 13",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m11lote14",
+					"title": "Lote Numero 14",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m11lote15",
+					"title": "Lote Numero 15",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m11lote16",
+					"title": "Lote Numero 16",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m11lote17",
+					"title": "Lote Numero 17",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m11lote18",
+					"title": "Lote Numero 18",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m11lote19",
+					"title": "Lote Numero 19",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m11lote20",
+					"title": "Lote Numero 20",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				}
+			]
+		},
+		{
+			"id": "landmarks-mz13",
+			"title": "Manzana 13",
+			"map": "../img/mall/manzana13.svg",
+			"locations": [
+				{
+					"id": "m13lote1",
+					"title": "Lote Numero 1",
+					"action": "tooltip",
+					"about": "Maximiliano Tec Cocom",
+					"description": "Pued",
+					"category": "manzana13",
+					"x": "0.7514",
+					"y": "0.5310"
+				},
+				{
+					"id": "m13lote2",
+					"title": "Lote Numero 2",
+					"about": "Samuel Rojas Too",
+					"description": "Lorem ipsum",
+					"category": "manzana13",
+					"x": "0.7700",
+					"y": "0.4167"
+				},
+				{
+					"id": "m13lote3",
+					"title": "Lote Numero 3",
+					"about": "Nestor Betaza",
+					"description": "Lorem ipsum",
+					"category": "manzana13",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m13lote4",
+					"title": "Lote Numero 4",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m13lote5",
+					"title": "Lote Numero 5",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m11lote6",
+					"title": "Lote Numero 6",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m11lote7",
+					"title": "Lote Numero 7",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m11lote8",
+					"title": "Lote Numero 8",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m11lote9",
+					"title": "Lote Numero 9",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m11lote10",
+					"title": "Lote Numero 10",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m11lote11",
+					"title": "Lote Numero 11",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m11lote12",
+					"title": "Lote Numero 12",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m11lote13",
+					"title": "Lote Numero 13",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m11lote14",
+					"title": "Lote Numero 14",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m11lote15",
+					"title": "Lote Numero 15",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m11lote16",
+					"title": "Lote Numero 16",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m11lote17",
+					"title": "Lote Numero 17",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m11lote18",
+					"title": "Lote Numero 18",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m11lote19",
+					"title": "Lote Numero 19",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				},
+				{
+					"id": "m11lote20",
+					"title": "Lote Numero 20",
+					"about": "Lorem ipsum",
+					"description": "Lorem ipsum",
+					"category": "manzana11",
+					"x": "0.6643",
+					"y": "0.4524"
+				}
+			]
+		}
+	]
+}
