@@ -9,10 +9,15 @@
 		border-bottom:1px solid #fff
 		h3
 			color:#fff
+			margin:0px
 			font-size:20px
 			text-align:center
+		h1
+			color:#fff
+			margin:5px 0px
+			font-size:40px
 		img
-			margin:20px auto 0px
+			margin:15px auto 0px
 			border-radius:50%
 	&__body
 		position:relative
@@ -20,7 +25,6 @@
 		display:block
 		margin:0 auto
 		.login-form
-			
 			padding:20px
 			max-width:400px
 			margin: 0 auto
@@ -33,18 +37,23 @@
 				text-align:center
 			label
 				color:lighten($grayColor,20%)
-	&__footer
-		background:lighten($blackColor,4%)
-		color:#fff
-		width:100%
-		height:50px
-		text-align:center
+	// &__footer
+	// 	background:lighten($blackColor,4%)
+	// 	color:#fff
+	// 	width:100%
+	// 	height:50px
+	// 	text-align:center
 	+above(3)
 		&__header
 			absolute:top left
 			width:100%
-			h3
-				text-align:left
+			.header-container
+				&__brand
+					display:inline-block
+					vertical-align:middle
+				&__name
+					display:inline-block
+					vertical-align:middle
 		&__body
 			background:none
 			padding-top:180px
@@ -54,6 +63,6 @@
 			.login-form
 				border:1px solid rgba($blackColor,100%)
 				box-shadow:1px 1px 5px rgba($blackColor,100%)
-		&__footer
-			absolute: bottom left
+		// &__footer
+		// 	absolute: bottom left
 

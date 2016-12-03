@@ -4,11 +4,9 @@
 		<!-- Meta -->
 		<meta charset="utf-8">
 		<title>Mapplic - Custom Interactive Map Plugin - Mall Example</title>
-
 		<!-- Viewport for Responsivity -->
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
 		<meta name="description" content="Map of a shopping mall, an example of using Mapplic, a premium custom interactive map plugin to display custom image or vector (SVG) maps. Touchscreen kiosk map compatible.">
-
 		<!-- Stylesheets -->
 		<link href='http://fonts.googleapis.com/css?family=Maven+Pro:400,700' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" type="text/css" href="../css/style.css">
@@ -68,36 +66,43 @@
 			</div><!-- /.container-fluid -->
 		</nav>
 	</header>
-		<div id="wrap" style="margin-top: 200px;">
-			<!-- Site content -->
-			<div id="content">
-				<section id="map-section" class="inner over">
-					<div class="editor-window">
-						<div class="window-mockup brown"></div>
-						<div class="editor-body">
-							<code>
-								{<br>
-								&nbsp;&nbsp;&nbsp;"id": "newlandmark",<br>
-								&nbsp;&nbsp;&nbsp;"title": "New Landmark",<br>
-								&nbsp;&nbsp;&nbsp;"description": "Creating a new landmark is that easy!",<br>
-								&nbsp;&nbsp;&nbsp;"x": "<span class="mapplic-coordinates-x">0.0000</span>",<br>
-								&nbsp;&nbsp;&nbsp;"y": "<span class="mapplic-coordinates-y">0.0000</span>",<br>
-								&nbsp;&nbsp;&nbsp;...<br>
-								}
-							</code>
-						</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12">
+			<h5 class="title">Hola sooy un titulo</h5>
+				<div id="wrap" style="margin-top: 200px;">
+					<!-- Site content -->
+					<div id="content">
+						<section id="map-section" class="inner over">
+							<div class="editor-window">
+								<div class="window-mockup brown"></div>
+								<div class="editor-body">
+									<code>
+										{<br>
+										&nbsp;&nbsp;&nbsp;"id": "newlandmark",<br>
+										&nbsp;&nbsp;&nbsp;"title": "New Landmark",<br>
+										&nbsp;&nbsp;&nbsp;"description": "Creating a new landmark is that easy!",<br>
+										&nbsp;&nbsp;&nbsp;"x": "<span class="mapplic-coordinates-x">0.0000</span>",<br>
+										&nbsp;&nbsp;&nbsp;"y": "<span class="mapplic-coordinates-y">0.0000</span>",<br>
+										&nbsp;&nbsp;&nbsp;...<br>
+										}
+									</code>
+								</div>
+							</div>
+							<div class="map-container">
+								<div class="window-mockup">
+									<div class="window-bar"></div>
+								</div>
+								<!-- Map -->
+								<div id="mapplic"></div>
+							</div>
+						</section>
 					</div>
-					<div class="map-container">
-						<div class="window-mockup">
-							<div class="window-bar"></div>
-						</div>
-						<!-- Map -->
-						<div id="mapplic"></div>
-					</div>
-				</section>
+				</div>
 			</div>
-			</footer>
 		</div>
+	</div>
+				
 		<!-- Scripts -->
 		<script type="text/javascript" src="../js/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
