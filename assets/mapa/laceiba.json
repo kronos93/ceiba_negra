@@ -25,13 +25,12 @@
 		{
 			"id": "landmarks-lotes",
 			"title": "Manzana 11",
-			"map": "../img/mall/mapaprueba.svg",
+			"map": ".jpg",
 			"locations": [
 				{
 					"id": "m11lote1",
 					"title": "Lote Numero 1",
-					"action": "tooltip",
-					"about": "Maximiliano Tec Cocom",
+					"about": "<ul><li>Numer 1</li><li>Numero 2</li></ul>",
 					"description": "Pued",
 					"category": "manzana11",
 					"x": "0.7514",

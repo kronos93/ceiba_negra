@@ -1,0 +1,55 @@
+.mapplic-clickable:not(g),
+g.mapplic-clickable > *
+    opacity 0.5
+.mapplic-clickable:not(g):hover,
+g.mapplic-clickable:hover > *
+    opacity 0.8
+
+.mapplic-active,
+a.mapplic-active > path,
+g.mapplic-active > *
+    opacity 1.0 !important
+
+.mapplic-pin
+    &.my-new-pin
+        background-image url('../img/map/icons/my-new-pin.png')
+        width 20px
+        height 30px
+        margin-left -10px
+        margin-top -15px
+    &.mapplic-active
+        /*background-color: #91bf39 !important;*/
+// .mapplic-sidebar
+//     float:right
+#landmarks-ground .mapplic-clickable,
+#landmarks-underground .mapplic-clickable,
+#landmarks-level1 .mapplic-clickable
+    opacity 1 !important
+
+#landmarks-ground polygon.mapplic-active,
+#landmarks-ground path.mapplic-active
+    fill #ADDB2C
+
+#landmarks-underground polygon.mapplic-active,
+#landmarks-underground path.mapplic-active
+    fill #7EE0CD
+
+#landmarks-level1 polygon.mapplic-active,
+#landmarks-level1 path.mapplic-active
+    fill #F9684B
+
+.mapplic-dark
+    .mapplic-tooltip
+        background-color #333
+    .mapplic-tooltip-triangle
+        border-color #333 transparent transparent transparent
+    .mapplic-bottom
+        .mapplic-tooltip-triangle
+            border-color transparent transparent #333 transparent
+    .mapplic-tooltip-title
+        color #fff
+    .mapplic-tooltip-close
+        background-image url('../img/map/icons/cross-light.png')
+.mapplic-dark .mapplic-tooltip-description,
+.mapplic-dark .mapplic-tooltip p
+    color #bbb

@@ -1,0 +1,59 @@
+#map-section
+    max-width 100%
+.window-mockup
+    background-color #f0f0f0
+    background-image url('../img/map/icons/window.png')
+    background-repeat no-repeat
+    background-position 14px center
+    border-radius 10px 10px 0 0
+    height 42px
+    overflow hidden
+    &.brown
+        background-color #2f2e2b
+.window-bar
+    background-color #f8f8f8
+    border-radius 3px
+    margin 10px 14px 10px 80px
+    height 22px
+.editor-window
+    display none
+    margin 0 auto
+    width 460px
+    .window-mockup
+        cursor pointer
+.editor-body
+    background #272822
+    color #cfcfc2
+    padding 14px
+    font-size 12px
+.map-container
+    margin 0 auto
+    margin-bottom 60px
+    & > #mapplic
+        background-color #f8f8f8
+.icon
+    background-repeat no-repeat
+    background-position center 10px
+    padding-top 60px
+    &.landmark
+        background-image url('../img/map/icons/icon-landmark.png')
+    &.layer
+        background-image url('../img/map/icons/icon-layer.png')
+    &.link
+        background-image url('../img/map/icons/icon-link.png')
+    &.browser
+        background-image url('../img/map/icons/icon-browser.png')
+    &.responsive
+        background-image url('../img/map/icons/icon-responsive.png')
+    &.mobile
+        background-image url('../img/map/icons/icon-mobile.png')
+// @media all and (max-width: 667px)
++to-width(3)
+    #header
+        display none
+    .inner
+        &.over
+            margin-top 0
+            padding-top 0
+    .window-mockup
+        display none

@@ -15,8 +15,8 @@
 }
 
 /* Preloader & Error */
-.mapplic-element.mapplic-loading { background: url(images/loader.gif) no-repeat center; }
-.mapplic-element.mapplic-error { background: url(images/error-icon.png) no-repeat center; }
+.mapplic-element.mapplic-loading { background: url(../img/mapplic/loader.gif) no-repeat center; }
+.mapplic-element.mapplic-error { background: url(../img/mapplic/error-icon.png) no-repeat center; }
 
 .mapplic-element > * {
 	opacity: 1;
@@ -38,7 +38,7 @@
 }
 
 :-webkit-full-screen .mapplic-fullscreen-button {
-	background-image: url(images/fullscreen-exit.png);
+	background-image: url(../img/mapplic/fullscreen-exit.png);
 }
 
 /* Map container */
@@ -88,16 +88,16 @@
 /* IE Fix END */
 
 .mapplic-map.mapplic-zoomable .mapplic-map-image {
-	cursor: url(images/openhand.cur), default;
+	cursor: url(../img/mapplic/openhand.cur), default;
 }
 
 .mapplic-map.mapplic-zoomable.mapplic-dragging .mapplic-map-image {
-	cursor: url(images/closedhand.cur), move;
+	cursor: url(../img/mapplic/closedhand.cur), move;
 }
 
 /* Pin types */
 .mapplic-pin {
-	background-image: url(images/pin.png);
+	background-image: url(../img/mapplic/pin.png);
 	background-size: 18px 24px;
 	background-repeat: no-repeat;
 	background-position: center;
@@ -115,7 +115,7 @@
 }
 
 .mapplic-pin.iconpin {
-	background-image: url(images/pin-large.png);
+	background-image: url(../img/mapplic/pin-large.png);
 	background-size: 30px 42px;
 	color: #fff;
 	font-size: 14px;
@@ -128,17 +128,17 @@
 	margin-left: -15px;
 }
 
-.mapplic-pin.orange { background-image: url(images/pin-orange.png); }
-.mapplic-pin.yellow { background-image: url(images/pin-yellow.png); }
-.mapplic-pin.green { background-image: url(images/pin-green.png); }
-.mapplic-pin.blue { background-image: url(images/pin-blue.png); }
-.mapplic-pin.purple { background-image: url(images/pin-purple.png); }
+.mapplic-pin.orange { background-image: url(../img/mapplic/pin-orange.png); }
+.mapplic-pin.yellow { background-image: url(../img/mapplic/pin-yellow.png); }
+.mapplic-pin.green { background-image: url(../img/mapplic/pin-green.png); }
+.mapplic-pin.blue { background-image: url(../img/mapplic/pin-blue.png); }
+.mapplic-pin.purple { background-image: url(../img/mapplic/pin-purple.png); }
 
-.mapplic-pin.iconpin.orange { background-image: url(images/pin-orange-large.png); }
-.mapplic-pin.iconpin.yellow { background-image: url(images/pin-yellow-large.png); }
-.mapplic-pin.iconpin.green { background-image: url(images/pin-green-large.png); }
-.mapplic-pin.iconpin.blue { background-image: url(images/pin-blue-large.png); }
-.mapplic-pin.iconpin.purple { background-image: url(images/pin-purple-large.png); }
+.mapplic-pin.iconpin.orange { background-image: url(../img/mapplic/pin-orange-large.png); }
+.mapplic-pin.iconpin.yellow { background-image: url(../img/mapplic/pin-yellow-large.png); }
+.mapplic-pin.iconpin.green { background-image: url(../img/mapplic/pin-green-large.png); }
+.mapplic-pin.iconpin.blue { background-image: url(../img/mapplic/pin-blue-large.png); }
+.mapplic-pin.iconpin.purple { background-image: url(../img/mapplic/pin-purple-large.png); }
 
 .mapplic-pin.circular {
 	background-image: none;
@@ -304,7 +304,7 @@
 /* Clear Button */
 .mapplic-clear-button {
 	background-color: #fff;
-	background-image: url(images/reset.png);
+	background-image: url(../img/mapplic/reset.png);
 	background-size: 16px 16px;
 	background-repeat: no-repeat;
 	background-position: center;
@@ -358,13 +358,13 @@
 }
 
 a.mapplic-zoomin-button {
-	background-image: url(images/plus.png);
+	background-image: url(../img/mapplic/plus.png);
 	background-size: 10px 10px;
 	border-radius: 2px 2px 0 0;
 }
 
 a.mapplic-zoomout-button {
-	background-image: url(images/minus.png);
+	background-image: url(../img/mapplic/minus.png);
 	background-size: 10px 10px;
 	border-radius: 0 0 2px 2px;
 	border-top: none;
@@ -373,7 +373,7 @@ a.mapplic-zoomout-button {
 /* Fullscreen Button */
 .mapplic-fullscreen-button {
 	background-color: #fff;
-	background-image: url(images/fullscreen.png);
+	background-image: url(../img/mapplic/fullscreen.png);
 	background-repeat: no-repeat;
 	background-position: center;
 	border: 1px solid #eee;
@@ -434,12 +434,12 @@ a.mapplic-zoomout-button {
 }
 
 .mapplic-levels .mapplic-levels-up {
-	background-image: url(images/arrow-up.png);
+	background-image: url(../img/mapplic/arrow-up.png);
 	background-size: 8px 4px;
 }
 
 .mapplic-levels .mapplic-levels-down {
-	background-image: url(images/arrow-down.png);
+	background-image: url(../img/mapplic/arrow-down.png);
 	background-size: 8px 4px;
 	bottom: 0;
 }
@@ -476,7 +476,7 @@ a.mapplic-zoomout-button {
 }
 
 .mapplic-search-input {
-	background-image: url(images/viewer.png);
+	background-image: url(../img/mapplic/viewer.png);
 	background-size: 17px 16px;
 	background-repeat: no-repeat;
 	background-position: 8px;
@@ -503,7 +503,7 @@ a.mapplic-zoomout-button {
 }
 
 .mapplic-search-clear {
-	background-image: url(images/cross.png);
+	background-image: url(../img/mapplic/cross.png);
 	background-size: 8px 8px;
 	background-repeat: no-repeat;
 	background-color: transparent;
@@ -738,7 +738,7 @@ a.mapplic-zoomout-button {
 }
 
 .mapplic-tooltip-close {
-	background-image: url(images/cross.png);
+	background-image: url(../img/mapplic/cross.png);
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: 8px 8px;
@@ -879,45 +879,45 @@ a.mapplic-zoomout-button {
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi), (min-resolution: 2dppx) {
 	.mapplic-search-clear,
 	.mapplic-tooltip-close {
-		background-image: url(images/cross@2x.png);
+		background-image: url(../img/mapplic/cross@2x.png);
 	}
 
 	.mapplic-levels .mapplic-levels-up {
-		background-image: url(images/arrow-up@2x.png);
+		background-image: url(../img/mapplic/arrow-up@2x.png);
 	}
 
 	.mapplic-levels .mapplic-levels-down {
-		background-image: url(images/arrow-down@2x.png);
+		background-image: url(../img/mapplic/arrow-down@2x.png);
 	}
 
 	a.mapplic-zoomin-button {
-		background-image: url(images/plus@2x.png);
+		background-image: url(../img/mapplic/plus@2x.png);
 	}
 
 	a.mapplic-zoomout-button {
-		background-image: url(images/minus@2x.png);
+		background-image: url(../img/mapplic/minus@2x.png);
 	}
 
 	.mapplic-search-input {
-		background-image: url(images/viewer@2x.png);
+		background-image: url(../img/mapplic/viewer@2x.png);
 	}
 
-	.mapplic-pin { background-image: url(images/pin@2x.png); }
-	.mapplic-pin.orange { background-image: url(images/pin-orange@2x.png); }
-	.mapplic-pin.yellow { background-image: url(images/pin-yellow@2x.png); }
-	.mapplic-pin.green { background-image: url(images/pin-green@2x.png); }
-	.mapplic-pin.blue { background-image: url(images/pin-blue@2x.png); }
-	.mapplic-pin.purple { background-image: url(images/pin-purple@2x.png); }
+	.mapplic-pin { background-image: url(../img/mapplic/pin@2x.png); }
+	.mapplic-pin.orange { background-image: url(../img/mapplic/pin-orange@2x.png); }
+	.mapplic-pin.yellow { background-image: url(../img/mapplic/pin-yellow@2x.png); }
+	.mapplic-pin.green { background-image: url(../img/mapplic/pin-green@2x.png); }
+	.mapplic-pin.blue { background-image: url(../img/mapplic/pin-blue@2x.png); }
+	.mapplic-pin.purple { background-image: url(../img/mapplic/pin-purple@2x.png); }
 
-	.mapplic-pin.iconpin { background-image: url(images/pin-large@2x.png); }
-	.mapplic-pin.iconpin.orange { background-image: url(images/pin-orange-large@2x.png); }
-	.mapplic-pin.iconpin.yellow { background-image: url(images/pin-yellow-large@2x.png); }
-	.mapplic-pin.iconpin.green { background-image: url(images/pin-green-large@2x.png); }
-	.mapplic-pin.iconpin.blue { background-image: url(images/pin-blue-large@2x.png); }
-	.mapplic-pin.iconpin.purple { background-image: url(images/pin-purple-large@2x.png); }
+	.mapplic-pin.iconpin { background-image: url(../img/mapplic/pin-large@2x.png); }
+	.mapplic-pin.iconpin.orange { background-image: url(../img/mapplic/pin-orange-large@2x.png); }
+	.mapplic-pin.iconpin.yellow { background-image: url(../img/mapplic/pin-yellow-large@2x.png); }
+	.mapplic-pin.iconpin.green { background-image: url(../img/mapplic/pin-green-large@2x.png); }
+	.mapplic-pin.iconpin.blue { background-image: url(../img/mapplic/pin-blue-large@2x.png); }
+	.mapplic-pin.iconpin.purple { background-image: url(../img/mapplic/pin-purple-large@2x.png); }
 
 	.mapplic-clear-button {
-		background-image: url(images/reset@2x.png);
+		background-image: url(../img/mapplic/reset@2x.png);
 	}
 }
 

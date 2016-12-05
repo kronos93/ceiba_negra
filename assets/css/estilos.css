@@ -7066,6 +7066,147 @@ h5.title {
 .navbar-default {
   border-bottom: 5px solid #3e4750;
 }
+.mapplic-clickable:not(g),
+g.mapplic-clickable > * {
+  opacity: 0.5;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: alpha(opacity=50);
+}
+.mapplic-clickable:not(g):hover,
+g.mapplic-clickable:hover > * {
+  opacity: 0.8;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+  filter: alpha(opacity=80);
+}
+.mapplic-active,
+a.mapplic-active > path,
+g.mapplic-active > * {
+  opacity: 1 !important;
+  -ms-filter: none !important;
+  filter: none !important;
+}
+.mapplic-pin.my-new-pin {
+  background-image: url("../img/map/icons/my-new-pin.png");
+  width: 20px;
+  height: 30px;
+  margin-left: -10px;
+  margin-top: -15px;
+}
+#landmarks-ground .mapplic-clickable,
+#landmarks-underground .mapplic-clickable,
+#landmarks-level1 .mapplic-clickable {
+  opacity: 1 !important;
+  -ms-filter: none !important;
+  filter: none !important;
+}
+#landmarks-ground polygon.mapplic-active,
+#landmarks-ground path.mapplic-active {
+  fill: #addb2c;
+}
+#landmarks-underground polygon.mapplic-active,
+#landmarks-underground path.mapplic-active {
+  fill: #7ee0cd;
+}
+#landmarks-level1 polygon.mapplic-active,
+#landmarks-level1 path.mapplic-active {
+  fill: #f9684b;
+}
+.mapplic-dark .mapplic-tooltip {
+  background-color: #333;
+}
+.mapplic-dark .mapplic-tooltip-triangle {
+  border-color: #333 transparent transparent transparent;
+}
+.mapplic-dark .mapplic-bottom .mapplic-tooltip-triangle {
+  border-color: transparent transparent #333 transparent;
+}
+.mapplic-dark .mapplic-tooltip-title {
+  color: #fff;
+}
+.mapplic-dark .mapplic-tooltip-close {
+  background-image: url("../img/map/icons/cross-light.png");
+}
+.mapplic-dark .mapplic-tooltip-description,
+.mapplic-dark .mapplic-tooltip p {
+  color: #bbb;
+}
+#map-section {
+  max-width: 100%;
+}
+.window-mockup {
+  background-color: #f0f0f0;
+  background-image: url("../img/map/icons/window.png");
+  background-repeat: no-repeat;
+  background-position: 14px center;
+  border-radius: 10px 10px 0 0;
+  height: 42px;
+  overflow: hidden;
+}
+.window-mockup.brown {
+  background-color: #2f2e2b;
+}
+.window-bar {
+  background-color: #f8f8f8;
+  border-radius: 3px;
+  margin: 10px 14px 10px 80px;
+  height: 22px;
+}
+.editor-window {
+  display: none;
+  margin: 0 auto;
+  width: 460px;
+}
+.editor-window .window-mockup {
+  cursor: pointer;
+}
+.editor-body {
+  background: #272822;
+  color: #cfcfc2;
+  padding: 14px;
+  font-size: 12px;
+}
+.map-container {
+  margin: 0 auto;
+  margin-bottom: 60px;
+}
+.map-container > #mapplic {
+  background-color: #f8f8f8;
+}
+.icon {
+  background-repeat: no-repeat;
+  background-position: center 10px;
+  padding-top: 60px;
+}
+.icon.landmark {
+  background-image: url("../img/map/icons/icon-landmark.png");
+}
+.icon.layer {
+  background-image: url("../img/map/icons/icon-layer.png");
+}
+.icon.link {
+  background-image: url("../img/map/icons/icon-link.png");
+}
+.icon.browser {
+  background-image: url("../img/map/icons/icon-browser.png");
+}
+.icon.responsive {
+  background-image: url("../img/map/icons/icon-responsive.png");
+}
+.icon.mobile {
+  background-image: url("../img/map/icons/icon-mobile.png");
+}
+@media only screen and (max-width: 768px) {
+  #header {
+    display: none;
+  }
+  .inner.over {
+    margin-top: 0;
+    padding-top: 0;
+  }
+  .window-mockup {
+    display: none;
+  }
+}
 .wrap-login {
   height: 100%;
   width: 100%;
