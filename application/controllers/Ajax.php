@@ -15,7 +15,7 @@ class Ajax extends CI_Controller {
         $respuesta->categories = $mz_mapplic;
         $respuesta->levels = [];
         foreach($mz_mapplic as $mz){
-            $mz->show = false;
+            $mz->show = "false";
             $id_manzana = substr($mz->id,2);
             $lev = new stdClass();
             $lev->id = "landmarks-{$mz->id}";
