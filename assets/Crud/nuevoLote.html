@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="../css/jquery.dataTables.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.1.0/css/responsive.dataTables.min.css"/>
+	<link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body>
+	<header>
+		<nav class="navbar navbar-default">
+		  	<div class="container-fluid">
+				<div class="navbar-header">
+				 	<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+				 	</button>
+				  	<a class="navbar-brand" href="#"><img src="http://lorempixel.com/120/120" alt=""></a>
+				</div>
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+						<li><a href="#">Link</a></li>
+						<li class="dropdown">
+						  	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+						  	<ul class="dropdown-menu">
+								<li><a href="#">Action</a></li>
+								<li><a href="#">Another action</a></li>
+								<li><a href="#">Something else here</a></li>
+								<li role="separator" class="divider"></li>
+								<li><a href="#">Separated link</a></li>
+								<li role="separator" class="divider"></li>
+								<li><a href="#">One more separated link</a></li>
+						  	</ul>
+						</li>
+				  	</ul>
+				  	<ul class="nav navbar-nav navbar-right">
+						<li><a href="#">Link</a></li>
+						<li class="dropdown">
+						 	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a href="#">Action</a></li>
+								<li><a href="#">Another action</a></li>
+								<li><a href="#">Something else here</a></li>
+								<li role="separator" class="divider"></li>
+								<li><a href="#">Separated link</a></li>
+						  	</ul>
+						</li>
+				  	</ul>
+				</div><!-- /.navbar-collapse -->
+			</div><!-- /.container-fluid -->
+		</nav>
+	</header>
+	<div class="container-fluid container">
+		<div class="row">
+			<div class="col-xs-12">
+				<h5 class="title">Registro de Lotes</h5>
+				<a href="#" class="btn btn-success btn-md pull-right">Nuevo Lote <i class="fa fa-plus fa-fw"></i></a>
+				<table id="example" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+			        <thead>
+			            <tr>
+			            	<th>Numero</th>
+			                <th>Manzana</th>
+			                <th>Lote</th>
+			                <th>Dueño de Lote</th>
+			                <th>Saldo</th>
+			                <th>Pagado</th>
+			                <th>Tipo de Pago</th>
+			                <th>Estado</th>
+			                <th>Opciones</th>
+			            </tr>
+			        </thead>
+			        <tbody>
+			            <tr>
+			                <td>1</td>
+			                <td>#10</td>
+			                <td>23</td>
+			                <td>Samuel Rojas Too</td>
+			                <td>$45,000</td>
+			                <td>$45,000</td>
+			                <td>Mensualidad</td>
+			                <td>Activo</td>
+			                <td>
+			                	<a href="#" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></a>
+			                	<a href="#" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i></a>
+			                </td>
+			            </tr>
+			            <tr>
+			                <td>2</td>
+			                <td>#10</td>
+			                <td>23</td>
+			                <td>Samuel Rojas Too</td>
+			                <td>$45,000</td>
+			                <td>$45,000</td>
+			                <td>Mensualidad</td>
+			                <td>Inactivo</td>
+			                <td>
+			                	<a href="#" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></a>
+			                	<a href="#" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i></a>
+			                </td>
+			            </tr>
+			            <tr>
+			                <td>3</td>
+			                <td>#10</td>
+			                <td>23</td>
+			                <td>Samuel Rojas Too</td>
+			                <td>$45,000</td>
+			                <td>$45,000</td>
+			                <td>Mensualidad</td>
+			                <td>Inactivo</td>
+			                <td>
+			                	<a href="#" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></a>
+			                	<a href="#" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i></a>
+			                </td>
+			            </tr>
+			            <tr>
+			                <td>4</td>
+			                <td>#10</td>
+			                <td>23</td>
+			                <td>Samuel Rojas Too</td>
+			                <td>$45,000</td>
+			                <td>$45,000</td>
+			                <td>Mensualidad</td>
+			                <td>Activo</td>
+			                <td>
+			                	<a href="#" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></a>
+			                	<a href="#" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i></a>
+			                </td>
+			            </tr>
+			            <tr>
+			                <td>3</td>
+			                <td>#10</td>
+			                <td>23</td>
+			                <td>Samuel Rojas Too</td>
+			                <td>$45,000</td>
+			                <td>$45,000</td>
+			                <td>Mensualidad</td>
+			                <td>Activo</td>
+			                <td>
+			                	<a href="#" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></a>
+			                	<a href="#" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i></a>
+			                </td>
+			            </tr>
+			            <tr>
+			                <td>4</td>
+			                <td>#10</td>
+			                <td>23</td>
+			                <td>Samuel Rojas Too</td>
+			                <td>$45,000</td>
+			                <td>$45,000</td>
+			                <td>Mensualidad</td>
+			                <td>Activo</td>
+			                <td>
+			                	<a href="#" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></a>
+			                	<a href="#" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i></a>
+			                </td>
+			            </tr>
+			            <tr>
+			                <td>3</td>
+			                <td>#10</td>
+			                <td>23</td>
+			                <td>Samuel Rojas Too</td>
+			                <td>$45,000</td>
+			                <td>$45,000</td>
+			                <td>Mensualidad</td>
+			                <td>Activo</td>
+			                <td>
+			                	<a href="#" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></a>
+			                	<a href="#" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i></a>
+			                </td>
+			            </tr>
+			            <tr>
+			                <td>4</td>
+			                <td>#10</td>
+			                <td>23</td>
+			                <td>Samuel Rojas Too</td>
+			                <td>$45,000</td>
+			                <td>$45,000</td>
+			                <td>Mensualidad</td>
+			                <td>Activo</td>
+			                <td>
+			                	<a href="#" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></a>
+			                	<a href="#" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i></a>
+			                </td>
+			            </tr>
+			            <tr>
+			                <td>3</td>
+			                <td>#10</td>
+			                <td>23</td>
+			                <td>Samuel Rojas Too</td>
+			                <td>$45,000</td>
+			                <td>$45,000</td>
+			                <td>Mensualidad</td>
+			                <td>Activo</td>
+			                <td>
+			                	<a href="#" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></a>
+			                	<a href="#" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i></a>
+			                </td>
+			            </tr>
+			            <tr>
+			                <td>4</td>
+			                <td>#10</td>
+			                <td>23</td>
+			                <td>Maximiliano Tec Cocom</td>
+			                <td>$45,000</td>
+			                <td>$45,000</td>
+			                <td>Mensualidad</td>
+			                <td>Activo</td>
+			                <td>
+			                	<a href="#" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></a>
+			                	<a href="#" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i></a>
+			                </td>
+			            </tr>
+			            <tr>
+			                <td>3</td>
+			                <td>#10</td>
+			                <td>23</td>
+			                <td>Samuel Rojas Too</td>
+			                <td>$45,000</td>
+			                <td>$45,000</td>
+			                <td>Mensualidad</td>
+			                <td>Activo</td>
+			                <td>
+			                	<a href="#" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></a>
+			                	<a href="#" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i></a>
+			                </td>
+			            </tr>
+			            <tr>
+			                <td>4</td>
+			                <td>#10</td>
+			                <td>23</td>
+			                <td>Samuel Rojas Too</td>
+			                <td>$45,000</td>
+			                <td>$45,000</td>
+			                <td>Mensualidad</td>
+			                <td>Activo</td>
+			                <td>
+			                	<a href="#" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></a>
+			                	<a href="#" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i></a>
+			                </td>
+			            </tr>
+			        </tbody>
+			    </table>
+			</div>
+		</div>
+	</div>
+<script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+<script type="text/javascript" src="../js/mapplic/dependencies/magnific-popup.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.1.0/js/dataTables.responsive.min.js"></script>
+<script>
+	$(document).ready(function() {
+	    $('#example').DataTable({
+	    	"language": {
+            "lengthMenu": "Mostrar _MENU_ lotes por página",
+            "zeroRecords": "Sin resultados - Lo sentimos",
+            "info": "Mostrando _PAGE_ paginas de _PAGES_",
+            "infoEmpty": "No records available",
+            "infoFiltered": "(filtered from _MAX_ total records)",
+            "search": "_INPUT_",
+        	"searchPlaceholder": "Buscar...",
+        	paginate: {
+	            previous: 'Anterior',
+	            next:     'Siguiente'
+			   }
+        },
+	    	columnDefs: [ { orderable: false, targets: [8]}]
+	    });
+	     $('#example_filter input').addClass('form-control');
+	} );
+</script>	
+</body>
+</html>
