@@ -24,7 +24,7 @@ class Ajax extends CI_Controller {
             $lotes = $this->Lote_model->getAllM($id_manzana);
             
             $lev->locations = $lotes;
-            //$lev->map = "ruta"; pendiente
+            $lev->map = ".jpg"; 
             if($id_manzana >= 5 && $id_manzana <= 20)
                 array_push($respuesta->levels,$lev);
         }
