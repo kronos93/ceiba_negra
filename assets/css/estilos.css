@@ -6186,10 +6186,10 @@ button.close {
   filter: alpha(opacity=0);
 }
 .modal-backdrop.in {
-  opacity: 0.5;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-  filter: alpha(opacity=50);
-  filter: alpha(opacity=50);
+  opacity: 0.6;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
+  filter: alpha(opacity=60);
+  filter: alpha(opacity=60);
 }
 .modal-header {
   padding: 15px;
@@ -7213,6 +7213,22 @@ g.mapplic-active > * {
   .window-mockup {
     display: none;
   }
+}
+.modal {
+  text-align: center;
+  padding: 0 !important;
+}
+.modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  margin-right: -4px;
+}
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
 }
 .wrap-login {
   height: 100%;
