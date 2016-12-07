@@ -24,7 +24,7 @@ class Ajax extends CI_Controller {
             $lotes = $this->Lote_model->getAllM($id_manzana);
             
             $lev->locations = $lotes;
-            $lev->map = base_url()."assets/mapas/{$mz->id}.svg"; 
+            $lev->map = base_url()."assets/img/mapas/{$mz->id}.svg"; 
             if($id_manzana >= 5 && $id_manzana <= 20)
                 array_push($respuesta->levels,$lev);
         }
