@@ -4397,7 +4397,7 @@ tbody.collapse.in {
 }
 .navbar {
   position: relative;
-  min-height: 55px;
+  min-height: 60px;
   margin-bottom: 20px;
   border: 1px solid transparent;
 }
@@ -4529,10 +4529,10 @@ tbody.collapse.in {
 }
 .navbar-brand {
   float: left;
-  padding: 17.5px 15px;
+  padding: 20px 15px;
   font-size: 18px;
   line-height: 20px;
-  height: 55px;
+  height: 60px;
 }
 .navbar-brand:hover,
 .navbar-brand:focus {
@@ -4552,8 +4552,8 @@ tbody.collapse.in {
   float: right;
   margin-right: 15px;
   padding: 9px 10px;
-  margin-top: 10.5px;
-  margin-bottom: 10.5px;
+  margin-top: 13px;
+  margin-bottom: 13px;
   background-color: transparent;
   background-image: none;
   border: 1px solid transparent;
@@ -4577,7 +4577,7 @@ tbody.collapse.in {
   }
 }
 .navbar-nav {
-  margin: 8.75px -15px;
+  margin: 10px -15px;
 }
 .navbar-nav > li > a {
   padding-top: 10px;
@@ -4616,8 +4616,8 @@ tbody.collapse.in {
     float: left;
   }
   .navbar-nav > li > a {
-    padding-top: 17.5px;
-    padding-bottom: 17.5px;
+    padding-top: 20px;
+    padding-bottom: 20px;
   }
 }
 .navbar-form {
@@ -4628,8 +4628,8 @@ tbody.collapse.in {
   border-bottom: 1px solid transparent;
   -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 1px 0 rgba(255,255,255,0.1);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 1px 0 rgba(255,255,255,0.1);
-  margin-top: 10.5px;
-  margin-bottom: 10.5px;
+  margin-top: 13px;
+  margin-bottom: 13px;
 }
 @media (max-width: 767px) {
   .navbar-form .form-group {
@@ -4664,20 +4664,20 @@ tbody.collapse.in {
   border-bottom-left-radius: 0;
 }
 .navbar-btn {
-  margin-top: 10.5px;
-  margin-bottom: 10.5px;
+  margin-top: 13px;
+  margin-bottom: 13px;
 }
 .navbar-btn.btn-sm {
-  margin-top: 12.5px;
-  margin-bottom: 12.5px;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 .navbar-btn.btn-xs {
-  margin-top: 16.5px;
-  margin-bottom: 16.5px;
+  margin-top: 19px;
+  margin-bottom: 19px;
 }
 .navbar-text {
-  margin-top: 17.5px;
-  margin-bottom: 17.5px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 @media (min-width: 768px) {
   .navbar-text {
@@ -7016,8 +7016,11 @@ footer {
   background: #1e252f;
   color: #fff;
   width: 100%;
-  height: 50px;
+  min-height: 50px;
   text-align: center;
+}
+footer p {
+  line-height: 50px;
 }
 @media only screen and (min-width: 600px) {
   footer {
@@ -7027,7 +7030,6 @@ footer {
   }
   footer p {
     font-size: 12px;
-    color: #91a0b9;
   }
 }
 html {
@@ -7070,11 +7072,40 @@ td {
   font-weight: normal !important;
   vertical-align: middle !important;
 }
+p {
+  margin: 0;
+}
 .wrap-main {
-  margin-top: 100px;
+  min-height: 500px;
+  margin-top: 60px;
+  padding: 20px 0px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+@media only screen and (min-width: 768px) {
+  .wrap-main {
+    margin-top: 0px;
+  }
+}
+header {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+}
+@media only screen and (min-width: 600px) {
+  header {
+    position: initial;
+  }
 }
 .navbar-default {
   border-bottom: 5px solid #3e4750;
+}
+.navbar-brand img {
+  max-width: 100px;
+  z-index: 99;
 }
 .mapplic-clickable:not(g),
 g.mapplic-clickable > * {
@@ -7236,7 +7267,7 @@ g.mapplic-active > * {
   }
 }
 .wrap-login {
-  height: 100%;
+  min-height: 100%;
   width: 100%;
   background: #1e252f;
 }
@@ -7245,11 +7276,13 @@ g.mapplic-active > * {
   width: 100%;
   min-height: 180px;
   border-bottom: 1px solid #fff;
+  text-align: center;
+  padding: 20px 0px;
 }
 .wrap-login__header h3 {
   color: #fff;
   margin: 0px;
-  font-size: 20px;
+  font-size: 16px;
   text-align: center;
 }
 .wrap-login__header h1 {
@@ -7259,10 +7292,10 @@ g.mapplic-active > * {
 }
 .wrap-login__header img {
   margin: 15px auto 0px;
+  max-width: 120px;
   border-radius: 50%;
 }
 .wrap-login__body {
-  position: relative;
   background: #1e252f;
   display: block;
   margin: 0 auto;
@@ -7283,8 +7316,12 @@ g.mapplic-active > * {
 .wrap-login__body .login-form label {
   color: #5e6c79;
 }
-@media only screen and (min-width: 600px) {
+@media only screen and (min-width: 768px) {
+  .wrap-login {
+    height: 100%;
+  }
   .wrap-login__header {
+    text-align: left;
     position: absolute;
     top: 0;
     left: 0;
@@ -7299,6 +7336,7 @@ g.mapplic-active > * {
     vertical-align: middle;
   }
   .wrap-login__body {
+    position: relative;
     background: none;
     padding-top: 180px;
     padding-bottom: 50px;

@@ -1,5 +1,5 @@
 .wrap-login
-	height:100%
+	min-height:100%
 	width:100%
 	background:lighten($blackColor,4%)
 	&__header
@@ -7,10 +7,12 @@
 		width:100%
 		min-height:180px
 		border-bottom:1px solid #fff
+		text-align:center
+		padding:20px 0px
 		h3
 			color:#fff
 			margin:0px
-			font-size:20px
+			font-size:16px
 			text-align:center
 		h1
 			color:#fff
@@ -18,9 +20,10 @@
 			font-size:40px
 		img
 			margin:15px auto 0px
+			max-width:120px
 			border-radius:50%
 	&__body
-		position:relative
+		// position:relative
 		background:lighten($blackColor,4%)
 		display:block
 		margin:0 auto
@@ -37,14 +40,10 @@
 				text-align:center
 			label
 				color:lighten($grayColor,20%)
-	// &__footer
-	// 	background:lighten($blackColor,4%)
-	// 	color:#fff
-	// 	width:100%
-	// 	height:50px
-	// 	text-align:center
-	+above(3)
+	+above(4)
+		height:100%
 		&__header
+			text-align:left
 			absolute:top left
 			width:100%
 			.header-container
@@ -55,6 +54,7 @@
 					display:inline-block
 					vertical-align:middle
 		&__body
+			position:relative
 			background:none
 			padding-top:180px
 			padding-bottom:50px
@@ -63,6 +63,3 @@
 			.login-form
 				border:1px solid rgba($blackColor,100%)
 				box-shadow:1px 1px 5px rgba($blackColor,100%)
-		// &__footer
-		// 	absolute: bottom left
-
