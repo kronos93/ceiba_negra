@@ -13,7 +13,7 @@ class Ajax extends CI_Controller {
         $mz_mapplic = $this->Manzana_model->mz_mapplic();
         $respuesta = new stdClass();
         $respuesta->categories = $mz_mapplic;
-        $respuesta->mapwidth = 1000;
+        $respuesta->mapwidth = 800;
         $respuesta->mapheight = 600;
         $respuesta->levels = [];
         foreach($mz_mapplic as $mz){
@@ -26,7 +26,7 @@ class Ajax extends CI_Controller {
             $lotes = $this->Lote_model->getAllM($id_manzana);
             
             $lev->locations = $lotes;
-            $lev->map = base_url()."assets/img/mall/mall-ground.svg"; 
+            $lev->map = base_url()."assets/img/mapas/{$mz->id}.svg"; 
             if($id_manzana >= 5 && $id_manzana <= 20)
                 array_push($respuesta->levels,$lev);
         }
