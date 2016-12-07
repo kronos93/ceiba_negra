@@ -7,7 +7,7 @@ viewBox="0 0 800 600"
  <g id="base">
   <metadata id="CorelCorpID_0Corel-Layer"/>
   <polygon fill="#35AD0E" points="123,26 790,184 701,563 33,408 "/>
-  <g id="_459693640">
+  <g id="_459581056">
    <polygon fill="#63D13E" points="119,19 786,177 697,556 29,401 "/>
    <g>
     <line fill="none" stroke="#96ED79" stroke-width="0.300001" x1="127" y1="21" x2="37" y2= "403" />
@@ -126,7 +126,7 @@ viewBox="0 0 800 600"
     <line fill="none" stroke="#96ED79" stroke-width="0.300001" x1="700" y1="545" x2="32" y2= "387" />
    </g>
   </g>
-  <rect fill="white" stroke="#56CF2D" stroke-width="0.900002" transform="matrix(2.59708 0.602465 -0.0634584 0.273554 124.055 207.624)" width="228.987" height="85.0076" rx="76" ry="76"/>
+  <path fill="white" fill-rule="nonzero" d="M116 231c-5,-1 -9,-7 -7,-12 1,-6 6,-9 12,-8l586 138c6,1 9,7 8,12 -2,6 -7,9 -12,8l-587 -138z"/>
  </g>
  <g id="landmarks-mz13">
   <metadata id="CorelCorpID_1Corel-Layer"/>
