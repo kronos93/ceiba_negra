@@ -29,12 +29,23 @@ class Ajax extends CI_Controller {
             $lev->map = base_url()."assets/img/mapas/{$mz->id}.svg"; 
             if($id_manzana >= 5 && $id_manzana <= 20)
                 array_push($respuesta->levels,$lev);
-        }
-    
-        
-
+        }      
         echo json_encode($respuesta);
 	}
 
+    public function get_manzanas(){
+        header("Content-type: application/json; charset=utf-8");
+        $manzanas = $this->Manzana_model->getAll('array');
+        $response = $this->format_datatable($manzanas);
+        echo json_encode($response);
+    }
 
+    public function format_datatable($data){
+        $response = array("data" => array());
+        foreach($data as $row){
+            $values = array_values($row);
+            array_push($response['data'],$values);
+        }
+        return $response;
+    }
 }

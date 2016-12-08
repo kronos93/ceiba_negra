@@ -5,9 +5,14 @@ class Manzana_model extends CI_Model {
     public function __construct() {
         parent::__construct();
     }
-    public function getAll(){
+    public function getAll($type="object"){
         $query = $this->db->query("SELECT * FROM {$this->tabla}");
-        return $query->result();
+        if($type === "object"){
+            return $query->result();
+        }
+        else if($type==="array"){
+            return $query->result_array();
+        }
     }
 
     public function mz_mapplic(){
