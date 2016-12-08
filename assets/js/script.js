@@ -1,25 +1,26 @@
 var base_url = 'http://' + window.location.hostname + '/ceiba_negra/';;
-
+var lang_esp_datatables = "https://cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json";
 $(document).ready(function() {
-    $('#example').DataTable({
+    var manzanas_table = $('#manzanas').DataTable({
     	"ajax":  base_url + 'ajax/get_manzanas',
     	"language": {
-    					"url": "https://cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json"
-				        /*"lengthMenu": "Mostrar _MENU_ lotes por página",
-				        "zeroRecords": "Sin resultados - Lo sentimos",
-				        "info": "Mostrando _PAGE_ paginas de _PAGES_",
-				        "infoEmpty": "No records available",
-				        "infoFiltered": "(filtered from _MAX_ total records)",
-				        "search": "_INPUT_",
-				    	"searchPlaceholder": "Buscar...",
-				    	paginate: {
-				            previous: 'Anterior',
-				            next:     'Siguiente'
-						   }*/
+    					"url": lang_esp_datatables
 				    },
-    	columnDefs: [ { orderable: false, targets: [4]}]
+    	columnDefs: [ 	
+						{
+                			"targets": [ 0 ],
+                			"visible": false
+            			},
+						{
+							"targets": 4,
+							"data": null,
+							"defaultContent": '<button class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>'
+						}
+					]
     });
-    $('#example_filter input').addClass('form-control');
-
-    // $('.open-popup-link').modal('show');
+	$('#manzanas tbody').on( 'click', 'button', function () {
+        var manzana = manzanas_table.row( $(this).parents('tr') ).data();
+        var id_manzana = manzana[0];
+		console.log(id_manzana);
+    } );
 } );

@@ -36,6 +36,16 @@ class Ajax extends CI_Controller {
     public function get_manzanas(){
         header("Content-type: application/json; charset=utf-8");
         $manzanas = $this->Manzana_model->getAll('array');
+
+        foreach($manzanas as $key => $manzana){
+            //$manzanas[$key]['opciones'] = '<button class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button><button class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i></button>';
+            //$manzanas[$key]['opciones'] = $manzanas[$key]["id_manzana"];
+            if($manzanas[$key]['estado'] === 0){
+                $manzanas[$key]['estado'] = "Invendible";
+            }else{
+                $manzanas[$key]['estado'] = "Vendible";   
+            }
+        }
         $response = $this->format_datatable($manzanas);
         echo json_encode($response);
     }

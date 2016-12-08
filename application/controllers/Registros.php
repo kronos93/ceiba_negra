@@ -1,11 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Terrenos extends CI_Controller {
+class Registros extends CI_Controller {
 
-
-
-	public function index()
+	public function manzanas()
 	{		
 		$data['title'] = "Terrenos";
 		$data['body'] = "terrenos";
