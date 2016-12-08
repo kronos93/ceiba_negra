@@ -29,10 +29,12 @@ caption,tr,td
 	vertical-align: middle!important
 p
 	margin:0
-.wrap-main
-	min-height:500px
-	margin-top:60px
-	padding:20px 0px 
-	box-sizing:border-box
-	+above(4)
-		margin-top:0px
+//estilos generales del main
+main.wrap-main
+	padding:70px 0px 30px
+	.dataTables_wrapper
+		padding:10px 0px
+	+from-width(600px)
+		padding:0px 0px 30px
+	+from-width(1200px)
+		padding:20px 0px 30px

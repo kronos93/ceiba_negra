@@ -7012,6 +7012,63 @@ button.close {
     display: none !important;
   }
 }
+.slide {
+  position: relative;
+  width: 40px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.slide-checkbox {
+  display: none;
+}
+.slide-label {
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
+  height: 20px;
+  padding: 0;
+  line-height: 20px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  background-color: #fff;
+  -webkit-transition: background-color 0.3s ease-in;
+  -moz-transition: background-color 0.3s ease-in;
+  -o-transition: background-color 0.3s ease-in;
+  -ms-transition: background-color 0.3s ease-in;
+  transition: background-color 0.3s ease-in;
+}
+.slide-label:before {
+  content: "";
+  display: block;
+  width: 14px;
+  height: 14px;
+  margin: 0px;
+  background: #ccc;
+  position: absolute;
+  top: 3px;
+  bottom: 0;
+  right: 21px;
+  border: 1px solid #ccc;
+  border-radius: 36px;
+  -webkit-transition: all 0.3s ease-in 0s;
+  -moz-transition: all 0.3s ease-in 0s;
+  -o-transition: all 0.3s ease-in 0s;
+  -ms-transition: all 0.3s ease-in 0s;
+  transition: all 0.3s ease-in 0s;
+}
+.slide-checkbox:checked + .slide-label {
+  border: 1px solid #3fbb9b;
+}
+.slide-checkbox:checked + .slide-label,
+.slide-checkbox:checked + .slide-label:before {
+  border-color: #3fbb9b;
+}
+.slide-checkbox:checked + .slide-label:before {
+  right: 3px;
+  background: #3fbb9b;
+}
 footer {
   background: #1e252f;
   color: #fff;
@@ -7075,17 +7132,20 @@ td {
 p {
   margin: 0;
 }
-.wrap-main {
-  min-height: 500px;
-  margin-top: 60px;
-  padding: 20px 0px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+main.wrap-main {
+  padding: 70px 0px 30px;
 }
-@media only screen and (min-width: 768px) {
-  .wrap-main {
-    margin-top: 0px;
+main.wrap-main .dataTables_wrapper {
+  padding: 10px 0px;
+}
+@media only screen and (min-width: 600px) {
+  main.wrap-main {
+    padding: 0px 0px 30px;
+  }
+}
+@media only screen and (min-width: 1200px) {
+  main.wrap-main {
+    padding: 20px 0px 30px;
   }
 }
 header {

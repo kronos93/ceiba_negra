@@ -1,0 +1,37 @@
+.slide
+	position: relative
+	width: 40px
+	user-select:none
+.slide-checkbox
+	display: none
+.slide-label
+	display: block
+	overflow: hidden
+	cursor: pointer
+	height: 20px; padding: 0
+	line-height: 20px
+	border: 1px solid #CCCCCC
+	border-radius: 20px
+	background-color: #FFFFFF
+	transition: background-color 0.3s ease-in
+.slide-label:before
+	content: ""
+	display: block
+	width: 14px
+	height:14px
+	margin: 0px
+	background: #CCCCCC
+	position: absolute 
+	top: 3px
+	bottom: 0
+	right: 21px
+	border: 1px solid #CCCCCC
+	border-radius: 36px
+	transition: all 0.3s ease-in 0s
+.slide-checkbox:checked + .slide-label
+	border: 1px solid $primaryColor
+.slide-checkbox:checked + .slide-label, .slide-checkbox:checked + .slide-label:before
+	border-color: $primaryColor
+.slide-checkbox:checked + .slide-label:before
+	right: 3px
+	background:$primaryColor

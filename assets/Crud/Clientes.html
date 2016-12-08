@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="../css/jquery.dataTables.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.1.0/css/responsive.dataTables.min.css"/>
+	<link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body>
+	<header>
+		<nav class="navbar navbar-default">
+		  	<div class="container-fluid">
+				<div class="navbar-header">
+				 	<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+				 	</button>
+				  	<a class="navbar-brand" href="#">
+				  		<img  class="visible-lg" src="http://lorempixel.com/120/120" alt="">
+				  		<span class="hidden-lg" >Sicofi</span>
+				  	</a>
+				</div>
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+						<li><a href="#">Link</a></li>
+						<li class="dropdown">
+						  	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+						  	<ul class="dropdown-menu">
+								<li><a href="#">Action</a></li>
+								<li><a href="#">Another action</a></li>
+								<li><a href="#">Something else here</a></li>
+								<li role="separator" class="divider"></li>
+								<li><a href="#">Separated link</a></li>
+								<li role="separator" class="divider"></li>
+								<li><a href="#">One more separated link</a></li>
+						  	</ul>
+						</li>
+				  	</ul>
+				  	<ul class="nav navbar-nav navbar-right">
+						<li><a href="#">Link</a></li>
+						<li class="dropdown">
+						 	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a href="#">Action</a></li>
+								<li><a href="#">Another action</a></li>
+								<li><a href="#">Something else here</a></li>
+								<li role="separator" class="divider"></li>
+								<li><a href="#">Separated link</a></li>
+						  	</ul>
+						</li>
+				  	</ul>
+				</div><!-- /.navbar-collapse -->
+			</div><!-- /.container-fluid -->
+		</nav>
+	</header>
+	<main class="wrap-main">
+		<div class="container-fluid container">
+			<div class="row">
+				<div class="col-xs-12">
+					<h5 class="title">Registro de Lotes</h5>
+					<button class=" btn btn-success btn-md pull-right" data-toggle="modal" data-target="#add-cliente"><i class="fa fa-plus fa-fw"></i>Nuevo Lote</button>
+					<table id="example" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+				        <thead>
+				            <tr>
+				            	<th>Nombre</th>
+				                <th>Apellidos</th>
+				                <th>Correo</th>
+				                <th>Telefono</th>
+				                <th>Opciones</th>
+				            </tr>
+				        </thead>
+				        <tbody>
+				            <tr>
+				                <td>Maximiliano</td>
+				                <td>Tec Cocom</td>
+				                <td>max.tec92@hotmail.com</td>
+				                <td>998 34 56 78</td>
+				                 <td>
+				                	<button class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>
+				                </td>
+				            </tr>
+				        </tbody>
+				    </table>
+				</div>
+			</div>
+		</div>
+	</main>
+<div class="modal fade" id="add-cliente" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+ 	<div class="modal-dialog" role="document">
+	    <div class="modal-content">
+		    <div class="modal-body">
+		    	<form action="">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-xs-12">
+								<h5 class="title">Nuevo Cliente</h5>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group col-xs-12 col-sm-4">
+				    			<label for="formGroupExampleInput">Numero de Lote</label>
+				    			<input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input">
+				  			</div>
+							<div class="form-group col-xs-12 col-sm-4">
+							 	<label for="sel1">Numero de Manzana</label>
+								<select class="form-control" id="sel1">
+							    	<option>1</option>
+							    	<option>2</option>
+							    	<option>3</option>
+							    	<option>4</option>
+								</select>
+							</div>
+							<div class="form-group col-xs-12 col-sm-4">
+    							<label for="exampleInputAmount">Superficie:</label>
+								<div class="input-group">
+							    	<input type="text" class="form-control" id="exampleInputAmount">
+							    	<div class="input-group-addon">mts2</div>
+							    </div>
+  							</div>
+							<div class="form-group col-xs-12">
+				    			<label for="formGroupExampleInput">Calles</label>
+				    			<input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input">
+				  			</div>
+				  			<!-- <div class="form-group col-xs-12">
+				    			<label for="formGroupExampleInput">Example label</label>
+				    			<input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input">
+				  			</div> -->
+						</div>
+					</div>
+				</form>
+		    </div>
+		   	<div class="modal-footer">
+		       	<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+		        <button type="button" class="btn btn-success">Guardar Cambios</button>
+		    </div>
+	    </div>
+  	</div>
+</div>
+<script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.1.0/js/dataTables.responsive.min.js"></script>
+<script>
+	$(document).ready(function() {
+	    $('#example').DataTable({
+	    	"language": {
+            "lengthMenu": "Mostrar _MENU_ lotes por página",
+            "zeroRecords": "Sin resultados - Lo sentimos",
+            "info": "Mostrando _PAGE_ paginas de _PAGES_",
+            "infoEmpty": "No records available",
+            "infoFiltered": "(filtered from _MAX_ total records)",
+            "search": "_INPUT_",
+        	"searchPlaceholder": "Buscar...",
+        	paginate: {
+	            previous: 'Anterior',
+	            next:     'Siguiente'
+			   }
+        	},
+	    	columnDefs: [ { orderable: false, targets: [3]}]
+	    });
+	     $('#example_filter input').addClass('form-control');
+
+	    // $('.open-popup-link').modal('show');
+	} );
+</script>	
+</body>
+</html>
