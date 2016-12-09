@@ -29,6 +29,17 @@ caption,tr,td
 	vertical-align: middle!important
 p
 	margin:0
+span.peso
+	&:before
+		content:'$'
+	&:after
+		content:'.00'
+.form-group
+	label.required:before
+		content:'*'
+		absolute:top 0px left 6px
+		color:$primaryColor
+		font-size:18px
 //estilos generales del main
 main.wrap-main
 	padding:70px 0px 30px

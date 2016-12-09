@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Document</title>
+	<title>Lideres</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="../css/jquery.dataTables.css">
@@ -63,14 +63,13 @@
 		<div class="container-fluid container">
 			<div class="row">
 				<div class="col-xs-12">
-					<h5 class="title">Tabla de Clientes</h5>
-					<button class=" btn btn-success btn-md pull-right" data-toggle="modal" data-target="#add-cliente"><i class="fa fa-plus fa-fw"></i>Nuevo Cliente</button>
+					<h5 class="title">Tabla de Lideres</h5>
+					<button class=" btn btn-success btn-md pull-right" data-toggle="modal" data-target="#add-lider"><i class="fa fa-plus fa-fw"></i>Nuevo Lider</button>
 					<table id="example" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
 				        <thead>
 				            <tr>
 				            	<th>Nombre</th>
 				                <th>Apellidos</th>
-				                <th>Dirección</th>
 				                <th>Correo</th>
 				                <th>Telefono</th>
 				                <th>Opciones</th>
@@ -80,57 +79,6 @@
 				            <tr>
 				                <td>Maximiliano</td>
 				                <td>Tec Cocom</td>
-				                <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet officia aspernatur</td>
-				                <td>max.tec92@hotmail.com</td>
-				                <td>998 34 56 78</td>
-				                 <td>
-				                	<button class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>
-				                </td>
-				            </tr>
-				            <tr>
-				                <td>Maximiliano</td>
-				                <td>Tec Cocom</td>
-				                <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet officia aspernatur</td>
-				                <td>max.tec92@hotmail.com</td>
-				                <td>998 34 56 78</td>
-				                 <td>
-				                	<button class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>
-				                </td>
-				            </tr>
-				            <tr>
-				                <td>Maximiliano</td>
-				                <td>Tec Cocom</td>
-				                <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet officia aspernatur</td>
-				                <td>max.tec92@hotmail.com</td>
-				                <td>998 34 56 78</td>
-				                 <td>
-				                	<button class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>
-				                </td>
-				            </tr>
-				            <tr>
-				                <td>Maximiliano</td>
-				                <td>Tec Cocom</td>
-				                <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet officia aspernatur</td>
-				                <td>max.tec92@hotmail.com</td>
-				                <td>998 34 56 78</td>
-				                 <td>
-				                	<button class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>
-				                </td>
-				            </tr>
-				            <tr>
-				                <td>Maximiliano</td>
-				                <td>Tec Cocom</td>
-				                <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet officia aspernatur</td>
-				                <td>max.tec92@hotmail.com</td>
-				                <td>998 34 56 78</td>
-				                 <td>
-				                	<button class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>
-				                </td>
-				            </tr>
-				            <tr>
-				                <td>Maximiliano</td>
-				                <td>Tec Cocom</td>
-				                <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet officia aspernatur</td>
 				                <td>max.tec92@hotmail.com</td>
 				                <td>998 34 56 78</td>
 				                 <td>
@@ -143,7 +91,7 @@
 			</div>
 		</div>
 	</main>
-<div class="modal fade" id="add-cliente" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="add-lider" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
  	<div class="modal-dialog" role="document">
 	    <div class="modal-content">
 		    <div class="modal-body">
@@ -151,64 +99,39 @@
 					<div class="container-fluid">
 						<div class="row">
 							<div class="col-xs-12">
-								<h5 class="title">Nuevo Cliente</h5>
+								<h5 class="title">Nuevo Lider de Manzana</h5>
 							</div>
 						</div>
 						<div class="row">
 							<div class="form-group col-xs-12 col-sm-6">
-				    			<label class="required" for="nombreCliente">Nombre:</label>
-				    			<input type="text" class="form-control" id="nombreCliente">
+				    			<label class="required" for="nombreLider">Nombre:</label>
+				    			<input type="text" class="form-control" id="nombreLider">
 				  			</div>
 				  			<div class="form-group col-xs-12 col-sm-6">
-				    			<label class="required" for="apellidosCliente">Apellidos:</label>
-				    			<input type="text" class="form-control" id="apellidosCliente">
+				    			<label class="required" for="apellidosLider">Apellidos:</label>
+				    			<input type="text" class="form-control" id="apellidosLider">
 				  			</div>
 							<div class="form-group col-xs-12 col-sm-12">
-    							<label class="required" for="emailCliente">Correo:</label>
+    							<label class="required" for="emailLider">Correo:</label>
 								<div class="input-group">
 									<div class="input-group-addon"><i class="fa fa-envelope-o"></i></div>
-							    	<input type="email" class="form-control" id="emailCliente">
+							    	<input type="email" class="form-control" id="emailLider">
 							    </div>
   							</div>
   							<div class="form-group col-xs-12 col-sm-6">
-    							<label class="required" for="telefonoCliente">Telefono:</label>
+    							<label class="required" for="telefonoLider">Telefono:</label>
 								<div class="input-group">
 									<div class="input-group-addon"><i class="fa fa-phone"></i></div>
-							    	<input type="text" class="form-control" id="telefonoCliente">
+							    	<input type="text" class="form-control" id="telefonoLider">
 							    </div>
   							</div>
   							<div class="form-group col-xs-12 col-sm-6">
-    							<label for="celCliente">Celular:</label>
+    							<label for="celLider">Celular:</label>
 								<div class="input-group">
 									<div class="input-group-addon"><i class="fa fa-mobile"></i></div>
-							    	<input type="text" class="form-control" id="celCliente">
+							    	<input type="text" class="form-control" id="celLider">
 							    </div>
   							</div>
-  							<legend>Domicilio</legend>
-  							<div class="form-group col-xs-12 col-sm-3">
-				    			<label class="required" for="calleCliente">Calle:</label>
-				    			<input type="text" class="form-control" id="calleCliente">
-				  			</div>
-				  			<div class="form-group col-xs-12 col-sm-6">
-				    			<label class="required" for="coloniaCliente">Colonia:</label>
-				    			<input type="text" class="form-control" id="coloniaCliente">
-				  			</div>
-				  			<div class="form-group col-xs-12 col-sm-3">
-				    			<label class="required" for="municipioCliente">Municipio:</label>
-				    			<input type="text" class="form-control" id="municipioCliente">
-				  			</div>
-				  			<div class="form-group col-xs-12 col-sm-3">
-				    			<label class="required" for="estadoCliente">Estado:</label>
-				    			<input type="text" class="form-control" id="estadoCliente">
-				  			</div>
-				  			<div class="form-group col-xs-12 col-sm-3">
-				    			<label class="required" for="cliudadCliente">Ciudad:</label>
-				    			<input type="text" class="form-control" id="cliudadCliente">
-				  			</div>
-				  			<div class="form-group col-xs-12 col-sm-3">
-				    			<label class="required" for="cliudadCliente">CP</label>
-				    			<input type="text" class="form-control" id="cliudadCliente">
-				  			</div>
 						</div>
 					</div>
 				</form>
@@ -240,7 +163,7 @@
 	            next:     'Siguiente'
 			   }
         	},
-	    	columnDefs: [ { orderable: false, targets: [5]}]
+	    	columnDefs: [ { orderable: false, targets: [4]}]
 	    });
 	     $('#example_filter input').addClass('form-control');
 

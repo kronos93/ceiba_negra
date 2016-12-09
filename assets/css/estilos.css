@@ -7132,6 +7132,20 @@ td {
 p {
   margin: 0;
 }
+span.peso:before {
+  content: '$';
+}
+span.peso:after {
+  content: '.00';
+}
+.form-group label.required:before {
+  content: '*';
+  position: absolute;
+  top: 0px;
+  left: 6px;
+  color: #3fbb9b;
+  font-size: 18px;
+}
 main.wrap-main {
   padding: 70px 0px 30px;
 }
