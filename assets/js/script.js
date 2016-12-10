@@ -1,4 +1,4 @@
-var base_url = 'http://' + window.location.hostname + '/ceiba_negra/';;
+var base_url = 'http://' + window.location.hostname + '';
 var lang_esp_datatables = "https://cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json";
 $(document).ready(function() {
     var manzanas_table = $('#manzanas').DataTable({
