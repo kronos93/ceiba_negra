@@ -8,20 +8,22 @@
 		min-height:180px
 		border-bottom:1px solid #fff
 		text-align:center
-		padding:20px 0px
-		h3
-			color:#fff
-			margin:0px
-			font-size:16px
-			text-align:center
-		h1
-			color:#fff
-			margin:5px 0px
-			font-size:40px
-		img
-			margin:15px auto 0px
-			max-width:120px
-			border-radius:50%
+		padding:20px
+		.header-container
+			h3
+				color:#fff
+				margin:0px
+				font-size:16px
+				text-align:center
+			h1
+				color:#fff
+				margin:5px 10px
+				font-size:40px
+			img
+				// margin:15px auto 0px
+				max-width:120px
+				border-radius:50%
+				margin:0 auto
 	&__body
 		// position:relative
 		background:lighten($blackColor,4%)
@@ -43,10 +45,15 @@
 	+above(4)
 		height:100%
 		&__header
+			padding:0px
 			text-align:left
 			absolute:top left
 			width:100%
 			.header-container
+				padding:0px
+				margin-top:30px
+				display:flex
+				align-items:center
 				&__brand
 					display:inline-block
 					vertical-align:middle

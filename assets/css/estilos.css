@@ -7089,6 +7089,10 @@ footer p {
     font-size: 12px;
   }
 }
+@font-face {
+  font-family: 'panama-light';
+  src: url("../fonts/Panama-Light.otf") format('opentype');
+}
 html {
   height: 100%;
 }
@@ -7099,6 +7103,11 @@ body {
   letter-spacing: 0.5px;
   font-size: 13px;
   background: #f6f5fa;
+}
+h1,
+h2,
+h5 {
+  font-family: 'panama-light';
 }
 strong {
   font-weight: 700;
@@ -7351,23 +7360,23 @@ g.mapplic-active > * {
   min-height: 180px;
   border-bottom: 1px solid #fff;
   text-align: center;
-  padding: 20px 0px;
+  padding: 20px;
 }
-.wrap-login__header h3 {
+.wrap-login__header .header-container h3 {
   color: #fff;
   margin: 0px;
   font-size: 16px;
   text-align: center;
 }
-.wrap-login__header h1 {
+.wrap-login__header .header-container h1 {
   color: #fff;
-  margin: 5px 0px;
+  margin: 5px 10px;
   font-size: 40px;
 }
-.wrap-login__header img {
-  margin: 15px auto 0px;
+.wrap-login__header .header-container img {
   max-width: 120px;
   border-radius: 50%;
+  margin: 0 auto;
 }
 .wrap-login__body {
   background: #1e252f;
@@ -7395,11 +7404,28 @@ g.mapplic-active > * {
     height: 100%;
   }
   .wrap-login__header {
+    padding: 0px;
     text-align: left;
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
+  }
+  .wrap-login__header .header-container {
+    padding: 0px;
+    margin-top: 30px;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: box;
+    display: flex;
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    -o-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
   }
   .wrap-login__header .header-container__brand {
     display: inline-block;
