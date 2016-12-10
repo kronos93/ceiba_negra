@@ -7079,14 +7079,14 @@ footer {
 footer p {
   line-height: 50px;
 }
-@media only screen and (min-width: 600px) {
+@media only screen and (min-width: 768px) {
   footer {
     position: fixed;
     bottom: 0;
     left: 0;
   }
   footer p {
-    font-size: 12px;
+    font-size: 11px;
   }
 }
 @font-face {
@@ -7118,19 +7118,6 @@ small {
 iframe {
   width: 100%;
 }
-h5.title {
-  background: #3fbb9b;
-  height: 35px;
-  text-transform: uppercase;
-  line-height: 35px;
-  padding: 0px 10px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  border-radius: 5px;
-  color: #fff;
-  font-weight: 400;
-}
 caption,
 tr,
 td {
@@ -7141,17 +7128,14 @@ td {
 p {
   margin: 0;
 }
-span.peso:before {
-  content: '$';
-}
-span.peso:after {
-  content: '.00';
+.form-group label {
+  position: relative;
 }
 .form-group label.required:before {
   content: '*';
   position: absolute;
-  top: 0px;
-  left: 6px;
+  top: -2px;
+  right: -9px;
   color: #3fbb9b;
   font-size: 18px;
 }
@@ -7171,6 +7155,10 @@ main.wrap-main .dataTables_wrapper {
     padding: 20px 0px 30px;
   }
 }
+legend {
+  padding: 10px 0px;
+  line-height: 37px;
+}
 header {
   position: absolute;
   left: 0;
@@ -7186,9 +7174,61 @@ header {
 .navbar-default {
   border-bottom: 5px solid #3e4750;
 }
-.navbar-brand img {
-  max-width: 100px;
-  z-index: 99;
+.brand-ceiba {
+  background: #b88d2c;
+  position: absolute;
+  left: 50%;
+  top: -1px;
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  -o-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  padding: 5px 50px;
+  -webkit-box-shadow: 0px 0px 3px #000;
+  box-shadow: 0px 0px 3px #000;
+  border-radius: 0px 0px 3px 3px;
+}
+.brand-ceiba img {
+  display: block;
+  margin: 0 auto;
+  padding: 5px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  max-width: 70px;
+}
+.brand-ceiba figure {
+  position: relative;
+}
+.brand-ceiba figure figcaption {
+  text-transform: uppercase;
+  font-style: none;
+  font-size: 20px;
+  font-family: 'panama-light';
+  text-align: center;
+  color: #fff;
+}
+.brand-ceiba:hover,
+.brand-ceiba:focus {
+  text-decoration: none;
+  border: none;
+}
+.brand-ceiba:after {
+  content: '';
+  height: 1px;
+  position: absolute;
+  top: 73px;
+  left: 10px;
+  border-right: 60px solid #fff;
+}
+.brand-ceiba:before {
+  content: '';
+  height: 1px;
+  position: absolute;
+  top: 73px;
+  right: 10px;
+  border-right: 60px solid #fff;
 }
 .mapplic-clickable:not(g),
 g.mapplic-clickable > * {

@@ -20,38 +20,34 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 				 	</button>
-				  	<a class="navbar-brand" href="#">
-				  		<img  class="visible-lg" src="../img/logos/logoa.png" alt="">
-				  		<span class="hidden-lg" >Sicofi</span>
+				  	<!-- <a class="navbar-brand" href="/inicio">
+				  		<img src="../img/logos/logo.png" alt="">
+				  	</a> -->
+				  	<a href="#" class="brand-ceiba">
+				  		<figure>
+				  			<img src="../img/logos/logo_blanco.png" alt="La ceiba">
+				  			<figcaption>La Ceiba</figcaption>
+				  		</figure>
 				  	</a>
 				</div>
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
-						<li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-						<li><a href="#">Link</a></li>
+						<!-- <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li> -->
 						<li class="dropdown">
-						  	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+						  	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Registros <span class="caret"></span></a>
 						  	<ul class="dropdown-menu">
-								<li><a href="#">Action</a></li>
-								<li><a href="#">Another action</a></li>
-								<li><a href="#">Something else here</a></li>
+								<li><a href="#">Mazanas</a></li>
+								<li><a href="#">Lotes</a></li>
 								<li role="separator" class="divider"></li>
-								<li><a href="#">Separated link</a></li>
-								<li role="separator" class="divider"></li>
-								<li><a href="#">One more separated link</a></li>
+								<li><a href="#">Otra cosa</a></li>
 						  	</ul>
 						</li>
 				  	</ul>
 				  	<ul class="nav navbar-nav navbar-right">
-						<li><a href="#">Link</a></li>
 						<li class="dropdown">
-						 	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+						 	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Bienvenido: Maximiliano <span class="caret"></span></a>
 							<ul class="dropdown-menu">
-								<li><a href="#">Action</a></li>
-								<li><a href="#">Another action</a></li>
-								<li><a href="#">Something else here</a></li>
-								<li role="separator" class="divider"></li>
-								<li><a href="#">Separated link</a></li>
+								<li><a href="#">Cerrar sesión</a></li>
 						  	</ul>
 						</li>
 				  	</ul>
@@ -63,8 +59,8 @@
 		<div class="container-fluid container">
 			<div class="row">
 				<div class="col-xs-12">
-					<h5 class="title">Tabla de Clientes</h5>
-					<button class=" btn btn-success btn-md pull-right" data-toggle="modal" data-target="#add-cliente"><i class="fa fa-plus fa-fw"></i>Nuevo Cliente</button>
+					<legend>Clientes <button  data-toggle="modal" data-target="#add-cliente" class="btn btn-success pull-right"><i class="fa fa-plus"></i></button> <div class="clearfix"></div></legend>
+					<!-- <hr class="separator">	 -->
 					<table id="example" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
 				        <thead>
 				            <tr>
@@ -146,12 +142,15 @@
 <div class="modal fade" id="add-cliente" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
  	<div class="modal-dialog" role="document">
 	    <div class="modal-content">
+	    	<div class="modal-header">
+	    		<h4>Añadir clientes</h4>
+	    	</div>
 		    <div class="modal-body">
 		    	<form action="">
 					<div class="container-fluid">
 						<div class="row">
 							<div class="col-xs-12">
-								<h5 class="title">Nuevo Cliente</h5>
+								<!-- <h5 class="title">Nuevo Cliente</h5> -->
 							</div>
 						</div>
 						<div class="row">

@@ -19,33 +19,30 @@ small
 	font-size: 70%
 iframe
 	width:100%
-h5.title
-	background:$primaryColor
-	height:35px
-	text-transform:uppercase
-	line-height:35px
-	padding:0px 10px 
-	box-sizing:border-box
-	border-radius:5px
-	color:#fff
-	font-weight:400
+// h5.title
+// 	background:#B88D2C
+// 	height:35px
+// 	text-transform:uppercase
+// 	line-height:35px
+// 	padding:0px 10px 
+// 	box-sizing:border-box
+// 	border-radius:5px
+// 	color:#fff
+// 	font-weight:400
 caption,tr,td
 	text-align: left!important
 	font-weight: normal!important
 	vertical-align: middle!important
 p
 	margin:0
-span.peso
-	&:before
-		content:'$'
-	&:after
-		content:'.00'
 .form-group
-	label.required:before
-		content:'*'
-		absolute:top 0px left 6px
-		color:$primaryColor
-		font-size:18px
+	label
+		position:relative
+		&.required:before
+			content:'*'
+			absolute:top -2px right -9px
+			color:$primaryColor
+			font-size:18px
 //estilos generales del main
 main.wrap-main
 	padding:70px 0px 30px
@@ -55,3 +52,7 @@ main.wrap-main
 		padding:0px 0px 30px
 	+from-width(1200px)
 		padding:20px 0px 30px
+legend
+	padding:10px 0px
+	line-height:37px
+	
