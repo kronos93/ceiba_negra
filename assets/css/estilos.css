@@ -7398,7 +7398,7 @@ g.mapplic-active > * {
 .wrap-login__body .login-form label {
   color: #5e6c79;
 }
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 1023px) {
   .wrap-login {
     height: 100%;
   }
