@@ -55,7 +55,7 @@
 		<div class="container-fluid container">
 			<div class="row">
 				<div class="col-xs-12">
-					<p>Derechos Reservados Huertos La Ceiba 2017</p>
+					<p>Derechos Reservados Huertos La Ceiba <?= Date('Y') ?></p>
 				</div>
 			</div>
 		</div>
