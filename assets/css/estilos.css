@@ -7081,7 +7081,7 @@ footer p {
 }
 @media only screen and (min-width: 600px) {
   footer {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
   }
@@ -7398,7 +7398,7 @@ g.mapplic-active > * {
 .wrap-login__body .login-form label {
   color: #5e6c79;
 }
-@media only screen and (min-width: 1023px) {
+@media only screen and (min-width: 768px) {
   .wrap-login {
     height: 100%;
   }
