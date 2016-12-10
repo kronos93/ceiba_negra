@@ -5,8 +5,14 @@ class Registros extends CI_Controller {
 
 	public function manzanas()
 	{		
-		$data['title'] = "Terrenos";
-		$data['body'] = "terrenos";
+		$data['title'] = "Manzanas";
+		$data['body'] = "manzanas";
+		$this->load->view('templates/template',$data);
+	}
+	public function lotes()
+	{		
+		$data['title'] = "Lotes";
+		$data['body'] = "lotes";
 		$this->load->view('templates/template',$data);
 	}
 }

@@ -38,8 +38,6 @@ class Ajax extends CI_Controller {
         $manzanas = $this->Manzana_model->getAll('array');
 
         foreach($manzanas as $key => $manzana){
-            //$manzanas[$key]['opciones'] = '<button class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button><button class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i></button>';
-            //$manzanas[$key]['opciones'] = $manzanas[$key]["id_manzana"];
             if($manzanas[$key]['estado'] === 0){
                 $manzanas[$key]['estado'] = "Invendible";
             }else{
@@ -47,6 +45,12 @@ class Ajax extends CI_Controller {
             }
         }
         $response = $this->format_datatable($manzanas);
+        echo json_encode($response);
+    }
+    public function get_lotes_pmz(){
+        header("Content-type: application/json; charset=utf-8");
+        $lotes = $this->Lote_model->lotesPM();
+        $response = $this->format_datatable($lotes);
         echo json_encode($response);
     }
 
