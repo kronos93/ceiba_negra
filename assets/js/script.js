@@ -34,6 +34,10 @@ $(document).ready(function() {
                             "targets": 0,
                             "visible": false
                         },
+                        {
+                            "targets": [4,5,6],
+                            "className": "moneda"
+                        },
                         /*{
                             "targets": 4,
                             "data": null,
@@ -49,5 +53,5 @@ $(document).ready(function() {
 
 
 
-
+    $('tbody .moneda').mask('$ 000.000.000.000.000,00');
 });

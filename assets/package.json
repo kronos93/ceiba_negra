@@ -16,6 +16,7 @@
     "gulp-rename": "^1.2.2",
     "gulp-sourcemaps": "^1.9.1",
     "gulp-stylus": "^2.6.0",
+    "jquery-mask-plugin": "^1.14.3",
     "nib": "^1.1.2",
     "rupture": "^0.6.2"
   }
