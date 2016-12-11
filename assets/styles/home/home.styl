@@ -25,12 +25,12 @@
 				// border-radius:50%
 				margin:0 auto
 	&__body
-		// position:relative
+		max-width:400px
 		background:lighten($blackColor,4%)
 		display:block
 		margin:0 auto
 		.login-form
-			padding:20px
+			padding:20px 5px 0px
 			max-width:400px
 			margin: 0 auto
 			border-radius:5px
@@ -41,7 +41,23 @@
 				text-transform:uppercase
 				text-align:center
 			label
-				color:lighten($grayColor,20%)
+				vertical-align:middle
+				color:darken(#fff,20%)
+			input[type='checkbox']
+				margin-top:-5px!important
+				vertical-align:middle!important
+			a.link
+				display:block
+				color:$primaryColor
+				text-align:center
+		#infoMessage
+			margin:10px 0px
+			i
+				vertical-align:middle
+			p
+				display:inline-block
+				text-align:center
+				vertical-align:middle
 	+above(4)
 		height:100%
 		&__header

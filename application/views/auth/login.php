@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es-MX">
 <head>
 	<meta charset="UTF-8">
 	<!-- Viewport for Responsivity -->
@@ -25,37 +25,51 @@
 		</div>
 		<div class="wrap-login__body">
 			<div class="login-form">
-				<?= form_open("auth/login") ?>          
-					<div class="form-group">
-					 	<?= lang('login_identity_label', 'identity');?>    
-					 	<div class="input-group">
-					  		<span class="input-group-addon" id="sizing-addon1">
-					  			<i class="fa fa-user"></i>
-					  		</span>
-                <?php $identity['class'] = "form-control"; $identity['placeholder'] = "Usuario"; $identity['aria-describedby'] = "sizing-addon1"?>
-                <?= form_input($identity);?>
+				<div class="container-fluid">
+					<?= form_open("auth/login") ?>
+						<div class="row">
+							<div class="form-group col-xs-12">
+							 	<?= lang('login_identity_label', 'identity');?>    
+							 	<div class="input-group">
+							  		<span class="input-group-addon" id="sizing-addon1">
+							  			<i class="fa fa-user"></i>
+							  		</span>
+		                <?php $identity['class'] = "form-control"; $identity['placeholder'] = "Usuario"; $identity['aria-describedby'] = "sizing-addon1"?>
+		                <?= form_input($identity);?>
+								</div>
+							</div>
+							<div class="form-group col-xs-12">
+							 	<?= lang('login_password_label', 'password') ?>
+							 	<div class="input-group">
+							  		<span class="input-group-addon" id="sizing-addon1">
+							  			<i class="fa fa-lock"></i>
+							  		</span>
+		                <?php $password['class'] = "form-control"; $password['placeholder'] = "Ingrese su contraseña"; $password['aria-describedby'] = "sizing-addon1";?>
+		                <?= form_input($password);?>
+								</div>
+							</div>
+							<div class="form-group col-xs-12">
+								<?= form_submit('submit', lang('login_submit_btn'),'class="btn btn-submit-login"') ?> <!-- Boton enviar -->
+							</div>
+							<div class="form-group col-xs-12 col-sm-5
+							">
+								<?php echo lang('login_remember_label', 'remember');?> <!-- Label recordarme -->
+		          				<?php echo form_checkbox('remember', '1', FALSE, 'id="remember"');?> <!-- Checkbox recordarme -->
+							</div>
+							<div class="form-group col-xs-12 col-sm-7 text-right">
+		            			<a href="forgot_password" class="link"><?= lang('login_forgot_password');?></a> <!-- Recordar contraseña-->
+							</div>
+							
 						</div>
-					</div>
-					<div class="form-group">
-					 	<?= lang('login_password_label', 'password') ?>
-					 	<div class="input-group">
-					  		<span class="input-group-addon" id="sizing-addon1">
-					  			<i class="fa fa-lock"></i>
-					  		</span>
-                <?php $password['class'] = "form-control"; $password['placeholder'] = "Ingrese su contraseña"; $password['aria-describedby'] = "sizing-addon1";?>
-                <?= form_input($password);?>
-						</div>
-					</div>
-          <?php echo lang('login_remember_label', 'remember');?> <!-- Label recordarme -->
-          <?php echo form_checkbox('remember', '1', FALSE, 'id="remember"');?> <!-- Checkbox recordarme -->
-					<div class="form-group">
-						<!-- <input type="submit" class="btn btn-submit-login" value="Entrar">-->
-            <?= form_submit('submit', lang('login_submit_btn'),'class="btn btn-submit-login"') ?> <!-- Boton enviar -->
-					</div>
-				<?=  form_close();?>
+					<?=  form_close();?>
+				</div>
 			</div>
-      <a href="forgot_password"><?= lang('login_forgot_password');?></a> <!-- Recordar contraseña-->
-      <div id="infoMessage"><?= $message ?></div> <!-- Mensajes de error -->
+			<?php if($message) { ?>
+			<div id="infoMessage" class="alert alert-danger">
+				<i class="fa fa-info-circle fa-2x"></i>
+				<?= $message ?>
+		    </div> <!-- Mensajes de error -->
+		    <?php unset($message); } ?>
 		</div>
 	</div>
 	<footer>
