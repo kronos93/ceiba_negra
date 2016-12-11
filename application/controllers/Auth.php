@@ -40,7 +40,9 @@ class Auth extends CI_Controller {
 				$this->data['users'][$k]->groups = $this->ion_auth->get_users_groups($user->id)->result();
 			}
 
-			$this->_render_page('auth/index', $this->data);
+			$data = array_merge($this->data,array('title'=>'Usuarios :D','body' => 'auth/index'));
+			$this->load->view('templates/template',$data);
+			//$this->_render_page('', $this->data);
 		}
 	}
 
@@ -48,7 +50,6 @@ class Auth extends CI_Controller {
 	public function login()
 	{
 		$this->data['title'] = $this->lang->line('login_heading');
-
 		//validate form input
 		$this->form_validation->set_rules('identity', str_replace(':', '', $this->lang->line('login_identity_label')), 'required');
 		$this->form_validation->set_rules('password', str_replace(':', '', $this->lang->line('login_password_label')), 'required');
@@ -438,6 +439,7 @@ class Auth extends CI_Controller {
         $this->form_validation->set_rules('phone', $this->lang->line('create_user_validation_phone_label'), 'trim');
         $this->form_validation->set_rules('company', $this->lang->line('create_user_validation_company_label'), 'trim');
         //$this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
+		//$this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length["3"]|max_length["3"]|matches[password_confirm]');
 
         $this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
 
@@ -515,8 +517,10 @@ class Auth extends CI_Controller {
                 'type'  => 'password',
                 'value' => $this->form_validation->set_value('password_confirm'),
             );
-
-            $this->_render_page('auth/create_user', $this->data);
+			$data = array_merge($this->data,array('title'=>'Crear usuario','body' => 'auth/create_user'));
+			$this->load->view('templates/template',$data);
+			
+            //$this->_render_page('auth/create_user', $this->data);
         }
     }
 
