@@ -25,8 +25,7 @@
 		</div>
 		<div class="wrap-login__body">
 			<div class="login-form">
-				<?= form_open("auth/login") ?>
-          <div id="infoMessage"><?= $message ?></div>
+				<?= form_open("auth/login") ?>          
 					<div class="form-group">
 					 	<?= lang('login_identity_label', 'identity');?>    
 					 	<div class="input-group">
@@ -47,11 +46,16 @@
                 <?= form_input($password);?>
 						</div>
 					</div>
+          <?php echo lang('login_remember_label', 'remember');?> <!-- Label recordarme -->
+          <?php echo form_checkbox('remember', '1', FALSE, 'id="remember"');?> <!-- Checkbox recordarme -->
 					<div class="form-group">
-						<input type="submit" class="btn btn-submit-login" value="Entrar">
+						<!-- <input type="submit" class="btn btn-submit-login" value="Entrar">-->
+            <?= form_submit('submit', lang('login_submit_btn'),'class="btn btn-submit-login"') ?> <!-- Boton enviar -->
 					</div>
 				<?=  form_close();?>
 			</div>
+      <a href="forgot_password"><?= lang('login_forgot_password');?></a> <!-- Recordar contraseña-->
+      <div id="infoMessage"><?= $message ?></div> <!-- Mensajes de error -->
 		</div>
 	</div>
 	<footer>
@@ -67,34 +71,3 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </body>
 </html>
-<?php 
-/*
-<h1><?php echo lang('login_heading');?></h1>
-<p><?php echo lang('login_subheading');?></p>
-
-
-
-<?= form_open("auth/login");?>
-
-  <p>
-    <?php echo lang('login_identity_label', 'identity');?>
-    <?php echo form_input($identity);?>
-  </p>
-
-  <p>
-    <?php echo lang('login_password_label', 'password');?>
-    <?php echo form_input($password);?>
-  </p>
-
-  <p>
-    <?php echo lang('login_remember_label', 'remember');?>
-    <?php echo form_checkbox('remember', '1', FALSE, 'id="remember"');?>
-  </p>
-
-
-  <p><?php echo form_submit('submit', lang('login_submit_btn'));?></p>
-
-<?php echo form_close();?>
-
-<p><a href="forgot_password"><?php echo lang('login_forgot_password');?></a></p>*/
-?>
