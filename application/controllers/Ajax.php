@@ -61,4 +61,12 @@ class Ajax extends CI_Controller {
         }
         return $response;
     }
+
+    public function guardar_coordenadas(){
+        $manzana = $this->input->post("manzana");
+        $lote = $this->input->post("lote");
+        $where = array('id_manzana' => $manzana, 'lote' => $lote);
+        $update = array('x' => $this->input->post("x"), 'y' => $this->input->post("y"));
+        $this->Lote_model->set_coordenadas($where,$update);
+    }
 }

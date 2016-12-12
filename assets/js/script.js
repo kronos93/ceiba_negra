@@ -55,19 +55,50 @@ $(document).ready(function() {
     
     $('tbody .moneda').mask('$ 000.000.000.000.000,00');
 
-    $(document).ready(function() {
-        var mapplic = $('#mapplic').mapplic({
-            source: base_url + 'ajax/get_mapa',	// Using mall.json file as map data
-            sidebar: true, 			// Enable sidebar
-            minimap: false, 			// Enable minimap
-            markers: false, 		// Disable markers
-            mapfill:true,
-            fillcolor:'',
-            fullscreen: false, 		// Enable fullscreen
-            developer:true,
-            zoom:false
-            // maxscale: 3, 			// Setting maxscale to 3
-        });
+
+    var mapplic = $('#mapplic').mapplic({
+        source: base_url + 'ajax/get_mapa',	// Using mall.json file as map data
+        sidebar: true, 			// Enable sidebar
+        minimap: false, 			// Enable minimap
+        markers: false, 		// Disable markers
+        mapfill:true,
+        fillcolor:'',
+        fullscreen: false, 		// Enable fullscreen
+        developer:true,
+        zoom:false
+        // maxscale: 3, 			// Setting maxscale to 3
     });
-		
+    /*mapplic.on('mapready',function(){
+        console.log("Listo");
+        $('.mapplic-layer').on('click',function(){
+            console.log(this);
+            console.log($(".mapplic-coordinates-x")[0].innerHTML);
+            console.log($(".mapplic-coordinates-y")[0].innerHTML);
+        })    
+    });*/
+
+    mapplic.on('locationopened',function(e,location){
+        /*console.log(JSON.stringify(location));
+        console.log(location.id);
+        console.log(location.x);
+        console.log(location.y);*/
+       var manzana = (location.category.replace("mz",""));
+        var lote = (location.title.replace("Lote número ",""));
+        
+        var data = {
+            manzana : manzana,
+            lote : lote,
+            x : ($(".mapplic-coordinates-x")[0].innerHTML),
+            y : $(".mapplic-coordinates-y")[0].innerHTML
+        };
+        console.log(data);
+        $.ajax({
+            url: base_url+"ajax/guardar_coordenadas/",
+            type: 'post',
+            asyn: true,
+            data: data
+        });
+        
+    });
+	
 });

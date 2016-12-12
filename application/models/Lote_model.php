@@ -25,4 +25,10 @@ class Lote_model extends CI_Model {
         return $query->result();
     }
 
+    public function set_coordenadas($where,$update){
+        $this->db->set($update);
+        $this->db->where($where);
+        $this->db->update($this->tabla);
+    }
+
 }
