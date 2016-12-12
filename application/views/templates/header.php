@@ -9,7 +9,8 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="<?= base_url() ?>assets/css/jquery.dataTables.css">
 		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.1.0/css/responsive.dataTables.min.css"/>
-        <link rel="stylesheet" href="<?= base_url() ?>assets/css/estilos.css">
+        <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/mapplic.css">
+		<link rel="stylesheet" href="<?= base_url() ?>assets/css/estilos.css">
     </head>
     <body>
     <header>
@@ -22,7 +23,7 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 				 	</button>
-				  	<a href="#" class="brand-ceiba">
+				  	<a href="<?= base_url() ?>" class="brand-ceiba">
 				  		<figure>
 				  			<img src="<?= base_url() ?>assets/img/logos/logo_blanco.png" alt="La ceiba">
 				  			<figcaption>La Ceiba</figcaption>

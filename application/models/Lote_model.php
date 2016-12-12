@@ -13,7 +13,7 @@ class Lote_model extends CI_Model {
     }
     public function lotesPM(){
         $query =  $this->db->query("SELECT 
-                                            `lotes`.`id_lote`,`manzanas`.`manzana`,`lotes`.`lote`,`lotes`.`superficie`,`precios`.`precio`,`precios`.`enganche`,`precios`.`pagos`,`lotes`.`vendido`,`lotes`.`col_norte`,`lotes`.`col_sur`,`lotes`.`col_este`,`lotes`.`col_oeste` FROM {$this->tabla} 
+                                            `lotes`.`id_lote`,`manzanas`.`manzana`,`lotes`.`lote`,`lotes`.`superficie`,`precios`.`precio`,`precios`.`enganche`,`precios`.`abono`,`lotes`.`vendido`,`lotes`.`col_norte`,`lotes`.`col_sur`,`lotes`.`col_este`,`lotes`.`col_oeste` FROM {$this->tabla} 
                                     LEFT JOIN `manzanas`
                                     ON lotes.id_manzana = manzanas.id_manzana
                                     LEFT JOIN `precios` 

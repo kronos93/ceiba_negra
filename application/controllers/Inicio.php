@@ -18,8 +18,8 @@ class Inicio extends CI_Controller {
 		}
 		else
 		{
-			$data['title'] = "Mapa";
-			$data['body'] = "mapa";
+			$data['title'] = "Inicio";
+			$data['body'] = "inicio";
 			$this->load->view('templates/template',$data);
 		}
 	}
