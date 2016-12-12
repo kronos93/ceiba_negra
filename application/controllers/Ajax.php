@@ -37,10 +37,10 @@ class Ajax extends CI_Controller {
         $manzanas = $this->Manzana_model->getAll('array');
 
         foreach($manzanas as $key => $manzana){
-            if($manzanas[$key]['estado'] === 0){
-                $manzanas[$key]['estado'] = "Invendible";
+            if($manzanas[$key]['disponibilidad'] === 0){
+                $manzanas[$key]['disponibilidad'] = "Invendible";
             }else{
-                $manzanas[$key]['estado'] = "Vendible";   
+                $manzanas[$key]['disponibilidad'] = "Vendible";   
             }
         }
         $response = $this->format_datatable($manzanas);
@@ -63,7 +63,7 @@ class Ajax extends CI_Controller {
     }
     //Manzanas
     public function add_manzana(){
-        if($this->input->post('manzana') && $this->input->post('calle') && $this->input->post('disponibilidad')){
+        if($this->input->post('manzana') && $this->input->post('calle')){ //&& $this->input->post('disponibilidad')
             $insert = [
                 'manzana' => $this->input->post('manzana'),
                 'calle'   => $this->input->post('calle'),
