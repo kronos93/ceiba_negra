@@ -18,7 +18,9 @@ class Inicio extends CI_Controller {
 		}
 		else
 		{
-			echo "MAPA CHINGON ";
+			$data['title'] = "Mapa";
+			$data['body'] = "mapa";
+			$this->load->view('templates/template',$data);
 		}
 	}
 }
