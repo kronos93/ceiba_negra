@@ -7220,22 +7220,6 @@ header {
   text-decoration: none;
   border: none;
 }
-.brand-ceiba:after {
-  content: '';
-  height: 1px;
-  position: absolute;
-  top: 73px;
-  left: 10px;
-  border-right: 60px solid #fff;
-}
-.brand-ceiba:before {
-  content: '';
-  height: 1px;
-  position: absolute;
-  top: 73px;
-  right: 10px;
-  border-right: 60px solid #fff;
-}
 @media only screen and (min-width: 768px) {
   .brand-ceiba {
     display: block;
