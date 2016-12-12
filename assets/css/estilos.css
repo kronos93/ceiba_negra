@@ -7079,7 +7079,7 @@ footer {
 footer p {
   line-height: 50px;
 }
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 769px) {
   footer {
     position: fixed;
     bottom: 0;
@@ -7118,6 +7118,9 @@ small {
 iframe {
   width: 100%;
 }
+tbody .col-mz:before {
+  content: 'Mz. ';
+}
 caption,
 tr,
 td {
@@ -7145,12 +7148,12 @@ main.wrap-main {
 main.wrap-main .dataTables_wrapper {
   padding: 10px 0px;
 }
-@media only screen and (min-width: 600px) {
+@media only screen and (min-width: 601px) {
   main.wrap-main {
     padding: 0px 0px 30px;
   }
 }
-@media only screen and (min-width: 1200px) {
+@media only screen and (min-width: 1201px) {
   main.wrap-main {
     padding: 20px 0px 30px;
   }
@@ -7166,7 +7169,7 @@ header {
   width: 100%;
   z-index: 999;
 }
-@media only screen and (min-width: 600px) {
+@media only screen and (min-width: 601px) {
   header {
     position: initial;
   }
@@ -7175,33 +7178,36 @@ header {
   border-bottom: 5px solid #3e4750;
 }
 .brand-ceiba {
-  background: #b88d2c;
+  display: inline-block;
   position: absolute;
-  left: 50%;
+  left: 5px;
   top: -1px;
-  -webkit-transform: translateX(-50%);
-  -moz-transform: translateX(-50%);
-  -o-transform: translateX(-50%);
-  -ms-transform: translateX(-50%);
-  transform: translateX(-50%);
-  padding: 5px 50px;
-  -webkit-box-shadow: 0px 0px 3px #000;
-  box-shadow: 0px 0px 3px #000;
-  border-radius: 0px 0px 3px 3px;
+  height: 61px;
 }
 .brand-ceiba img {
-  display: block;
+  display: inline-block;
+  vertical-align: middle;
   margin: 0 auto;
   padding: 5px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  max-width: 70px;
+  max-width: 50px;
 }
 .brand-ceiba figure {
+  height: 100%;
+  vertical-align: middle;
   position: relative;
+  text-align: center;
+}
+.brand-ceiba figure:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
 }
 .brand-ceiba figure figcaption {
+  display: none;
   text-transform: uppercase;
   font-style: none;
   font-size: 20px;
@@ -7229,6 +7235,58 @@ header {
   top: 73px;
   right: 10px;
   border-right: 60px solid #fff;
+}
+@media only screen and (min-width: 768px) {
+  .brand-ceiba {
+    display: block;
+    background: #b88d2c;
+    -webkit-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
+    padding: 8px 50px;
+    -webkit-box-shadow: 0px 0px 3px #000;
+    box-shadow: 0px 0px 3px #000;
+    border-radius: 0px 0px 3px 3px;
+    height: initial;
+    position: absolute;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
+  }
+  .brand-ceiba img {
+    max-width: 70px;
+  }
+  .brand-ceiba figure {
+    display: block;
+  }
+  .brand-ceiba figure figcaption {
+    display: block;
+  }
+  .brand-ceiba figure:before {
+    content: '';
+    display: block;
+  }
+  .brand-ceiba:after {
+    content: '';
+    height: 1px;
+    position: absolute;
+    top: 73px;
+    left: 10px;
+    border-right: 60px solid #fff;
+  }
+  .brand-ceiba:before {
+    content: '';
+    height: 1px;
+    position: absolute;
+    top: 73px;
+    right: 10px;
+    border-right: 60px solid #fff;
+  }
 }
 .mapplic-clickable:not(g),
 g.mapplic-clickable > * {
@@ -7295,7 +7353,7 @@ g.mapplic-active > * {
   color: #bbb;
 }
 #map-section {
-  max-width: 100%;
+  max-width: 1170px;
 }
 .window-mockup {
   background-color: #f0f0f0;
@@ -7336,6 +7394,26 @@ g.mapplic-active > * {
 .map-container > #mapplic {
   background-color: #f8f8f8;
 }
+.mapplic-sidebar {
+  width: 20%;
+}
+.mapplic-container {
+  width: 80%;
+}
+.mapplic-element {
+  height: 80vh;
+}
+@media only screen and (max-width: 768px) {
+  .mapplic-sidebar {
+    width: 100%;
+  }
+  .mapplic-container {
+    width: 100%;
+  }
+  .mapplic-element {
+    height: auto !important;
+  }
+}
 .icon {
   background-repeat: no-repeat;
   background-position: center 10px;
@@ -7371,7 +7449,7 @@ g.mapplic-active > * {
     display: none;
   }
 }
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 769px) {
   .modal {
     text-align: center;
     padding: 0 !important;
@@ -7460,7 +7538,7 @@ g.mapplic-active > * {
   text-align: center;
   vertical-align: middle;
 }
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 769px) {
   .wrap-login {
     height: 100%;
   }
