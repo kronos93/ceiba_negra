@@ -7,22 +7,29 @@ header
 .navbar-default
 	border-bottom:5px solid $grayColor
 .brand-ceiba
-	background:#B88D2C
-	absolute:left 50%
+	display:inline-block
+	absolute:left 5px
 	top:-1px
-	transform:translateX(-50%)
-	padding:5px 50px
-	box-shadow:0px 0px 3px #000
-	border-radius: 0px 0px 3px 3px
+	height:61px
 	img
-		display:block
+		display:inline-block
+		vertical-align:middle
 		margin:0 auto
 		padding:5px
 		box-sizing:border-box
-		max-width:70px
+		max-width:50px
+		// max-width:70px
 	figure
+		height:100%
+		vertical-align:middle
 		position:relative
+		&:before
+			content:''
+			display:inline-block
+			height:100%
+			vertical-align:middle
 		figcaption
+			display:none
 			text-transform:uppercase
 			font-style:none
 			font-size:20px
@@ -46,4 +53,36 @@ header
 		top:73px
 		right:10px
 		border-right:60px solid #fff
-			
+	+from-width(4,anti-overlap:false)
+		display:block
+		background:#B88D2C
+		transform:translateX(-50%)
+		padding:8px 50px
+		box-shadow:0px 0px 3px #000
+		border-radius: 0px 0px 3px 3px
+		height:initial
+		absolute:left 50%
+		transform:translateX(-50%)
+		img
+			max-width:70px
+		figure
+			display:block
+			figcaption
+				display:block
+			&:before
+				content:''
+				display:block
+		&:after
+				content:''
+				height:1px
+				position:absolute
+				top:73px
+				left:10px
+				border-right:60px solid #fff
+		&:before
+			content:''
+			height:1px
+			position:absolute
+			top:73px
+			right:10px
+			border-right:60px solid #fff

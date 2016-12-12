@@ -14,7 +14,9 @@ class Manzana_model extends CI_Model {
             return $query->result_array();
         }
     }
-
+    public function insert($insert){
+        $this->db->insert($this->tabla, $insert);
+    }
     public function mz_mapplic(){
         $query = $this->db->query("SELECT concat('mz',id_manzana) AS id, concat('Manzana número ',manzana) AS title, IF(estado !=0,'#3fbb9b','#ccc') AS color  FROM manzanas");
         return $query->result();

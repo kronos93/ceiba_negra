@@ -61,7 +61,18 @@ class Ajax extends CI_Controller {
         }
         return $response;
     }
-
+    //Manzanas
+    public function add_manzana(){
+        if($this->input->post('manzana') && $this->input->post('calle') && $this->input->post('disponibilidad')){
+            $insert = [
+                'manzana' => $this->input->post('manzana'),
+                'calle'   => $this->input->post('calle'),
+                'disponibilidad' => $this->input->post('disponibilidad')
+            ];
+            $this->Manzana_model->insert($insert);
+        }
+    }
+    //Herramienta para Max
     public function guardar_coordenadas(){
         $manzana = $this->input->post("manzana");
         $lote = $this->input->post("lote");

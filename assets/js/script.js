@@ -60,8 +60,8 @@ $(document).ready(function () {
         fillcolor: '',
         fullscreen: false, 		// Enable fullscreen
         developer: true,
-        zoom: false
-        // maxscale: 3, 			// Setting maxscale to 3
+        zoom: false,
+        maxscale: 0.65, 			// Setting maxscale to 3
     });
     //Herramienta para capturar las coordenadas del mapa
     mapplic.on('locationopened', function (e, location) {
@@ -79,6 +79,19 @@ $(document).ready(function () {
             type: 'post',
             asyn: true,
             data: data
+        });
+    });
+
+    //Formulario
+    $('#frm-add-manzanas').on('submit', function (e) {
+        e.preventDefault();
+        var data = $(this).serializeArray();
+        var data1 = $(this).serialize();
+    
+        $.ajax({
+            url: base_url + "ajax/add_manzana",
+            type: "post",
+            data : data 
         });
     });
 });

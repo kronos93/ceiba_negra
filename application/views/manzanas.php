@@ -21,7 +21,7 @@
 <div class="modal fade" id="add-manzana" tabindex="-1" role="dialog" aria-labelledby="modalAddManzana" aria-hidden="true">
  	<div class="modal-dialog" role="document">
 	    <div class="modal-content">
-			<form action="" method="post">
+			<form action="" method="post" id="frm-add-manzanas">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					<h4 class="model-title">Añadir manzana</h4>	

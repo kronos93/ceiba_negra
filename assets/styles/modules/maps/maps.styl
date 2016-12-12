@@ -1,5 +1,6 @@
 #map-section
-    max-width 100%
+    // max-width 100%
+    max-width:1170px
 .window-mockup
     background-color #f0f0f0
     background-image url('../img/map/icons/window.png')
@@ -31,6 +32,20 @@
     margin-bottom 60px
     & > #mapplic
         background-color #f8f8f8
+// Dimensiones del mapa
+.mapplic-sidebar
+    width:20%
+.mapplic-container
+    width:80%
+.mapplic-element
+    height:80vh
++to-width(3)
+    .mapplic-sidebar
+        width:100%
+    .mapplic-container
+        width:100%
+    .mapplic-element
+        height:auto!important
 .icon
     background-repeat no-repeat
     background-position center 10px

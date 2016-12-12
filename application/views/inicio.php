@@ -2,13 +2,7 @@
     <section id="mapa">
         <div class="container">
             <div class="row">
-                <div class="col-xs-12 col-lg-3 pull-right">
-                    <div class="well">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur veritatis dolores fugiat cum vero repellat, nobis similique quo aliquid quia ducimus quod labore facilis, molestiae! Laudantium fugiat exercitationem excepturi eaque?</p>
-                    </div>
-                </div>
-                <div class="col-xs-12 col-lg-9 ">
-                    <!-- <h5 class="title">Hola sooy un titulo</h5> -->
+                <div class="col-xs-12 col-lg-12 ">
                     <div id="wrap">
                         <!-- Site content -->
                         <div id="content">
