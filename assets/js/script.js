@@ -52,6 +52,22 @@ $(document).ready(function() {
     });*/
 
 
-
+    
     $('tbody .moneda').mask('$ 000.000.000.000.000,00');
+
+    $(document).ready(function() {
+        var mapplic = $('#mapplic').mapplic({
+            source: base_url + 'ajax/get_mapa',	// Using mall.json file as map data
+            sidebar: true, 			// Enable sidebar
+            minimap: false, 			// Enable minimap
+            markers: false, 		// Disable markers
+            mapfill:true,
+            fillcolor:'',
+            fullscreen: false, 		// Enable fullscreen
+            developer:true,
+            zoom:false
+            // maxscale: 3, 			// Setting maxscale to 3
+        });
+    });
+		
 });

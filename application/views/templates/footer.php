@@ -3,6 +3,12 @@
 	<script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 	<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.1.0/js/dataTables.responsive.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.3/jquery.mask.min.js"></script>
+
+	<script type="text/javascript" src="<?= base_url() ?>assets/js/mapplic/dependencies/hammer.min.js"></script>
+	<script type="text/javascript" src="<?= base_url() ?>assets/js/mapplic/dependencies/jquery.mousewheel.js"></script>
+	<script type="text/javascript" src="<?= base_url() ?>assets/js/mapplic/dependencies/script.js"></script>
+	<script type="text/javascript" src="<?= base_url() ?>assets/js/mapplic/mapplic.js"></script>
+
 	<script type="text/javascript" src="<?= base_url() ?>assets/js/script.js"></script>
     </body>
 </html>
