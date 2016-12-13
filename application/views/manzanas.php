@@ -33,7 +33,7 @@
 								<label class="required" for="manzana">No. de manzana:</label>
 								<div class="input-group">
 									<div class="input-group-addon">Mz.</div>
-									<input type="number" class="form-control" id="manzana" name="manzana" placeholder="100" step="1" min="1" max="200" required />
+									<input type="number" class="form-control" id="manzana" name="manzana" placeholder="100" step="1" min="1" max="1000" required />
 								</div>
 								</div>
 							<div class="form-group col-xs-12 col-sm-6">
@@ -52,7 +52,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-					<button type="submit" class="btn btn-success">Guardar cambios</button>
+					<input type="submit" class="btn btn-success" value="Guardar cambios"/>
 				</div>
 			</form>		   	
 	    </div>
