@@ -63,14 +63,24 @@ class Ajax extends CI_Controller {
     }
     //Manzanas
     public function add_manzana(){
-        if($this->input->post('manzana') && $this->input->post('calle')){ //&& $this->input->post('disponibilidad')
-            $insert = [
-                'manzana' => $this->input->post('manzana'),
-                'calle'   => $this->input->post('calle'),
-                'disponibilidad' => $this->input->post('disponibilidad')
-            ];
-            $this->Manzana_model->insert($insert);
-        }
+            header("Content-type: application/json; charset=utf-8");   
+            $this->form_validation->set_error_delimiters('', '');
+            $this->form_validation->set_rules('manzana', 'Manzana', 'trim|required|is_unique[manzanas.manzana]');
+            $this->form_validation->set_rules('calle', 'Calle', 'trim|required');
+            $this->form_validation->set_rules('disponibilidad', 'Disponibilidad de la manzana', 'trim|required');
+            if ($this->form_validation->run()) {
+                $insert = [
+                    'manzana' => $this->input->post('manzana'),
+                    'calle'   => $this->input->post('calle'),
+                    'disponibilidad' => $this->input->post('disponibilidad')
+                ];
+                $add_manzana = $this->Manzana_model->insert($insert);
+                $response = ['id_manzana' => $add_manzana];
+                echo json_encode($response);
+            } else {
+               echo validation_errors();
+            }
+    
     }
     //Herramienta para Max
     public function guardar_coordenadas(){

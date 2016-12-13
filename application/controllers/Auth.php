@@ -427,6 +427,7 @@ class Auth extends CI_Controller {
         }
 
         $tables = $this->config->item('tables','ion_auth');
+
         $identity_column = $this->config->item('identity','ion_auth');
         $this->data['identity_column'] = $identity_column;
 
@@ -435,11 +436,13 @@ class Auth extends CI_Controller {
         $this->form_validation->set_rules('last_name', $this->lang->line('create_user_validation_lname_label'), 'required');
         if($identity_column!=='email')
         {
+
             $this->form_validation->set_rules('identity',$this->lang->line('create_user_validation_identity_label'),'required|is_unique['.$tables['users'].'.'.$identity_column.']');
             $this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'required|valid_email');
         }
         else
         {
+        	var_dump($tables['users'] );
             $this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'required|valid_email|is_unique[' . $tables['users'] . '.email]');
         }
         $this->form_validation->set_rules('phone', $this->lang->line('create_user_validation_phone_label'), 'trim');

@@ -1,11 +1,28 @@
 //Datos globales
 var base_url = 'http://' + window.location.hostname + '/ceiba_negra/';
 var lang_esp_datatables = "https://cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json";
+//Funcion FormToObject
+$.fn.serializeObject = function() {
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function() {
+        if (o[this.name] !== undefined) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};
 //Al cargar la página
 $(document).ready(function () {
     //Datatable de manzanas
     var manzanas_table = $('#manzanas').DataTable({
         "ajax": base_url + 'ajax/get_manzanas',
+        "pagingType": "full_numbers",
         "language": {
             "url": lang_esp_datatables
         },
@@ -22,8 +39,15 @@ $(document).ready(function () {
                 "targets": -1,
                 "data": null,
                 "defaultContent": '<button class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>'
+            },
+            { 
+                "sortable": false, 
+                "targets": [ -1,-3 ] 
+            },
+            {   "searchable": false, 
+                "targets": [ -2 ] 
             }
-        ]
+        ]                
     });
     //Obtener id del datatable de manzanas
     $('#manzanas tbody').on('click', 'button', function () {
@@ -86,14 +110,9 @@ $(document).ready(function () {
     //Formulario de manzana
     $('#frm-add-manzanas').on('submit', function (e) {
         e.preventDefault();
-        console.log($(this).serialize());
-        //console.log(JSON.parse($(this).serialize()));
-        console.log(JSON.stringify($(this).serialize()));
-        console.log($(this).serializeArray());
-        //console.log(JSON.parse($(this).serializeArray()));
-        console.log(JSON.stringify($(this).serializeArray()));
-        var data = $(this).serializeArray();
-        var that = this;
+        var data = $(this).serializeArray(); //Serializar formulario
+        var that = this; //Almacenar el formulario donde sucedio el evento submit
+        //Llamada ajax
         $.ajax({
             url: base_url + "ajax/add_manzana",
             type: "post",
@@ -102,15 +121,21 @@ $(document).ready(function () {
                 //Hacer que el boton tenga efeto de load
             }
         })
-        .done(function() {
+        .done(function(response) {
             that.reset();
+            console.log(response);
             alert("Datos insertados correctamente");
             $('#add-manzana').modal('hide');
             manzanas_table.ajax.reload(null, false ); // user paging is not reset on reload
-            manzanas_table.column(1).search(data[0].value).draw();
+            manzanas_table.order( [ 0, 'desc' ] ).draw();
         })
-        .fail(function(data) {
-            alert('Error ' + data.status + " : " + data.statusText + " Verificar los datos ingresados");
+        .fail(function(response) {
+            console.log(response)
+            var mensaje  = "Mensaje de error: " + response.responseText;
+            mensaje     += "\nVerificar los datos ingresados con los registros existentes.";
+            mensaje     += "\nCódigo de error: " + response.status + "."; 
+            mensaje     += "\nMensaje de código error: " + response.statusText + ".";
+            alert(mensaje);
         });
     });
 });
