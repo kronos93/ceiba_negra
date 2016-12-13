@@ -133,6 +133,7 @@ $(document).ready(function () {
         })
         .fail(function(response) {
             console.log(response)
+            $("input[type='submit']").attr("disabled", false).next().css('visibility','hidden');
             var mensaje  = "Mensaje de error: " + response.responseText;
             mensaje     += "\nVerificar los datos ingresados con los registros existentes.";
             mensaje     += "\nCódigo de error: " + response.status + "."; 
