@@ -83,30 +83,34 @@ $(document).ready(function () {
     });
 
     //Formularios
+    //Formulario de manzana
     $('#frm-add-manzanas').on('submit', function (e) {
         e.preventDefault();
+        console.log($(this).serialize());
+        //console.log(JSON.parse($(this).serialize()));
+        console.log(JSON.stringify($(this).serialize()));
+        console.log($(this).serializeArray());
+        //console.log(JSON.parse($(this).serializeArray()));
+        console.log(JSON.stringify($(this).serializeArray()));
         var data = $(this).serializeArray();
-        var data1 = $(this).serialize();
         var that = this;
         $.ajax({
             url: base_url + "ajax/add_manzana",
             type: "post",
             data : data,
             beforeSend: function( xhr ) {
-                
+                //Hacer que el boton tenga efeto de load
             }
         })
         .done(function() {
             that.reset();
+            alert("Datos insertados correctamente");
+            $('#add-manzana').modal('hide');
+            manzanas_table.ajax.reload(null, false ); // user paging is not reset on reload
+            manzanas_table.column(1).search(data[0].value).draw();
         })
-        .fail(function() {
-            alert( "Se ha encontrado un error al insertar los datos." );
+        .fail(function(data) {
+            alert('Error ' + data.status + " : " + data.statusText + " Verificar los datos ingresados");
         });
     });
-    // swal({
-    //       title: "Error!",
-    //       text: "Here's my error message!",
-    //       type: "error",
-    //       confirmButtonText: "Cool"
-    //     });
 });

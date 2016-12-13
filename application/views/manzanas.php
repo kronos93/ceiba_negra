@@ -52,7 +52,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-					<input type="submit" class="btn btn-success" value="Guardar cambios"/>
+					<input type="submit" class="btn btn-success confirm" value="Guardar cambios"/>
 				</div>
 			</form>		   	
 	    </div>
