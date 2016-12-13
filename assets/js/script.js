@@ -82,16 +82,25 @@ $(document).ready(function () {
         });
     });
 
-    //Formulario
+    //Formularios
     $('#frm-add-manzanas').on('submit', function (e) {
         e.preventDefault();
         var data = $(this).serializeArray();
         var data1 = $(this).serialize();
-    
+        var that = this;
         $.ajax({
             url: base_url + "ajax/add_manzana",
             type: "post",
-            data : data 
+            data : data,
+            beforeSend: function( xhr ) {
+                
+            }
+        })
+        .done(function() {
+            that.reset();
+        })
+        .fail(function() {
+            alert( "Se ha encontrado un error al insertar los datos." );
         });
     });
     // swal({
