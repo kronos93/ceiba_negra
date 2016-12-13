@@ -94,4 +94,10 @@ $(document).ready(function () {
             data : data 
         });
     });
+    // swal({
+    //       title: "Error!",
+    //       text: "Here's my error message!",
+    //       type: "error",
+    //       confirmButtonText: "Cool"
+    //     });
 });
