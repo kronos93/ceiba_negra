@@ -1,8 +1,7 @@
 #map-section
-    // max-width 100%
     max-width:1170px
 .window-mockup
-    background-color #f0f0f0
+    background-color #d6d6d6
     background-image url('../img/map/icons/window.png')
     background-repeat no-repeat
     background-position 14px center
@@ -12,10 +11,19 @@
     &.brown
         background-color #2f2e2b
 .window-bar
+    position relative
     background-color #f8f8f8
     border-radius 3px
     margin 10px 14px 10px 80px
     height 22px
+    &:after
+        line-height 22px
+        content 'Bienvenidos a Huertos ' attr(data-terreno)
+        color:rgba(#000,30%)
+        padding-left 20px
+        font-size 16px
+        display inline-block
+        vertical-align middle
 .editor-window
     display none
     margin 0 auto
@@ -37,8 +45,9 @@
     width:20%
 .mapplic-container
     width:80%
+    background rgba(183, 183, 183, 0.31)
 .mapplic-element
-    height:80vh
+    height:75vh!important
 +to-width(3)
     .mapplic-sidebar
         width:100%

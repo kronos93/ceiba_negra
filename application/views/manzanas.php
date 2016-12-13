@@ -52,7 +52,14 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-					<input type="submit" class="btn btn-success confirm" value="Guardar cambios"/>
+					<div class="ajax-button">
+						<input type="submit" class="btn btn-success confirm" value="Guardar cambios"/>
+						<div class="loader-gif">
+							<div class="loader-gif-item"></div>
+							<div class="loader-gif-item"></div>
+							<div class="loader-gif-item"></div>
+						</div>
+					</div>
 				</div>
 			</form>		   	
 	    </div>

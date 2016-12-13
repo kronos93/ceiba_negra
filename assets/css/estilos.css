@@ -7012,6 +7012,96 @@ button.close {
     display: none !important;
   }
 }
+.ajax-button {
+  display: inline-block;
+  position: relative;
+}
+.ajax-button .loader-gif {
+  display: block;
+  font-size: 0;
+  color: #fff;
+  width: 60px;
+  height: 20px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  visibility: hidden;
+}
+.ajax-button .loader-gif-item {
+  float: left;
+  width: 10px;
+  height: 10px;
+  margin: 4px;
+  border-radius: 100%;
+  background: #fff;
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+  -webkit-animation: ball-fall 1s ease-in-out infinite;
+  -moz-animation: ball-fall 1s ease-in-out infinite;
+  -o-animation: ball-fall 1s ease-in-out infinite;
+  -ms-animation: ball-fall 1s ease-in-out infinite;
+  animation: ball-fall 1s ease-in-out infinite;
+}
+.ajax-button .loader-gif-item:nth-child(1) {
+  -webkit-animation-delay: -200ms;
+  -moz-animation-delay: -200ms;
+  -o-animation-delay: -200ms;
+  -ms-animation-delay: -200ms;
+  animation-delay: -200ms;
+}
+.ajax-button .loader-gif-item:nth-child(2) {
+  -webkit-animation-delay: -100ms;
+  -moz-animation-delay: -100ms;
+  -o-animation-delay: -100ms;
+  -ms-animation-delay: -100ms;
+  animation-delay: -100ms;
+}
+.ajax-button .loader-gif-item:nth-child(3) {
+  -webkit-animation-delay: 0ms;
+  -moz-animation-delay: 0ms;
+  -o-animation-delay: 0ms;
+  -ms-animation-delay: 0ms;
+  animation-delay: 0ms;
+}
+.ajax-button input[disabled] {
+  color: transparent;
+}
+opacity 0,
+transform translateY(-145%) {
+  opacity: 0.5;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: alpha(opacity=50);
+  -webkit-transform: translateY(0);
+  -moz-transform: translateY(0);
+  -o-transform: translateY(0);
+  -ms-transform: translateY(0);
+  transform: translateY(0);
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+  -webkit-transform: translateY(0);
+  -moz-transform: translateY(0);
+  -o-transform: translateY(0);
+  -ms-transform: translateY(0);
+  transform: translateY(0);
+  opacity: 0.5;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: alpha(opacity=50);
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+  -webkit-transform: translateY(145%);
+  -moz-transform: translateY(145%);
+  -o-transform: translateY(145%);
+  -ms-transform: translateY(145%);
+  transform: translateY(145%);
+}
 .slide {
   position: relative;
   width: 40px;
@@ -7317,6 +7407,10 @@ g.mapplic-active > * {
 #landmarks-level1 path.mapplic-active {
   fill: #f9684b;
 }
+[id^=landmarks] polygon:not(.mapplic-clickable),
+[id^=landmarks] path:not(.mapplic-clickable) {
+  fill: #d6d6d6;
+}
 .mapplic-dark .mapplic-tooltip {
   background-color: #333;
 }
@@ -7340,7 +7434,7 @@ g.mapplic-active > * {
   max-width: 1170px;
 }
 .window-mockup {
-  background-color: #f0f0f0;
+  background-color: #d6d6d6;
   background-image: url("../img/map/icons/window.png");
   background-repeat: no-repeat;
   background-position: 14px center;
@@ -7352,10 +7446,20 @@ g.mapplic-active > * {
   background-color: #2f2e2b;
 }
 .window-bar {
+  position: relative;
   background-color: #f8f8f8;
   border-radius: 3px;
   margin: 10px 14px 10px 80px;
   height: 22px;
+}
+.window-bar:after {
+  line-height: 22px;
+  content: 'Bienvenidos a Huertos ' attr(data-terreno);
+  color: rgba(0,0,0,0.3);
+  padding-left: 20px;
+  font-size: 16px;
+  display: inline-block;
+  vertical-align: middle;
 }
 .editor-window {
   display: none;
@@ -7383,9 +7487,10 @@ g.mapplic-active > * {
 }
 .mapplic-container {
   width: 80%;
+  background: rgba(183,183,183,0.31);
 }
 .mapplic-element {
-  height: 80vh;
+  height: 75vh !important;
 }
 @media only screen and (max-width: 768px) {
   .mapplic-sidebar {

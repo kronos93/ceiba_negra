@@ -118,13 +118,15 @@ $(document).ready(function () {
             type: "post",
             data : data,
             beforeSend: function( xhr ) {
+                $("input[type='submit']").attr("disabled", true).next().css('visibility','visible');
                 //Hacer que el boton tenga efeto de load
             }
         })
         .done(function(response) {
             that.reset();
             console.log(response);
-            alert("Datos insertados correctamente");
+            $("input[type='submit']").attr("disabled", false).next().css('visibility','hidden');
+            // alert("Datos insertados correctamente");
             $('#add-manzana').modal('hide');
             manzanas_table.ajax.reload(null, false ); // user paging is not reset on reload
             manzanas_table.order( [ 0, 'desc' ] ).draw();
