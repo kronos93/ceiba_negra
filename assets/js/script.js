@@ -125,7 +125,7 @@ $(document).ready(function () {
             that.reset();
             console.log(response);
             alert("Datos insertados correctamente");
-            $('#add-manzana').modal('hide');
+            //$('#add-manzana').modal('hide');
             manzanas_table.ajax.reload(null, false ); // user paging is not reset on reload
             manzanas_table.order( [ 0, 'desc' ] ).draw();
         })
