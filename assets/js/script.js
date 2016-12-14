@@ -2,10 +2,10 @@
 var base_url = 'http://' + window.location.hostname + '/ceiba_negra/';
 var lang_esp_datatables = "https://cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json";
 //Funcion FormToObject
-$.fn.serializeObject = function() {
+$.fn.serializeObject = function () {
     var o = {};
     var a = this.serializeArray();
-    $.each(a, function() {
+    $.each(a, function () {
         if (o[this.name] !== undefined) {
             if (!o[this.name].push) {
                 o[this.name] = [o[this.name]];
@@ -17,16 +17,27 @@ $.fn.serializeObject = function() {
     });
     return o;
 };
+
 //Al cargar la página
 $(document).ready(function () {
-    //Datatable de manzanas
-    var manzanas_table = $('#manzanas').DataTable({
-        "ajax": base_url + 'ajax/get_manzanas',
+    //Preconfiguración de los datatable
+    $.extend( true, $.fn.dataTable.defaults, {
         "pagingType": "full_numbers",
         "language": {
             "url": lang_esp_datatables
         },
-        columnDefs: [
+    } );
+    //Estructura de Datatable para las Manzanas
+    var manzanas_table = $('#manzanas').DataTable({
+        "ajax": base_url + 'ajax/get_manzanas', //URL de datos
+        "columns": [    //Atributos para la tabla
+            { "data": "id_manzana" },
+            { "data": "manzana" },
+            { "data": "calle" },
+            { "data": "disponibilidad" },
+            { "data": "" } //Espacio extra para el boton o botones de opciones
+        ],
+        columnDefs: [   //Configuracion de la tabla de manzanas
             {
                 "targets": 0,
                 "visible": false
@@ -38,22 +49,26 @@ $(document).ready(function () {
             {
                 "targets": -1,
                 "data": null,
-                "defaultContent": '<button class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>'
+                "defaultContent": '<button data-toggle="modal" data-target="#edit-manzana" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>'
             },
-            { 
-                "sortable": false, 
-                "targets": [ -1,-3 ] 
+            {
+                "sortable": false,
+                "targets": [-1, -3]
             },
-            {   "searchable": false, 
-                "targets": [ -2 ] 
+            {
+                "searchable": false,
+                "targets": [-2]
             }
-        ]                
+        ]
     });
     //Obtener id del datatable de manzanas
     $('#manzanas tbody').on('click', 'button', function () {
         var manzana = manzanas_table.row($(this).parents('tr')).data();
-        var id_manzana = manzana[0];
-        console.log(id_manzana);
+        console.log(manzana);
+        $("#frm-edit-manzanas #manzana").val(manzana.manzana);
+        $("#frm-edit-manzanas #calle").val(manzana.calle);
+        $("#frm-edit-manzanas #calle").val(manzana.calle);
+        $("#frm-edit-manzanas #disponibilidad").val(manzana.disponibilidad);
     });
     //Datatable de Lotes
     $('#lotes').DataTable({
@@ -116,29 +131,29 @@ $(document).ready(function () {
         $.ajax({
             url: base_url + "ajax/add_manzana",
             type: "post",
-            data : data,
-            beforeSend: function( xhr ) {
-                $("input[type='submit']").attr("disabled", true).next().css('visibility','visible');
+            data: data,
+            beforeSend: function (xhr) {
+                $("input[type='submit']").attr("disabled", true).next().css('visibility', 'visible');
                 //Hacer que el boton tenga efeto de load
             }
         })
-        .done(function(response) {
-            that.reset();
-            console.log(response);
-            $("input[type='submit']").attr("disabled", false).next().css('visibility','hidden');
-            // alert("Datos insertados correctamente");
-            // $('#add-manzana').modal('hide');
-            manzanas_table.ajax.reload(null, false ); // user paging is not reset on reload
-            manzanas_table.order( [ 0, 'desc' ] ).draw();
-        })
-        .fail(function(response) {
-            console.log(response)
-            $("input[type='submit']").attr("disabled", false).next().css('visibility','hidden');
-            var mensaje  = "Mensaje de error: " + response.responseText;
-            mensaje     += "\nVerificar los datos ingresados con los registros existentes.";
-            mensaje     += "\nCódigo de error: " + response.status + "."; 
-            mensaje     += "\nMensaje de código error: " + response.statusText + ".";
-            alert(mensaje);
-        });
+            .done(function (response) {
+                that.reset();
+                console.log(response);
+                $("input[type='submit']").attr("disabled", false).next().css('visibility', 'hidden');
+                // alert("Datos insertados correctamente");
+                // $('#add-manzana').modal('hide');
+                manzanas_table.ajax.reload(null, false); // user paging is not reset on reload
+                manzanas_table.order([0, 'desc']).draw();
+            })
+            .fail(function (response) {
+                console.log(response)
+                $("input[type='submit']").attr("disabled", false).next().css('visibility', 'hidden');
+                var mensaje = "Mensaje de error: " + response.responseText;
+                mensaje += "\nVerificar los datos ingresados con los registros existentes.";
+                mensaje += "\nCódigo de error: " + response.status + ".";
+                mensaje += "\nMensaje de código error: " + response.statusText + ".";
+                alert(mensaje);
+            });
     });
 });

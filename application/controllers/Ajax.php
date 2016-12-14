@@ -34,16 +34,11 @@ class Ajax extends CI_Controller {
 
     public function get_manzanas(){
         header("Content-type: application/json; charset=utf-8");
-        $manzanas = $this->Manzana_model->getAll('array');
+        $response = new stdClass();
 
-        foreach($manzanas as $key => $manzana){
-            if($manzanas[$key]['disponibilidad'] === 0){
-                $manzanas[$key]['disponibilidad'] = "Invendible";
-            }else{
-                $manzanas[$key]['disponibilidad'] = "Vendible";   
-            }
-        }
-        $response = $this->format_datatable($manzanas);
+        $manzanas = $this->Manzana_model->getAll('array');
+        $response->data = $manzanas;
+        //$response = $this->format_datatable($manzanas);
         echo json_encode($response);
     }
     public function get_lotes_pmz(){
