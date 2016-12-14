@@ -48,7 +48,33 @@
 								</select>
 							</div>				  			
 						</div>
-					</div>	
+					</div>
+					<div class="container-icons error" style="display:none;">
+						<div class="sa-icon sa-error animate">
+				      		<span class="sa-x-mark">
+					        	<span class="sa-line sa-left"></span>
+					        	<span class="sa-line sa-right"></span>
+				      		</span>
+					    </div>
+					    <h4 class="message">Hubo algun error</h4>
+					</div>
+					<div class="container-icons success" style="display: none;">
+						<div class="sa-icon sa-success animate" >
+					      	<span class="sa-line sa-tip animateSuccessTip"></span>
+					      	<span class="sa-line sa-long animateSuccessLong"></span>
+					      	<div class="sa-placeholder"></div>
+					      	<div class="sa-fix"></div>
+					    </div>
+					    <h4 class="message">Algo salio bien :v</h4>
+					</div>
+					<div class="container-icons warning" style="display: none;">
+						<div class="sa-icon sa-warning">
+					      <span class="sa-body"></span>
+					      <span class="sa-dot"></span>
+					    </div>
+					    <h4 class="message">Un mensaje :v</h4>
+					</div>
+					
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>

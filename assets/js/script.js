@@ -125,6 +125,8 @@ $(document).ready(function () {
         .done(function(response) {
             that.reset();
             console.log(response);
+            $('.modal-body').find('.container-icons.success').show(0).delay(1000).hide(0);
+            // $('.modal-body').removeClass('after');
             $("input[type='submit']").attr("disabled", false).next().css('visibility','hidden');
             // alert("Datos insertados correctamente");
             // $('#add-manzana').modal('hide');
@@ -133,12 +135,13 @@ $(document).ready(function () {
         })
         .fail(function(response) {
             console.log(response)
+            $('.modal-body').find('.container-icons.error').show(0).delay(1000).hide(0);
             $("input[type='submit']").attr("disabled", false).next().css('visibility','hidden');
             var mensaje  = "Mensaje de error: " + response.responseText;
             mensaje     += "\nVerificar los datos ingresados con los registros existentes.";
             mensaje     += "\nCódigo de error: " + response.status + "."; 
             mensaje     += "\nMensaje de código error: " + response.statusText + ".";
-            alert(mensaje);
+            // alert(mensaje);
         });
     });
 });
