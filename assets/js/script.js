@@ -101,17 +101,18 @@ $(document).ready(function () {
         .done(function(response) {
             that.reset();
             console.log(response);
-            $('.modal-body').find('.container-icons.success').show(0).delay(1000).hide(0);
+            $('.modal-body').find('.container-icons.success').fadeIn(1000).delay(1000).fadeOut(1000);
             // $('.modal-body').removeClass('after');
             $("input[type='submit']").attr("disabled", false).next().css('visibility','hidden');
             // alert("Datos insertados correctamente");
             // $('#add-manzana').modal('hide');
-            manzanas_table.ajax.reload(null, false ); // user paging is not reset on reload //Cambiar por add row xD
+            manzanas_table.ajax.reload(null, false ); // user paging is not reset on reload
             manzanas_table.order( [ 0, 'desc' ] ).draw();
         })
         .fail(function(response) {
             console.log(response)
-            $('.modal-body').find('.container-icons.error').show(0).delay(1000).hide(0);
+            $('.modal-body').find('.container-icons.error').fadeIn(1000).delay(1000).fadeOut(1000);
+            // $('.modal-body').find('.container-icons.error').show(0).delay(1000).hide(0);
             $("input[type='submit']").attr("disabled", false).next().css('visibility','hidden');
             var mensaje  = "Mensaje de error: " + response.responseText;
             mensaje     += "\nVerificar los datos ingresados con los registros existentes.";
