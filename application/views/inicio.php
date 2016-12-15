@@ -24,7 +24,7 @@
                                 </div>
                                 <div class="map-container">
                                     <div class="window-mockup">
-                                        <div class="window-bar"></div>
+                                        <div class="window-bar" data-terreno="La Ceiba"></div>
                                     </div>
                                     <!-- Map -->
                                     <div id="mapplic"></div>
