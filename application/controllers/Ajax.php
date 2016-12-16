@@ -7,7 +7,7 @@ class Ajax extends CI_Controller {
         $this->load->model('Lote_model');
         $this->load->model('Manzana_model');
     }
-
+    //DATOS PARA EL MAPA
     public function get_mapa() {
         header("Content-type: application/json; charset=utf-8");
         $mz_mapplic = $this->Manzana_model->mz_mapplic();
@@ -31,16 +31,15 @@ class Ajax extends CI_Controller {
         }      
         echo json_encode($respuesta);
 	}
-
-    public function get_manzanas(){
-        header("Content-type: application/json; charset=utf-8");
-        $response = new stdClass();
-
-        $manzanas = $this->Manzana_model->getAll('array');
-        $response->data = $manzanas;
-        //$response = $this->format_datatable($manzanas);
-        echo json_encode($response);
+    //Herramienta para Max
+    public function guardar_coordenadas(){
+        $manzana = $this->input->post("manzana");
+        $lote = $this->input->post("lote");
+        $where = array('id_manzana' => $manzana, 'lote' => $lote);
+        $update = array('x' => $this->input->post("x"), 'y' => $this->input->post("y"));
+        $this->Lote_model->set_coordenadas($where,$update);
     }
+    //lOTES
     public function get_lotes_pmz(){
         header("Content-type: application/json; charset=utf-8");
         $lotes = $this->Lote_model->lotesPM();
@@ -48,15 +47,8 @@ class Ajax extends CI_Controller {
         echo json_encode($response);
     }
 
-    public function format_datatable($data){
-        $response = array("data" => array());
-        foreach($data as $row){
-            $values = array_values($row);
-            array_push($response['data'],$values);
-        }
-        return $response;
-    }
-    //Manzanas
+    
+    //MANZANAS
     public function add_manzana(){
             header("Content-type: application/json; charset=utf-8");   
             $this->form_validation->set_error_delimiters('', '');
@@ -77,12 +69,20 @@ class Ajax extends CI_Controller {
             }
     
     }
-    //Herramienta para Max
-    public function guardar_coordenadas(){
-        $manzana = $this->input->post("manzana");
-        $lote = $this->input->post("lote");
-        $where = array('id_manzana' => $manzana, 'lote' => $lote);
-        $update = array('x' => $this->input->post("x"), 'y' => $this->input->post("y"));
-        $this->Lote_model->set_coordenadas($where,$update);
+    public function get_manzanas(){
+        header("Content-type: application/json; charset=utf-8");
+        $response = new stdClass();
+        $manzanas = $this->Manzana_model->getAll('array');
+        $response->data = $manzanas;
+        echo json_encode($response);
+    }
+    //Utileria inutil xD.... Despreciar usando stdClass
+    public function format_datatable($data){
+        $response = array("data" => array());
+        foreach($data as $row){
+            $values = array_values($row);
+            array_push($response['data'],$values);
+        }
+        return $response;
     }
 }

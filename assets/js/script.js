@@ -124,11 +124,25 @@ $(document).ready(function () {
     //Formulario para editar manzanas
     $("#frm-edit-manzanas").on('submit',function(e){
         e.preventDefault();
-        manzana.manzana = 8907;     
-        manzanas_table
-            .row( fila )
-            .data( manzana )
-            .draw();
+        var data = $(this).serializeArray(); //Serializar formulario
+        var that = this; //Almacenar el formulario donde sucedio el evento submit
+        //Llamada ajax
+        $.ajax({
+            url: base_url + "ajax/update_manzana",
+            type: "post",
+            data: data,
+            beforeSend: function (xhr) {
+               
+            }
+        })
+        .done(function(response) {
+            
+        })
+        .fail(function(response) {
+            
+            
+        });
+
     }); 
     //LOTES
     //Datatable de Lotes
