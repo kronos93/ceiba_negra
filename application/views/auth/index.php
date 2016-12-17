@@ -14,7 +14,7 @@
 			<div class="col-xs-12">
 				<!-- <p><?php echo lang('index_subheading');?></p> -->
 				<div id="infoMessage"><?php echo $message;?></div>
-				<table id="tableUsers" class="table table-striped responsive">
+				<table id="tableUsers" class="table table-striped table-bordered responsive">
 					<thead>
 						<tr>
 							<th><?php echo lang('index_fname_th');?></th>
