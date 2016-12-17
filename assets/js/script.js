@@ -171,15 +171,18 @@ $(document).ready(function () {
     //Desplegar mapa
     var mapplic = $('#mapplic').mapplic({
         source: base_url + 'ajax/get_mapa',	// Using mall.json file as map data
-        sidebar: true, 			// Enable sidebar
-        minimap: false, 			// Enable minimap
-        markers: false, 		// Disable markers
+        sidebar: true, 			// hahilita Panel izquierdo
+        minimap: false, 		// Enable minimap
+        markers: false, 		// Deshabilita Marcadores
+        hovertip: false,        //Activa o desactiba tooltip en hover
         mapfill: true,
         fillcolor: '',
         fullscreen: false, 		// Enable fullscreen
         developer: true,
         zoom: false,
         maxscale: 0.65, 			// Setting maxscale to 3
+        smartip: false,
+        deeplinking: false
     });
     //Herramienta para capturar las coordenadas del mapa
     mapplic.on('locationopened', function (e, location) {
