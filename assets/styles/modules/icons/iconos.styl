@@ -1,20 +1,29 @@
 .container-icons
+	max-height 0px
 	text-align center
 	background #fff
+	overflow hidden
+	&.showicon
+		max-height 500px
+		&.ok i
+			color:#A5DC86
+		&.error i
+			color:#F27474
 	h4
 		display inline-block
 		vertical-align middle
 	i
 		vertical-align middle
-	&.error
-		i
-			color:#F27474
-	&.warning
-		i
-			color:#F8BB86
-	&.success
-		i
-			color:#A5DC86
+		font-size 35px
+	// &.error
+	// 	i
+			
+	// &.warning
+	// 	i
+	// 		color:#F8BB86
+	// &.success
+	// 	i
+	// 		color:
 // .sa-icon
 // 	width 30px
 // 	height 30px

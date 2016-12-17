@@ -7371,8 +7371,19 @@ header {
   }
 }
 .container-icons {
+  max-height: 0px;
   text-align: center;
   background: #fff;
+  overflow: hidden;
+}
+.container-icons.showicon {
+  max-height: 500px;
+}
+.container-icons.showicon.ok i {
+  color: #a5dc86;
+}
+.container-icons.showicon.error i {
+  color: #f27474;
 }
 .container-icons h4 {
   display: inline-block;
@@ -7380,15 +7391,7 @@ header {
 }
 .container-icons i {
   vertical-align: middle;
-}
-.container-icons.error i {
-  color: #f27474;
-}
-.container-icons.warning i {
-  color: #f8bb86;
-}
-.container-icons.success i {
-  color: #a5dc86;
+  font-size: 35px;
 }
 input[type="search"] {
   display: block;

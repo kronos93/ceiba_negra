@@ -50,19 +50,18 @@
 							</div>				  			
 						</div>
 					</div>
-					<div class="container-icons error" style="display: none;">
-				      	<i class="fa fa-times-circle-o fa-4x"></i>
+					<div class="container-icons" >
+				      	<i></i>
 					    <h4 class="message">Hubo algun error</h4>
 					</div>
-					<div class="container-icons success" style="display: none;">
+					<!-- <div class="container-icons success" >
 						<i class="fa fa-check-circle-o fa-4x"></i>
 					    <h4 class="message">Algo salio bien :v</h4>
 					</div>
-					<div class="container-icons warning" style="display: none;">
+					<div class="container-icons warning" >
 						<i class="fa fa-exclamation-circle fa-4x"></i>
 						<h4 class="message">Un mensaje :v</h4>
-					</div>
-					
+					</div> -->
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
