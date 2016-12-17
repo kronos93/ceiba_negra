@@ -9,7 +9,11 @@
 							<th>ID</th>
 							<th>Manzana</th>
 							<th>calle</th>
-							<th>Estado</th>	
+							<th>Estado</th>
+							<th>Colindancia al norte</th>
+							<th>Colindancia al sur</th>
+							<th>Colindancia al este</th>
+							<th>Colindancia al oeste</th>	
 							<th>Opciones</th>	                
 						</tr>
 					</thead>

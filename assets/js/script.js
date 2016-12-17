@@ -35,6 +35,10 @@ $(document).ready(function () {
             { "data": "manzana" },
             { "data": "calle" },
             { "data": "disponibilidad" },
+            { "data": "col_norte" },
+            { "data": "col_sur" },
+            { "data": "col_este" },
+            { "data": "col_oeste" },
             { "data": "" } //Espacio extra para el boton o botones de opciones
         ],
         columnDefs: [   //Configuracion de la tabla de manzanas

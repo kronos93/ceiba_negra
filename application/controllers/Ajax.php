@@ -76,6 +76,10 @@ class Ajax extends CI_Controller {
         $response->data = $manzanas;
         echo json_encode($response);
     }
+    public function update_manzana(){
+        header("Content-type: application/json; charset=utf-8");
+        var_dump($this->input-post());
+    }
     //Utileria inutil xD.... Despreciar usando stdClass
     public function format_datatable($data){
         $response = array("data" => array());
