@@ -162,6 +162,8 @@ $(document).ready(function () {
             },
         ]
     });
+    // Datatables de Usuarios
+    $('#tableUsers').DataTable();
     //DETALLES EXTRA
     //Enmascarar formato de moneda, dentro de una tabla*
     $('tbody .col-moneda').mask('$ 000.000.000.000.000,00');
