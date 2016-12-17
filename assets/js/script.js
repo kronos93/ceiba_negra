@@ -105,7 +105,9 @@ $(document).ready(function () {
         .done(function(response) {
             that.reset();
             console.log(response);
-            $('.modal-body').find('.container-icons.success').fadeIn(1000).delay(1000).fadeOut(1000);
+
+            $('.container-icons').removeClass().addClass('container-icons showicon ok').find('i').removeClass().addClass('fa fa-check-circle-o');
+            // $('.modal-body').find('.container-icons').fadeOut('slow');
             // $('.modal-body').removeClass('after');
             $("input[type='submit']").attr("disabled", false).next().css('visibility','hidden');
             // alert("Datos insertados correctamente");
@@ -115,7 +117,8 @@ $(document).ready(function () {
         })
         .fail(function(response) {
             console.log(response)
-            $('.modal-body').find('.container-icons.error').fadeIn(1000).delay(1000).fadeOut(1000);
+            $('.container-icons').removeClass().addClass('container-icons showicon error').find('i').removeClass().addClass('fa fa-times-circle-o');
+            $('.modal-body').find('.container-icons.error').fadeIn();
             // $('.modal-body').find('.container-icons.error').show(0).delay(1000).hide(0);
             $("input[type='submit']").attr("disabled", false).next().css('visibility','hidden');
             var mensaje  = "Mensaje de error: " + response.responseText;
@@ -186,7 +189,7 @@ $(document).ready(function () {
         zoom: false,
         maxscale: 0.65, 			// Setting maxscale to 3
         smartip: false,
-        deeplinking: false
+        deeplinking: false      //inhabilita nombres en uri
     });
     //Herramienta para capturar las coordenadas del mapa
     mapplic.on('locationopened', function (e, location) {
