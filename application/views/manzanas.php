@@ -127,7 +127,10 @@
 									<option value="1">Disponible para su venta</option>
 									<option value="0">No disponible para su venta</option>
 								</select>
-							</div>		
+							</div>									  			
+						</div>
+						<fieldset class="form-group row">	
+							<legend>Colindancias:</legend>
 							<div class="form-group col-xs-12 col-sm-6">
 								<label class="required" for="col_norte">Colindancia al norte:</label>
 								<input type="text" class="form-control" id="col_norte" name="col_norte" placeholder="Sendero oculto" required />
@@ -141,11 +144,15 @@
 								<input type="text" class="form-control" id="col_este" name="col_este" placeholder="Sendero oculto" required />
 							</div>
 							<div class="form-group col-xs-12 col-sm-6">
-								<label class="required" for="col_oeste">Colindancia al oeste:</label>
-								<input type="text" class="form-control" id="col_oeste" name="col_oeste" placeholder="Sendero oculto" required />
-							</div>			  			
-						</div>
+								<label for="col_oeste">Colindancia al oeste:</label>
+								<input type="text" class="form-control" id="col_oeste" name="col_oeste" placeholder="12.50 Mts. con sendero La Ceiba"/>
+							</div>
+						</fieldset>	
 					</div>	
+					<div class="container-icons" >
+				      	<i></i>
+					    <h4 class="message"></h4>
+					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>

@@ -50,7 +50,9 @@ class Ajax extends CI_Controller {
     
     //MANZANAS
     public function add_manzana(){
+            //Cabazera de respuesta JSON
             header("Content-type: application/json; charset=utf-8");   
+            //Validación de form
             $this->form_validation->set_error_delimiters('', '');
             $this->form_validation->set_rules('manzana', 'Manzana', 'trim|required|is_unique[manzanas.manzana]');
             $this->form_validation->set_rules('calle', 'Calle', 'trim|required');
@@ -87,7 +89,13 @@ class Ajax extends CI_Controller {
                 'col_oeste' => $this->input->post("col_oeste"), 
             ];
         $response = $this->Manzana_model->update($where,$set);
-        echo json_encode($response);
+
+        if(count($response)){
+            echo json_encode($response);
+        }else{
+            echo "No se detectó ningún cambio en los datos al actualizar.";
+        }
+        
     }
     //Utileria inutil xD.... Despreciar usando stdClass
     public function format_datatable($data){

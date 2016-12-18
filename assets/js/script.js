@@ -33,10 +33,16 @@ $(document).ready(function() {
         "ajax": base_url + 'ajax/get_manzanas', //URL de datos
         "columns": [ //Atributos para la tabla
             { "data": "id_manzana" },
-            { "data": "manzana" },
+            {
+                "data": "manzana",
+                "render": function(data, type, full, meta) {
+                    return 'Mz.  ' + data;
+                }
+            },
             { "data": "calle" },
             {
                 "data": "disponibilidad",
+                //Supa kawaiesko funcion para el render
                 "render": function(data, type, full, meta) {
                     if (!parseInt(data)) {
                         return '<span class="label label-primary">No disponible</span>';
@@ -143,14 +149,24 @@ $(document).ready(function() {
                 }
             })
             .done(function(response) {
+                $('.container-icons').removeClass().addClass('container-icons showicon ok').find('i').removeClass().addClass('fa fa-check-circle-o');
                 $("input[type='submit']").attr("disabled", false).next().css('visibility', 'hidden');
                 for (var data in response[0]) {
                     manzana[data] = response[0][data];
                 }
                 manzanas_table.row(fila).data(manzana).draw();
+
+                $('.container-icons').find('.message').text("Datos insertados correctamente");
             })
             .fail(function(response) {
+                $('.container-icons').removeClass().addClass('container-icons showicon error').find('i').removeClass().addClass('fa fa-times-circle-o');
+                $('.modal-body').find('.container-icons.error').fadeIn();
                 $("input[type='submit']").attr("disabled", false).next().css('visibility', 'hidden');
+                var mensaje = "Mensaje de error: " + response.responseText;
+                mensaje += "\nVerificar los datos ingresados con los registros existentes.";
+                mensaje += "\nCódigo de error: " + response.status + ".";
+                mensaje += "\nMensaje de código error: " + response.statusText + ".";
+                $('.container-icons').find('.message').text(mensaje);
             });
 
     });

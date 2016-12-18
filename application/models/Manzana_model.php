@@ -15,7 +15,7 @@ class Manzana_model extends CI_Model {
         }
     }
     public function get($id){
-        //$this->db->select("calle, disponibilidad, col_norte, col_sur, col_este, col_oeste");
+        $this->db->select("calle, disponibilidad, col_norte, col_sur, col_este, col_oeste");
         $query = $this->db->get_where($this->tabla, $id);
         return $query->result();
     }
@@ -27,9 +27,11 @@ class Manzana_model extends CI_Model {
         $this->db->set($set);
         $this->db->where($where);
         $this->db->update($this->tabla);
-        $id = $this->db->affected_rows();
-
-        return $this->get($set);
+        if($this->db->affected_rows()){
+            return $this->get($where);
+        }else{
+            return [];
+        }
     }
     public function mz_mapplic(){
         $query = $this->db->query("SELECT concat('mz',id_manzana) AS id, concat('Manzana número ',manzana) AS title, IF(disponibilidad !=0,'#3fbb9b','#ccc') AS color  FROM manzanas");
