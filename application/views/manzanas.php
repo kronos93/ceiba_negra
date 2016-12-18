@@ -51,7 +51,9 @@
 									<option value="1">Disponible para su venta</option>
 									<option value="0">No disponible para su venta</option>
 								</select>
-							</div>	
+							</div>				  			
+						</div>
+						<fieldset class="form-group row">	
 							<legend>Colindancias:</legend>
 							<div class="form-group col-xs-12 col-sm-6">
 								<label for="col_norte">Colindancia al norte:</label>
@@ -68,8 +70,8 @@
 							<div class="form-group col-xs-12 col-sm-6">
 								<label for="col_oeste">Colindancia al oeste:</label>
 								<input type="text" class="form-control" name="col_oeste" placeholder="12.50 Mts. con sendero La Ceiba"/>
-							</div>			  			
-						</div>
+							</div>
+						</fieldset>
 					</div>
 					<div class="container-icons" >
 				      	<i></i>

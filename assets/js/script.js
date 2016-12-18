@@ -23,6 +23,9 @@ $.extend(true, $.fn.dataTable.defaults, {
     "language": {
         "url": lang_esp_datatables
     },
+    "search": {
+        "caseInsensitive": false
+    }
 });
 //Al cargar la página
 $(document).ready(function() {
