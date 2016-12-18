@@ -61,7 +61,7 @@
 						<div class="row">
 							<div class="form-group col-xs-12 col-sm-6">
 								<label class="required" for="calle">Nombre:</label>
-								<input type="text" class="form-control" id="name" name="name" required />
+								<input data-mask="$ 000,000 .00" type="text" class="form-control" id="name" name="name" required />
 							</div>
 							<div class="form-group col-xs-12 col-sm-6">
 								<label class="required" for="calle">Apellidos:</label>

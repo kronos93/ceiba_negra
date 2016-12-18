@@ -167,13 +167,23 @@ $(document).ready(function () {
                 "targets": [4, 5, 6],
                 "className": "col-moneda"
             },
-        ]
+        ],
+        "initComplete": function(settings, json) {
+            $('tbody .col-moneda').autoNumeric({
+                aSign:'$'
+            });
+          }
     });
     // Datatables de Usuarios
     $('#tableUsers').DataTable();
     //DETALLES EXTRA
     //Enmascarar formato de moneda, dentro de una tabla*
-    $('tbody .col-moneda').mask('$ 000.000.000.000.000,00');
+    // $('tbody .col-moneda').mask('$ 000.000.000.000.000,00');
+    // setTimeout(function(){
+    //     $('tbody .col-moneda').autoNumeric({
+    //         aSign:'$'
+    //     });
+    // },2000);
     //MAPA
     //Desplegar mapa
     var mapplic = $('#mapplic').mapplic({

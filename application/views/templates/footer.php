@@ -8,7 +8,7 @@
 	<script type="text/javascript" src="<?= base_url() ?>assets/js/mapplic/dependencies/jquery.mousewheel.js"></script>
 	<script type="text/javascript" src="<?= base_url() ?>assets/js/mapplic/dependencies/script.js"></script>
 	<script type="text/javascript" src="<?= base_url() ?>assets/js/mapplic/mapplic.js"></script>
-
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/autonumeric/1.9.46/autoNumeric.js"></script>
 	<script type="text/javascript" src="<?= base_url() ?>assets/js/script.js"></script>
     </body>
 </html>
