@@ -30,7 +30,6 @@ $(document).ready(function () {
     //Estructura de Datatable para las Manzanas (La tabla de vista)
     var manzanas_table = $('#manzanas').DataTable({
         "responsive" : true,
-        "info" : false,
         "ajax": base_url + 'ajax/get_manzanas', //URL de datos
         "columns": [    //Atributos para la tabla
             { "data": "id_manzana" },
@@ -58,7 +57,7 @@ $(document).ready(function () {
                 //Añadir boton dinamicamente, para esta columna*
                 "targets": -1,
                 "data": null,
-                "defaultContent": '<button data-toggle="modal" data-target="#edit-manzana" class="btn btn-info btn-sm btn-edit-mz"><i class="fa fa-fw fa-pencil"></i></button>'
+                "defaultContent": '<button data-toggle="modal" data-target="#edit-manzana" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>'
             },
             {
                 //Quitar ordenamiento para estas columnas
