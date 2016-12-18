@@ -35,7 +35,17 @@ $(document).ready(function() {
             { "data": "id_manzana" },
             { "data": "manzana" },
             { "data": "calle" },
-            { "data": "disponibilidad" },
+            {
+                "data": "disponibilidad",
+                "render": function(data, type, full, meta) {
+                    if (!parseInt(data)) {
+                        return '<span class="label label-primary">No disponible</span>';
+                    } else {
+                        return '<span class="label label-success">Disponible</span>';
+                    }
+
+                }
+            },
             { "data": "col_norte" },
             { "data": "col_sur" },
             { "data": "col_este" },
@@ -77,16 +87,12 @@ $(document).ready(function() {
     $('#manzanas tbody').on('click', 'button', function() {
         fila = $(this).parents('tr');
         manzana = manzanas_table.row(fila).data();
-        //Añadimos los valores al modal
-        $("#id_manzana").val(manzana.id_manzana);
-        $("#manzana").val(manzana.manzana);
-        $("#calle").val(manzana.calle);
-        $("#calle").val(manzana.calle);
-        $("#disponibilidad").val(manzana.disponibilidad);
-        $("#col_norte").val(manzana.col_norte);
-        $("#col_sur").val(manzana.col_sur);
-        $("#col_este").val(manzana.col_este);
-        $("#col_oeste").val(manzana.col_oeste);
+        console.log(manzana);
+        for (var data in manzana) {
+            if ($("#" + data).length) {
+                $("#" + data).val(manzana[data]);
+            }
+        }
     });
     //Formulario para agregar manzana
     $('#frm-add-manzanas').on('submit', function(e) {
@@ -165,6 +171,7 @@ $(document).ready(function() {
             },
         ],
         "initComplete": function(settings, json) {
+            console.log(settings);
             $('tbody .col-moneda').autoNumeric({
                 aSign: '$'
             });
