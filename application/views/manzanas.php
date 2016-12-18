@@ -56,26 +56,26 @@
 						<fieldset class="form-group row">	
 							<legend>Colindancias:</legend>
 							<div class="form-group col-xs-12 col-sm-6">
-								<label class="required" for="col_norte">Colindancia al norte:</label>
-								<input type="text" class="form-control" id="col_norte" name="col_norte" placeholder="Sendero oculto" required />
+								<label for="col_norte">Colindancia al norte:</label>
+								<input type="text" class="form-control" id="col_norte" name="col_norte" placeholder="46.012 Mts. con Mz. 26 huerto. 15 más 35.00 Mts. con Mz. 26 huerto. 10" />
 							</div>
 							<div class="form-group col-xs-12 col-sm-6">
-								<label class="required" for="col_sur">Colindancia al sur:</label>
-								<input type="text" class="form-control" id="col_sur" name="col_sur" placeholder="Sendero oculto" required />
+								<label for="col_sur">Colindancia al sur:</label>
+								<input type="text" class="form-control" id="col_sur" name="col_sur" placeholder="45.468 Mts. con Mz. 26 huerto. 13 más 35.00 Mts. con Mz. 26 huerto. 12" />
 							</div>
 							<div class="form-group col-xs-12 col-sm-6">
-								<label class="required" for="col_este">Colindancia al este:</label>
-								<input type="text" class="form-control" id="col_este" name="col_este" placeholder="Sendero oculto" required />
+								<label for="col_este">Colindancia al este:</label>
+								<input type="text" class="form-control" id="col_este" name="col_este" placeholder="12.50 Mts. con Mz. 27 huerto. 12" />
 							</div>
 							<div class="form-group col-xs-12 col-sm-6">
 								<label for="col_oeste">Colindancia al oeste:</label>
-								<input type="text" class="form-control" name="col_oeste" placeholder="12.50 Mts. con sendero La Ceiba"/>
+								<input type="text" class="form-control" name="col_oeste" placeholder="12.50 Mts. con sendero La Ceiba" />
 							</div>
 						</fieldset>
 					</div>
 					<div class="container-icons" >
 				      	<i></i>
-					    <h4 class="message">Hubo algun error</h4>
+					    <h4 class="message"></h4>
 					</div>
 				</div>
 				<div class="modal-footer">
@@ -127,16 +127,16 @@
 						<fieldset class="form-group row">	
 							<legend>Colindancias:</legend>
 							<div class="form-group col-xs-12 col-sm-6">
-								<label class="required" for="col_norte">Colindancia al norte:</label>
-								<input type="text" class="form-control" id="col_norte" name="col_norte" placeholder="Sendero oculto" required />
+								<label for="col_norte">Colindancia al norte:</label>
+								<input type="text" class="form-control" id="col_norte" name="col_norte" placeholder="46.012 Mts. con Mz. 26 huerto. 15 más 35.00 Mts. con Mz. 26 huerto. 10"/>
 							</div>
 							<div class="form-group col-xs-12 col-sm-6">
-								<label class="required" for="col_sur">Colindancia al sur:</label>
-								<input type="text" class="form-control" id="col_sur" name="col_sur" placeholder="Sendero oculto" required />
+								<label for="col_sur">Colindancia al sur:</label>
+								<input type="text" class="form-control" id="col_sur" name="col_sur" placeholder="45.468 Mts. con Mz. 26 huerto. 13 más 35.00 Mts. con Mz. 26 huerto. 12"/>
 							</div>
 							<div class="form-group col-xs-12 col-sm-6">
-								<label class="required" for="col_este">Colindancia al este:</label>
-								<input type="text" class="form-control" id="col_este" name="col_este" placeholder="Sendero oculto" required />
+								<label for="col_este">Colindancia al este:</label>
+								<input type="text" class="form-control" id="col_este" name="col_este" placeholder="12.50 Mts. con Mz. 27 huerto. 12" />
 							</div>
 							<div class="form-group col-xs-12 col-sm-6">
 								<label for="col_oeste">Colindancia al oeste:</label>
