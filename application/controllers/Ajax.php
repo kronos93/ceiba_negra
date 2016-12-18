@@ -78,7 +78,16 @@ class Ajax extends CI_Controller {
     }
     public function update_manzana(){
         header("Content-type: application/json; charset=utf-8");
-        var_dump($this->input-post());
+        $where = ['id_manzana' => $this->input->post("id_manzana")];
+        $set = ['calle' => $this->input->post("calle"),
+                'disponibilidad' => $this->input->post("disponibilidad"),
+                'col_norte' => $this->input->post("col_norte"), 
+                'col_sur' => $this->input->post("col_sur"), 
+                'col_este' => $this->input->post("col_este"), 
+                'col_oeste' => $this->input->post("col_oeste"), 
+            ];
+        $response = $this->Manzana_model->update($where,$set);
+        echo json_encode($response);
     }
     //Utileria inutil xD.... Despreciar usando stdClass
     public function format_datatable($data){
