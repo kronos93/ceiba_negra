@@ -159,7 +159,7 @@ $(document).ready(function() {
                 }
                 manzanas_table.row(fila).data(manzana).draw();
 
-                $('.container-icons').find('.message').text("Datos insertados correctamente");
+                $('.container-icons').find('.message').text("Datos actualizados correctamente");
             })
             .fail(function(response) {
                 $('.container-icons').removeClass().addClass('container-icons showicon error').find('i').removeClass().addClass('fa fa-times-circle-o');

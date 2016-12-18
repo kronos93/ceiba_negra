@@ -38,16 +38,16 @@
 								<label class="required" for="manzana">No. de manzana:</label>
 								<div class="input-group">
 									<div class="input-group-addon">Mz.</div>
-									<input type="number" class="form-control" id="manzana" name="manzana" placeholder="100" step="1" min="1" max="1000" required />
+									<input type="number" class="form-control" name="manzana" placeholder="100" step="1" min="1" max="1000" required />
 								</div>
 								</div>
 							<div class="form-group col-xs-12 col-sm-6">
 								<label class="required" for="calle">Calle:</label>
-								<input type="text" class="form-control" id="calle" name="calle" placeholder="Sendero oculto" required />
+								<input type="text" class="form-control"name="calle" placeholder="Sendero oculto" required />
 							</div>
 							<div class="form-group col-xs-12 col-sm-6">
 								<label class="required" for="disponibilidad">Disponibilidad:</label>
-								<select class="form-control" name="disponibilidad" id="disponibilidad" required >
+								<select class="form-control" name="disponibilidad" required >
 									<option value="1">Disponible para su venta</option>
 									<option value="0">No disponible para su venta</option>
 								</select>
@@ -57,15 +57,15 @@
 							<legend>Colindancias:</legend>
 							<div class="form-group col-xs-12 col-sm-6">
 								<label for="col_norte">Colindancia al norte:</label>
-								<input type="text" class="form-control" id="col_norte" name="col_norte" placeholder="46.012 Mts. con Mz. 26 huerto. 15 más 35.00 Mts. con Mz. 26 huerto. 10" />
+								<input type="text" class="form-control" name="col_norte" placeholder="46.012 Mts. con Mz. 26 huerto. 15 más 35.00 Mts. con Mz. 26 huerto. 10" />
 							</div>
 							<div class="form-group col-xs-12 col-sm-6">
 								<label for="col_sur">Colindancia al sur:</label>
-								<input type="text" class="form-control" id="col_sur" name="col_sur" placeholder="45.468 Mts. con Mz. 26 huerto. 13 más 35.00 Mts. con Mz. 26 huerto. 12" />
+								<input type="text" class="form-control" name="col_sur" placeholder="45.468 Mts. con Mz. 26 huerto. 13 más 35.00 Mts. con Mz. 26 huerto. 12" />
 							</div>
 							<div class="form-group col-xs-12 col-sm-6">
 								<label for="col_este">Colindancia al este:</label>
-								<input type="text" class="form-control" id="col_este" name="col_este" placeholder="12.50 Mts. con Mz. 27 huerto. 12" />
+								<input type="text" class="form-control" name="col_este" placeholder="12.50 Mts. con Mz. 27 huerto. 12" />
 							</div>
 							<div class="form-group col-xs-12 col-sm-6">
 								<label for="col_oeste">Colindancia al oeste:</label>
