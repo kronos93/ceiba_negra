@@ -9,7 +9,7 @@
 							<th>ID</th>
 							<th>Manzana</th>
 							<th>calle</th>
-							<th>Estado</th>
+							<th>Disponibilidad</th>
 							<th>Colindancia al norte</th>
 							<th>Colindancia al sur</th>
 							<th>Colindancia al este</th>
@@ -47,7 +47,7 @@
 							</div>
 							<div class="form-group col-xs-12 col-sm-6">
 								<label class="required" for="disponibilidad">Disponibilidad:</label>
-								<select class="form-control" name="disponibilidad" id="disponibilidad" required >
+								<select class="form-control" name="disponibilidad" required >
 									<option value="1">Disponible para su venta</option>
 									<option value="0">No disponible para su venta</option>
 								</select>
