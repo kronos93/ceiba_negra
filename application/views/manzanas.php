@@ -3,7 +3,7 @@
 		<div class="row">
 			<div class="col-xs-12">
 				<legend>Manzanas <button  data-toggle="modal" data-target="#add-manzana" class="btn btn-success pull-right"><i class="fa fa-plus"></i></button> <div class="clearfix"></div></legend>
-				<table id="manzanas" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+				<table id="manzanas" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
 					<thead>
 						<tr>
 							<th>ID</th>
@@ -14,7 +14,7 @@
 							<th>Colindancia al sur</th>
 							<th>Colindancia al este</th>
 							<th>Colindancia al oeste</th>	
-							<th>Opciones</th>	                
+							<th class="all">Opciones</th>	                
 						</tr>
 					</thead>
 				</table>
@@ -51,7 +51,23 @@
 									<option value="1">Disponible para su venta</option>
 									<option value="0">No disponible para su venta</option>
 								</select>
-							</div>				  			
+							</div>	
+							<div class="form-group col-xs-12 col-sm-6">
+								<label class="required" for="col_norte">Colindancia al norte:</label>
+								<input type="text" class="form-control" id="col_norte" name="col_norte" placeholder="Sendero oculto" required />
+							</div>
+							<div class="form-group col-xs-12 col-sm-6">
+								<label class="required" for="col_sur">Colindancia al sur:</label>
+								<input type="text" class="form-control" id="col_sur" name="col_sur" placeholder="Sendero oculto" required />
+							</div>
+							<div class="form-group col-xs-12 col-sm-6">
+								<label class="required" for="col_este">Colindancia al este:</label>
+								<input type="text" class="form-control" id="col_este" name="col_este" placeholder="Sendero oculto" required />
+							</div>
+							<div class="form-group col-xs-12 col-sm-6">
+								<label class="required" for="col_oeste">Colindancia al oeste:</label>
+								<input type="text" class="form-control" id="col_oeste" name="col_oeste" placeholder="Sendero oculto" required />
+							</div>			  			
 						</div>
 					</div>
 					<div class="container-icons" >
@@ -111,7 +127,23 @@
 									<option value="1">Disponible para su venta</option>
 									<option value="0">No disponible para su venta</option>
 								</select>
-							</div>				  			
+							</div>		
+							<div class="form-group col-xs-12 col-sm-6">
+								<label class="required" for="col_norte">Colindancia al norte:</label>
+								<input type="text" class="form-control" id="col_norte" name="col_norte" placeholder="Sendero oculto" required />
+							</div>
+							<div class="form-group col-xs-12 col-sm-6">
+								<label class="required" for="col_sur">Colindancia al sur:</label>
+								<input type="text" class="form-control" id="col_sur" name="col_sur" placeholder="Sendero oculto" required />
+							</div>
+							<div class="form-group col-xs-12 col-sm-6">
+								<label class="required" for="col_este">Colindancia al este:</label>
+								<input type="text" class="form-control" id="col_este" name="col_este" placeholder="Sendero oculto" required />
+							</div>
+							<div class="form-group col-xs-12 col-sm-6">
+								<label class="required" for="col_oeste">Colindancia al oeste:</label>
+								<input type="text" class="form-control" id="col_oeste" name="col_oeste" placeholder="Sendero oculto" required />
+							</div>			  			
 						</div>
 					</div>	
 				</div>
