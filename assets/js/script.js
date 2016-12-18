@@ -27,11 +27,58 @@ $.extend(true, $.fn.dataTable.defaults, {
         "caseInsensitive": false
     }
 });
+
+var parsedtRow;
+var dtRow;
+
+function get_data(dtTable, obj_dtTable) {
+    $('#' + dtTable + ' tbody').on('click', 'button', function() {
+        dtRow = $(this).parents('tr');
+        parsedtRow = obj_dtTable.row(dtRow).data();
+        data_in_form_edit(parsedtRow);
+    });
+}
+
+function data_in_form_edit(json_data) {
+    for (var data in json_data) {
+        if ($("#" + data).length) {
+            $("#" + data).val(json_data[data]);
+        }
+    }
+}
+
+function ajax_done(that, dtTable, msj, type, response) {
+    if (type == "insert") {
+        that.reset();
+        dtTable.ajax.reload(null, false); // user paging is not reset on reload, usar row porque a max le gusta mas :v
+        dtTable.order([0, 'desc']).draw();
+    } else if (type == "update") {
+        for (var data in response[0]) {
+            parsedtRow[data] = response[0][data];
+        }
+        dtTable.row(dtRow).data(parsedtRow).draw();
+    }
+
+    $('.container-icons').removeClass().addClass('container-icons showicon ok').find('i').removeClass().addClass('fa fa-check-circle-o');
+    $("input[type='submit']").attr("disabled", false).next().css('visibility', 'hidden');
+    $('.container-icons').find('.message').text(msj);
+}
+
+function ajax_fail(response) {
+    $('.container-icons').removeClass().addClass('container-icons showicon error').find('i').removeClass().addClass('fa fa-times-circle-o');
+    $('.modal-body').find('.container-icons.error').fadeIn();
+    $("input[type='submit']").attr("disabled", false).next().css('visibility', 'hidden');
+    var mensaje = "Mensaje de error: " + response.responseText;
+    mensaje += "\nVerificar los datos ingresados con los registros existentes.";
+    mensaje += "\nCódigo de error: " + response.status + ".";
+    mensaje += "\nMensaje de código error: " + response.statusText + ".";
+    $('.container-icons').find('.message').text(mensaje);
+}
 //Al cargar la página
 $(document).ready(function() {
     //MANZANAS
     //Estructura de Datatable para las Manzanas (La tabla de vista)
-    var manzanas_table = $('#manzanas').DataTable({
+    var manzanas_table = $('#manzanas-table').DataTable({
         "responsive": true,
         "ajax": base_url + 'ajax/get_manzanas', //URL de datos
         "columns": [ //Atributos para la tabla
@@ -81,7 +128,7 @@ $(document).ready(function() {
             {
                 //Quitar ordenamiento para estas columnas
                 "sortable": false,
-                "targets": [-1, -3]
+                "targets": [2, -1, -2, -3, -4, -5]
             },
             {
                 //Quitar busqueda para esta columna
@@ -90,19 +137,8 @@ $(document).ready(function() {
             }
         ]
     });
-    //Obtener id del datatable de manzanas
-    var manzana;
-    var fila;
-    $('#manzanas tbody').on('click', 'button', function() {
-        fila = $(this).parents('tr');
-        manzana = manzanas_table.row(fila).data();
-        console.log(manzana);
-        for (var data in manzana) {
-            if ($("#" + data).length) {
-                $("#" + data).val(manzana[data]);
-            }
-        }
-    });
+    //Añade funcion de editar al datatable
+    get_data("manzanas-table", manzanas_table);
     //Formulario para agregar manzana
     $('#frm-add-manzanas').on('submit', function(e) {
         e.preventDefault();
@@ -118,29 +154,17 @@ $(document).ready(function() {
                 }
             })
             .done(function(response) {
-                that.reset();
-                $('.container-icons').removeClass().addClass('container-icons showicon ok').find('i').removeClass().addClass('fa fa-check-circle-o');
-                $("input[type='submit']").attr("disabled", false).next().css('visibility', 'hidden');
-                manzanas_table.ajax.reload(null, false); // user paging is not reset on reload, usar row porque a max le gusta mas :v
-                manzanas_table.order([0, 'desc']).draw();
-                $('.container-icons').find('.message').text("Datos insertados correctamente");
+                ajax_done(that, manzanas_table, "Manzana insertada correctamente", "insert", response);
             })
             .fail(function(response) {
-                $('.container-icons').removeClass().addClass('container-icons showicon error').find('i').removeClass().addClass('fa fa-times-circle-o');
-                $('.modal-body').find('.container-icons.error').fadeIn();
-                $("input[type='submit']").attr("disabled", false).next().css('visibility', 'hidden');
-                var mensaje = "Mensaje de error: " + response.responseText;
-                mensaje += "\nVerificar los datos ingresados con los registros existentes.";
-                mensaje += "\nCódigo de error: " + response.status + ".";
-                mensaje += "\nMensaje de código error: " + response.statusText + ".";
-                $('.container-icons').find('.message').text(mensaje);
+                ajax_fail(response);
             });
     });
     //Formulario para editar manzanas
     $("#frm-edit-manzanas").on('submit', function(e) {
         e.preventDefault();
         var data = $(this).serializeArray(); //Serializar formulario
-        data.push({ "name": "id_manzana", "value": manzana.id_manzana }); //Añadimos el ID de la manzana en formato json
+        data.push({ "name": "id_manzana", "value": parsedtRow.id_manzana }); //Añadimos el ID de la manzana en formato json
         var that = this; //Almacenar el formulario donde sucedio el evento submit
         //Llamada ajax
         $.ajax({
@@ -152,27 +176,13 @@ $(document).ready(function() {
                 }
             })
             .done(function(response) {
-                $('.container-icons').removeClass().addClass('container-icons showicon ok').find('i').removeClass().addClass('fa fa-check-circle-o');
-                $("input[type='submit']").attr("disabled", false).next().css('visibility', 'hidden');
-                for (var data in response[0]) {
-                    manzana[data] = response[0][data];
-                }
-                manzanas_table.row(fila).data(manzana).draw();
-
-                $('.container-icons').find('.message').text("Datos actualizados correctamente");
+                ajax_done(that, manzanas_table, "Manzana insertada correctamente", "update", response);
             })
             .fail(function(response) {
-                $('.container-icons').removeClass().addClass('container-icons showicon error').find('i').removeClass().addClass('fa fa-times-circle-o');
-                $('.modal-body').find('.container-icons.error').fadeIn();
-                $("input[type='submit']").attr("disabled", false).next().css('visibility', 'hidden');
-                var mensaje = "Mensaje de error: " + response.responseText;
-                mensaje += "\nVerificar los datos ingresados con los registros existentes.";
-                mensaje += "\nCódigo de error: " + response.status + ".";
-                mensaje += "\nMensaje de código error: " + response.statusText + ".";
-                $('.container-icons').find('.message').text(mensaje);
+                ajax_fail(response);
             });
-
     });
+
     //LOTES
     //Datatable de Lotes
     $('#lotes').DataTable({

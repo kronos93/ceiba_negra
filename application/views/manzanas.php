@@ -3,7 +3,7 @@
 		<div class="row">
 			<div class="col-xs-12">
 				<legend>Manzanas <button  data-toggle="modal" data-target="#add-manzana" class="btn btn-success pull-right"><i class="fa fa-plus"></i></button> <div class="clearfix"></div></legend>
-				<table id="manzanas" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
+				<table id="manzanas-table" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
 					<thead>
 						<tr>
 							<th>ID</th>
