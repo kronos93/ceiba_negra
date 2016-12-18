@@ -10,10 +10,10 @@
 							<th>Manzana</th>
 							<th>calle</th>
 							<th>Estado</th>
-							<th>Colindancia al norte</th>
-							<th>Colindancia al sur</th>
-							<th>Colindancia al este</th>
-							<th>Colindancia al oeste</th>	
+							<th>Col. Norte</th>
+							<th>Col. Sur</th>
+							<th>Col. Este</th>
+							<th>Col. Oeste</th>	
 							<th class="all">Opciones</th>	                
 						</tr>
 					</thead>
