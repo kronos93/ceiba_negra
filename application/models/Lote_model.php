@@ -11,13 +11,24 @@ class Lote_model extends CI_Model {
         $query = $this->db->query("SELECT * FROM {$this->tabla}");
         return $query->result();
     }
+    //Lotes precio y manzanas
     public function lotesPM(){
-        $query =  $this->db->query("SELECT 
-                                            `lotes`.`id_lote`,`manzanas`.`manzana`,`lotes`.`lote`,`lotes`.`superficie`,`precios`.`precio`,`precios`.`enganche`,`precios`.`abono`,`lotes`.`vendido`,`lotes`.`col_norte`,`lotes`.`col_sur`,`lotes`.`col_este`,`lotes`.`col_oeste` FROM {$this->tabla} 
-                                    LEFT JOIN `manzanas`
-                                    ON lotes.id_manzana = manzanas.id_manzana
-                                    LEFT JOIN `precios` 
-                                    ON lotes.id_precio = precios.id_precio");
+        $this->db->select(" {$this->tabla}.`id_lote`,
+                            `manzanas`.`manzana`,
+                            {$this->tabla}.`lote`,
+                            {$this->tabla}.`superficie`,
+                            `precios`.`precio`,
+                            `precios`.`enganche`,
+                            `precios`.`abono`,
+                            {$this->tabla}.`vendido`,
+                            {$this->tabla}.`col_norte`,
+                            {$this->tabla}.`col_sur`,
+                            {$this->tabla}.`col_este`,
+                            {$this->tabla}.`col_oeste`");
+        $this->db->from("{$this->tabla}");
+        $this->db->join("manzanas", "$this->tabla.id_manzana = manzanas.id_manzana",'left'); 
+        $this->db->join("precios", "$this->tabla.id_precio = precios.id_precio",'left');  
+        $query = $this->db->get();
         return $query->result_array();
     }
     public function getAllM($mz){

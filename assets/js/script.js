@@ -25,7 +25,8 @@ $.extend(true, $.fn.dataTable.defaults, {
     },
     "search": {
         "caseInsensitive": false
-    }
+    },
+    "responsive": true,
 });
 
 var parsedtRow;
@@ -79,7 +80,6 @@ $(document).ready(function() {
     //MANZANAS
     //Estructura de Datatable para las Manzanas (La tabla de vista)
     var manzanas_table = $('#manzanas-table').DataTable({
-        "responsive": true,
         "ajax": base_url + 'ajax/get_manzanas', //URL de datos
         "columns": [ //Atributos para la tabla
             { "data": "id_manzana" },
@@ -185,26 +185,64 @@ $(document).ready(function() {
 
     //LOTES
     //Datatable de Lotes
-    $('#lotes').DataTable({
+    $('#lotes-table').DataTable({
         "ajax": base_url + 'ajax/get_lotes_pmz',
-        "language": {
-            "url": lang_esp_datatables
-        },
-        columnDefs: [{
+        "columns": [ //Atributos para la tabla
+            { "data": "id_lote" },
+            {
+                "data": "manzana",
+                "render": function(data, type, full, meta) {
+                    return 'Mz.  ' + data;
+                }
+            },
+            {
+                "data": "lote",
+                "render": function(data, type, full, meta) {
+                    return 'Lt.  ' + data;
+                }
+            },
+            {
+                "data": "superficie",
+                "render": function(data, type, full, meta) {
+                    return data + " mt<sup>2</sup>.";
+                }
+            },
+            { "data": "precio" },
+            { "data": "enganche" },
+            { "data": "abono" },
+            {
+                "data": "vendido", //Supa kawaiesko funcion para el render
+                "render": function(data, type, full, meta) {
+                    if (!parseInt(data)) {
+                        return '<span class="label label-primary">No vendido</span>';
+                    } else {
+                        return '<span class="label label-success">Vendido</span>';
+                    }
+
+                }
+            },
+            { "data": "col_norte" },
+            { "data": "col_sur" },
+            { "data": "col_este" },
+            { "data": "col_oeste" },
+            { "data": "" } //Espacio extra para el boton o botones de opciones
+        ],
+        columnDefs: [ //
+            {
                 "targets": 0,
                 "visible": false
+            },
+            {
+                //Añadir boton dinamicamente, para esta columna*
+                "targets": -1,
+                "data": null,
+                "defaultContent": '<button data-toggle="modal" data-target="#edit-manzana" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>'
             },
             {
                 "targets": [4, 5, 6],
                 "className": "col-moneda"
             },
         ],
-        "initComplete": function(settings, json) {
-            console.log(settings);
-            $('tbody .col-moneda').autoNumeric({
-                aSign: '$'
-            });
-        }
     });
     // Datatables de Usuarios
     $('#tableUsers').DataTable();

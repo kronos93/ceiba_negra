@@ -42,8 +42,9 @@ class Ajax extends CI_Controller {
     //lOTES
     public function get_lotes_pmz(){
         header("Content-type: application/json; charset=utf-8");
+        $response = new stdClass();
         $lotes = $this->Lote_model->lotesPM();
-        $response = $this->format_datatable($lotes);
+        $response->data = $lotes;
         echo json_encode($response);
     }
 
