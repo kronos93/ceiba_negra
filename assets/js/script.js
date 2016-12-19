@@ -43,6 +43,7 @@ function get_data(dtTable, obj_dtTable) {
 function data_in_form_edit(json_data) {
     for (var data in json_data) {
         if ($("#" + data).length) {
+            console.log(json_data);
             $("#" + data).val(json_data[data]);
         }
     }
@@ -176,7 +177,7 @@ $(document).ready(function() {
                 }
             })
             .done(function(response) {
-                ajax_done(that, manzanas_table, "Manzana insertada correctamente", "update", response);
+                ajax_done(that, manzanas_table, "Datos de la manzana actualizados correctamente", "update", response);
             })
             .fail(function(response) {
                 ajax_fail(response);
@@ -185,7 +186,7 @@ $(document).ready(function() {
 
     //LOTES
     //Datatable de Lotes
-    $('#lotes-table').DataTable({
+    var lotes_table = $('#lotes-table').DataTable({
         "ajax": base_url + 'ajax/get_lotes_pmz',
         "columns": [ //Atributos para la tabla
             { "data": "id_lote" },
@@ -236,7 +237,7 @@ $(document).ready(function() {
                 //Añadir boton dinamicamente, para esta columna*
                 "targets": -1,
                 "data": null,
-                "defaultContent": '<button data-toggle="modal" data-target="#edit-manzana" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>'
+                "defaultContent": '<button data-toggle="modal" data-target="#edit-lote" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>'
             },
             {
                 "targets": [4, 5, 6],
@@ -245,14 +246,58 @@ $(document).ready(function() {
             {
                 //Quitar ordenamiento para estas columnas
                 "sortable": false,
-                "targets": [2, -1, -2, -3, -4, -5]
+                "targets": [-1, -2, -3, -4, -5]
             },
             {
                 //Quitar busqueda para esta columna
+                "targets": [-1, -2, -3, -4, -5],
                 "searchable": false,
-                "targets": [-1, -2, -3, -4, -5]
             }
         ],
+    });
+    get_data("lotes-table", lotes_table);
+    //Formulario para agregar lotes
+    $('#frm-add-lotes').on('submit', function(e) {
+        e.preventDefault();
+        var data = $(this).serializeArray(); //Serializar formulario
+        var that = this; //Almacenar el formulario donde sucedio el evento submit
+        //Llamada ajax
+        $.ajax({
+                url: base_url + "ajax/add_lote",
+                type: "post",
+                data: data,
+                beforeSend: function(xhr) {
+                    $("input[type='submit']").attr("disabled", true).next().css('visibility', 'visible');
+                }
+            })
+            .done(function(response) {
+                ajax_done(that, lotes_table, "Lote insertado correctamente", "insert", response);
+            })
+            .fail(function(response) {
+                ajax_fail(response);
+            });
+    });
+    //Formulario para editar lotes
+    $("#frm-edit-lotes").on('submit', function(e) {
+        e.preventDefault();
+        var data = $(this).serializeArray(); //Serializar formulario
+        data.push({ "name": "id_lote", "value": parsedtRow.id_lote }); //Añadimos el ID de la manzana en formato json
+        var that = this; //Almacenar el formulario donde sucedio el evento submit
+        //Llamada ajax
+        $.ajax({
+                url: base_url + "ajax/update_lote",
+                type: "post",
+                data: data,
+                beforeSend: function(xhr) {
+                    $("input[type='submit']").attr("disabled", true).next().css('visibility', 'visible');
+                }
+            })
+            .done(function(response) {
+                ajax_done(that, lotes_table, "Datos del lote actualizados correctamente", "update", response);
+            })
+            .fail(function(response) {
+                ajax_fail(response);
+            });
     });
     // Datatables de Usuarios
     $('#tableUsers').DataTable();

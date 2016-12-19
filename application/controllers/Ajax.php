@@ -39,7 +39,35 @@ class Ajax extends CI_Controller {
         $update = array('x' => $this->input->post("x"), 'y' => $this->input->post("y"));
         $this->Lote_model->set_coordenadas($where,$update);
     }
-    //lOTES
+    //LOTES
+    public function add_lote(){
+            //Cabazera de respuesta JSON
+            header("Content-type: application/json; charset=utf-8");   
+            //Validación de form
+            $this->form_validation->set_error_delimiters('', '');
+            $this->form_validation->set_rules('id_manzana', 'Manzana', 'trim|required');
+            $this->form_validation->set_rules('lote', 'Lote', 'trim|required');
+            $this->form_validation->set_rules('superficie', 'Superficie', 'trim|required');
+            $this->form_validation->set_rules('id_precio', 'Precio', 'trim|required');
+            if ($this->form_validation->run()) {
+                $insert = [
+                    'id_manzana' => $this->input->post('id_manzana'),
+                    'lote'   => $this->input->post('lote'),
+                    'superficie' => $this->input->post('superficie'),
+                    'id_precio' => $this->input->post('id_precio'),
+                    'col_norte' => $this->input->post('col_norte'),
+                    'col_sur' => $this->input->post('col_sur'),
+                    'col_este' => $this->input->post('col_este'),
+                    'col_oeste' => $this->input->post('col_oeste'),                    
+                ];
+                $add_lote = $this->Lote_model->insert($insert);
+                $response = ['id_lote' => $add_lote];
+                echo json_encode($response);
+            } else {
+               echo validation_errors();
+            }
+    
+    }
     public function get_lotes_pmz(){
         header("Content-type: application/json; charset=utf-8");
         $response = new stdClass();
@@ -62,7 +90,11 @@ class Ajax extends CI_Controller {
                 $insert = [
                     'manzana' => $this->input->post('manzana'),
                     'calle'   => $this->input->post('calle'),
-                    'disponibilidad' => $this->input->post('disponibilidad')
+                    'disponibilidad' => $this->input->post('disponibilidad'),
+                    'col_norte' => $this->input->post('col_norte'),
+                    'col_sur' => $this->input->post('col_sur'),
+                    'col_este' => $this->input->post('col_este'),
+                    'col_oeste' => $this->input->post('col_oeste'),   
                 ];
                 $add_manzana = $this->Manzana_model->insert($insert);
                 $response = ['id_manzana' => $add_manzana];

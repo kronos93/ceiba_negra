@@ -11,6 +11,10 @@ class Lote_model extends CI_Model {
         $query = $this->db->query("SELECT * FROM {$this->tabla}");
         return $query->result();
     }
+    public function insert($insert){
+        $query = $this->db->insert($this->tabla, $insert);
+        return $this->db->insert_id();
+    }
     //Lotes precio y manzanas
     public function lotesPM(){
         $this->db->select(" {$this->tabla}.`id_lote`,

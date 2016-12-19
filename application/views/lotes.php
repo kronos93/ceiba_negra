@@ -64,15 +64,14 @@
 								</div>
                             </div> 
 							<div class="form-group col-xs-12 col-sm-12">
-								<label class="required" for="precio">Precio:</label>
+								<label class="required" for="id_precio">Precio:</label>
 								
 									<!-- <div class="input-group-addon">Mz.</div> -->
-									<select class="form-control" name="precio" required >
+									<select class="form-control" name="id_precio" required >
 										<?php foreach ($precios as $precio) { ?>
 										<option value="<?= $precio->id_precio ?>">Precio: $<?= number_format($precio->precio,2) ?> - Enganche: $<?= number_format($precio->enganche,2) ?> - Abono: $<?= number_format($precio->abono,2) ?></option>
                                         <?php } ?>
                                     </select>
-                          
                             </div>                         
                         </div>
                         <fieldset class="form-group row">   
@@ -92,6 +91,92 @@
                             <div class="form-group col-xs-12 col-sm-6">
                                 <label for="col_oeste">Colindancia al oeste:</label>
                                 <input type="text" class="form-control" name="col_oeste" placeholder="12.50 Mts. con sendero La Ceiba" />
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="container-icons" >
+                        <i></i>
+                        <h4 class="message"></h4>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <div class="ajax-button">
+                        <input type="submit" class="btn btn-success confirm" value="Guardar cambios"/>
+                        <div class="loader-gif">
+                            <div class="loader-gif-item"></div>
+                            <div class="loader-gif-item"></div>
+                            <div class="loader-gif-item"></div>
+                        </div>
+                    </div>
+                </div>
+            </form>         
+        </div>
+    </div>
+</div>
+<!-- Modal para editar-->
+<div class="modal fade" id="edit-lote" tabindex="-1" role="dialog" aria-labelledby="modalEditLote" aria-hidden="true">
+ 	<div class="modal-dialog" role="document">
+	    <div class="modal-content">
+			<form action="" method="post" id="frm-edit-lotes" autocomplete="off">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="model-title">Editar lote</h4>	
+				</div>
+				<div class="modal-body">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="form-group col-xs-12 col-sm-4">
+								<label class="required" for="manzana">No. de manzana:</label>
+								<div class="input-group">
+									<div class="input-group-addon">Mz.</div>
+									<select class="form-control" name="id_manzana" id="manzana" required >
+										<?php foreach ($manzanas as $manzana) { ?>
+                                        <option value="<?= $manzana->id_manzana ?>"><?= $manzana->manzana ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-4">
+                                <label class="required" for="lote">No. lote:</label>
+								<div class="input-group">
+									<div class="input-group-addon">Lt.</div>
+								    <input type="number" class="form-control" name="lote" id="lote" placeholder="1" min="1" max="100" step="1" required/>
+								</div>
+                            </div>
+							<div class="form-group col-xs-12 col-sm-4">
+                                <label class="required" for="superficie">Superficie:</label>
+								<div class="input-group">									
+								    <input type="number" class="form-control" name="superficie" id="superficie" placeholder="1" min="1" max="80000" step="1" required/>
+									<div class="input-group-addon">Mt<sup>2</sup>.</div>
+								</div>
+                            </div> 
+							<div class="form-group col-xs-12 col-sm-12">
+								<label class="required" for="precio">Precio:</label>
+									<select class="form-control" name="id_precio" id="precio" required >
+										<?php foreach ($precios as $precio) { ?>
+										<option value="<?= $precio->id_precio ?>">Precio: $<?= number_format($precio->precio,2) ?> - Enganche: $<?= number_format($precio->enganche,2) ?> - Abono: $<?= number_format($precio->abono,2) ?></option>
+                                        <?php } ?>
+                                    </select>
+                            </div>                         
+                        </div>
+                        <fieldset class="form-group row">   
+                            <legend>Colindancias:</legend>
+                            <div class="form-group col-xs-12 col-sm-6">
+                                <label for="col_norte">Colindancia al norte:</label>
+                                <input type="text" class="form-control" name="col_norte" id="col_norte" placeholder="46.012 Mts. con Mz. 26 huerto. 15 más 35.00 Mts. con Mz. 26 huerto. 10" />
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-6">
+                                <label for="col_sur">Colindancia al sur:</label>
+                                <input type="text" class="form-control" name="col_sur" id="col_sur" placeholder="45.468 Mts. con Mz. 26 huerto. 13 más 35.00 Mts. con Mz. 26 huerto. 12" />
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-6">
+                                <label for="col_este">Colindancia al este:</label>
+                                <input type="text" class="form-control" name="col_este" id="col_este" placeholder="12.50 Mts. con Mz. 27 huerto. 12" />
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-6">
+                                <label for="col_oeste">Colindancia al oeste:</label>
+                                <input type="text" class="form-control" name="col_oeste" id="col_oeste" placeholder="12.50 Mts. con sendero La Ceiba" />
                             </div>
                         </fieldset>
                     </div>
