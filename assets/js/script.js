@@ -253,7 +253,7 @@ $(document).ready(function() {
         sidebar: true, // hahilita Panel izquierdo
         minimap: false, // Enable minimap
         markers: false, // Deshabilita Marcadores
-        hovertip: false, //Activa o desactiba tooltip en hover
+        // hovertip: false, //Activa o desactiba tooltip en hover
         mapfill: true,
         fillcolor: '',
         fullscreen: false, // Enable fullscreen
@@ -264,21 +264,21 @@ $(document).ready(function() {
         deeplinking: false //inhabilita nombres en uri
     });
     //Herramienta para capturar las coordenadas del mapa
-    mapplic.on('locationopened', function(e, location) {
-        var manzana = (location.category.replace("mz", ""));
-        var lote = (location.title.replace("Lote número ", ""));
-        var data = {
-            manzana: manzana,
-            lote: lote,
-            x: ($(".mapplic-coordinates-x")[0].innerHTML),
-            y: $(".mapplic-coordinates-y")[0].innerHTML
-        };
-        console.log(data);
-        $.ajax({
-            url: base_url + "ajax/guardar_coordenadas/",
-            type: 'post',
-            asyn: true,
-            data: data
-        });
-    });
+    // mapplic.on('locationopened', function(e, location) {
+    //     var manzana = (location.category.replace("mz", ""));
+    //     var lote = (location.title.replace("Lote número ", ""));
+    //     var data = {
+    //         manzana: manzana,
+    //         lote: lote,
+    //         x: ($(".mapplic-coordinates-x")[0].innerHTML),
+    //         y: $(".mapplic-coordinates-y")[0].innerHTML
+    //     };
+    //     console.log(data);
+    //     $.ajax({
+    //         url: base_url + "ajax/guardar_coordenadas/",
+    //         type: 'post',
+    //         asyn: true,
+    //         data: data
+    //     });
+    // });
 });
