@@ -133,7 +133,7 @@ $(document).ready(function() {
             {
                 //Quitar busqueda para esta columna
                 "searchable": false,
-                "targets": [-2]
+                "targets": [-1, -2, -3, -4, -5]
             }
         ]
     });
@@ -242,6 +242,16 @@ $(document).ready(function() {
                 "targets": [4, 5, 6],
                 "className": "col-moneda"
             },
+            {
+                //Quitar ordenamiento para estas columnas
+                "sortable": false,
+                "targets": [2, -1, -2, -3, -4, -5]
+            },
+            {
+                //Quitar busqueda para esta columna
+                "searchable": false,
+                "targets": [-1, -2, -3, -4, -5]
+            }
         ],
     });
     // Datatables de Usuarios
