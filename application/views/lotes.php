@@ -11,8 +11,6 @@
 							<th>Lote</th>
 							<th>Superficie</th>	
 							<th>Precio</th>	
-							<th>Enganche</th>	     
-							<th>Pagos</th>
 							<th>Estado</th>
 							<th>Col. Norte</th>
 							<th>Col. Sur</th>
@@ -62,17 +60,7 @@
 								    <input type="number" class="form-control" name="superficie" placeholder="1" min="1" max="80000" step="1" required/>
 									<div class="input-group-addon">Mt<sup>2</sup>.</div>
 								</div>
-                            </div> 
-							<div class="form-group col-xs-12 col-sm-12">
-								<label class="required" for="id_precio">Precio:</label>
-								
-									<!-- <div class="input-group-addon">Mz.</div> -->
-									<select class="form-control" name="id_precio" required >
-										<?php foreach ($precios as $precio) { ?>
-										<option value="<?= $precio->id_precio ?>">Precio: $<?= number_format($precio->precio,2) ?> - Enganche: $<?= number_format($precio->enganche,2) ?> - Abono: $<?= number_format($precio->abono,2) ?></option>
-                                        <?php } ?>
-                                    </select>
-                            </div>                         
+                            </div>
                         </div>
                         <fieldset class="form-group row">   
                             <legend>Colindancias:</legend>

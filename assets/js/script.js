@@ -36,6 +36,7 @@ function get_data(dtTable, obj_dtTable) {
     $('#' + dtTable + ' tbody').on('click', 'button', function() {
         dtRow = $(this).parents('tr');
         parsedtRow = obj_dtTable.row(dtRow).data();
+        console.log(parsedtRow);
         data_in_form_edit(parsedtRow);
     });
 }
@@ -43,7 +44,7 @@ function get_data(dtTable, obj_dtTable) {
 function data_in_form_edit(json_data) {
     for (var data in json_data) {
         if ($("#" + data).length) {
-            console.log(json_data);
+            //console.log(json_data);
             $("#" + data).val(json_data[data]);
         }
     }
@@ -52,8 +53,13 @@ function data_in_form_edit(json_data) {
 function ajax_done(that, dtTable, msj, type, response) {
     if (type == "insert") {
         that.reset();
-        dtTable.ajax.reload(null, false); // user paging is not reset on reload, usar row porque a max le gusta mas :v
-        dtTable.order([0, 'desc']).draw();
+        console.log(response);
+        var newData = dtTable.row.add(response[0]).draw().node();
+        $(newData)
+            .css('background', 'blue')
+            .animate({ 'font-size': '30px' });
+        //dtTable.ajax.reload(null, false); // user paging is not reset on reload, usar row porque a max le gusta mas :v
+        dtTable.order([0, 'desc']).draw(); //Ordenar por id
     } else if (type == "update") {
         for (var data in response[0]) {
             parsedtRow[data] = response[0][data];
@@ -116,15 +122,15 @@ $(document).ready(function() {
                 "visible": false
             },
             {
-                //Añadir super clase kawai, para esta columna*
-                "targets": 1,
-                "className": "col-mz"
-            },
-            {
                 //Añadir boton dinamicamente, para esta columna*
                 "targets": -1,
                 "data": null,
                 "defaultContent": '<button data-toggle="modal" data-target="#edit-manzana" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>'
+            },
+            {
+                //Añadir super clase kawai, para esta columna*
+                "targets": 1,
+                "className": "col-mz"
             },
             {
                 //Quitar ordenamiento para estas columnas
@@ -209,8 +215,6 @@ $(document).ready(function() {
                 }
             },
             { "data": "precio" },
-            { "data": "enganche" },
-            { "data": "abono" },
             {
                 "data": "vendido", //Supa kawaiesko funcion para el render
                 "render": function(data, type, full, meta) {
@@ -240,7 +244,7 @@ $(document).ready(function() {
                 "defaultContent": '<button data-toggle="modal" data-target="#edit-lote" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>'
             },
             {
-                "targets": [4, 5, 6],
+                "targets": [4],
                 "className": "col-moneda"
             },
             {

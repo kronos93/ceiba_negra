@@ -8,11 +8,11 @@ class Lote_model extends CI_Model {
     }
 
     public function getAll(){
-        $query = $this->db->query("SELECT * FROM {$this->tabla}");
+        $query = $this->db->get("{$this->tabla}");
         return $query->result();
     }
     public function insert($insert){
-        $query = $this->db->insert($this->tabla, $insert);
+        $this->db->insert($this->tabla, $insert);
         return $this->db->insert_id();
     }
     //Lotes precio y manzanas
@@ -21,17 +21,14 @@ class Lote_model extends CI_Model {
                             `manzanas`.`manzana`,
                             {$this->tabla}.`lote`,
                             {$this->tabla}.`superficie`,
-                            `precios`.`precio`,
-                            `precios`.`enganche`,
-                            `precios`.`abono`,
+                            {$this->tabla}.`precio`,
                             {$this->tabla}.`vendido`,
                             {$this->tabla}.`col_norte`,
                             {$this->tabla}.`col_sur`,
                             {$this->tabla}.`col_este`,
                             {$this->tabla}.`col_oeste`");
         $this->db->from("{$this->tabla}");
-        $this->db->join("manzanas", "$this->tabla.id_manzana = manzanas.id_manzana",'left'); 
-        $this->db->join("precios", "$this->tabla.id_precio = precios.id_precio",'left');  
+        $this->db->join("manzanas", "$this->tabla.id_manzana = manzanas.id_manzana",'left');
         $query = $this->db->get();
         return $query->result_array();
     }

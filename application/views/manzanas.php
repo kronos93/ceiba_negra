@@ -23,6 +23,7 @@
 	</div>
 </main>
 <!-- Modal para insertar -->
+<!-- Los inputs no llevan ID -->
 <div class="modal fade" id="add-manzana" tabindex="-1" role="dialog" aria-labelledby="modalAddManzana" aria-hidden="true">
  	<div class="modal-dialog" role="document">
 	    <div class="modal-content">
@@ -94,6 +95,7 @@
   	</div>
 </div>
 <!-- Modal para editar -->
+<!-- Los inputs si llevan ID nombrados como en la base de datos-->
 <div class="modal fade" id="edit-manzana" tabindex="-1" role="dialog" aria-labelledby="modalEditManzana" aria-hidden="true">
  	<div class="modal-dialog" role="document">
 	    <div class="modal-content">

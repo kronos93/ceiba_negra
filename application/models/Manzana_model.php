@@ -14,21 +14,26 @@ class Manzana_model extends CI_Model {
             return $query->result_array();
         }
     }
-    public function get($id){
-        $this->db->select("calle, disponibilidad, col_norte, col_sur, col_este, col_oeste");
-        $query = $this->db->get_where($this->tabla, $id);
+    public function get($select,$where){
+        $this->db->select($select);
+        $query = $this->db->get_where("{$this->tabla}",$where);
         return $query->result();
     }
     public function insert($insert){
         $query = $this->db->insert($this->tabla, $insert);
-        return $this->db->insert_id();
+        $id = $this->db->insert_id();
+        $select = "*";
+        $where = ['id_manzana' => $id];
+        $result = $this->get($select,$where);
+        return $result;
     }
     public function update($where,$set){
         $this->db->set($set);
         $this->db->where($where);
         $this->db->update($this->tabla);
         if($this->db->affected_rows()){
-            return $this->get($where);
+            $select = "calle, disponibilidad, col_norte, col_sur, col_este, col_oeste";            
+            return $this->get($select,$where);
         }else{
             return [];
         }

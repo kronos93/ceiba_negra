@@ -75,8 +75,6 @@ class Ajax extends CI_Controller {
         $response->data = $lotes;
         echo json_encode($response);
     }
-
-    
     //MANZANAS
     public function add_manzana(){
             //Cabazera de respuesta JSON
@@ -96,20 +94,19 @@ class Ajax extends CI_Controller {
                     'col_este' => $this->input->post('col_este'),
                     'col_oeste' => $this->input->post('col_oeste'),   
                 ];
-                $add_manzana = $this->Manzana_model->insert($insert);
-                $response = ['id_manzana' => $add_manzana];
-                echo json_encode($response);
+                $manzana = $this->Manzana_model->insert($insert);                
+                echo json_encode($manzana);
             } else {
                echo validation_errors();
             }
     
     }
     public function get_manzanas(){
-        header("Content-type: application/json; charset=utf-8");
-        $response = new stdClass();
-        $manzanas = $this->Manzana_model->getAll('array');
-        $response->data = $manzanas;
-        echo json_encode($response);
+        header("Content-type: application/json; charset=utf-8"); //Header generico
+        $response = new stdClass(); //Clase generica
+        $manzanas = $this->Manzana_model->getAll('array'); //<- Obtener datos
+        $response->data = $manzanas; // Atributo de la clase generico para el dataTable
+        echo json_encode($response); //Response JSON
     }
     public function update_manzana(){
         header("Content-type: application/json; charset=utf-8");
