@@ -54,4 +54,8 @@
 				</div><!-- /.navbar-collapse -->
 			</div><!-- /.container-fluid -->
 		</nav>
+		<!-- Componer, poner dentro del nav, para nombres largos -->
+		<div class="shopCart" data-venta="9">
+			<span class="fa fa-shopping-cart fa-2x" ></span>
+		</div>
 	</header>

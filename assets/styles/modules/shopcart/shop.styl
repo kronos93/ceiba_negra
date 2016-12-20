@@ -1,0 +1,21 @@
+.shopCart
+	absolute top 0 right 80px
+	padding 0px 20px
+	height 61px
+	span
+		position relative
+		line-height 60px
+		color #fff
+	&:after
+		content: attr(data-venta)
+		text-align: center
+		line-height 18px
+		absolute top 8px right 8px
+		width 18px
+		height 18px
+		background #FF0000
+		border-radius 50%
+		color #fff
+		font-weight 600
+	+from-width(4,anti-overlap:false)
+		absolute top 0 right 200px
