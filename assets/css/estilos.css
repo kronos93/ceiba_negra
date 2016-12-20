@@ -7666,6 +7666,29 @@ g.mapplic-active > * {
     right: 200px;
   }
 }
+.lotesSelecionados {
+  padding: 10px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.lotesSelecionados li {
+  text-align: left;
+  margin-bottom: 3px;
+  border-bottom: 1px solid #ccc;
+}
+.lotesSelecionados li a {
+  color: #000;
+  text-align: left;
+  display: block;
+  padding: 7px 10px;
+  text-decoration: none;
+  outline: none;
+}
+.lotesSelecionados li a:hover,
+.lotesSelecionados li a:focus {
+  outline: none;
+}
 .wrap-login {
   min-height: 600px;
   width: 100%;
