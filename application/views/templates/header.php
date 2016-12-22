@@ -32,6 +32,18 @@
 				  	</a>
 				  	<div class="shopCart">
 						<span class="fa fa-shopping-cart fa-2x" data-venta="9"></span>
+						<nav class="my-dropdown">
+							<ul >
+								<li><a href="#">Manzana 23, Lote2</a></li>
+								<li><a href="#">Manzana 23, Lote2</a></li>
+								<li><a href="#">Manzana 23, Lote2</a></li>
+								<li><a href="#">Manzana 23, Lote2</a></li>
+								<li><a href="#">Manzana 23, Lote2</a></li>
+								<li><a href="#">Manzana 23, Lote2</a></li>
+							</ul>
+							<a href="#" class="btn btn-success center-block">Vender</a>
+						</nav>
+							
 					</div>
 				</div>
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
