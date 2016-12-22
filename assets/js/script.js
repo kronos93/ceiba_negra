@@ -211,10 +211,12 @@ $(document).ready(function() {
             {
                 "data": "superficie",
                 "render": function(data, type, full, meta) {
-                    return data + " mt<sup>2</sup>.";
+                    return '<span class="superficie">'+data + '</span> mt<sup>2</sup>.';
                 }
             },
             { "data": "precio" },
+            { "data": "enganche" },
+            { "data": "abono" },
             {
                 "data": "vendido", //Supa kawaiesko funcion para el render
                 "render": function(data, type, full, meta) {
@@ -244,9 +246,10 @@ $(document).ready(function() {
                 "defaultContent": '<button data-toggle="modal" data-target="#edit-lote" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>'
             },
             {
-                "targets": [4],
-                "className": "col-moneda"
+                "targets": [4,5,6],
+                "className": "currency"
             },
+           
             {
                 //Quitar ordenamiento para estas columnas
                 "sortable": false,
@@ -258,6 +261,12 @@ $(document).ready(function() {
                 "searchable": false,
             }
         ],
+        "drawCallback": function (settings) {
+            $(".currency").autoNumeric({
+                aSign: "$ "
+            });
+            $(".superficie").autoNumeric();                            
+        },
     });
     get_data("lotes-table", lotes_table);
     //Formulario para agregar lotes
