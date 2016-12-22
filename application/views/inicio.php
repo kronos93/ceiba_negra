@@ -2,7 +2,7 @@
     <section id="mapa">
         <div class="container-fluid container">
             <div class="row">
-                <div class="col-xs-12 col-lg-10">
+                <div class="col-xs-12 col-lg-12">
                     <div id="wrap">
                         <!-- Site content -->
                         <div id="content">
@@ -32,16 +32,6 @@
                             </section>
                         </div>
                     </div>
-                </div>
-                <div class="col-xs-12 col-lg-2 well side-panelLotes">
-                    <h4 class="text-center">Lotes Seleccionados</h4 class="text-center">
-                    <hr>
-                    <ul class="lotesSelecionados">
-                        <li><a href="">Lote 23 (Mza. 5)</a></li>
-                        <li><a href="">Lote 23 (Mza. 5)</a></li>
-                    </ul>
-                    <hr>
-                    <a href="#" class="btn btn-success center-block">Comprar Lotes</a>
                 </div>
             </div>
         </div>
