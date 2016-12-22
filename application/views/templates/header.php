@@ -30,6 +30,9 @@
 				  			<figcaption>La Ceiba</figcaption>
 				  		</figure>
 				  	</a>
+				  	<div class="shopCart">
+						<span class="fa fa-shopping-cart fa-2x" data-venta="9"></span>
+					</div>
 				</div>
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
@@ -47,7 +50,4 @@
 			</div><!-- /.container-fluid -->
 		</nav>
 		<!-- Componer, poner dentro del nav, para nombres largos -->
-		<div class="shopCart" data-venta="9">
-			<span class="fa fa-shopping-cart fa-2x" ></span>
-		</div>
 	</header>

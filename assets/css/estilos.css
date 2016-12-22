@@ -7272,6 +7272,14 @@ header {
 .navbar-default {
   border-bottom: 5px solid #3e4750;
 }
+.navbar-default .navbar-header {
+  float: none;
+}
+@media only screen and (min-width: 769px) {
+  .navbar-default .navbar-header {
+    float: right;
+  }
+}
 .brand-ceiba {
   display: inline-block;
   position: absolute;
@@ -7634,9 +7642,7 @@ g.mapplic-active > * {
   }
 }
 .shopCart {
-  position: absolute;
-  top: 0;
-  right: 80px;
+  float: right;
   padding: 0px 20px;
   height: 61px;
 }
@@ -7645,26 +7651,20 @@ g.mapplic-active > * {
   line-height: 60px;
   color: #fff;
 }
-.shopCart:after {
+.shopCart span:after {
   content: attr(data-venta);
   text-align: center;
   line-height: 18px;
   position: absolute;
   top: 8px;
-  right: 8px;
+  right: -10px;
   width: 18px;
   height: 18px;
+  font-size: 15px;
   background: #f00;
   border-radius: 50%;
   color: #fff;
   font-weight: 600;
-}
-@media only screen and (min-width: 768px) {
-  .shopCart {
-    position: absolute;
-    top: 0;
-    right: 200px;
-  }
 }
 .lotesSelecionados {
   padding: 10px;
