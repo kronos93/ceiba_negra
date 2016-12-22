@@ -11,6 +11,8 @@
 							<th>Lote</th>
 							<th>Superficie</th>	
 							<th>Precio</th>	
+                            <th>Enganche</th> 
+                            <th>Abono</th> 
 							<th>Estado</th>
 							<th>Col. Norte</th>
 							<th>Col. Sur</th>
