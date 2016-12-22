@@ -21,13 +21,16 @@ class Lote_model extends CI_Model {
                             `manzanas`.`manzana`,
                             {$this->tabla}.`lote`,
                             {$this->tabla}.`superficie`,
-                            {$this->tabla}.`precio`,
+                            `precios`.`precio`,
+                            `precios`.`enganche`,
+                            `precios`.`abono`,
                             {$this->tabla}.`vendido`,
                             {$this->tabla}.`col_norte`,
                             {$this->tabla}.`col_sur`,
                             {$this->tabla}.`col_este`,
                             {$this->tabla}.`col_oeste`");
         $this->db->from("{$this->tabla}");
+     $this->db->join("precios", "$this->tabla.id_precio = precios.id_precio",'left');
         $this->db->join("manzanas", "$this->tabla.id_manzana = manzanas.id_manzana",'left');
         $query = $this->db->get();
         return $query->result_array();
