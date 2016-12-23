@@ -84,6 +84,10 @@ function ajax_fail(response) {
 }
 //Al cargar la página
 $(document).ready(function() {
+    //GENERAL
+    if ($('.superficie').length) {
+        $('.superficie').autoNumeric(); //Averiguar más del plugin para evitar menores a 0
+    }
     //MANZANAS
     //Estructura de Datatable para las Manzanas (La tabla de vista)
     var manzanas_table = $('#manzanas-table').DataTable({
@@ -211,7 +215,7 @@ $(document).ready(function() {
             {
                 "data": "superficie",
                 "render": function(data, type, full, meta) {
-                    return '<span class="superficie">'+data + '</span> mt<sup>2</sup>.';
+                    return '<span class="superficie">' + data + '</span> mt<sup>2</sup>.';
                 }
             },
             { "data": "precio" },
@@ -246,10 +250,10 @@ $(document).ready(function() {
                 "defaultContent": '<button data-toggle="modal" data-target="#edit-lote" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>'
             },
             {
-                "targets": [4,5,6],
+                "targets": [4, 5, 6],
                 "className": "currency"
             },
-           
+
             {
                 //Quitar ordenamiento para estas columnas
                 "sortable": false,
@@ -261,18 +265,19 @@ $(document).ready(function() {
                 "searchable": false,
             }
         ],
-        "drawCallback": function (settings) {
+        "drawCallback": function(settings) {
             $(".currency").autoNumeric({
                 aSign: "$ "
             });
-            $(".superficie").autoNumeric();                            
+            $(".superficie").autoNumeric();
         },
     });
     get_data("lotes-table", lotes_table);
     //Formulario para agregar lotes
     $('#frm-add-lotes').on('submit', function(e) {
         e.preventDefault();
-        var data = $(this).serializeArray(); //Serializar formulario
+        var data = $(this).serializeObject(); //Serializar formulario
+        data.superficie = $(this.superficie).autoNumeric('get');
         var that = this; //Almacenar el formulario donde sucedio el evento submit
         //Llamada ajax
         $.ajax({

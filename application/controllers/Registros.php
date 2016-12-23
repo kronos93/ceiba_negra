@@ -18,6 +18,7 @@ class Registros extends CI_Controller {
 		$data['title'] = "Lotes";
 		$data['body'] = "lotes";
 		$data['manzanas']= $this->Manzana_model->getAll('object');
+		$data['precios']= $this->Precio_model->getAll();
 		$this->load->view('templates/template',$data);
 	}
 }

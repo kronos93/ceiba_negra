@@ -6,7 +6,7 @@
 				<table id="lotes-table" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
 					<thead>
 						<tr>
-							<th>ID</th>
+                            <th>Id. Lote</th>
 							<th>Manzana</th>
 							<th>Lote</th>
 							<th>Superficie</th>	
@@ -53,15 +53,23 @@
                                 <label class="required" for="lote">No. lote:</label>
 								<div class="input-group">
 									<div class="input-group-addon">Lt.</div>
-								    <input type="number" class="form-control" name="lote" placeholder="1" min="1" max="100" step="1" required/>
+								    <input type="text" class="form-control" name="lote" placeholder="1" pattern="[0-9]{1,3}[A-Za-z]{0,1}" required/>
 								</div>
                             </div>
 							<div class="form-group col-xs-12 col-sm-4">
                                 <label class="required" for="superficie">Superficie:</label>
 								<div class="input-group">									
-								    <input type="number" class="form-control" name="superficie" placeholder="1" min="1" max="80000" step="1" required/>
+								    <input type="text" class="form-control superficie" name="superficie" placeholder="1" required/>
 									<div class="input-group-addon">Mt<sup>2</sup>.</div>
 								</div>
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-12">
+								<label class="required" for="id_precio">Seleccione un precio: </label>								
+                                <select class="form-control" name="id_precio" required >
+                                    <?php foreach ($precios as $precio) { ?>
+                                    <option value="<?= $precio->id_precio ?>">Precio: $ <?= number_format($precio->precio,2) ?> - Enganche: $ <?= number_format($precio->enganche,2) ?> - Abono: $ <?= number_format($precio->abono,2) ?></option>
+                                    <?php } ?>
+                                </select>                                
                             </div>
                         </div>
                         <fieldset class="form-group row">   

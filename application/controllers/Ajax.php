@@ -60,9 +60,8 @@ class Ajax extends CI_Controller {
                     'col_este' => $this->input->post('col_este'),
                     'col_oeste' => $this->input->post('col_oeste'),                    
                 ];
-                $add_lote = $this->Lote_model->insert($insert);
-                $response = ['id_lote' => $add_lote];
-                echo json_encode($response);
+                $lote = $this->Lote_model->insert($insert);
+                echo json_encode($lote);
             } else {
                echo validation_errors();
             }

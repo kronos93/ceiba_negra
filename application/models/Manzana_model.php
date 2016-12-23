@@ -21,11 +21,11 @@ class Manzana_model extends CI_Model {
     }
     public function insert($insert){
         $query = $this->db->insert($this->tabla, $insert);
-        $id = $this->db->insert_id();
+        $id_nueva_manzana = $this->db->insert_id();
         $select = "*";
-        $where = ['id_manzana' => $id];
-        $result = $this->get($select,$where);
-        return $result;
+        $where = ['id_manzana' => $id_nueva_manzana];
+        $nueva_manzana = $this->get($select,$where);
+        return $nueva_manzana;
     }
     public function update($where,$set){
         $this->db->set($set);
