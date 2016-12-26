@@ -2,13 +2,13 @@
 	<div class="container-fluid container">
 		<div class="row">
 			<div class="col-xs-12">
-				<legend>Lotes <button  data-toggle="modal" data-target="#add-lote" class="btn btn-success pull-right"><i class="fa fa-plus"></i></button> <div class="clearfix"></div></legend>
-				<table id="lotes-table" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
+				<legend>Huertos <button  data-toggle="modal" data-target="#add-huerto" class="btn btn-success pull-right"><i class="fa fa-plus"></i></button> <div class="clearfix"></div></legend>
+				<table id="huertos-table" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
 					<thead>
 						<tr>
                             <th>Id. Lote</th>
 							<th>Manzana</th>
-							<th>Lote</th>
+							<th>Huerto</th>
 							<th>Superficie</th>	
 							<th>Precio</th>	
                             <th>Enganche</th> 
@@ -27,13 +27,13 @@
 	</div>
 </main>
 <!-- Modal para insertar -->
-<div class="modal fade" id="add-lote" tabindex="-1" role="dialog" aria-labelledby="modalAddLote" aria-hidden="true">
+<div class="modal fade" id="add-huerto" tabindex="-1" role="dialog" aria-labelledby="modalAddHuerto" aria-hidden="true">
  	<div class="modal-dialog" role="document">
 	    <div class="modal-content">
-			<form action="" method="post" id="frm-add-lotes" autocomplete="off">
+			<form action="" method="post" id="frm-add-huertos" autocomplete="off">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="model-title">Añadir lote</h4>	
+					<h4 class="model-title">Añadir huerto</h4>	
 				</div>
 				<div class="modal-body">
 					<div class="container-fluid">
@@ -50,10 +50,10 @@
                                 </div>
                             </div>
                             <div class="form-group col-xs-12 col-sm-4">
-                                <label class="required" for="lote">No. lote:</label>
+                                <label class="required" for="huerto">No. huerto:</label>
 								<div class="input-group">
-									<div class="input-group-addon">Lt.</div>
-								    <input type="text" class="form-control" name="lote" placeholder="1" pattern="[0-9]{1,3}[A-Za-z]{0,1}" required/>
+									<div class="input-group-addon">Ht.</div>
+								    <input type="text" class="form-control" name="huerto" placeholder="1" pattern="[0-9]{1,3}[A-Za-z]{0,1}" required/>
 								</div>
                             </div>
 							<div class="form-group col-xs-12 col-sm-4">
@@ -113,13 +113,13 @@
     </div>
 </div>
 <!-- Modal para editar-->
-<div class="modal fade" id="edit-lote" tabindex="-1" role="dialog" aria-labelledby="modalEditLote" aria-hidden="true">
+<div class="modal fade" id="edit-huertos" tabindex="-1" role="dialog" aria-labelledby="modalEditHuerto" aria-hidden="true">
  	<div class="modal-dialog" role="document">
 	    <div class="modal-content">
-			<form action="" method="post" id="frm-edit-lotes" autocomplete="off">
+			<form action="" method="post" id="frm-edit-huertos" autocomplete="off">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="model-title">Editar lote</h4>	
+					<h4 class="model-title">Editar huerto</h4>	
 				</div>
 				<div class="modal-body">
 					<div class="container-fluid">
@@ -128,7 +128,7 @@
 								<label class="required" for="manzana">No. de manzana:</label>
 								<div class="input-group">
 									<div class="input-group-addon">Mz.</div>
-									<select class="form-control" name="id_manzana" id="manzana" required >
+									<select class="form-control" name="id_manzana" id="id_manzana" required >
 										<?php foreach ($manzanas as $manzana) { ?>
                                         <option value="<?= $manzana->id_manzana ?>"><?= $manzana->manzana ?></option>
                                         <?php } ?>
@@ -136,22 +136,22 @@
                                 </div>
                             </div>
                             <div class="form-group col-xs-12 col-sm-4">
-                                <label class="required" for="lote">No. lote:</label>
+                                <label class="required" for="lote">No. huerto:</label>
 								<div class="input-group">
-									<div class="input-group-addon">Lt.</div>
-								    <input type="number" class="form-control" name="lote" id="lote" placeholder="1" min="1" max="100" step="1" required/>
+									<div class="input-group-addon">Ht.</div>
+								    <input type="number" class="form-control" name="huerto" id="huerto" placeholder="1" min="1" max="100" step="1" required/>
 								</div>
                             </div>
 							<div class="form-group col-xs-12 col-sm-4">
                                 <label class="required" for="superficie">Superficie:</label>
 								<div class="input-group">									
-								    <input type="number" class="form-control" name="superficie" id="superficie" placeholder="1" min="1" max="80000" step="1" required/>
+								    <input type="text" class="form-control superficie" name="superficie" id="superficie" placeholder="1" required/>
 									<div class="input-group-addon">Mt<sup>2</sup>.</div>
 								</div>
                             </div> 
 							<div class="form-group col-xs-12 col-sm-12">
 								<label class="required" for="precio">Precio:</label>
-									<select class="form-control" name="id_precio" id="precio" required >
+									<select class="form-control" name="id_precio" id="id_precio" required >
 										<?php foreach ($precios as $precio) { ?>
 										<option value="<?= $precio->id_precio ?>">Precio: $<?= number_format($precio->precio,2) ?> - Enganche: $<?= number_format($precio->enganche,2) ?> - Abono: $<?= number_format($precio->abono,2) ?></option>
                                         <?php } ?>

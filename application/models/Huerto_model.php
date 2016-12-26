@@ -1,7 +1,7 @@
 <?php 
 
-class Lote_model extends CI_Model {
-    private $tabla = "lotes";
+class Huerto_model extends CI_Model {
+    private $tabla = "huertos";
     public function __construct() {
         parent::__construct();
         $this->load->database();
@@ -13,17 +13,18 @@ class Lote_model extends CI_Model {
     }
     public function insert($insert){
         $this->db->insert($this->tabla, $insert);
-        $id_nuevo_lote = $this->db->insert_id();
-        $where = ['id_lote' => $id_nuevo_lote];
-        $nuevo_lote = $this->lotesPM($where);
-        return $nuevo_lote;
+        $id_nuevo_huerto = $this->db->insert_id();
+        $where = ['id_huerto' => $id_nuevo_huerto];
+        $nuevo_huerto = $this->huertosPM($where);
+        return $nuevo_huerto;
     }
-    //Lotes precio y manzanas
-    public function lotesPM($where = []){
-        $this->db->select(" {$this->tabla}.`id_lote`,
+    //Huertos precio y manzanas
+    public function huertosPM($where = []){
+        $this->db->select(" {$this->tabla}.`id_huerto`,
                             {$this->tabla}.`id_precio`,
+                            `manzanas`.`id_manzana`, 
                             `manzanas`.`manzana`,
-                            {$this->tabla}.`lote`,
+                            {$this->tabla}.`huerto`,
                             {$this->tabla}.`superficie`,
                             `precios`.`precio`,
                             `precios`.`enganche`,

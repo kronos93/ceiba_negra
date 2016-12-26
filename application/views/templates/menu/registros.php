@@ -3,7 +3,7 @@
     <ul class="dropdown-menu">
         <!-- Links para nuevos registros -->
         <li><a href="<?= base_url() ?>registros/manzanas">Mazanas</a></li>
-        <li><a href="<?= base_url() ?>registros/lotes">Lotes</a></li>
+        <li><a href="<?= base_url() ?>registros/huertos">Huertos</a></li>
         <li role="separator" class="divider"></li>
         <li><a href="#">Otra cosa</a></li>
     </ul>

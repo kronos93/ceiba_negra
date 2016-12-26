@@ -194,12 +194,12 @@ $(document).ready(function() {
             });
     });
 
-    //LOTES
-    //Datatable de Lotes
-    var lotes_table = $('#lotes-table').DataTable({
-        "ajax": base_url + 'ajax/get_lotes_pmz',
+    //Huertos
+    //Datatable de los huertos
+    var huertos_table = $('#huertos-table').DataTable({
+        "ajax": base_url + 'ajax/get_huertos_pmz',
         "columns": [ //Atributos para la tabla
-            { "data": "id_lote" },
+            { "data": "id_huerto" },
             {
                 "data": "manzana",
                 "render": function(data, type, full, meta) {
@@ -207,9 +207,9 @@ $(document).ready(function() {
                 }
             },
             {
-                "data": "lote",
+                "data": "huerto",
                 "render": function(data, type, full, meta) {
-                    return 'Lt.  ' + data;
+                    return 'Ht.  ' + data;
                 }
             },
             {
@@ -247,7 +247,7 @@ $(document).ready(function() {
                 //Añadir boton dinamicamente, para esta columna*
                 "targets": -1,
                 "data": null,
-                "defaultContent": '<button data-toggle="modal" data-target="#edit-lote" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>'
+                "defaultContent": '<button data-toggle="modal" data-target="#edit-huerto" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>'
             },
             {
                 "targets": [4, 5, 6],
@@ -272,16 +272,16 @@ $(document).ready(function() {
             $(".superficie").autoNumeric();
         },
     });
-    get_data("lotes-table", lotes_table);
-    //Formulario para agregar lotes
-    $('#frm-add-lotes').on('submit', function(e) {
+    get_data("huertos-table", huertos_table);
+    //Formulario para agregar huertos
+    $('#frm-add-huertos').on('submit', function(e) {
         e.preventDefault();
         var data = $(this).serializeObject(); //Serializar formulario
         data.superficie = $(this.superficie).autoNumeric('get');
         var that = this; //Almacenar el formulario donde sucedio el evento submit
         //Llamada ajax
         $.ajax({
-                url: base_url + "ajax/add_lote",
+                url: base_url + "ajax/add_huerto",
                 type: "post",
                 data: data,
                 beforeSend: function(xhr) {
@@ -289,21 +289,21 @@ $(document).ready(function() {
                 }
             })
             .done(function(response) {
-                ajax_done(that, lotes_table, "Lote insertado correctamente", "insert", response);
+                ajax_done(that, huertos_table, "Huerto insertado correctamente", "insert", response);
             })
             .fail(function(response) {
                 ajax_fail(response);
             });
     });
     //Formulario para editar lotes
-    $("#frm-edit-lotes").on('submit', function(e) {
+    $("#frm-edit-huertos").on('submit', function(e) {
         e.preventDefault();
         var data = $(this).serializeArray(); //Serializar formulario
-        data.push({ "name": "id_lote", "value": parsedtRow.id_lote }); //Añadimos el ID de la manzana en formato json
+        data.push({ "name": "id_huerto", "value": parsedtRow.id_lote }); //Añadimos el ID de la manzana en formato json
         var that = this; //Almacenar el formulario donde sucedio el evento submit
         //Llamada ajax
         $.ajax({
-                url: base_url + "ajax/update_lote",
+                url: base_url + "ajax/update_huerto",
                 type: "post",
                 data: data,
                 beforeSend: function(xhr) {
@@ -311,7 +311,7 @@ $(document).ready(function() {
                 }
             })
             .done(function(response) {
-                ajax_done(that, lotes_table, "Datos del lote actualizados correctamente", "update", response);
+                ajax_done(that, huertos_table, "Datos del huerto actualizados correctamente", "update", response);
             })
             .fail(function(response) {
                 ajax_fail(response);

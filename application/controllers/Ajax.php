@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Ajax extends CI_Controller {	
     function __construct() {
         parent::__construct();
-        $this->load->model('Lote_model');
+        $this->load->model('Huerto_model');
         $this->load->model('Manzana_model');
     }
     //DATOS PARA EL MAPA
@@ -40,19 +40,20 @@ class Ajax extends CI_Controller {
         $this->Lote_model->set_coordenadas($where,$update);
     }
     //LOTES
-    public function add_lote(){
+    public function add_huerto(){
             //Cabazera de respuesta JSON
             header("Content-type: application/json; charset=utf-8");   
             //Validación de form
             $this->form_validation->set_error_delimiters('', '');
-            $this->form_validation->set_rules('id_manzana', 'Manzana', 'trim|required');
-            $this->form_validation->set_rules('lote', 'Lote', 'trim|required');
-            $this->form_validation->set_rules('superficie', 'Superficie', 'trim|required');
-            $this->form_validation->set_rules('id_precio', 'Precio', 'trim|required');
+            //$this->form_validation->set_rules('id_manzana', 'Manzana', 'trim|required');
+            //$this->form_validation->set_rules('huerto', 'Huerto', 'trim|required');
+            $this->form_validation->set_rules('huerto', 'Combinación', 'callback_mh_check[huerto,id_manzana]');
+            //$this->form_validation->set_rules('superficie', 'Superficie', 'trim|required');
+            //$this->form_validation->set_rules('id_precio', 'Precio', 'trim|required');
             if ($this->form_validation->run()) {
                 $insert = [
                     'id_manzana' => $this->input->post('id_manzana'),
-                    'lote'   => $this->input->post('lote'),
+                    'huerto'   => $this->input->post('huerto'),
                     'superficie' => $this->input->post('superficie'),
                     'id_precio' => $this->input->post('id_precio'),
                     'col_norte' => $this->input->post('col_norte'),
@@ -60,18 +61,18 @@ class Ajax extends CI_Controller {
                     'col_este' => $this->input->post('col_este'),
                     'col_oeste' => $this->input->post('col_oeste'),                    
                 ];
-                $lote = $this->Lote_model->insert($insert);
-                echo json_encode($lote);
+                $huerto = $this->Huerto_model->insert($insert);
+                echo json_encode($huerto);
             } else {
                echo validation_errors();
             }
     
     }
-    public function get_lotes_pmz(){
+    public function get_huertos_pmz(){
         header("Content-type: application/json; charset=utf-8");
         $response = new stdClass();
-        $lotes = $this->Lote_model->lotesPM();
-        $response->data = $lotes;
+        $huertos = $this->Huerto_model->huertosPM();
+        $response->data = $huertos;
         echo json_encode($response);
     }
     //MANZANAS
@@ -134,5 +135,20 @@ class Ajax extends CI_Controller {
             array_push($response['data'],$values);
         }
         return $response;
+    }
+    //Manzana y huerto combinados
+    public function mh_check($value,$request){
+        $data = explode(",",$request);
+        $where = [];
+        foreach($data as $input){
+            $where['huertos.' . $input] = $this->input->post($input);
+        }
+        $huertos = $this->Huerto_model->huertosPM($where);
+        if(count($huertos)){
+             $this->form_validation->set_message('mh_check','Combinacion Manzana/Huerto repetida.'); // set your message
+             return false;
+        }else{
+            return true;
+        }
     }
 }
