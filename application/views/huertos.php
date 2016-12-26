@@ -113,7 +113,7 @@
     </div>
 </div>
 <!-- Modal para editar-->
-<div class="modal fade" id="edit-huertos" tabindex="-1" role="dialog" aria-labelledby="modalEditHuerto" aria-hidden="true">
+<div class="modal fade" id="edit-huerto" tabindex="-1" role="dialog" aria-labelledby="modalEditHuerto" aria-hidden="true">
  	<div class="modal-dialog" role="document">
 	    <div class="modal-content">
 			<form action="" method="post" id="frm-edit-huertos" autocomplete="off">

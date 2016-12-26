@@ -45,11 +45,10 @@ class Ajax extends CI_Controller {
             header("Content-type: application/json; charset=utf-8");   
             //Validación de form
             $this->form_validation->set_error_delimiters('', '');
-            //$this->form_validation->set_rules('id_manzana', 'Manzana', 'trim|required');
-            //$this->form_validation->set_rules('huerto', 'Huerto', 'trim|required');
-            $this->form_validation->set_rules('huerto', 'Combinación', 'callback_mh_check[huerto,id_manzana]');
-            //$this->form_validation->set_rules('superficie', 'Superficie', 'trim|required');
-            //$this->form_validation->set_rules('id_precio', 'Precio', 'trim|required');
+            $this->form_validation->set_rules('id_manzana', 'Manzana', 'trim|required');
+            $this->form_validation->set_rules('huerto', 'Huerto', 'trim|required|callback_mh_check[huerto,id_manzana]');
+            $this->form_validation->set_rules('superficie', 'Superficie', 'trim|required');
+            $this->form_validation->set_rules('id_precio', 'Precio', 'trim|required');
             if ($this->form_validation->run()) {
                 $insert = [
                     'id_manzana' => $this->input->post('id_manzana'),
