@@ -88,6 +88,9 @@ $(document).ready(function() {
     if ($('.superficie').length) {
         $('.superficie').autoNumeric(); //Averiguar más del plugin para evitar menores a 0
     }
+    $('#shopCartSale').on('click',function(){
+        $(this).find('.my-dropdown').slideToggle('3500');
+    });
     //USUARIOS
     $("#edit-user").on('hidden.bs.modal', function() {
         $(this).removeData('bs.modal');

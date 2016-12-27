@@ -7686,9 +7686,6 @@ g.mapplic-active > * {
   color: #000;
   white-space: nowrap;
 }
-.shopCart:hover .my-dropdown {
-  display: block;
-}
 .wrap-login {
   min-height: 600px;
   width: 100%;
