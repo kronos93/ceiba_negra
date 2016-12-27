@@ -23,9 +23,9 @@ class Ajax extends CI_Controller {
             $lev->id = "landmarks-{$mz->id}";
             $lev->title = "{$mz->title}";
          
-            $lotes = $this->Lote_model->getAllM($id_manzana);
+            $huerto = $this->Huerto_model->getAllM($id_manzana);
             
-            $lev->locations = $lotes;
+            $lev->locations = $huerto;
             $lev->map = base_url()."assets/img/mapas/{$mz->id}.svg"; 
             array_push($respuesta->levels,$lev);
         }      

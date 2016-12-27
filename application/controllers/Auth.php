@@ -442,7 +442,7 @@ class Auth extends CI_Controller {
         }
         else
         {
-        	var_dump($tables['users'] );
+        	
             $this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'required|valid_email|is_unique[' . $tables['users'] . '.email]');
         }
         $this->form_validation->set_rules('phone', $this->lang->line('create_user_validation_phone_label'), 'trim');
@@ -526,10 +526,10 @@ class Auth extends CI_Controller {
                 'type'  => 'password',
                 'value' => $this->form_validation->set_value('password_confirm'),
             );
-			$data = array_merge($this->data,array('title'=>'Crear usuario','body' => 'auth/create_user'));
-			$this->load->view('templates/template',$data);
+			//$data = array_merge($this->data,array('title'=>'Crear usuario','body' => 'auth/create_user'));
+			//$this->load->view('templates/template',$data);
 			
-            //$this->_render_page('auth/create_user', $this->data);
+            $this->_render_page('auth/create_user', $this->data);
         }
     }
 

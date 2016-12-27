@@ -88,6 +88,18 @@ $(document).ready(function() {
     if ($('.superficie').length) {
         $('.superficie').autoNumeric(); //Averiguar más del plugin para evitar menores a 0
     }
+    //USUARIOS
+    $("#edit-user").on('hidden.bs.modal', function() {
+        $(this).removeData('bs.modal');
+    });
+    $("#add-user").on('shown.bs.modal', function() {
+        $("#ion_addUser").on('submit', function(e) {
+            e.preventDefault();
+            console.log($(this).serializeArray());
+        });
+    }).on('hidden.bs.modal', function() {
+        $(this).removeData('bs.modal');
+    });
     //MANZANAS
     //Estructura de Datatable para las Manzanas (La tabla de vista)
     var manzanas_table = $('#manzanas-table').DataTable({

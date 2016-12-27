@@ -47,17 +47,8 @@
 					</div>
 				</div>
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-					<ul class="nav navbar-nav">
-						<?php $this->load->view('./templates/menu/registros'); ?>
-				  	</ul>
-				  	<ul class="nav navbar-nav navbar-right">
-						<li class="dropdown">
-						 	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Bienvenido: <?= $this->session->userdata('first_name') ?> <span class="caret"></span></a>
-							<ul class="dropdown-menu">
-								<li><a href="<?= base_url()?>auth/logout">Cerrar sesión</a></li>
-						  	</ul>
-						</li>
-				  	</ul>
+					<?php $this->load->view('./templates/menu/registros'); ?>
+				  	<?php $this->load->view('./templates/menu/perfil'); ?>
 				</div><!-- /.navbar-collapse -->
 			</div><!-- /.container-fluid -->
 		</nav>

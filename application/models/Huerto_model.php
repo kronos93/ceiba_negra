@@ -44,7 +44,17 @@ class Huerto_model extends CI_Model {
         return $query->result_array();
     }
     public function getAllM($mz){
-        $query = $this->db->query("SELECT concat('m',id_manzana,'lote',lote) as id, concat('Lote número ', lote) as title, concat('mz',id_manzana) as category, lotes.x,lotes.y FROM lotes WHERE id_manzana = {$mz}");
+        //Hacer esto un JOIN
+        $query = $this->db->query("
+                SELECT 
+                    concat('m',id_manzana,'lote',huerto) as id, 
+                    concat('Huerto número ', huerto) as title, 
+                    concat('mz',id_manzana) as category, 
+                    huertos.x,
+                    huertos.y 
+                FROM 
+                    huertos 
+                WHERE id_manzana = {$mz}");
         return $query->result();
     }
 
