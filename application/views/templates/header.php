@@ -30,8 +30,8 @@
 				  			<figcaption>La Ceiba</figcaption>
 				  		</figure>
 				  	</a>
-				  	<div class="shopCart">
-						<span class="fa fa-shopping-cart fa-2x" data-venta="9"></span>
+				  	<div class="shopCart" id="shopCartSale">
+						<span class="fa fa-shopping-cart fa-2x" id="shopCartSaleCount" data-venta="<?= $huertos ?>"></span>
 						<nav class="my-dropdown">
 							<ul >
 								<li><a href="#">Manzana 23, Lote2</a></li>

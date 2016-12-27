@@ -126,6 +126,15 @@ class Ajax extends CI_Controller {
         }
         
     }
+    public function add_cart(){
+        if(!$this->session->has_userdata('lotes')){
+            $this->session->set_userdata('lotes', 0);
+        }else{
+            $huerto = $this->session->userdata('lotes') + 1;
+            $this->session->set_userdata('lotes',$huerto);
+        }
+        
+    }
     //Utileria inutil xD.... Despreciar usando stdClass
     public function format_datatable($data){
         $response = array("data" => array());

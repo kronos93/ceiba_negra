@@ -47,9 +47,11 @@ class Huerto_model extends CI_Model {
         //Hacer esto un JOIN
         $query = $this->db->query("
                 SELECT 
-                    concat('m',id_manzana,'lote',huerto) as id, 
-                    concat('Huerto número ', huerto) as title, 
-                    concat('mz',id_manzana) as category, 
+                    CONCAT('m',id_manzana,'lote',huerto) as id, 
+                    CONCAT('Huerto número ', huerto) as title, 
+                    CONCAT('mz',id_manzana) as category, 
+                    #CONCAT('<button id=\"',id_manzana,' data-lote=\"',huerto,'\"','\" class=\"btn btn-info btn-huerto\"><i class=\"fa fa-plus\"></i> Añadir</button>') AS description,
+                    id_huerto as link, 
                     huertos.x,
                     huertos.y 
                 FROM 

@@ -346,7 +346,8 @@ $(document).ready(function() {
         zoom: false,
         maxscale: 0.65, // Setting maxscale to 3
         smartip: false,
-        deeplinking: false //inhabilita nombres en uri
+        deeplinking: false, //inhabilita nombres en uri,
+
     });
     //Herramienta para capturar las coordenadas del mapa
     // mapplic.on('locationopened', function(e, location) {

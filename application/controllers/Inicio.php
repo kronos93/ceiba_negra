@@ -18,8 +18,15 @@ class Inicio extends CI_Controller {
 		}
 		else
 		{
+			if(!$this->session->has_userdata('lotes')){
+            	$this->session->set_userdata('lotes', 0);
+				$data['huertos'] = 0;
+        	}else{
+				$data['huertos'] = $this->session->lotes;
+			}
 			$data['title'] = "Inicio";
 			$data['body'] = "inicio";
+			
 			$this->load->view('templates/template',$data);
 		}
 	}
