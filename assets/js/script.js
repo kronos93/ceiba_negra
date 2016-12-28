@@ -88,22 +88,13 @@ $(document).ready(function() {
     if ($('.superficie').length) {
         $('.superficie').autoNumeric(); //Averiguar más del plugin para evitar menores a 0
     }
-    $('#shopCartSale').on('click', function() {
+    $('#shopCartSale').on('click', function(e) {
         $(this).find('.my-dropdown').slideToggle('3500');
     });
-    /* var view = {
-         "huertos": [
-             "Mz. 1, Ht. 1",
-             "Mz. 2, Ht. 2"
-         ],
-         "enganche": 10000,
-         "abono": 10000,
-         "total": 10000,
-         "count": 2
-     };
-     var template = document.getElementById('template-venta').innerHTML;
-     var output = Mustache.render(template, view);
-     document.getElementById("listaVenta").innerHTML = output;*/
+    $('#shopCartSale').find('nav').on('click', function(e) {
+        e.stopPropagation();
+        console.log("Click button");
+    });
     //USUARIOS
     $("#edit-user").on('hidden.bs.modal', function() {
         $(this).removeData('bs.modal');
@@ -115,6 +106,11 @@ $(document).ready(function() {
         });
     }).on('hidden.bs.modal', function() {
         $(this).removeData('bs.modal');
+    });
+    $.get(base_url + "ajax/add_cart", function(response) {
+        var template = document.getElementById('template-venta').innerHTML;
+        var output = Mustache.render(template, response);
+        document.getElementById("listaVenta").innerHTML = output;
     });
     //MANZANAS
     //Estructura de Datatable para las Manzanas (La tabla de vista)

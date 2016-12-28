@@ -12,7 +12,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/autonumeric/1.9.46/autoNumeric.js"></script>
 	<script id="template-venta" type="text/html">
 		{{#huertos}}
-		<li><a href="#">{{.}}</a></li>
+		<li><a href="#">{{descripcion}}{{{btn}}}</a></li>
 		{{/huertos}}
 		<li role="separator" class="divider"></li>
 		<li><a>Total: {{total}}</a></li>

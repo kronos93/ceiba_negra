@@ -150,8 +150,11 @@ class Ajax extends CI_Controller {
         $respuesta->huertos = [];
         $respuesta->enganche = 0;
         $respuesta->abono = 0;        
-        foreach ($this->cart->contents() as $items){        
-            array_push($respuesta->huertos,$items["name"]);  
+        foreach ($this->cart->contents() as $items){   
+            $obj = new stdClass();     
+            $obj->descripcion = $items["name"];
+            $obj->btn = "<button class='btn btn-danger'><i class='fa fa-trash'></i></button>";
+            array_push($respuesta->huertos,$obj);  
             $respuesta->enganche +=  $items["enganche"];
             $respuesta->abono +=  $items["abono"];
         }                
