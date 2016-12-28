@@ -10,19 +10,19 @@
             <div class="col-xs-12">
                 <!-- <p><?php echo lang('index_subheading');?></p> -->
                 <div id="infoMessage"><?php echo $message;?></div>
-                <table id="tableUsers" class="table table-striped table-bordered responsive">
+                <table id="tableUsers" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
                     <thead>
                         <tr>
                             <th><?php echo lang('index_fname_th');?></th>
                             <th><?php echo lang('index_lname_th');?></th>
                             <th><?php echo lang('index_email_th');?></th>
                             <th><?php echo lang('index_groups_th');?></th>
-                            <th><?php echo lang('index_status_th');?></th>
-                            <th><?php echo lang('index_action_th');?></th>
+                            <th class="all"><?php echo lang('index_status_th');?></th>
+                            <th class="all"><?php echo lang('index_action_th');?></th>
                         </tr>
                     </thead>
-                    <?php foreach ($users as $user) :?>
                         <tbody>
+                         <?php foreach ($users as $user) :?>
                             <tr>
                                 <td><?php echo htmlspecialchars($user->first_name, ENT_QUOTES, 'UTF-8');?></td>
                                 <td><?php echo htmlspecialchars($user->last_name, ENT_QUOTES, 'UTF-8');?></td>
@@ -32,16 +32,13 @@
                                         <?php echo anchor("auth/edit_group/".$group->id, htmlspecialchars($group->name, ENT_QUOTES, 'UTF-8')) ;?><br />
                                     <?php endforeach?>
                                 </td>
-                                //Editar usuario de activo a Inactivo
-                                <td><?php echo ($user->active) ? anchor("auth/deactivate/".$user->id, lang('index_active_link'), ["class"=>"btn btn-success", "data-target"=>'#edit-user', 'data-toggle'=>"modal"]) : anchor("auth/activate/". $user->id, lang('index_inactive_link'), ["class"=>"btn btn-danger"]);?>
-                                    
+                                <td><?php echo ($user->active) ? anchor("auth/deactivate/".$user->id, lang('index_active_link'), ["class"=>"btn btn-success", "data-target"=>'#form-user', 'data-toggle'=>"modal"]) : anchor("auth/activate/". $user->id, lang('index_inactive_link'), ["class"=>"btn btn-danger"]);?>
                                 </td>
-                                <td><?php echo anchor("auth/edit_user/".$user->id, 'Edit', ["class"=>"btn btn-info","data-target"=>'#edit-user','data-toggle'=>'modal']) ;?>
-                                    
+                                <td><?php echo anchor("auth/edit_user/".$user->id, 'Edit', ["class"=>"btn btn-info","data-target"=>'#form-user','data-toggle'=>'modal']) ;?>
                                 </td>
                             </tr>
+                            <?php endforeach;?>
                         </tbody>
-                    <?php endforeach;?>
                 </table>
             </div>
         </div>
@@ -55,7 +52,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="edit-user" tabindex="-1" role="dialog" aria-labelledby="modalEditUser" aria-hidden="true">
+<div class="modal fade" id="form-user" tabindex="-1" role="dialog" aria-labelledby="modalEditUser" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
         </div>

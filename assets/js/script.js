@@ -119,7 +119,8 @@ $(document).ready(function() {
     $.get(base_url + "ajax/add_cart", function(response) { templateCart(response) });
 
     //USUARIOS
-    $("#edit-user").on('hidden.bs.modal', function() {
+
+    $("#form-user").on('hidden.bs.modal', function() {
         $(this).removeData('bs.modal');
     });
     $("#add-user").on('shown.bs.modal', function() {

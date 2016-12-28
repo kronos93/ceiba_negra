@@ -7713,11 +7713,33 @@ g.mapplic-active > * {
   -webkit-box-shadow: 0px 0px 4px rgba(0,0,0,0.6);
   box-shadow: 0px 0px 4px rgba(0,0,0,0.6);
 }
+.shopCart .my-dropdown li {
+  position: relative;
+}
 .shopCart .my-dropdown li a {
   display: block;
-  padding: 5px 10px;
+  padding: 12px 10px;
   color: #000;
   white-space: nowrap;
+  text-decoration: none;
+  padding-right: 45px;
+}
+.shopCart .my-dropdown li a button {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}
+.shopCart .my-dropdown li ul.totales {
+  padding: 10px 0px;
+  margin-top: 10px;
+  border-top: 1px solid rgba(204,204,204,0.8);
+}
+.shopCart .my-dropdown li ul.totales li a {
+  text-align: left;
+  font-size: 14px;
+  padding: 0px;
+  line-height: 20px;
+  font-weight: bold;
 }
 .wrap-login {
   min-height: 600px;

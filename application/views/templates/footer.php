@@ -14,10 +14,14 @@
 		{{#huertos}}
 		<li><a href="#">{{descripcion}}{{{btn}}}</a></li>
 		{{/huertos}}
-		<li role="separator" class="divider"></li>
-		<li><a>Total: {{total}}</a></li>
-		<li><a>Enganche: {{enganche}}</a></li>
-		<li><a>Abonos: {{abono}}</a></li>
+		<!-- <li role="separator" class="divider"></li> -->
+		<li>
+			<ul class="totales">
+				<li><a>Total: {{total}}</a></li>
+				<li><a>Enganche: {{enganche}}</a></li>
+				<li><a>Abonos: {{abono}}</a></li>
+			</ul>
+		</li>
 	</script>
 	<script type="text/javascript" src="<?= base_url() ?>assets/js/script.js?v=<?= date("Y-m-dH:i:s") ?>"></script>
     </body>
