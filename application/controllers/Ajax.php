@@ -126,35 +126,40 @@ class Ajax extends CI_Controller {
         }
         
     }
-    public function add_cart(){
-        //stock-keeping unit.
-        $data = array(
-        array(
-            'id'      => 'huerto_1',
-            'qty'     => 1,
-            'price'   => 39.95,
-            'name'    => 'T-Shirt',
-            'options' => array('Size' => 'L', 'Color' => 'Red')
-        ),
-        array(
-            'id'      => 'huerto_2',
-            'qty'     => 1,
-            'price'   => 9.95,
-            'name'    => 'Coffee Mug'
-        ),
-        array(
-            'id'      => 'huerto_3',
-            'qty'     => 1,
-            'price'   => 29.95,
-            'name'    => 'Shot Glass'
-        )
-        );
-        
-        $this->cart->insert($data);
-        foreach ($this->cart->contents() as $items){
-            var_dump($items);
+    public function add_cart(){        
+        header("Content-type: application/json; charset=utf-8");
+        if($this->input->post("id_huerto")){
+            $where = [
+                    'id_huerto' => $this->input->post("id_huerto"),
+                    'vendido' => 0
+            ];
+            $huerto = $this->Huerto_model->huertosPM($where,"obj");        
+            if(count($huerto)){        
+                $data = array(
+                    'id'      => 'huerto_'.$huerto[0]->id_huerto,
+                    'qty'     => 1,
+                    'price'   => (float) $huerto[0]->precio,
+                    'abono'   => (float) $huerto[0]->abono,
+                    'enganche'   => (float) $huerto[0]->enganche,
+                    'name'    => "Manzana: {$huerto[0]->manzana}, Huerto: {$huerto[0]->huerto}"
+                );
+                $this->cart->insert($data);
+            }
         }
-		 
+        $respuesta = new stdClass();
+        $respuesta->huertos = [];
+        $respuesta->enganche = 0;
+        $respuesta->abono = 0;        
+        foreach ($this->cart->contents() as $items){        
+            array_push($respuesta->huertos,$items["name"]);  
+            $respuesta->enganche +=  $items["enganche"];
+            $respuesta->abono +=  $items["abono"];
+        }                
+        $respuesta->eganche = $this->cart->format_number($respuesta->eganche);
+        $respuesta->abono = $this->cart->format_number($respuesta->abono);
+        $respuesta->total = $this->cart->format_number($this->cart->total());
+        $respuesta->count = $this->cart->total_items();
+        echo json_encode($respuesta);
     }
     //Utileria inutil xD.... Despreciar usando stdClass
     public function format_datatable($data){

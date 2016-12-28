@@ -111,20 +111,25 @@
                     .attr('href', '#')
                     .on('click', function(e) {
                         e.preventDefault;
-                        var id_lote = this.getAttribute("href");
+                        var id_huerto = this.getAttribute("href");
                         $.ajax({
                                 url: base_url + "ajax/add_cart",
-                                data: { id_lote: id_lote },
+                                data: { id_huerto: id_huerto },
                                 type: "post",
                             })
                             .done(function(response) {
+                                //console.log(response);
                                 $("#shopCartSale")
                                     .find('span')
-                                    .attr("data-venta", parseInt($("#shopCartSale").find('span').attr("data-venta")) + 1);
+                                    .attr("data-venta", response.count);
+
+                                var template = document.getElementById('template-venta').innerHTML;
+                                var output = Mustache.render(template, response);
+                                document.getElementById("listaVenta").innerHTML = output;
 
                             })
                             .fail(function(response) {
-
+                                alert("Algún error, contacte al administrador");
                             });
                     })
                     .hide()
