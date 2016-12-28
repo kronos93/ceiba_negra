@@ -19,6 +19,6 @@
 		<li><a>Enganche: {{enganche}}</a></li>
 		<li><a>Abonos: {{abono}}</a></li>
 	</script>
-	<script type="text/javascript" src="<?= base_url() ?>assets/js/script.js?<?= date("Y-m-dH:i:s") ?>"></script>
+	<script type="text/javascript" src="<?= base_url() ?>assets/js/script.js?v=<?= date("Y-m-dH:i:s") ?>"></script>
     </body>
 </html>
