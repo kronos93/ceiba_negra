@@ -118,15 +118,7 @@
                                 type: "post",
                             })
                             .done(function(response) {
-                                //console.log(response);
-                                $("#shopCartSale")
-                                    .find('span')
-                                    .attr("data-venta", response.count);
-
-                                var template = document.getElementById('template-venta').innerHTML;
-                                var output = Mustache.render(template, response);
-                                document.getElementById("listaVenta").innerHTML = output;
-
+                                templateCart(response);
                             })
                             .fail(function(response) {
                                 alert("Algún error, contacte al administrador");

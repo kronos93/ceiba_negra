@@ -82,6 +82,28 @@ function ajax_fail(response) {
     mensaje += "\nMensaje de código error: " + response.statusText + ".";
     $('.container-icons').find('.message').text(mensaje);
 }
+
+function templateCart(response) {
+    $("#shopCartSale")
+        .find('span')
+        .attr("data-venta", response.count);
+    var template = document.getElementById('template-venta').innerHTML;
+    var output = Mustache.render(template, response);
+    document.getElementById("listaVenta").innerHTML = output;
+    $(".itemCartDelete").on('click', function(e) {
+        $.ajax({
+                url: base_url + "ajax/delete_cart/",
+                data: { rowid: $(this).val() },
+                type: "post",
+            })
+            .done(function(response) {
+                templateCart(response);
+            })
+            .fail(function(response) {
+
+            });
+    });
+}
 //Al cargar la página
 $(document).ready(function() {
     //GENERAL
@@ -93,8 +115,9 @@ $(document).ready(function() {
     });
     $('#shopCartSale').find('nav').on('click', function(e) {
         e.stopPropagation();
-        console.log("Click button");
     });
+    $.get(base_url + "ajax/add_cart", function(response) { templateCart(response) });
+
     //USUARIOS
     $("#edit-user").on('hidden.bs.modal', function() {
         $(this).removeData('bs.modal');
@@ -106,11 +129,6 @@ $(document).ready(function() {
         });
     }).on('hidden.bs.modal', function() {
         $(this).removeData('bs.modal');
-    });
-    $.get(base_url + "ajax/add_cart", function(response) {
-        var template = document.getElementById('template-venta').innerHTML;
-        var output = Mustache.render(template, response);
-        document.getElementById("listaVenta").innerHTML = output;
     });
     //MANZANAS
     //Estructura de Datatable para las Manzanas (La tabla de vista)

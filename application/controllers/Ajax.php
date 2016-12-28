@@ -146,6 +146,16 @@ class Ajax extends CI_Controller {
                 $this->cart->insert($data);
             }
         }
+        $this->show_cart();
+    }
+    public function delete_cart(){
+        header("Content-type: application/json; charset=utf-8");
+        if($this->input->post("rowid")){
+            $this->cart->remove($this->input->post("rowid"));
+        }
+        $this->show_cart();
+    }
+    public function show_cart(){
         $respuesta = new stdClass();
         $respuesta->huertos = [];
         $respuesta->enganche = 0;
@@ -153,7 +163,8 @@ class Ajax extends CI_Controller {
         foreach ($this->cart->contents() as $items){   
             $obj = new stdClass();     
             $obj->descripcion = $items["name"];
-            $obj->btn = "<button class='btn btn-danger'><i class='fa fa-trash'></i></button>";
+            $rowid = $items["rowid"];
+            $obj->btn = "<button class='btn btn-danger itemCartDelete' value='{$rowid}'><i class='fa fa-trash'></i></button>";
             array_push($respuesta->huertos,$obj);  
             $respuesta->enganche +=  $items["enganche"];
             $respuesta->abono +=  $items["abono"];
