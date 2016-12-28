@@ -1,12 +1,11 @@
-<div class="modal-header">
-	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	<h4 class="modal-title"><?php echo lang('create_user_heading');?></h4>
-	<p><?php echo lang('create_user_subheading');?></p>
-	<div id="infoMessage"><?php echo $message;?></div>
-</div>
-<div class="modal-body">
-	<?php echo form_open("auth/create_user",['id'=>'ion_addUser']);?>
-		
+<?php echo form_open("auth/create_user",['id'=>'ion_addUser']);?>
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<h4 class="modal-title"><?php echo lang('create_user_heading');?></h4>
+		<p><?php echo lang('create_user_subheading');?></p>
+		<div id="infoMessage"><?php echo $message;?></div>
+	</div>
+	<div class="modal-body">
 		<div class="container-fluid">
 			<div class="row">
 				<div class="form-group col-xs-12 col-sm-12">
@@ -56,12 +55,8 @@
                 </div>
 			</div>
 		</div>
-		
-
-	<?php echo form_close();?>
-</div>
-<div class="modal-footer">
-	<p><?php echo form_submit('submit', lang('create_user_submit_btn'),['class'=>'btn btn-success pull-right']);?></p>
-</div>
-
-
+	</div>
+	<div class="modal-footer">
+		<?php echo form_submit('submit', lang('create_user_submit_btn'),['class'=>'btn btn-success pull-right']);?>
+	</div>
+<?php echo form_close();?>

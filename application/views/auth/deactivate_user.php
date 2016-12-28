@@ -8,12 +8,15 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-xs-12">
-					<?php echo lang('deactivate_confirm_y_label', 'confirm');?>
-					<input type="radio" name="confirm" value="yes" checked="checked" />
-					<?php echo lang('deactivate_confirm_n_label', 'confirm');?>
-					<input type="radio" name="confirm" value="no" />
-					<?php echo form_hidden($csrf); ?>
-					<?php echo form_hidden(array('id'=>$user->id)); ?>
+					<div class="radiobutton-custom">
+						<input id="confirmyes" type="radio" name="confirm" value="yes" checked="checked" />
+						<?php echo lang('deactivate_confirm_y_label', 'confirmyes');?>
+						
+						<input id="confirmno" type="radio" name="confirm" value="no" />
+						<?php echo lang('deactivate_confirm_n_label', 'confirmno');?>
+						<?php echo form_hidden($csrf); ?>
+						<?php echo form_hidden(array('id'=>$user->id)); ?>
+					</div>
 				</div>
 			</div>
 		</div>
