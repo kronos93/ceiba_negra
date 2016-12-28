@@ -88,9 +88,22 @@ $(document).ready(function() {
     if ($('.superficie').length) {
         $('.superficie').autoNumeric(); //Averiguar más del plugin para evitar menores a 0
     }
-    $('#shopCartSale').on('click',function(){
+    $('#shopCartSale').on('click', function() {
         $(this).find('.my-dropdown').slideToggle('3500');
     });
+    /* var view = {
+         "huertos": [
+             "Mz. 1, Ht. 1",
+             "Mz. 2, Ht. 2"
+         ],
+         "enganche": 10000,
+         "abono": 10000,
+         "total": 10000,
+         "count": 2
+     };
+     var template = document.getElementById('template-venta').innerHTML;
+     var output = Mustache.render(template, view);
+     document.getElementById("listaVenta").innerHTML = output;*/
     //USUARIOS
     $("#edit-user").on('hidden.bs.modal', function() {
         $(this).removeData('bs.modal');
@@ -208,7 +221,6 @@ $(document).ready(function() {
                 ajax_fail(response);
             });
     });
-
     //Huertos
     //Datatable de los huertos
     var huertos_table = $('#huertos-table').DataTable({

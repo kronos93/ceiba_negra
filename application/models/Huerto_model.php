@@ -19,7 +19,7 @@ class Huerto_model extends CI_Model {
         return $nuevo_huerto;
     }
     //Huertos precio y manzanas
-    public function huertosPM($where = []){
+    public function huertosPM($where = [],$tipo = "array"){
         $this->db->select(" {$this->tabla}.`id_huerto`,
                             {$this->tabla}.`id_precio`,
                             `manzanas`.`id_manzana`, 
@@ -41,7 +41,13 @@ class Huerto_model extends CI_Model {
             $this->db->where($where);
         }
         $query = $this->db->get();
-        return $query->result_array();
+        if($tipo == "array"){
+            return $query->result_array();
+        }
+        else if($tipo == "obj"){
+            return $query->result();
+        }
+        
     }
     public function getAllM($mz){
         //Hacer esto un JOIN

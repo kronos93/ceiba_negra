@@ -11,7 +11,7 @@
 		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.1.0/css/responsive.dataTables.min.css"/>
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
         <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/mapplic.css">
-		<link rel="stylesheet" href="<?= base_url() ?>assets/css/estilos.css">
+		<link rel="stylesheet" href="<?= base_url() ?>assets/css/estilos.css?<?= date("Y-m-dH:i:s") ?>">
     </head>
     <body>
     <header>
@@ -33,14 +33,7 @@
 				  	<div class="shopCart" id="shopCartSale">
 						<span class="fa fa-shopping-cart fa-2x" id="shopCartSaleCount" data-venta="<?= $this->cart->total_items() ?>"></span>
 						<nav class="my-dropdown">
-							<ul >
-								<li><a href="#">Manzana 23, Lote2</a></li>
-								<li><a href="#">Manzana 23, Lote2</a></li>
-								<li><a href="#">Manzana 23, Lote2</a></li>
-								<li><a href="#">Manzana 23, Lote2</a></li>
-								<li><a href="#">Manzana 23, Lote2</a></li>
-								<li><a href="#">Manzana 23, Lote2</a></li>
-							</ul>
+							<ul id="listaVenta"></ul>
 							<a href="#" class="btn btn-success center-block">Vender</a>
 						</nav>
 							
