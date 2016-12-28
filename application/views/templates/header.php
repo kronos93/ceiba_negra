@@ -31,7 +31,7 @@
 				  		</figure>
 				  	</a>
 				  	<div class="shopCart" id="shopCartSale">
-						<span class="fa fa-shopping-cart fa-2x" id="shopCartSaleCount" data-venta="<?= $huertos ?>"></span>
+						<span class="fa fa-shopping-cart fa-2x" id="shopCartSaleCount" data-venta="<?= $this->cart->total_items() ?>"></span>
 						<nav class="my-dropdown">
 							<ul >
 								<li><a href="#">Manzana 23, Lote2</a></li>

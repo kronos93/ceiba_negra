@@ -127,13 +127,34 @@ class Ajax extends CI_Controller {
         
     }
     public function add_cart(){
-        if(!$this->session->has_userdata('lotes')){
-            $this->session->set_userdata('lotes', 0);
-        }else{
-            $huerto = $this->session->userdata('lotes') + 1;
-            $this->session->set_userdata('lotes',$huerto);
-        }
+        //stock-keeping unit.
+        $data = array(
+        array(
+            'id'      => 'huerto_1',
+            'qty'     => 1,
+            'price'   => 39.95,
+            'name'    => 'T-Shirt',
+            'options' => array('Size' => 'L', 'Color' => 'Red')
+        ),
+        array(
+            'id'      => 'huerto_2',
+            'qty'     => 1,
+            'price'   => 9.95,
+            'name'    => 'Coffee Mug'
+        ),
+        array(
+            'id'      => 'huerto_3',
+            'qty'     => 1,
+            'price'   => 29.95,
+            'name'    => 'Shot Glass'
+        )
+        );
         
+        $this->cart->insert($data);
+        foreach ($this->cart->contents() as $items){
+            var_dump($items);
+        }
+		 
     }
     //Utileria inutil xD.... Despreciar usando stdClass
     public function format_datatable($data){
