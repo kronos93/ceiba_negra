@@ -42,11 +42,26 @@
 	</script>
 	<script>
 	// var form = $("#example-advanced-form").show();
+
 	$("#example-basic").steps({
 		headerTag: "h3",
-		bodyTag: "legend",
+		bodyTag: "div",
 		transitionEffect: "slideLeft",
-		autoFocus: true
+		autoFocus: true,
+		onStepChanging: function (event, currentIndex, newIndex) { 
+			console.log('Hola',event)
+			return true;//Si retorna Falso Marca error :v
+		},
+		labels: 
+			{
+		        cancel: "Cancelar",
+		        current: "Paso Actual:",
+		        pagination: "Pagination",
+		        finish: "Finalizar",
+		        next: "Siguiente",
+		        previous: "Anterior",
+		        loading: "Cargando ..."
+		    }
 	});
 </script>
 	</script>
