@@ -49,20 +49,17 @@ class Huerto_model extends CI_Model {
         }
         
     }
-    public function getAllM($mz){
-        //Hacer esto un JOIN
-        $query = $this->db->query("
-                SELECT 
-                    CONCAT('m',id_manzana,'lote',huerto) as id, 
-                    CONCAT('Huerto número ', huerto) as title, 
-                    CONCAT('mz',id_manzana) as category, 
-                    #CONCAT('<button id=\"',id_manzana,' data-lote=\"',huerto,'\"','\" class=\"btn btn-info btn-huerto\"><i class=\"fa fa-plus\"></i> Añadir</button>') AS description,
-                    id_huerto as link, 
-                    huertos.x,
-                    huertos.y 
-                FROM 
-                    huertos 
-                WHERE id_manzana = {$mz}");
+    public function getLevel($mz){
+        $this->db->select(" CONCAT('m',manzanas.manzana,'lote',{$this->tabla}.huerto) as id,         
+                            CONCAT('Huerto número ', {$this->tabla}.huerto) as title, 
+                            CONCAT('mz',manzanas.manzana) as category, 
+                            {$this->tabla}.id_huerto as link, 
+                            {$this->tabla}.x,
+                            {$this->tabla}.y ");
+        $this->db->join("manzanas", "{$this->tabla}.id_manzana = manzanas.id_manzana",'left');
+        $this->db->from("{$this->tabla}");
+        $this->db->where( ["manzanas.manzana" => "{$mz}"] );            
+        $query = $this->db->get();
         return $query->result();
     }
 

@@ -10,24 +10,24 @@ class Ajax extends CI_Controller {
     //DATOS PARA EL MAPA
     public function get_mapa() {
         header("Content-type: application/json; charset=utf-8");
-        $mz_mapplic = $this->Manzana_model->mz_mapplic();
+        $categories_mz = $this->Manzana_model->categories_mz();
         $respuesta = new stdClass();
-        $respuesta->categories = $mz_mapplic;
+        $respuesta->categories = $categories_mz;
         $respuesta->mapwidth = 800;
         $respuesta->mapheight = 600;
         $respuesta->levels = [];
-        foreach($mz_mapplic as $mz){
-            $mz->show = "false";
-            $id_manzana = substr($mz->id,2);
-            $lev = new stdClass();
-            $lev->id = "landmarks-{$mz->id}";
-            $lev->title = "{$mz->title}";
-         
-            $huerto = $this->Huerto_model->getAllM($id_manzana);
+        foreach($categories_mz as $mz){          
+            $mz->show = "false";            
             
-            $lev->locations = $huerto;
-            $lev->map = base_url()."assets/img/mapas/{$mz->id}.svg"; 
-            array_push($respuesta->levels,$lev);
+            $level = new stdClass();
+            $level->id = "landmarks-{$mz->id}";
+            $level->title = "{$mz->title}";
+         
+            $huerto = $this->Huerto_model->getLevel($mz->manzana);
+            
+            $level->locations = $huerto;
+            $level->map = base_url()."assets/img/mapas/{$mz->id}.svg"; 
+            array_push($respuesta->levels,$level);
         }      
         echo json_encode($respuesta);
 	}
@@ -39,7 +39,7 @@ class Ajax extends CI_Controller {
         $update = array('x' => $this->input->post("x"), 'y' => $this->input->post("y"));
         $this->Lote_model->set_coordenadas($where,$update);
     }
-    //LOTES
+    //Huertos
     public function add_huerto(){
             //Cabazera de respuesta JSON
             header("Content-type: application/json; charset=utf-8");   
@@ -73,6 +73,20 @@ class Ajax extends CI_Controller {
         $huertos = $this->Huerto_model->huertosPM();
         $response->data = $huertos;
         echo json_encode($response);
+    }
+    public function update_huerto(){
+        header("Content-type: application/json; charset=utf-8");
+         //Validación de form
+            $this->form_validation->set_error_delimiters('', '');
+            $this->form_validation->set_rules('id_manzana', 'Manzana', 'trim|required');
+            $this->form_validation->set_rules('huerto', 'Huerto', 'trim|required|callback_mh_check[huerto,id_manzana]');
+            $this->form_validation->set_rules('superficie', 'Superficie', 'trim|required');
+            $this->form_validation->set_rules('id_precio', 'Precio', 'trim|required');
+            if ($this->form_validation->run()) {
+                
+            } else {
+               echo validation_errors();
+            }
     }
     //MANZANAS
     public function add_manzana(){

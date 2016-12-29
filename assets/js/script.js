@@ -117,7 +117,9 @@ $(document).ready(function() {
         e.stopPropagation();
     });
     $.get(base_url + "ajax/add_cart", function(response) { templateCart(response) });
-
+    tinymce.init({
+        selector: '#contrato',
+    });
     //USUARIOS
 
     $("#form-user").on('hidden.bs.modal', function() {
@@ -341,7 +343,7 @@ $(document).ready(function() {
     $("#frm-edit-huertos").on('submit', function(e) {
         e.preventDefault();
         var data = $(this).serializeArray(); //Serializar formulario
-        data.push({ "name": "id_huerto", "value": parsedtRow.id_lote }); //Añadimos el ID de la manzana en formato json
+        data.push({ "name": "id_huerto", "value": parsedtRow.id_huerto }); //Añadimos el ID de la manzana en formato json
         var that = this; //Almacenar el formulario donde sucedio el evento submit
         //Llamada ajax
         $.ajax({
