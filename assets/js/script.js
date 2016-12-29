@@ -360,7 +360,15 @@ $(document).ready(function() {
             });
     });
     // Datatables de Usuarios
-    $('#tableUsers').DataTable();
+    $('#tableUsers').DataTable({
+        columnDefs: [ //Configuracion de la tabla de manzanas
+            {
+                //Ocultar columna*
+                "targets": 3,
+                "visible": false
+            }
+        ]
+    });
     //MAPA
     //Desplegar mapa
     var mapplic = $('#mapplic').mapplic({

@@ -23,6 +23,18 @@
 			</ul>
 		</li>
 	</script>
+	<script>
+		$(document).mouseup(function (e)
+		{
+		    var container = $(".my-dropdown");
+
+		    if (!container.is(e.target) // if the target of the click isn't the container...
+		        && container.has(e.target).length === 0) // ... nor a descendant of the container
+		    {
+		        container.hide();
+		    }
+		});
+	</script>
 	<script type="text/javascript" src="<?= base_url() ?>assets/js/script.js?v=<?= date("Y-m-dH:i:s") ?>"></script>
     </body>
 </html>
