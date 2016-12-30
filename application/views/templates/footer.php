@@ -46,7 +46,7 @@
 	$("#example-basic").steps({
 		headerTag: "h3",
 		bodyTag: "div",
-		transitionEffect: "slideLeft",
+		transitionEffect: "none",
 		autoFocus: true,
 		onStepChanging: function (event, currentIndex, newIndex) { 
 			console.log('Hola',event)
@@ -62,6 +62,24 @@
 		        previous: "Anterior",
 		        loading: "Cargando ..."
 		    }
+	});
+	$('#autocomplete').autocomplete({
+	    lookup: function (query, done) {
+	        // Do Ajax call or lookup locally, when done,
+	        // call the callback and pass your results:
+	        var result = {
+	            suggestions: [
+	                { "value": "United Arab Emirates", "data": "AE" },
+	                { "value": "United Kingdom",       "data": "UK" },
+	                { "value": "United States",        "data": "US" }
+	            ]
+	        };
+
+	        done(result);
+	    },
+	    onSelect: function (suggestion) {
+	        alert('You selected: ' + suggestion.value + ', ' + suggestion.data);
+	    }
 	});
 </script>
 	</script>
