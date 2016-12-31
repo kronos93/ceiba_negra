@@ -41,7 +41,7 @@
 									<div class="input-group-addon">Mz.</div>
 									<input type="number" class="form-control" name="manzana" placeholder="100" step="1" min="1" max="1000" required />
 								</div>
-								</div>
+							</div>
 							<div class="form-group col-xs-12 col-sm-6">
 								<label class="required" for="calle">Calle:</label>
 								<input type="text" class="form-control"name="calle" placeholder="Sendero oculto" required />

@@ -31,15 +31,58 @@
 	<script>
 		$(document).mouseup(function (e)
 		{
-		    var container = $(".my-dropdown");
+			var container = $(".my-dropdown");
 
-		    if (!container.is(e.target) // if the target of the click isn't the container...
-		        && container.has(e.target).length === 0) // ... nor a descendant of the container
-		    {
-		        container.hide();
-		    }
+			if (!container.is(e.target) // if the target of the click isn't the container...
+				&& container.has(e.target).length === 0) // ... nor a descendant of the container
+			{
+				container.hide();
+			}
 		});
 	</script>
+	<script>
+	// var form = $("#example-advanced-form").show();
+
+	$("#example-basic").steps({
+		headerTag: "h3",
+		bodyTag: "div",
+		transitionEffect: "none",
+		autoFocus: true,
+		onStepChanging: function (event, currentIndex, newIndex) { 
+			console.log('Hola',event)
+			return true;//Si retorna Falso Marca error :v
+		},
+		labels: 
+			{
+		        cancel: "Cancelar",
+		        current: "Paso Actual:",
+		        pagination: "Pagination",
+		        finish: "Finalizar",
+		        next: "Siguiente",
+		        previous: "Anterior",
+		        loading: "Cargando ..."
+		    }
+	});
+	$('#autocomplete').autocomplete({
+	    lookup: function (query, done) {
+	        // Do Ajax call or lookup locally, when done,
+	        // call the callback and pass your results:
+	        var result = {
+	            suggestions: [
+	                { "value": "United Arab Emirates", "data": "AE" },
+	                { "value": "United Kingdom",       "data": "UK" },
+	                { "value": "United States",        "data": "US" }
+	            ]
+	        };
+
+	        done(result);
+	    },
+	    onSelect: function (suggestion) {
+	        alert('You selected: ' + suggestion.value + ', ' + suggestion.data);
+	    }
+	});
+</script>
+	</script>
 	<script type="text/javascript" src="<?= base_url() ?>assets/js/script.js?v=<?= date("Y-m-dH:i:s") ?>"></script>
-    </body>
+	</body>
 </html>
