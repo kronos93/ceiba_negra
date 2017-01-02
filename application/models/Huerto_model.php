@@ -19,7 +19,7 @@ class Huerto_model extends CI_Model {
         return $nuevo_huerto;
     }
     //Huertos precio y manzanas
-    public function huertosPM($where = [],$tipo = "array"){
+    public function huertosPM($where = [],$type_return = "array"){
         $this->db->select(" {$this->tabla}.`id_huerto`,
                             {$this->tabla}.`id_precio`,
                             `manzanas`.`id_manzana`, 
@@ -41,13 +41,24 @@ class Huerto_model extends CI_Model {
             $this->db->where($where);
         }
         $query = $this->db->get();
-        if($tipo == "array"){
+        if($type_return == "array"){
             return $query->result_array();
         }
-        else if($tipo == "obj"){
+        else if($type_return == "obj"){
             return $query->result();
         }
         
+    }
+    public function update($set,$where)
+    {
+        $this->db->set($set);
+        $this->db->where($where);
+        $this->db->update($this->tabla);
+        if($this->db->affected_rows()){ 
+            return $this->huertosPM($where);
+        }else{
+            return [];
+        }
     }
     public function getLevel($mz){
         $this->db->select(" CONCAT('m',manzanas.manzana,'lote',{$this->tabla}.huerto) as id,         
