@@ -42,7 +42,6 @@
 	</script>
 	<script>
 	// var form = $("#example-advanced-form").show();
-
 	$("#example-basic").steps({
 		headerTag: "h3",
 		bodyTag: "div",
@@ -81,8 +80,8 @@
 	        alert('You selected: ' + suggestion.value + ', ' + suggestion.data);
 	    }
 	});
-</script>
 	</script>
+	<script type="text/javascript" src="<?= base_url() ?>assets/js/numToWord.js?v=<?= date("Y-m-dH:i:s") ?>"></script>
 	<script type="text/javascript" src="<?= base_url() ?>assets/js/script.js?v=<?= date("Y-m-dH:i:s") ?>"></script>
 	</body>
 </html>
