@@ -1,44 +1,50 @@
-<?php 
+<?php
 
-class Manzana_model extends CI_Model {
+class Manzana_model extends CI_Model
+{
     private $tabla = "manzanas";
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
     }
-    public function getAll($type="object"){
+    public function getAll($type = "object")
+    {
         $query = $this->db->query("SELECT * FROM {$this->tabla}");
-        if($type === "object"){
+        if ($type === "object") {
             return $query->result();
-        }
-        else if($type==="array"){
+        } elseif ($type==="array") {
             return $query->result_array();
         }
     }
-    public function get($select,$where){
+    public function get($select, $where)
+    {
         $this->db->select($select);
-        $query = $this->db->get_where("{$this->tabla}",$where);
+        $query = $this->db->get_where("{$this->tabla}", $where);
         return $query->result();
     }
-    public function insert($insert){
+    public function insert($insert)
+    {
         $query = $this->db->insert($this->tabla, $insert);
         $id_nueva_manzana = $this->db->insert_id();
         $select = "*";
         $where = ['id_manzana' => $id_nueva_manzana];
-        $nueva_manzana = $this->get($select,$where);
+        $nueva_manzana = $this->get($select, $where);
         return $nueva_manzana;
     }
-    public function update($where,$set){
+    public function update($set, $where)
+    {
         $this->db->set($set);
         $this->db->where($where);
         $this->db->update($this->tabla);
-        if($this->db->affected_rows()){
-            $select = "calle, disponibilidad, col_norte, col_sur, col_este, col_oeste";            
-            return $this->get($select,$where);
-        }else{
+        if ($this->db->affected_rows()) {
+            $select = "calle, disponibilidad, col_norte, col_sur, col_este, col_oeste";
+            return $this->get($select, $where);
+        } else {
             return [];
         }
     }
-    public function categories_mz(){
+    public function categories_mz()
+    {
         $this->db->select(" CONCAT('mz',manzana) AS id,
                             CONCAT('Manzana número ',manzana) AS title, 
                             IF(disponibilidad !=0,'#3fbb9b','#ccc') AS color,

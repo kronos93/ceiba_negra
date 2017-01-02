@@ -156,7 +156,7 @@ class Ajax extends CI_Controller
                 'col_este' => $this->input->post("col_este"),
                 'col_oeste' => $this->input->post("col_oeste"),
             ];
-        $response = $this->Manzana_model->update($where, $set);
+        $response = $this->Manzana_model->update($set, $where);
 
         if (count($response)) {
             echo json_encode($response);
@@ -252,23 +252,22 @@ class Ajax extends CI_Controller
         }
         $huertos = $this->Huerto_model->huertosPM($where, 'obj');
         if (count($huertos)) { //Si el huerto por alguna razón deja de existir, un delete
-            if($huertos[0]->huerto == $this->input->post('huerto')){ //Si el huerto no ha cambiado
+            if ($huertos[0]->huerto == $this->input->post('huerto')) { //Si el huerto no ha cambiado
                 return true;
-            }else{ //Si se ha cambiado el número de huerto verificar que no exista en otro lado
+            } else { //Si se ha cambiado el número de huerto verificar que no exista en otro lado
                 $where = [];
                 $where['huertos.id_manzana'] = $this->input->post('id_manzana');
                 $where['huertos.huerto'] = $this->input->post('huerto');
                 $huertos = $this->Huerto_model->huertosPM($where, 'obj');
-                if(count($huertos)){
-                    $this->form_validation->set_message('mhu_check','Combinacion Manzana/Huerto repetida'); // set your message
+                if (count($huertos)) {
+                    $this->form_validation->set_message('mhu_check', 'Combinacion Manzana/Huerto repetida'); // set your message
                     return false;
-                }else{
+                } else {
                     return true;
                 }
             }
-             
         } else {
-            $this->form_validation->set_message('mhu_check','Intenta actualizar un huerto no existente.'); // set your message
+            $this->form_validation->set_message('mhu_check', 'Intenta actualizar un huerto no existente.'); // set your message
             return false;
         }
     }
