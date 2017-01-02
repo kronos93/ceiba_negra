@@ -8,17 +8,20 @@ class Cliente_model extends CI_Model {
         parent::__construct();
         $this->load->database();
     }
-    public function getAll()
+    public function getAll($like = [])
     {
         $this->db->select($this->select);
+        if(count($like)){
+            $this->db->like($like);
+        }
         $query = $this->db->get($this->tabla);
         return $query->result();
     }
 
-    public function clientes_autocomplete()
+    public function clientes_autocomplete($like)
     {
         $this->select .= ", CONCAT(nombre, ' ' ,apellidos) AS data, CONCAT(nombre, ' ' ,apellidos) AS value";
-        $response = $this->getAll();
+        $response = $this->getAll($like);
         return $response;
     }
 }

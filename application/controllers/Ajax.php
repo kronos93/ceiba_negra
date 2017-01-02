@@ -165,12 +165,15 @@ class Ajax extends CI_Controller
             echo "No se detectó ningún cambio en los datos al actualizar.";
         }
     }
-    public function autocomplete_clientes(){
+    public function autocomplete_clientes()
+    {
         header("Content-type: application/json; charset=utf-8");
-        $response = new stdClass();
-        $response->suggestions = $this->Cliente_model->clientes_autocomplete();
-
-        echo json_encode($response);
+        if ($this->input->get('query')) {
+            $like = ["CONCAT(nombre, ' ' ,apellidos)" => $this->input->get('query')];
+            $response = new stdClass();
+            $response->suggestions = $this->Cliente_model->clientes_autocomplete($like);
+            echo json_encode($response);
+        }
     }
     public function add_cart()
     {
