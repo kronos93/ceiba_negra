@@ -41,7 +41,6 @@
 		});
 	</script>
 	<script>
-	// var form = $("#example-advanced-form").show();
 	$("#example-basic").steps({
 		headerTag: "h3",
 		bodyTag: "div",

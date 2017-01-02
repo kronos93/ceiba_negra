@@ -3,6 +3,55 @@
 	<div class="container-fluid container">
 		<div class="row">
 			<div class="col-xs-12">
+				
+				<div id="accordion" role="tablist" aria-multiselectable="true">
+					<div class="card">
+					    <div class="card-header" role="tab" id="headingOne">
+					      	<h5 class="mb-0">
+					        	<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+					          	Resumen de Venta
+					        	</a>
+					     	 </h5>
+					    </div>
+					    <div id="collapseOne" class="collapse in" role="tabpanel" aria-labelledby="headingOne">
+					      <div class="card-block">
+					        	<div class="sale-resume">
+									<div class="row">
+										<div class="col-xs-12">
+											<h4>Resumen de Venta</h4>
+											<hr class="separator">
+											<table>
+												<thead>
+													<th>Manzana No: </th>
+													<th>Huerto Numero:</th>
+													<th>Precio $</th>
+												</thead>
+												<tbody>
+													<tr>
+														<td>Manzana 23</td>
+														<td>23,45,67</td>
+														<td>$45,000.00</td>
+													</tr>
+													<tr>
+														<td>Manzana 23</td>
+														<td>23,45,67</td>
+														<td>$45,000.00</td>
+													</tr>
+												</tbody>
+												<tfoot>
+													<tr>
+												      <th id="total" colspan="2">Total :</th>
+												      <td>$45,000.00</td>
+												    </tr>
+												</tfoot>
+											</table>
+										</div>
+									</div>
+								</div>
+					      </div>
+					    </div>
+					</div>
+				</div>
 				<form id="example-basic">
 					<h3>Datos del Cliente:</h3>
 					<div>
@@ -109,7 +158,48 @@
 					</div>
 					<h3>Formas de pago:</h3>
 					<div>
-						<p>The next and previous buttons help you to navigate through your content.</p>
+						<div class="container-fluid">
+							<div class="row">
+								<legend>Pagos</legend>
+								<div class="form-group col-xs-12 col-sm-6">
+									<label class="required" for="manzana">Forma de pago:</label>
+									<select name="#" id="" class="form-control">
+										<option value="">Hola</option>
+										<option value="">Hola</option>
+										<option value="">Hola</option>
+										<option value="">Hola</option>
+									</select>
+								</div>
+								<div class="form-group col-xs-12 col-sm-3">
+									<label class="required" for="manzana">Tipo de pago:</label>
+									<select name="#" id="" class="form-control">
+										<option value="">Hola</option>
+										<option value="">Hola</option>
+										<option value="">Hola</option>
+										<option value="">Hola</option>
+									</select>
+								</div>
+								<div class="form-group col-xs-12 col-sm-3">
+									<label class="required" for="manzana">Selección de Banco</label>
+									<select name="#" id="" class="form-control">
+										<option value="">Hola</option>
+										<option value="">Hola</option>
+										<option value="">Hola</option>
+										<option value="">Hola</option>
+									</select>
+								</div>
+								<legend>Lider de Manzana</legend>
+								<div class="form-group col-xs-12 col-sm-6">
+									<label class="required" for="manzana">Nombre:</label>
+									<select name="#" id="" class="form-control">
+										<option value="">Hola</option>
+										<option value="">Hola</option>
+										<option value="">Hola</option>
+										<option value="">Hola</option>
+									</select>
+								</div>
+							</div>
+						</div>
 					</div>
 				</form>
 			</div>

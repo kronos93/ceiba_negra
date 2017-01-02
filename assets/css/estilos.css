@@ -7993,6 +7993,38 @@ g.mapplic-active > * {
   line-height: 20px;
   font-weight: bold;
 }
+.sale-resume {
+  margin: 20px 0px;
+}
+.sale-resume hr.separator {
+  color: #000;
+  border: 0px;
+  margin: 5px 0px;
+  border-bottom: 1px solid #ccc;
+}
+.sale-resume table {
+  width: 100%;
+}
+.sale-resume table th {
+  font-weight: bold;
+}
+.sale-resume table th:last-child {
+  text-align: right;
+}
+.sale-resume table th,
+.sale-resume table td {
+  padding: 5px;
+}
+.sale-resume table td {
+  border-bottom: 1px solid #ccc;
+}
+.sale-resume table tbody tr td:last-child {
+  text-align: right !important;
+}
+.sale-resume table tfoot tr th,
+.sale-resume table tfoot tr td {
+  text-align: right !important;
+}
 .wrap-login {
   min-height: 600px;
   width: 100%;
