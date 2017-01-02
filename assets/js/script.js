@@ -90,6 +90,16 @@ function templateCart(response) {
     var template = document.getElementById('template-venta').innerHTML;
     var output = Mustache.render(template, response);
     document.getElementById("listaVenta").innerHTML = output;
+    if ($('#precio').length && $('#enganche').length && $('#abono').length) {
+        $('#precio').autoNumeric('set', response.total);
+        $('#enganche').autoNumeric('set', response.enganche);
+        $('#abono').autoNumeric('set', response.abono);
+    }
+    if ($(".currency")) {
+        $(".currency").autoNumeric({
+            aSign: "$ "
+        });
+    }
     $(".itemCartDelete").on('click', function(e) {
         $.ajax({
                 url: base_url + "ajax/delete_cart/",
@@ -110,6 +120,11 @@ $(document).ready(function() {
     if ($('.superficie').length) {
         $('.superficie').autoNumeric(); //Averiguar más del plugin para evitar menores a 0
     }
+    if ($(".currency")) {
+        $(".currency").autoNumeric({
+            aSign: "$ "
+        });
+    }
     $('#shopCartSale').on('click', function(e) {
         $(this).find('.my-dropdown').slideToggle('3500');
     });
@@ -123,7 +138,7 @@ $(document).ready(function() {
     $('#clientes_autocomplete').autocomplete({
         serviceUrl: base_url + '/ajax/autocomplete_clientes',
         onSelect: function(suggestion) {
-            data_in_form_edit(suggestion) 
+            data_in_form_edit(suggestion)
             console.log(suggestion);
         }
     });

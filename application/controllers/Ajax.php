@@ -221,9 +221,9 @@ class Ajax extends CI_Controller
             $respuesta->enganche +=  $items["enganche"];
             $respuesta->abono +=  $items["abono"];
         }
-        $respuesta->enganche = $this->cart->format_number($respuesta->enganche);
-        $respuesta->abono = $this->cart->format_number($respuesta->abono);
-        $respuesta->total = $this->cart->format_number($this->cart->total());
+        $respuesta->enganche = ($respuesta->enganche);
+        $respuesta->abono = ($respuesta->abono);
+        $respuesta->total = ($this->cart->total());
         $respuesta->count = $this->cart->total_items();
         echo json_encode($respuesta);
     }

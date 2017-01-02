@@ -77,15 +77,15 @@
 								<legend>Precios</legend>
 								<div class="form-group col-xs-12 col-sm-4">
 									<label class="required" for="manzana">Precio del Huerto</label>
-									<input type="number" class="form-control" name="manzana" placeholder=""  min="1" max="1000" required />
+									<input type="text" class="form-control currency" name="precio" id="precio" class="" value="" placeholder="" required />
 								</div>
 								<div class="form-group col-xs-12 col-sm-4">
 									<label class="required" for="manzana">Enganche</label>
-									<input type="number" class="form-control" name="manzana" placeholder=""  min="1" max="1000" required />
+									<input type="text" class="form-control currency" name="enganche" id="enganche" class="" placeholder="" required />
 								</div>
 								<div class="form-group col-xs-12 col-sm-4">
 									<label class="required" for="manzana">Abono</label>
-									<input type="number" class="form-control" name="manzana" placeholder=""  min="1" max="1000" required />
+									<input type="text" class="form-control currency" name="abono" id="abono" class="" placeholder="" required />
 								</div>
 								<legend>Contrato</legend>
 								<div class="form-group col-xs-12 col-sm-3">

@@ -22,9 +22,9 @@
 		<!-- <li role="separator" class="divider"></li> -->
 		<li>
 			<ul class="totales">
-				<li><a>Total: {{total}}</a></li>
-				<li><a>Enganche: {{enganche}}</a></li>
-				<li><a>Abonos: {{abono}}</a></li>
+				<li><a>Total: <label class="currency">{{total}}</label></a></li>
+				<li><a>Enganche: <label class="currency">{{enganche}}</label></a></li>
+				<li><a>Abonos: <label class="currency">{{abono}}</label></a></li>
 			</ul>
 		</li>
 	</script>
