@@ -12,55 +12,55 @@
 									<label class="required pull-right" for="manzana">Buscar Cliente</label>
 									<div class="clearfix"></div>
 									<div class="input-group">
-										<input id="autocomplete" type="text" class="form-control" name=""/>
+										<input id="clientes_autocomplete" type="text" class="form-control" name=""/>
 										<div class="input-group-addon"><span class="fa fa-search"></span></div>
 									</div>
 								</div>
 								<legend>Datos Personales</legend>
 								<div class="form-group col-xs-12 col-sm-6">
-									<label class="required" for="manzana">Nombre(s):</label>
-									<input type="text" class="form-control" name="manzana" placeholder=""  min="1" max="1000" required />
+									<label class="required" for="nombre">Nombre(s):</label>
+									<input type="text" class="form-control" name="nombre" id="nombre" placeholder="Alguien" required/>
 								</div>
 								<div class="form-group col-xs-12 col-sm-6">
-									<label class="required" for="manzana">Apellidos</label>
-									<input type="text" class="form-control" name="manzana" placeholder=""  min="1" max="1000" required />
+									<label class="required" for="apellidos">Apellidos</label>
+									<input type="text" class="form-control" name="apellidos" id="apellidos" values="Alguien Alguien" required />
 								</div>
 								<div class="form-group col-xs-12 col-sm-6">
-									<label class="required" for="manzana">Correo Electrónico</label>
-									<input type="text" class="form-control" name="manzana" placeholder=""  min="1" max="1000" required />
+									<label class="required" for="correo">Correo Electrónico</label>
+									<input type="text" class="form-control" name="correo" id="correo" placeholder="alguien@dominio.com"  />
 								</div>
 								<legend>Domicilio</legend>
 								<div class="form-group col-xs-12 col-sm-6">
-									<label class="required" for="manzana">Calle</label>
-									<input type="text" class="form-control" name="manzana" placeholder=""  min="1" max="1000" required />
+									<label class="required" for="calle">Calle</label>
+									<input type="text" class="form-control" name="calle" id="calle" placeholder="" />
 								</div>
 								<div class="form-group col-xs-12 col-sm-3 col-lg-2">
-									<label class="required" for="manzana">No. Exterior:</label>
-									<input type="text" class="form-control" name="manzana" placeholder=""  min="1" max="1000" required />
+									<label class="required" for="no_ext">No. Exterior:</label>
+									<input type="text" class="form-control" name="no_ext" id="no_ext" placeholder=""  />
 								</div>
 								<div class="form-group col-xs-12 col-sm-3 col-lg-2">
-									<label class="required" for="manzana">No. Interior:</label>
-									<input type="text" class="form-control" name="manzana" placeholder=""  min="1" max="1000" required />
+									<label class="required" for="no_int">No. Interior:</label>
+									<input type="text" class="form-control" name="no_int" id="no_int" placeholder=""/>
 								</div>
 								<div class="form-group col-xs-12 col-sm-6 col-lg-2">
-									<label class="required" for="manzana">Colonia:</label>
-									<input type="text" class="form-control" name="manzana" placeholder=""  min="1" max="1000" required />
+									<label class="required" for="colonia">Colonia:</label>
+									<input type="text" class="form-control" name="colonia" id="colonia" placeholder="" />
 								</div>
 								<div class="form-group col-xs-12 col-sm-6">
-									<label class="required" for="manzana">Municipio</label>
-									<input type="text" class="form-control" name="manzana" placeholder=""  min="1" max="1000" required />
+									<label class="required" for="municipio">Municipio</label>
+									<input type="text" class="form-control" name="municipio" id="municipio" placeholder="" />
 								</div>
 								<div class="form-group col-xs-12 col-sm-6">
-									<label class="required" for="manzana">Estado</label>
-									<input type="text" class="form-control" name="manzana" placeholder=""  min="1" max="1000" required />
+									<label class="required" for="estado">Estado</label>
+									<input type="text" class="form-control" name="estado" id="estado" placeholder="" />
 								</div>
 								<div class="form-group col-xs-12 col-sm-3">
-									<label class="required" for="manzana">País</label>
-									<input type="text" class="form-control" name="manzana" placeholder=""  min="1" max="1000" required />
+									<label class="required" for="pais">País</label>
+									<input type="text" class="form-control" name="pais" id="pais" placeholder=""  />
 								</div>
 								<div class="form-group col-xs-12 col-sm-3">
-									<label class="required" for="manzana">C.P</label>
-									<input type="text" class="form-control" name="manzana" placeholder=""  min="1" max="1000" required />
+									<label class="required" for="cp">C.P</label>
+									<input type="text" class="form-control" name="cp" id="cp" placeholder="" />
 								</div>
 							</div>
 						</div>

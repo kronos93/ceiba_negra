@@ -120,8 +120,14 @@ $(document).ready(function() {
     tinymce.init({
         selector: '#contrato',
     });
+    $('#clientes_autocomplete').autocomplete({
+        serviceUrl: base_url + '/ajax/autocomplete_clientes',
+        onSelect: function(suggestion) {
+            data_in_form_edit(suggestion) 
+            console.log(suggestion);
+        }
+    });
     //USUARIOS
-
     $("#form-user").on('hidden.bs.modal', function() {
         $(this).removeData('bs.modal');
     });

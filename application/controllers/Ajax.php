@@ -9,6 +9,7 @@ class Ajax extends CI_Controller
         parent::__construct();
         $this->load->model('Huerto_model');
         $this->load->model('Manzana_model');
+        $this->load->model('Cliente_model');
     }
     //DATOS PARA EL MAPA
     public function get_mapa()
@@ -163,6 +164,13 @@ class Ajax extends CI_Controller
         } else {
             echo "No se detectó ningún cambio en los datos al actualizar.";
         }
+    }
+    public function autocomplete_clientes(){
+        header("Content-type: application/json; charset=utf-8");
+        $response = new stdClass();
+        $response->suggestions = $this->Cliente_model->clientes_autocomplete();
+
+        echo json_encode($response);
     }
     public function add_cart()
     {
