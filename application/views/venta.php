@@ -3,13 +3,12 @@
 	<div class="container-fluid container">
 		<div class="row">
 			<div class="col-xs-12">
-				
 				<div id="accordion" role="tablist" aria-multiselectable="true">
 					<div class="card">
 					    <div class="card-header" role="tab" id="headingOne">
-					      	<h5 class="mb-0">
+					      	<h5>
 					        	<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-					          	Resumen de Venta
+					          	Resumen de Venta <span class="fa fa-angle-down fa-lg"></span>
 					        	</a>
 					     	 </h5>
 					    </div>
@@ -32,11 +31,11 @@
 														<td>23,45,67</td>
 														<td>$45,000.00</td>
 													</tr>
-													<tr>
+													<!-- <tr>
 														<td>Manzana 23</td>
 														<td>23,45,67</td>
 														<td>$45,000.00</td>
-													</tr>
+													</tr> -->
 												</tbody>
 												<tfoot>
 													<tr>

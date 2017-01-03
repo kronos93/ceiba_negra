@@ -7993,6 +7993,24 @@ g.mapplic-active > * {
   line-height: 20px;
   font-weight: bold;
 }
+.card {
+  margin-bottom: 20px;
+}
+.card-header {
+  background-color: #3fbb9b;
+  border-radius: 5px;
+}
+.card-header h5 a {
+  color: #fff;
+  display: block;
+  padding: 10px 10px;
+  text-align: right;
+  outline: none;
+}
+.card-header h5 a:hover,
+.card-header h5 a:focus {
+  text-decoration: none;
+}
 .sale-resume {
   margin: 20px 0px;
 }
