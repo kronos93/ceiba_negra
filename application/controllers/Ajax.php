@@ -183,17 +183,33 @@ class Ajax extends CI_Controller
                     'id_huerto' => $this->input->post("id_huerto"),
                     'vendido' => 0
             ];
-            $huerto = $this->Huerto_model->huertosPM($where, "obj");
-            if (count($huerto)) {
-                $data = array(
-                    'id'      => 'huerto_'.$huerto[0]->id_huerto,
-                    'qty'     => 1,
-                    'price'   => (float) $huerto[0]->precio,
-                    'abono'   => (float) $huerto[0]->abono,
-                    'enganche'   => (float) $huerto[0]->enganche,
-                    'name'    => "Manzana: {$huerto[0]->manzana}, Huerto: {$huerto[0]->huerto}"
-                );
-                $this->cart->insert($data);
+            $huertos = $this->Huerto_model->huertosPM($where, "obj");
+            if (count($huertos)) {
+                foreach($huertos as $huerto){
+                    $data = array(
+                        'id'      => 'huerto_'.$huerto->id_huerto,
+                        'qty'     => 1,
+                        'price'   => (float) $huerto->precio,
+                        'abono'   => (float) $huerto->abono,
+                        'enganche'   => (float) $huerto->enganche,
+                        'name'    => "Manzana: {$huerto->manzana}, Huerto: {$huerto->huerto}"
+                    );
+                    $options = [];
+                    if(!empty($huerto->col_norte)){
+                        $options['col_norte'] = "<strong>Al norte:</strong> {$huerto->col_norte};";
+                    }
+                    if(!empty($huerto->col_sur)){
+                        $options['col_sur'] = "<strong>Al sur:</strong> {$huerto->col_sur};";
+                    }
+                    if(!empty($huerto->col_este)){
+                        $options['col_este'] = "<strong>Al Este:</strong> {$huerto->col_este};";
+                    }
+                    if(!empty($huerto->col_oeste)){
+                        $options['col_oeste'] = "<strong>Al Oeste:</strong> {$huerto->col_oeste};";
+                    }
+                    $data['options'] = $options;
+                    $this->cart->insert($data);
+                }
             }
         }
         $this->show_cart();

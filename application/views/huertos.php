@@ -139,7 +139,7 @@
                                 <label class="required" for="lote">No. huerto:</label>
 								<div class="input-group">
 									<div class="input-group-addon">Ht.</div>
-								    <input type="number" class="form-control" name="huerto" id="huerto" placeholder="1" min="1" max="100" step="1" required/>
+								    <input type="text" class="form-control" name="huerto" id="huerto" pattern="[0-9]{1,3}[A-Za-z]{0,1}" placeholder="1" required/>
 								</div>
                             </div>
 							<div class="form-group col-xs-12 col-sm-4">
