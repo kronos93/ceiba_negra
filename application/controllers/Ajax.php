@@ -192,22 +192,9 @@ class Ajax extends CI_Controller
                         'price'   => (float) $huerto->precio,
                         'abono'   => (float) $huerto->abono,
                         'enganche'   => (float) $huerto->enganche,
-                        'name'    => "Manzana: {$huerto->manzana}, Huerto: {$huerto->huerto}"
+                        'name'    => "Manzana: {$huerto->manzana}, Huerto: {$huerto->huerto}",
+                        'id_huerto' => $huerto->id_huerto
                     );
-                    $options = [];
-                    if(!empty($huerto->col_norte)){
-                        $options['col_norte'] = "<strong>Al norte:</strong> {$huerto->col_norte};";
-                    }
-                    if(!empty($huerto->col_sur)){
-                        $options['col_sur'] = "<strong>Al sur:</strong> {$huerto->col_sur};";
-                    }
-                    if(!empty($huerto->col_este)){
-                        $options['col_este'] = "<strong>Al Este:</strong> {$huerto->col_este};";
-                    }
-                    if(!empty($huerto->col_oeste)){
-                        $options['col_oeste'] = "<strong>Al Oeste:</strong> {$huerto->col_oeste};";
-                    }
-                    $data['options'] = $options;
                     $this->cart->insert($data);
                 }
             }

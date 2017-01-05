@@ -36,9 +36,13 @@ class Huerto_model extends CI_Model
                             `precios`.`abono`,
                             {$this->tabla}.`vendido`,
                             {$this->tabla}.`col_norte`,
-                            {$this->tabla}.`col_sur`,
+                            {$this->tabla}.`col_noreste`,
                             {$this->tabla}.`col_este`,
-                            {$this->tabla}.`col_oeste`");
+                            {$this->tabla}.`col_sureste`,
+                            {$this->tabla}.`col_sur`,
+                            {$this->tabla}.`col_suroeste`,
+                            {$this->tabla}.`col_oeste`,
+                            {$this->tabla}.`col_noroeste`");
         $this->db->from("{$this->tabla}");
         $this->db->join("precios", "$this->tabla.id_precio = precios.id_precio", 'left');
         $this->db->join("manzanas", "$this->tabla.id_manzana = manzanas.id_manzana", 'left');

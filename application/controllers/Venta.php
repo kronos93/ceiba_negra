@@ -116,4 +116,22 @@ $vars = [
         $this->load->view('./templates/contrato/prueba',$data);
         
     }
+    
+    public function read_docx(){
+        $cadena = file_get_contents('http://localhost/ceiba_negra/docs/Datos%20del%20predio/Datos%20a%20migrar/datos.txt', FILE_USE_INCLUDE_PATH);
+        $textos = explode("\r\n", $cadena);
+
+        foreach($textos as $key => $texto) {
+            $texto = trim($texto);
+            if (preg_match('/^MANZANA\s*[0-9]*$/i',$texto))
+            {
+                echo $texto."Inicio de bloque<br/>";
+
+            } 
+            else { 
+                echo var_dump($texto)."<br/>";
+            }
+        }
+
+    }
 }

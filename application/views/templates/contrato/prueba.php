@@ -17,6 +17,7 @@
 
 <tr>
         <th>QTY</th>
+        <th>huerto</th>
         <th>Item Description</th>
         <th style="text-align:right">Item Price</th>
         <th style="text-align:right">Sub-Total</th>
@@ -30,6 +31,7 @@
 
         <tr>
                 <td><?php echo $items['qty']; ?></td>
+                <td><?php echo $items['id_huerto']; ?></td>
                 <td>
                         <?php echo $items['name']; ?>
 
