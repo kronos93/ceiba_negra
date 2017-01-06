@@ -1,200 +1,360 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-
-class Venta extends CI_Controller {
-    function __construct() {
+defined('BASEPATH') or exit('No direct script access allowed');
+use Carbon\Carbon;
+class Venta extends CI_Controller
+{
+    function __construct()
+    {
         parent::__construct();
         $this->load->model('Contrato_model');
         $this->load->model('Manzana_model');
         $this->load->model('Huerto_model');
     }
-	public function index() {
+    public function index()
+    {
         $data['title'] = "Venta";
-		$data['body'] = "venta";
-		$this->load->view('templates/template',$data);        
+        $data['body'] = "venta";
+        $this->load->view('templates/template', $data);
     }
-    public function prueba() {
-echo '<pre>';
-$datosMz = new stdClass();
-$datosMz->id_mz = [];
-$datosMz->mz = [];
-foreach ($this->cart->contents() as $items){
+    public function prueba()
+    {
 
-    
-        $where = ['id_huerto' => $items['id_huerto']];
-        $huertos = $this->Huerto_model->getHuertosPM($where,'object');
+        $datosMz = new stdClass();
+        $datosMz->id_mz = [];
+        $datosMz->mz = [];
+        $datosMz->huertos = [];
+        //Obtener número de manzanas
+        //Obtener número de huertos
+        $n_ht = 0;
+        foreach ($this->cart->contents() as $items) {
+            $where = ['id_huerto' => $items['id_huerto']];
+            $huertos = $this->Huerto_model->getHuertosPM($where, 'object');
+            foreach ($huertos as $key => $huerto) {
+                if (!in_array($huerto->id_manzana, $datosMz->id_mz)) {
+                    array_push($datosMz->id_mz, $huerto->id_manzana);
+                }
+            }
+            $n_ht++;
+        }
+        $multiple_mz = (count($datosMz->id_mz)>1) ? true : false;
         
-        foreach ($huertos as $key => $huerto) {
-            if(!in_array($huerto->id_manzana, $datosMz->id_mz)){
-                array_push($datosMz->id_mz, $huerto->id_manzana);
+        //Obtener las colindancias de los lotes
+        $colindancias_mz = "";
+        $superficie_mz = 0;
+        $colindancias = "";
+        foreach ($datosMz->id_mz as $id) {
+            $where = ['id_manzana' => $id];
+            $manzanas = $this->Manzana_model->get('*', $where);
+            foreach ($manzanas as $manzana) {
+                if (!in_array($manzana->manzana, $datosMz->mz)) {
+                    array_push($datosMz->mz, $manzana->manzana);
+                }
+                if (!empty($manzana->col_norte)) {
+                    $colindancias .= "<strong>Al Norte</strong>, {$manzana->col_norte}; ";
+                }
+                if (!empty($manzana->col_noreste)) {
+                    $colindancias .= "<strong>Al Noreste</strong>, {$manzana->col_noreste}; ";
+                }
+                if (!empty($manzana->col_este)) {
+                    $colindancias .= "<strong>Al Este</strong>, {$manzana->col_este}; ";
+                }
+                if (!empty($manzana->col_sureste)) {
+                    $colindancias .= "<strong>Al Sureste</strong>, {$manzana->col_sureste}; ";
+                }
+                if (!empty($manzana->col_sur)) {
+                    $colindancias .= "<strong>Al Sur</strong>, {$manzana->col_sur}; ";
+                }
+                if (!empty($manzana->col_suroeste)) {
+                    $colindancias .= "<strong>Al Suroeste</strong>, {$manzana->col_suroeste}; ";
+                }
+                if (!empty($manzana->col_noroeste)) {
+                    $colindancias .= "<strong>Al Noroeste</strong>, {$manzana->col_noroeste}; ";
+                }
+                $superficie_mz = number_format(8750.00, 2);
+                $colindancias.= " con una Superficie total de {$superficie_mz} M<sup>2</sup>";
+                if (!$multiple_mz) {
+                    $colindancias_mz = $colindancias;
+                } else {
+                    $colindancias_mz .= "<div><strong>MANZANA {$manzana->manzana}</strong> {$colindancias}</div>";
+                    $colindancias = "";
+                }
             }
         }
-}
-
-$multiple_mz = (count($datosMz->id_mz)>1) ? true : false;
-$colindancias_mz = "";
-$colindancias = "";
-foreach($datosMz->id_mz as $id){
-
-    $where = ['id_manzana' => $id];
-    $manzanas = $this->Manzana_model->get('*',$where);
-    foreach($manzanas as $manzana){
-        if(!in_array($manzana->manzana, $datosMz->mz)){
-            array_push($datosMz->mz, $manzana->manzana);
-        }
+        //Manzanas a texto
+        $mz_txt = implode(',', $datosMz->mz);
+        //Obtener la colindancias de los huertos
+        $colindancias = "";
+        $colindancias_ht = "";
+        $superficie_ht = 0;
+        foreach ($this->cart->contents() as $items) {
+            $where = ['id_huerto' => $items['id_huerto']];
+            $huertos = $this->Huerto_model->getHuertosPM($where, 'object');
         
-        if(!empty($manzana->col_norte)){
-            $colindancias .= "<strong>Al Norte</strong>, {$manzana->col_norte}; ";
-        }
-        if(!empty($manzana->col_noreste)){
-            $colindancias .= "<strong>Al Noreste</strong>, {$manzana->col_noreste}; ";
-        }
-        if(!empty($manzana->col_este)){
-            $colindancias .= "<strong>Al Este</strong>, {$manzana->col_este}; ";
-        }
-        if(!empty($manzana->col_sureste)){
-            $colindancias .= "<strong>Al Sureste</strong>, {$manzana->col_sureste}; ";
-        }
-        if(!empty($manzana->col_sur)){
-            $colindancias .= "<strong>Al Sur</strong>, {$manzana->col_sur}; ";
-        }
-        if(!empty($manzana->col_suroeste)){
-            $colindancias .= "<strong>Al Suroeste</strong>, {$manzana->col_suroeste}; ";
-        }
-        if(!empty($manzana->col_noroeste)){
-            $colindancias .= "<strong>Al Noroeste</strong>, {$manzana->col_noroeste}; ";
-        }
-        if(!$multiple_mz){
-            $colindancias_mz = $colindancias;
-        }else{
-            $colindancias_mz .= "<div><strong>MANZANA {$manzana->manzana}</strong> {$colindancias}</div>";
-            $colindancias = "";
+            foreach ($huertos as $key => $huerto) {
+                $superficie_ht = number_format($huerto->superficie, 2);
+                $colindancias .= "una superficie de {$superficie_ht} M<sup>2</sup>, con las Medidas y Colindancias Siguientes: ";
+                if (!empty($huerto->col_norte)) {
+                    $colindancias .= "<strong>Al Norte</strong>, {$huerto->col_norte}; ";
+                }
+                if (!empty($huerto->col_noreste)) {
+                    $colindancias .= "<strong>Al Noreste</strong>, {$huerto->col_noreste}; ";
+                }
+                if (!empty($huerto->col_este)) {
+                    $colindancias .= "<strong>Al Este</strong>, {$huerto->col_este}; ";
+                }
+                if (!empty($huerto->col_sureste)) {
+                    $colindancias .= "<strong>Al Sureste</strong>, {$huerto->col_sureste}; ";
+                }
+                if (!empty($huerto->col_sur)) {
+                    $colindancias .= "<strong>Al Sur</strong>, {$huerto->col_sur}; ";
+                }
+                if (!empty($huerto->col_suroeste)) {
+                    $colindancias .= "<strong>Al Suroeste</strong>, {$huerto->col_suroeste}; ";
+                }
+                if (!empty($huerto->col_noroeste)) {
+                    $colindancias .= "<strong>Al Noroeste</strong>, {$huerto->col_noroeste}; ";
+                }
+            }
+
+            if (!$multiple_mz) {
+                //Multiples huertos
+                if ($n_ht > 1) {
+                    $colindancias_ht .= "<div>{$colindancias}</div>";
+                    $colindancias = "";
+                } else {
+                    $colindancias_ht = $colindancias;
+                }
+            } else {
+                $colindancias_ht .= "<div><strong>EN MANZANA {$huerto->manzana} </strong>{$colindancias}</div>";
+                $colindancias = "";
+            }
         }
 
-    }
-}
-
-$mz_txt = implode(',',$datosMz->mz);
-echo '</pre>';
-
-$tabla_pagare = '<table>
-	<thead>
-		<tr>
-			<th>Concepto</th>
-			<th>Monto a pagar</th>
-			<th>Fecha de pago</th>
-		</tr>
-	</thead>
-	<tbody>';
-		$enganche = 10000; $pagos = 1500; $total = $enganche;
-$tabla_pagare .= "<tr>"
-			."<td>ENGANCHE</td>"
-			."<td>$". number_format($enganche,2)."</td>"
-			."<td>15-01-2017</td>"
-		."</tr>";
-		for($i=1; $i<=67; $i++) {
-		$tabla_pagare .= '<tr>
-			<td>PAGO '.$i.'</td>
-			<td>$'.number_format($pagos,2).'</td>
-			<td>15-0-2017</td>
-		</tr>';
-			$total+=$pagos;
-		} 
-		
-$tabla_pagare .= '</tbody>
-	<tfoot>
-	<tr>
-		<td>TOTAL:</td>
-		<td>$'. number_format($total,2).'</td>
-		<td></td>
-	</tr>
-	</tfoot>
-</table>';
-//Una manzana manzana
-if(!$multiple_mz){
-
-    $complemento_manzana_ii = ', que a continuación se describe';
-    $complemento_manzana_v = 'motivo de la Presente Operación, no ha sido Cedida, Vendida o Comprometida en forma con anterioridad a este Acto';
-    $fraccion = 'la fracción marcada';
-    $numero_manzana = "el Número {$mz_txt}";
-    $manzana_txt = "LA MANZANA {$mz_txt}";
-    //Un huerto
-    if(true){
-        $huerto = 'una superficie de 312.50 m2, con las Medidas y Colindancias Siguientes: <strong>Al Norte</strong>, 46.012 MTS. CON Mz. 26 HUERTO. 15 MÁS 35.00 MTS. CON Mz. 26 HUERTO. 10; <strong>Al Sur</strong>, 45.468 MTS. CON Mz. 26 HUERTO. 13 MÁS 35.00 MTS. CON Mz. 26 HUERTO. 12; <strong>Al Este</strong>, 12.50 MTS. CON Mz. 27 HUERTO. 12; <strong>Al Oeste</strong>, 12.50 MTS. Con Sendero La Ceiba';
-    //Dos huertos
-    }else{
-        $huerto = '<div>una superficie de 312.50 m2, con las Medidas y Colindancias Siguientes: <strong>Al Norte</strong>, 46.012 MTS. CON Mz. 26 HUERTO. 15 MÁS 35.00 MTS. CON Mz. 26 HUERTO. 10; <strong>Al Sur</strong>, 45.468 MTS. CON Mz. 26 HUERTO. 13 MÁS 35.00 MTS. CON Mz. 26 HUERTO. 12; <strong>Al Este</strong>, 12.50 MTS. CON Mz. 27 HUERTO. 12; <strong>Al Oeste</strong>, 12.50 MTS. Con Sendero La Ceiba<div>
-        <div>una superficie de 312.50 m2, con las Medidas y Colindancias Siguientes: <strong>Al Norte</strong>, 46.012 MTS. CON Mz. 26 HUERTO. 15 MÁS 35.00 MTS. CON Mz. 26 HUERTO. 10; <strong>Al Sur</strong>, 45.468 MTS. CON Mz. 26 HUERTO. 13 MÁS 35.00 MTS. CON Mz. 26 HUERTO. 12; <strong>Al Este</strong>, 12.50 MTS. CON Mz. 27 HUERTO. 12; <strong>Al Oeste</strong>, 12.50 MTS. Con Sendero La Ceiba<div>';
-    }
-}else{
-
-    $complemento_manzana_ii = ', que a continuación se describen';
-    $complemento_manzana_v = 'motivos de la Presente Operación, no han sido Cedidas, Vendidas o Comprometidas en forma con anterioridad a este Acto';
-    $fraccion = 'las fracciones marcadas';
-    $numero_manzana = "los Números {$mz_txt}"; //str_replace la penúltima coma para poner una y
-    $manzana_txt = "LAS MANZANAS {$mz_txt}"; //str_replace la última coma para poner una y
+        $fecha_inicial = '15-02-2015';
+        $total = 110000.00;
+        $enganche = 10000.00;
+        $abono = 1500;
+        $historial = new Historial($total,$enganche,$abono,$fecha_inicial);
+        $historial_pagos = "<table>";
+        $historial_pagos .=    "<thead>";
+        $historial_pagos .=         "<tr>";
+        $historial_pagos .=             "<th>Concepto</th>";
+        $historial_pagos .=             "<th>Monto a pagar</th>";
+        $historial_pagos .=             "<th>Fecha de pago</th>";
+        $historial_pagos .=         "</tr>";
+        $historial_pagos .=    "</thead>";
+        $historial_pagos .=    "<tbody>";
+        foreach($historial->getHistorial() as $pago){
+            $historial_pagos .=     "<tr>";
+            $historial_pagos .=         "<td>{$pago->getConcepto()}</td>";
+            $historial_pagos .=         "<td>{$pago->getAbono()}</td>";
+            $historial_pagos .=         "<td>{$pago->getFecha()}</td>";
+            $historial_pagos .=     "<tr>";
+        }
+        $historial_pagos .=    "</tbody>";
+        $historial_pagos .= "</table>";
+        //Una manzana manzana
+        if (!$multiple_mz) {
+            $complemento_manzana_ii = ', que a continuación se describe';
+            $complemento_manzana_v = 'motivo de la Presente Operación, no ha sido Cedida, Vendida o Comprometida en forma con anterioridad a este Acto';
+            $fraccion = 'la fracción marcada';
+            $numero_manzana = "el Número {$mz_txt}";
+            $manzana_txt = "LA MANZANA {$mz_txt}";
+            
+            /*//Un huerto
+            if (true) {
+                $huerto = 'una superficie de 312.50 m2, con las Medidas y Colindancias Siguientes: <strong>Al Norte</strong>, 46.012 MTS. CON Mz. 26 HUERTO. 15 MÁS 35.00 MTS. CON Mz. 26 HUERTO. 10; <strong>Al Sur</strong>, 45.468 MTS. CON Mz. 26 HUERTO. 13 MÁS 35.00 MTS. CON Mz. 26 HUERTO. 12; <strong>Al Este</strong>, 12.50 MTS. CON Mz. 27 HUERTO. 12; <strong>Al Oeste</strong>, 12.50 MTS. Con Sendero La Ceiba';
+            //Dos huertos
+            } else {
+                $huerto = '<div>una superficie de 312.50 m2, con las Medidas y Colindancias Siguientes: <strong>Al Norte</strong>, 46.012 MTS. CON Mz. 26 HUERTO. 15 MÁS 35.00 MTS. CON Mz. 26 HUERTO. 10; <strong>Al Sur</strong>, 45.468 MTS. CON Mz. 26 HUERTO. 13 MÁS 35.00 MTS. CON Mz. 26 HUERTO. 12; <strong>Al Este</strong>, 12.50 MTS. CON Mz. 27 HUERTO. 12; <strong>Al Oeste</strong>, 12.50 MTS. Con Sendero La Ceiba<div>
+                <div>una superficie de 312.50 m2, con las Medidas y Colindancias Siguientes: <strong>Al Norte</strong>, 46.012 MTS. CON Mz. 26 HUERTO. 15 MÁS 35.00 MTS. CON Mz. 26 HUERTO. 10; <strong>Al Sur</strong>, 45.468 MTS. CON Mz. 26 HUERTO. 13 MÁS 35.00 MTS. CON Mz. 26 HUERTO. 12; <strong>Al Este</strong>, 12.50 MTS. CON Mz. 27 HUERTO. 12; <strong>Al Oeste</strong>, 12.50 MTS. Con Sendero La Ceiba<div>';
+            }*/
+        } else {
+            $complemento_manzana_ii = ', que a continuación se describen';
+            $complemento_manzana_v = 'motivos de la Presente Operación, no han sido Cedidas, Vendidas o Comprometidas en forma con anterioridad a este Acto';
+            $fraccion = 'las fracciones marcadas';
+            $numero_manzana = "los Números {$mz_txt}"; //str_replace la penúltima coma para poner una y
+            $manzana_txt = "LAS MANZANAS {$mz_txt}"; //str_replace la última coma para poner una y
     
-
-    //Si son dos más manzanas por ende son dos o más huertos
-    $huerto = '<div><strong>EN MANZANA 28</strong> una superficie de 312.50 m2, con las Medidas y Colindancias Siguientes: <strong>Al Norte</strong>, 46.012 MTS. CON Mz. 26 HUERTO. 15 MÁS 35.00 MTS. CON Mz. 26 HUERTO. 10; <strong>Al Sur</strong>, 45.468 MTS. CON Mz. 26 HUERTO. 13 MÁS 35.00 MTS. CON Mz. 26 HUERTO. 12; <strong>Al Este</strong>, 12.50 MTS. CON Mz. 27 HUERTO. 12; <strong>Al Oeste</strong>, 12.50 MTS. Con Sendero La Ceiba<div>
-    <div><strong>EN MANZANA 29</strong> una superficie de 312.50 m2, con las Medidas y Colindancias Siguientes: <strong>Al Norte</strong>, 46.012 MTS. CON Mz. 26 HUERTO. 15 MÁS 35.00 MTS. CON Mz. 26 HUERTO. 10; <strong>Al Sur</strong>, 45.468 MTS. CON Mz. 26 HUERTO. 13 MÁS 35.00 MTS. CON Mz. 26 HUERTO. 12; <strong>Al Este</strong>, 12.50 MTS. CON Mz. 27 HUERTO. 12; <strong>Al Oeste</strong>, 12.50 MTS. Con Sendero La Ceiba<div>';
-
-}
-$vars = [
-'fecha_contrato_txt' => 'el día martes, 03 de enero del año 2017',
-'nombre_cliente' => 'Samuel Rojas Too',
-'domicilio_cliente' => 'Calle 51, No ext. 21, No. int S/N, Colonia Reg. 233, Benito Juarez, Quintana Roo, México, C.P. 77510',
-'fraccion' => $fraccion,
-'numero_manzana' => $numero_manzana,
-'complemento_manzana_ii' => $complemento_manzana_ii,
-'complemento_manzana_v' => $complemento_manzana_v,
-'manzana_txt' => $manzana_txt,
-'colindancias_mz' => $colindancias_mz,
-'huerto' => $huerto,
-'precio' => '$'.number_format(110000.00,2),
-'precio_txt' => 'CIENTO DIEZ MIL PESOS 00/100 MN',
-'enganche' => '$'.number_format(10000.00,2),
-'enganche_txt' => 'DIEZ MIL PESOS 00/100 MN',
-'n_pagos' => 67,
-'abono' => '$'.number_format(1500.00,2), 
-'abono_txt' => 'UN MIL QUINIENTOS PESOS 00/100 MN',
-'fecha_primer_pago_txt' => 'el día martes, 15 de enero del año 2017',
-'fecha_ultimo_pago_txt' => 'el día martes, 15 de enero del año 2020',
-'porcentaje_penalizacion' => 1,
-'porcentaje_penalizacion_txt' => 'UNO',
-'maximo_retrasos_permitidos' => 3,
-'testigo_1' => 'Testigo1 Testigo1 Testigo1',
-'testigo_2' => 'Testigo2 Testigo2 Testigo2',
-'tabla_pagare' => $tabla_pagare,
-'ciudad' => 'México', 
-];
+            /*
+            //Si son dos más manzanas por ende son dos o más huertos
+            $huerto = '<div><strong>EN MANZANA 28</strong> una superficie de 312.50 m2, con las Medidas y Colindancias Siguientes: <strong>Al Norte</strong>, 46.012 MTS. CON Mz. 26 HUERTO. 15 MÁS 35.00 MTS. CON Mz. 26 HUERTO. 10; <strong>Al Sur</strong>, 45.468 MTS. CON Mz. 26 HUERTO. 13 MÁS 35.00 MTS. CON Mz. 26 HUERTO. 12; <strong>Al Este</strong>, 12.50 MTS. CON Mz. 27 HUERTO. 12; <strong>Al Oeste</strong>, 12.50 MTS. Con Sendero La Ceiba<div>
+            <div><strong>EN MANZANA 29</strong> una superficie de 312.50 m2, con las Medidas y Colindancias Siguientes: <strong>Al Norte</strong>, 46.012 MTS. CON Mz. 26 HUERTO. 15 MÁS 35.00 MTS. CON Mz. 26 HUERTO. 10; <strong>Al Sur</strong>, 45.468 MTS. CON Mz. 26 HUERTO. 13 MÁS 35.00 MTS. CON Mz. 26 HUERTO. 12; <strong>Al Este</strong>, 12.50 MTS. CON Mz. 27 HUERTO. 12; <strong>Al Oeste</strong>, 12.50 MTS. Con Sendero La Ceiba<div>';*/
+        }
+        $vars = 
+        [
+                'fecha_contrato_txt' => 'el día martes, 03 de enero del año 2017',
+                'nombre_cliente' => 'Samuel Rojas Too',
+                'domicilio_cliente' => 'Calle 51, No ext. 21, No. int S/N, Colonia Reg. 233, Benito Juarez, Quintana Roo, México, C.P. 77510',
+                'fraccion' => $fraccion,
+                'numero_manzana' => $numero_manzana,
+                'complemento_manzana_ii' => $complemento_manzana_ii,
+                'complemento_manzana_v' => $complemento_manzana_v,
+                'manzana_txt' => $manzana_txt,
+                'colindancias_mz' => $colindancias_mz,
+                'colindancias_ht' => $colindancias_ht,
+                'precio' => '$'.number_format(110000.00, 2),
+                'precio_txt' => 'CIENTO DIEZ MIL PESOS 00/100 MN',
+                'enganche' => '$'.number_format(10000.00, 2),
+                'enganche_txt' => 'DIEZ MIL PESOS 00/100 MN',
+                'n_pagos' => 67,
+                'abono' => '$'.number_format(1500.00, 2),
+                'abono_txt' => 'UN MIL QUINIENTOS PESOS 00/100 MN',
+                'fecha_primer_pago_txt' => 'el día martes, 15 de enero del año 2017',
+                'fecha_ultimo_pago_txt' => 'el día martes, 15 de enero del año 2020',
+                'porcentaje_penalizacion' => 1,
+                'porcentaje_penalizacion_txt' => 'UNO',
+                'maximo_retrasos_permitidos' => 3,
+                'testigo_1' => 'Testigo1 Testigo1 Testigo1',
+                'testigo_2' => 'Testigo2 Testigo2 Testigo2',
+                'historial_pagos' => $historial_pagos,
+                'ciudad' => 'México',
+        ];
         $contrato_template = file_get_contents('./application/views/templates/contrato/contrato.php', FILE_USE_INCLUDE_PATH);
         $output = $contrato_template;
-        foreach($vars as $key => $var){            
+        foreach ($vars as $key => $var) {
             $search = "[@{$key}]";
             $replace = $var;
-            $output = str_replace($search,$replace,$output);
+            $output = str_replace($search, $replace, $output);
         }
         $data['output'] = $output;
-        $this->load->view('./templates/contrato/prueba',$data);
-        
+        $this->load->view('./templates/contrato/prueba', $data);
     }
     
-    public function read_docx(){
+    public function read_docx()
+    {
         $cadena = file_get_contents('http://localhost/ceiba_negra/docs/Datos%20del%20predio/Datos%20a%20migrar/datos.txt', FILE_USE_INCLUDE_PATH);
         $textos = explode("\r\n", $cadena);
 
-        foreach($textos as $key => $texto) {
+        foreach ($textos as $key => $texto) {
             $texto = trim($texto);
-            if (preg_match('/^MANZANA\s*[0-9]*$/i',$texto))
-            {
+            if (preg_match('/^MANZANA\s*[0-9]*$/i', $texto)) {
                 echo $texto."Inicio de bloque<br/>";
-
-            } 
-            else { 
+            } else {
                 echo var_dump($texto)."<br/>";
             }
         }
-
     }
+}
+class Pago {
+    private $concepto;
+    private $abono;
+    private $pagado;
+    public $fecha;
+    public function __construct($concepto,$abono,$pagado,$fecha)
+    {
+        $this->concepto = $concepto;
+        $this->abono = $abono;
+        $this->pagado = $pagado;
+        
+        $this->fecha = $fecha;
+       
+    }
+    public function getConcepto(){
+        return $this->concepto;
+    }
+    public function getAbono(){
+        return $this->abono;
+    }
+    public function getFecha(){
+        return $this->fecha;
+    }
+}
+class Historial  {
+    private $total = 0;
+    private $enganche = 0;
+    private $abono = 0;
+    private $fecha_inicial;
+    private $n_pago = 0;
+    private $historial = [];
+    private $pagado = 0;
+    
+    private $getQuincena;
+    private $_fecha;
+    public function __construct($total,$enganche,$abono,$fecha_inicial)
+    {
+        $this->total = $total;
+        $this->enganche = $enganche;
+        $this->abono = $abono;
+        
+        $this->fecha_inicial = Carbon::createFromFormat('d-m-Y', $fecha_inicial);
+        $dia = $this->fecha_inicial->day;
+
+        $this->_fecha = Carbon::createFromFormat('d-m-Y', $fecha_inicial);
+        if($dia < 15){
+            $this->_fecha = $this->_fecha->startOfMonth();  
+            $this->_fecha = $this->_fecha->subDay();    
+            $this->getQuincena = true;      
+        }else{   
+            $fin =  $this->_fecha->endOfMonth(); 
+            $dia_f = $fin->day;         
+            if($dia < $dia_f){
+                $this->getQuincena = false;      
+            }else{
+                $this->_fecha = $this->_fecha->endOfMonth(); 
+                $this->getQuincena = true;
+            }
+        }
+        /*$this->mes = $this->fecha_inicial->month;
+        $this->anno = $this->fecha_inicial->year;
+        
+        $this->end_month = Carbon::createFromFormat('d-m-Y', $fecha_inicial);
+        $this->end_month = $this->end_month->endOfMonth();
+        var_dump($this->end_month->format('d-m-Y'));
+        var_dump($this->end_month->addDays(15)->format('d-m-Y'));
+        var_dump($this->end_month->endOfMonth()->format('d-m-Y'));
+        var_dump($this->end_month->addDays(15)->format('d-m-Y'));*/
+        $this->generarHistorial();
+    }
+
+    public function generarHistorial () {
+        $abono = $this->enganche;
+        
+        if($this->n_pago == 0){
+            $fecha = $this->fecha_inicial;
+            $concepto = "ENGANCHE";  
+            $this->pagado += $this->enganche;        
+            array_push($this->historial, new Pago($concepto,$abono,$this->pagado,$fecha->format('d-m-Y')));
+        }
+        if($this->pagado > 0){
+            
+            
+            while($this->pagado < $this->total){
+                
+                $fecha_h = $this->getFecha();
+
+                $this->n_pago++;
+                $concepto = "PAGO ".$this->n_pago;
+                $abono = $this->abono;
+                $this->pagado+= $abono;
+                if($this->pagado > $this->total ){
+                    $this->pagado-= $abono;
+                    $abono = $this->total - $this->pagado;
+                    $this->pagado+= $abono;
+                    array_push($this->historial, new Pago($concepto,$abono,$this->pagado,$fecha_h->format('d-m-Y')));    
+                    break;
+                }
+                array_push($this->historial, new Pago($concepto,$abono,$this->pagado,$fecha_h->format('d-m-Y')));
+                
+            }
+           
+            
+        }
+    }
+
+    public function getHistorial()
+    {
+        return $this->historial;
+    }
+
+    public function getFecha(){
+        if($this->getQuincena == true){
+            $this->getQuincena = false;
+            return $this->_fecha->addDays(15);
+        }else{
+            $this->getQuincena = true;
+            return $this->_fecha->endOfMonth();
+        }
+    }
+    
 }

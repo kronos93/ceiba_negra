@@ -7,7 +7,7 @@
 	<li>Que acredita la Posesión de la Fracción antes descrita y deslindada en la Declaración Primera, mediante Escritura Publica <strong>No. DOS CIENTOS CUARENTA Y NUEVE VOLUMEN TERCERO, TOMO "A"</strong>, celebrado ante Notario Público número treinta y tres a los 9 días del mes de diciembre del año 2004 debidamente registrada ante la Dirección General del Registro Público de la Propiedad y del Comercio Delegación Cancún del Estado de Quintana Roo con el folio número <strong>149971</strong>.</li>
 	<li>Que por así convenir a sus intereses, ha decidido subdividir en Fracciones convencionalmente el Predio Descrito y Deslindado en la Declaración Primera,  siendo materia de este Contrato [@fraccion] convencionalmente con [@numero_manzana][@complemento_manzana_ii]: <strong>[@manzana_txt]</strong>,  del  Predio Rustico  denominado  “La Ceiba”  ubicado  en  la localidad  de  Kantunilkin, Municipio de Lázaro Cárdenas, Estado de Quintana Roo, México, con las Medidas y Colindancias Siguientes: [@colindancias_mz]</li>
 	<li>El Señor <strong>FRANCISCO ENRIQUE MARTÍNEZ CORDERO</strong>; se obliga y compromete a realizar todos y cada uno de los trámites y gestiones necesarias ante la Dirección de Catastro y de Desarrollo Urbano, del Municipio de Lázaro Cárdenas; Estado de Quintana Roo, con el fin de obtener la Autorización de Subdivisión correspondiente a la Fracción I, de su Propiedad, descrito y deslindado en la Declaración Primera, resultando la Fracción marcada convencionalmente con [@numero_manzana], en declaración III.</li>
-	<li>El Señor <strong>FRANCISCO ENRIQUE MARTÍNEZ CORDERO</strong>, en su Carácter de propietario, bajo formal Protesta de decir verdad, declara: que <strong>[@manzana_txt]</strong>, [@complemento_manzana_v]. Y es el motivo del presente contrato ceder de manera definitiva en co-propiedad [@huerto]</li>
+	<li>El Señor <strong>FRANCISCO ENRIQUE MARTÍNEZ CORDERO</strong>, en su Carácter de propietario, bajo formal Protesta de decir verdad, declara: que <strong>[@manzana_txt]</strong>, [@complemento_manzana_v]. Y es el motivo del presente contrato ceder de manera definitiva en co-propiedad [@colindancias_ht]</li>
 	<li>Declara <strong>"EL CESIONARIO"</strong>, que conoce el estado físico y jurídico que guarda la Fracción, materia del Presente contrato y que está de acuerdo conforme con adquirirlo en co-propiedad. </li>
 </ol>
 <p>Expuestas las anteriores Declaraciones, se otorgan las siguientes:</p>
@@ -64,7 +64,7 @@ Asimismo a partir de la fecha de entrega de <strong>"LA ESCRITURA PUBLICA DEFINI
 <p>El C. [@nombre_cliente] (el Deudor) con generales establecidas en el contrato de fecha [@fecha_primer_pago_txt] del cual forma parte integral el presente anexo y el C. FRANCISCO ENRIQUE MARTÍNEZ CORDERO (el Acreedor), con generales establecidas en las declaraciones del presente contrato, a través de este documento, un "PAGARE GENERAL" que establece lo siguiente:</p>
 <p>Primero: El deudor acepta y se compromete a pagar la deuda contraída con el acreedor, la cual asciende a la cantidad de [@precio] ([@precio_txt]).</p>
 <p>Segundo: De mutuo acuerdo se establece el siguientes fechas de vencimiento:</p>
-[@tabla_pagare]
+[@historial_pagos]
 <p>El deudor pagará mensualmente [@abono] ([@abono_txt]) en un plazo no mayor a [@n_pagos] meses a partir del inicio de este plan de pagos a la cuenta definida por el acreedor:
 <div>SCOTIABANK SUCURSAL 005</div>
 <div>A NOMBRE DE FRANCISCO ENRIQUE MARTINEZ CORDERO</div>
