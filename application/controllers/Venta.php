@@ -5,6 +5,8 @@ class Venta extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('Contrato_model');
+        $this->load->model('Manzana_model');
+        $this->load->model('Huerto_model');
     }
 	public function index() {
         $data['title'] = "Venta";
@@ -12,6 +14,69 @@ class Venta extends CI_Controller {
 		$this->load->view('templates/template',$data);        
     }
     public function prueba() {
+echo '<pre>';
+$datosMz = new stdClass();
+$datosMz->id_mz = [];
+$datosMz->mz = [];
+foreach ($this->cart->contents() as $items){
+
+    
+        $where = ['id_huerto' => $items['id_huerto']];
+        $huertos = $this->Huerto_model->getHuertosPM($where,'object');
+        
+        foreach ($huertos as $key => $huerto) {
+            if(!in_array($huerto->id_manzana, $datosMz->id_mz)){
+                array_push($datosMz->id_mz, $huerto->id_manzana);
+            }
+        }
+}
+
+$multiple_mz = (count($datosMz->id_mz)>1) ? true : false;
+$colindancias_mz = "";
+$colindancias = "";
+foreach($datosMz->id_mz as $id){
+
+    $where = ['id_manzana' => $id];
+    $manzanas = $this->Manzana_model->get('*',$where);
+    foreach($manzanas as $manzana){
+        if(!in_array($manzana->manzana, $datosMz->mz)){
+            array_push($datosMz->mz, $manzana->manzana);
+        }
+        
+        if(!empty($manzana->col_norte)){
+            $colindancias .= "<strong>Al Norte</strong>, {$manzana->col_norte}; ";
+        }
+        if(!empty($manzana->col_noreste)){
+            $colindancias .= "<strong>Al Noreste</strong>, {$manzana->col_noreste}; ";
+        }
+        if(!empty($manzana->col_este)){
+            $colindancias .= "<strong>Al Este</strong>, {$manzana->col_este}; ";
+        }
+        if(!empty($manzana->col_sureste)){
+            $colindancias .= "<strong>Al Sureste</strong>, {$manzana->col_sureste}; ";
+        }
+        if(!empty($manzana->col_sur)){
+            $colindancias .= "<strong>Al Sur</strong>, {$manzana->col_sur}; ";
+        }
+        if(!empty($manzana->col_suroeste)){
+            $colindancias .= "<strong>Al Suroeste</strong>, {$manzana->col_suroeste}; ";
+        }
+        if(!empty($manzana->col_noroeste)){
+            $colindancias .= "<strong>Al Noroeste</strong>, {$manzana->col_noroeste}; ";
+        }
+        if(!$multiple_mz){
+            $colindancias_mz = $colindancias;
+        }else{
+            $colindancias_mz .= "<div><strong>MANZANA {$manzana->manzana}</strong> {$colindancias}</div>";
+            $colindancias = "";
+        }
+
+    }
+}
+
+$mz_txt = implode(',',$datosMz->mz);
+echo '</pre>';
+
 $tabla_pagare = '<table>
 	<thead>
 		<tr>
@@ -46,14 +111,13 @@ $tabla_pagare .= '</tbody>
 	</tfoot>
 </table>';
 //Una manzana manzana
-if(false){
-    $n_manzana = 28;
+if(!$multiple_mz){
+
     $complemento_manzana_ii = ', que a continuación se describe';
     $complemento_manzana_v = 'motivo de la Presente Operación, no ha sido Cedida, Vendida o Comprometida en forma con anterioridad a este Acto';
     $fraccion = 'la fracción marcada';
-    $numero_manzana = "el Número {$n_manzana}";
-    $manzana_txt = "LA MANZANA {$n_manzana}";
-    $colindancias = '<strong>Al Norte</strong>, 125.000 MTS. CON Mz. 29; <strong>Al Sur</strong>, 125.000 MTS. CON Mz. 27; <strong>Al Este</strong>, 70.00 MTS. CON Mz. 27; <strong>Al Oeste</strong>, 70.00 MTS. Con Sendero La Ceiba; con una Superficie total de 8,750.00 M2';
+    $numero_manzana = "el Número {$mz_txt}";
+    $manzana_txt = "LA MANZANA {$mz_txt}";
     //Un huerto
     if(true){
         $huerto = 'una superficie de 312.50 m2, con las Medidas y Colindancias Siguientes: <strong>Al Norte</strong>, 46.012 MTS. CON Mz. 26 HUERTO. 15 MÁS 35.00 MTS. CON Mz. 26 HUERTO. 10; <strong>Al Sur</strong>, 45.468 MTS. CON Mz. 26 HUERTO. 13 MÁS 35.00 MTS. CON Mz. 26 HUERTO. 12; <strong>Al Este</strong>, 12.50 MTS. CON Mz. 27 HUERTO. 12; <strong>Al Oeste</strong>, 12.50 MTS. Con Sendero La Ceiba';
@@ -63,14 +127,13 @@ if(false){
         <div>una superficie de 312.50 m2, con las Medidas y Colindancias Siguientes: <strong>Al Norte</strong>, 46.012 MTS. CON Mz. 26 HUERTO. 15 MÁS 35.00 MTS. CON Mz. 26 HUERTO. 10; <strong>Al Sur</strong>, 45.468 MTS. CON Mz. 26 HUERTO. 13 MÁS 35.00 MTS. CON Mz. 26 HUERTO. 12; <strong>Al Este</strong>, 12.50 MTS. CON Mz. 27 HUERTO. 12; <strong>Al Oeste</strong>, 12.50 MTS. Con Sendero La Ceiba<div>';
     }
 }else{
-    $n_manzana = '28, 29';
+
     $complemento_manzana_ii = ', que a continuación se describen';
     $complemento_manzana_v = 'motivos de la Presente Operación, no han sido Cedidas, Vendidas o Comprometidas en forma con anterioridad a este Acto';
     $fraccion = 'las fracciones marcadas';
-    $numero_manzana = "los Números {$n_manzana}"; //str_replace la penúltima coma para poner una y
-    $manzana_txt = "LAS MANZANAS {$n_manzana}"; //str_replace la última coma para poner una y
-    $colindancias = '<div><strong>MANZANA 28 : </strong><strong>Al Norte</strong>, 125.000 MTS. CON Mz. 29; <strong>Al Sur</strong>, 125.000 MTS. CON Mz. 27; <strong>Al Este</strong>, 70.00 MTS. CON Mz. 27; <strong>Al Oeste</strong>, 70.00 MTS. Con Sendero La Ceiba; con una Superficie total de 8,750.00 M2</div>
-    <div><strong>MANZANA 29 : </strong><strong>Al Norte</strong>, 125.000 MTS. CON Mz. 29; <strong>Al Sur</strong>, 125.000 MTS. CON Mz. 27; <strong>Al Este</strong>, 70.00 MTS. CON Mz. 27; <strong>Al Oeste</strong>, 70.00 MTS. Con Sendero La Ceiba; con una Superficie total de 8,750.00 M2</div>';
+    $numero_manzana = "los Números {$mz_txt}"; //str_replace la penúltima coma para poner una y
+    $manzana_txt = "LAS MANZANAS {$mz_txt}"; //str_replace la última coma para poner una y
+    
 
     //Si son dos más manzanas por ende son dos o más huertos
     $huerto = '<div><strong>EN MANZANA 28</strong> una superficie de 312.50 m2, con las Medidas y Colindancias Siguientes: <strong>Al Norte</strong>, 46.012 MTS. CON Mz. 26 HUERTO. 15 MÁS 35.00 MTS. CON Mz. 26 HUERTO. 10; <strong>Al Sur</strong>, 45.468 MTS. CON Mz. 26 HUERTO. 13 MÁS 35.00 MTS. CON Mz. 26 HUERTO. 12; <strong>Al Este</strong>, 12.50 MTS. CON Mz. 27 HUERTO. 12; <strong>Al Oeste</strong>, 12.50 MTS. Con Sendero La Ceiba<div>
@@ -86,7 +149,7 @@ $vars = [
 'complemento_manzana_ii' => $complemento_manzana_ii,
 'complemento_manzana_v' => $complemento_manzana_v,
 'manzana_txt' => $manzana_txt,
-'colindancias' => $colindancias,
+'colindancias_mz' => $colindancias_mz,
 'huerto' => $huerto,
 'precio' => '$'.number_format(110000.00,2),
 'precio_txt' => 'CIENTO DIEZ MIL PESOS 00/100 MN',

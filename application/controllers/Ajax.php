@@ -77,7 +77,7 @@ class Ajax extends CI_Controller
     {
         header("Content-type: application/json; charset=utf-8");
         $response = new stdClass();
-        $huertos = $this->Huerto_model->huertosPM();
+        $huertos = $this->Huerto_model->getHuertosPM();
         $response->data = $huertos;
         echo json_encode($response);
     }
@@ -181,9 +181,9 @@ class Ajax extends CI_Controller
         if ($this->input->post("id_huerto")) {
             $where = [
                     'id_huerto' => $this->input->post("id_huerto"),
-                    'vendido' => 0
+                    'vendido' => false
             ];
-            $huertos = $this->Huerto_model->huertosPM($where, "obj");
+            $huertos = $this->Huerto_model->getHuertosPM($where, "object");
             if (count($huertos)) {
                 foreach($huertos as $huerto){
                     $data = array(
@@ -193,7 +193,10 @@ class Ajax extends CI_Controller
                         'abono'   => (float) $huerto->abono,
                         'enganche'   => (float) $huerto->enganche,
                         'name'    => "Manzana: {$huerto->manzana}, Huerto: {$huerto->huerto}",
-                        'id_huerto' => $huerto->id_huerto
+                        'id_huerto' => $huerto->id_huerto,
+                        'id_manzana' => $huerto->id_manzana,
+                        'manzana' => $huerto->manzana,
+                        'huerto' => $huerto->huerto,
                     );
                     $this->cart->insert($data);
                 }
@@ -248,7 +251,7 @@ class Ajax extends CI_Controller
         foreach ($data as $input) {
             $where['huertos.' . $input] = $this->input->post($input);
         }
-        $huertos = $this->Huerto_model->huertosPM($where);
+        $huertos = $this->Huerto_model->getHuertosPM($where);
         if (count($huertos)) {
              $this->form_validation->set_message('mhi_check', 'Combinacion Manzana/Huerto repetida.'); // set your message
              return false;
@@ -264,7 +267,7 @@ class Ajax extends CI_Controller
         foreach ($data as $input) {
             $where['huertos.' . $input] = $this->input->post($input);
         }
-        $huertos = $this->Huerto_model->huertosPM($where, 'obj');
+        $huertos = $this->Huerto_model->getHuertosPM($where, 'obj');
         if (count($huertos)) { //Si el huerto por alguna razón deja de existir, un delete
             if ($huertos[0]->huerto == $this->input->post('huerto')) { //Si el huerto no ha cambiado
                 return true;
@@ -272,7 +275,7 @@ class Ajax extends CI_Controller
                 $where = [];
                 $where['huertos.id_manzana'] = $this->input->post('id_manzana');
                 $where['huertos.huerto'] = $this->input->post('huerto');
-                $huertos = $this->Huerto_model->huertosPM($where, 'obj');
+                $huertos = $this->Huerto_model->getHuertosPM($where, 'obj');
                 if (count($huertos)) {
                     $this->form_validation->set_message('mhu_check', 'Combinacion Manzana/Huerto repetida'); // set your message
                     return false;

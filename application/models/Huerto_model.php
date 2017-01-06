@@ -23,7 +23,7 @@ class Huerto_model extends CI_Model
         return $nuevo_huerto;
     }
     //Huertos precio y manzanas
-    public function huertosPM($where = [], $type_return = "array")
+    public function getHuertosPM($where = [], $type_return = "array")
     {
         $this->db->select(" {$this->tabla}.`id_huerto`,
                             {$this->tabla}.`id_precio`,
@@ -52,7 +52,7 @@ class Huerto_model extends CI_Model
         $query = $this->db->get();
         if ($type_return == "array") {
             return $query->result_array();
-        } elseif ($type_return == "obj") {
+        } elseif ($type_return == "object") {
             return $query->result();
         }
     }

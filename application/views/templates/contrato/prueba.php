@@ -22,40 +22,15 @@
         <th style="text-align:right">Item Price</th>
         <th style="text-align:right">Sub-Total</th>
 </tr>
-
+<pre>
 <?php $i = 1; ?>
 
 <?php foreach ($this->cart->contents() as $items): ?>
 
-        <?php echo  $items['rowid']; ?>
-
-        <tr>
-                <td><?php echo $items['qty']; ?></td>
-                <td><?php echo $items['id_huerto']; ?></td>
-                <td>
-                        <?php echo $items['name']; ?>
-
-                        <?php if ($this->cart->has_options($items['rowid']) == TRUE): ?>
-
-                                <p>
-                                        <?php foreach ($this->cart->product_options($items['rowid']) as $option_name => $option_value): ?>
-
-                                                <strong><?php echo $option_name; ?>:</strong> <?php echo $option_value; ?><br />
-
-                                        <?php endforeach; ?>
-                                </p>
-
-                        <?php endif; ?>
-
-                </td>
-                <td style="text-align:right"><?php echo $this->cart->format_number($items['price']); ?></td>
-                <td style="text-align:right">$<?php echo $this->cart->format_number($items['subtotal']); ?></td>
-        </tr>
-
-<?php $i++; ?>
+       <?php //var_dump($items);?>
 
 <?php endforeach; ?>
-
+</pre>
 <tr>
         <td colspan="2"> </td>
         <td class="right"><strong>Total</strong></td>
