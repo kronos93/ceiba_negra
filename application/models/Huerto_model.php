@@ -2,7 +2,7 @@
 
 class Huerto_model extends CI_Model
 {
-    //Precio por m^2 = 110,000 / 312.5
+    //Precio por m^2 = 110000 / 312.5
     private $tabla = "huertos";
     public function __construct()
     {
@@ -88,5 +88,9 @@ class Huerto_model extends CI_Model
         $this->db->set($update);
         $this->db->where($where);
         $this->db->update($this->tabla);
+    }
+    public function run_sql($sql){
+        $query = $this->db->query($sql);    
+        return $this->db->affected_rows();
     }
 }

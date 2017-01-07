@@ -227,20 +227,123 @@ class Venta extends CI_Controller
         $data['output'] = $output;
         $this->load->view('./templates/contrato/prueba', $data);
     }
-    
-    public function read_docx()
+    private $generate=[];
+    public function read()
     {
-        $cadena = file_get_contents('http://localhost/ceiba_negra/docs/Datos%20del%20predio/Datos%20a%20migrar/datos.txt', FILE_USE_INCLUDE_PATH);
+        ini_set('max_execution_time', 0);
+        $cadena = file_get_contents('http://localhost/ceiba_negra/docs/Datos%20del%20predio/Datos%20a%20migrar/lotes.txt', FILE_USE_INCLUDE_PATH);
         $textos = explode("\r\n", $cadena);
-
+        $i = 0;
+        $consultas = [];
+        $concat = "";
+        echo "<pre>";
         foreach ($textos as $key => $texto) {
             $texto = trim($texto);
             if (preg_match('/^MANZANA\s*[0-9]*$/i', $texto)) {
-                echo $texto."Inicio de bloque<br/>";
+                //echo $texto."Inicio de bloque<br/>";
+                continue;
             } else {
-                echo var_dump($texto)."<br/>";
+                
+                if(preg_match("/LOTE NO./",$texto)){
+                   if($i == 0){
+                       $concat = $texto . " ";
+                       $i++;
+                   }else{
+                       array_push($this->generate,$concat);
+                       $concat = $texto . " ";
+                   }
+                }else{
+                    $concat.= $texto  . " ";
+                    //echo var_dump($texto)."<br/>";
+                }
             }
         }
+        if(!empty($concat)){
+             array_push($this->generate,$concat);
+        }
+        foreach($this->generate as $key => $valor){
+            $string_clean  = preg_replace('/ +/',' ',$valor);
+            $this->generate[$key] = $string_clean; 
+        }
+        foreach($this->generate as $key => $valor){
+            $string_clean  = preg_replace('/M2 MEDIDAS Y COLINDANCIAS:/','',$valor);
+            $this->generate[$key] = $string_clean; 
+        }
+        $where = "";
+        foreach($this->generate as $key => $valor){
+            $array = explode(" AL ",$valor);
+            $encontrado = [];
+            foreach($array as $clave => $a){
+                if($clave == 0){
+                    $array[$clave] = str_replace('LOTE NO.','huerto=\'', $array[$clave]);
+                    $array[$clave] = str_replace('MANZANA ','manzana=', $array[$clave]);
+                    $array[$clave] = str_replace('SUPERFICIE: ','superficie=', $array[$clave]);
+                    $array2 = explode(' ', $array[$clave]);
+                    $where = "";
+                    $set = "";
+                    foreach($array2 as $c => $b){
+                        if($c == 0){
+                            $where .= " WHERE huertos.".$b."'";
+                        }else if($c == 1){
+                            $where .= " AND manzanas.".$b;
+                        }else if($c == 2){
+                            $b = preg_replace('/M2/','',$b);
+                            $b = preg_replace('/,+/','',$b);
+                            $set .= " SET huertos.".$b.'';
+                            $c_precio = explode('=',$b);
+                            $calculo = (float) $c_precio[1] * (110000 / 312.5);
+                            $set .= ', huertos.precio='.$calculo;
+                        }
+                    }   
+                }else{
+                    
+                   
+                    $buscar = ['norte','noreste','este','sureste','sur','suroeste','oeste','noroeste'];
+                    foreach($buscar as $busca){                        
+                        if(preg_match("/\b{$busca}\b/i",$array[$clave])){
+                            $array[$clave] = str_replace('CHIT','CHIÍT',$array[$clave]);
+                            $array[$clave] = str_replace('BAMBU','BAMBÚ',$array[$clave]);
+                            $array[$clave] = str_replace('BALCHE','BALCHÉ',$array[$clave]);
+                            $array[$clave] = preg_replace("/{$busca}\s*/i","huertos.col_{$busca}=\"", $array[$clave]);
+                            $array[$clave] = $array[$clave] .= "\"";
+                            if(strlen(preg_replace("/huertos.col_{$busca}\s*/i","", $array[$clave])) >= 399){
+                                echo preg_replace("/huertos.col_{$busca}\s*/i","", $array[$clave]);
+                                echo $array[$clave];
+                                echo "<h1>ENORME ERROR</h1>";
+                                echo strlen($array[$clave]);
+                                die();
+                            }                        
+                            $set .= ', '. $array[$clave];
+                            if(!in_array($busca,$encontrado)){
+                                array_push($encontrado,$busca);
+                            }
+                        }else{
+                            
+                            //$set .=  ", huerto.col_{$busca} = ''";
+                        }
+                    }
+
+                }
+            }
+            $dif = array_diff($buscar,$encontrado);
+            foreach($dif as $d ){
+                $set .=  ", huertos.col_{$d} = ''";
+            }
+
+            $sql = "UPDATE huertos LEFT JOIN manzanas ON huertos.id_manzana = manzanas.id_manzana{$set}{$where}";
+            array_push($consultas,$sql);
+        }
+        foreach($consultas as $key => $consulta){
+            $afectar = $this->Huerto_model->run_sql($consulta);
+             var_dump($key);
+            var_dump($consulta);
+            var_dump($afectar);
+        }
+        echo "</pre>";
+    }
+
+    public function generate(){
+        var_dump($this->generate);
     }
 }
 class Pago {

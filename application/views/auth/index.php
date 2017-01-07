@@ -28,9 +28,11 @@
                                 <td><?php echo htmlspecialchars($user->last_name, ENT_QUOTES, 'UTF-8');?></td>
                                 <td><?php echo htmlspecialchars($user->email, ENT_QUOTES, 'UTF-8');?></td>
                                 <td>
+                                    <ul>
                                     <?php foreach ($user->groups as $group) :?>
-                                        <?php echo anchor("auth/edit_group/".$group->id, htmlspecialchars($group->name, ENT_QUOTES, 'UTF-8')) ;?><br />
+                                        <li><?= htmlspecialchars($group->name, ENT_QUOTES, 'UTF-8') ?></li>
                                     <?php endforeach?>
+                                    </ul>
                                 </td>
                                 <td><?php echo ($user->active) ? anchor("auth/deactivate/".$user->id, lang('index_active_link'), ["class"=>"btn btn-success", "data-target"=>'#form-user', 'data-toggle'=>"modal"]) : anchor("auth/activate/". $user->id, lang('index_inactive_link'), ["class"=>"btn btn-danger"]);?>
                                 </td>

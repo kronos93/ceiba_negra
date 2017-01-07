@@ -394,8 +394,8 @@ $(document).ready(function() {
         columnDefs: [ //Configuracion de la tabla de manzanas
             {
                 //Ocultar columna*
-                "targets": 3,
-                "visible": false
+                /*"targets": 3,
+                "visible": false*/
             }
         ]
     });
