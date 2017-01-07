@@ -15,9 +15,13 @@
                             <th>Abono</th> 
 							<th>Estado</th>
 							<th>Col. Norte</th>
+                            <th>Col. Noreste</th>
+                            <th>Col. Este</th> 
+                            <th>Col. Sureste</th>
 							<th>Col. Sur</th>
-							<th>Col. Este</th> 
+							<th>Col. Suroeste</th>
 							<th>Col. Oeste</th>
+                            <th>Col. Noroeste</th>
 							<th class="all">Opciones</th>            
 						</tr>
 					</thead>
@@ -161,20 +165,36 @@
                         <fieldset class="form-group row">   
                             <legend>Colindancias:</legend>
                             <div class="form-group col-xs-12 col-sm-6">
-                                <label for="col_norte">Colindancia al norte:</label>
+                                <label for="col_norte">Colindancia al Norte:</label>
                                 <input type="text" class="form-control" name="col_norte" id="col_norte" placeholder="46.012 Mts. con Mz. 26 huerto. 15 más 35.00 Mts. con Mz. 26 huerto. 10" />
                             </div>
                             <div class="form-group col-xs-12 col-sm-6">
-                                <label for="col_sur">Colindancia al sur:</label>
+                                <label for="col_norte">Colindancia al Noreste:</label>
+                                <input type="text" class="form-control" name="col_noreste" id="col_noreste" placeholder="46.012 Mts. con Mz. 26 huerto. 15 más 35.00 Mts. con Mz. 26 huerto. 10" />
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-6">
+                                <label for="col_este">Colindancia al Este:</label>
+                                <input type="text" class="form-control" name="col_este" id="col_este" placeholder="12.50 Mts. con Mz. 27 huerto. 12" />
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-6">
+                                <label for="col_sur">Colindancia al Sureste:</label>
+                                <input type="text" class="form-control" name="col_sureste" id="col_sureste" placeholder="45.468 Mts. con Mz. 26 huerto. 13 más 35.00 Mts. con Mz. 26 huerto. 12" />
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-6">
+                                <label for="col_sur">Colindancia al Sur:</label>
                                 <input type="text" class="form-control" name="col_sur" id="col_sur" placeholder="45.468 Mts. con Mz. 26 huerto. 13 más 35.00 Mts. con Mz. 26 huerto. 12" />
                             </div>
                             <div class="form-group col-xs-12 col-sm-6">
-                                <label for="col_este">Colindancia al este:</label>
-                                <input type="text" class="form-control" name="col_este" id="col_este" placeholder="12.50 Mts. con Mz. 27 huerto. 12" />
+                                <label for="col_sur">Colindancia al Suroeste:</label>
+                                <input type="text" class="form-control" name="col_suroeste" id="col_suroeste" placeholder="45.468 Mts. con Mz. 26 huerto. 13 más 35.00 Mts. con Mz. 26 huerto. 12" />
                             </div>
                             <div class="form-group col-xs-12 col-sm-6">
                                 <label for="col_oeste">Colindancia al oeste:</label>
                                 <input type="text" class="form-control" name="col_oeste" id="col_oeste" placeholder="12.50 Mts. con sendero La Ceiba" />
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-6">
+                                <label for="col_oeste">Colindancia al Noroeste:</label>
+                                <input type="text" class="form-control" name="col_noroeste" id="col_noroeste" placeholder="12.50 Mts. con sendero La Ceiba" />
                             </div>
                         </fieldset>
                     </div>
