@@ -6,6 +6,7 @@ class Venta extends CI_Controller
     function __construct()
     {
         parent::__construct();
+        $this->load->library('NumberToLetterConverter');
         $this->load->model('Contrato_model');
         $this->load->model('Manzana_model');
         $this->load->model('Huerto_model');
@@ -18,6 +19,12 @@ class Venta extends CI_Controller
     }
     public function prueba()
     {
+        /*$numberToLetter = new NumberToLetterConverter();
+        $number = 110000.01;
+        $miMoneda = 'MXN';       
+        $letra = $numberToLetter->to_word($number, $miMoneda);
+
+        echo $letra;*/
 
         $datosMz = new stdClass();
         $datosMz->id_mz = [];
