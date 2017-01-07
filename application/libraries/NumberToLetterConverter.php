@@ -1,6 +1,6 @@
 <?php
 /**
- * Clase que implementa un conversor de números a letras. 
+ * Clase que implementa un conversor de nÃºmeros a letras. 
  * @author AxiaCore S.A.S
  *
  */
@@ -52,20 +52,20 @@ class NumberToLetterConverter {
   );
   private $MONEDAS = array(
     array('country' => 'Colombia', 'currency' => 'COP', 'singular' => 'PESO COLOMBIANO', 'plural' => 'PESOS COLOMBIANOS', 'symbol', '$'),
-    array('country' => 'Estados Unidos', 'currency' => 'USD', 'singular' => 'DÓLAR', 'plural' => 'DÓLARES', 'symbol', 'US$'),
-    array('country' => 'Europa', 'currency' => 'EUR', 'singular' => 'EURO', 'plural' => 'EUROS', 'symbol', '€'),
-    array('country' => 'México', 'currency' => 'MXN', 'singular' => 'PESO MEXICANO', 'plural' => 'PESOS MEXICANOS', 'symbol', '$'),
-    array('country' => 'Perú', 'currency' => 'PEN', 'singular' => 'NUEVO SOL', 'plural' => 'NUEVOS SOLES', 'symbol', 'S/'),
-    array('country' => 'Reino Unido', 'currency' => 'GBP', 'singular' => 'LIBRA', 'plural' => 'LIBRAS', 'symbol', '£'),
+    array('country' => 'Estados Unidos', 'currency' => 'USD', 'singular' => 'DÃ“LAR', 'plural' => 'DÃ“LARES', 'symbol', 'US$'),
+    array('country' => 'Europa', 'currency' => 'EUR', 'singular' => 'EURO', 'plural' => 'EUROS', 'symbol', 'â‚¬'),
+    array('country' => 'MÃ©xico', 'currency' => 'MXN', 'singular' => 'PESO MEXICANO', 'plural' => 'PESOS MEXICANOS', 'symbol', '$'),
+    array('country' => 'PerÃº', 'currency' => 'PEN', 'singular' => 'NUEVO SOL', 'plural' => 'NUEVOS SOLES', 'symbol', 'S/'),
+    array('country' => 'Reino Unido', 'currency' => 'GBP', 'singular' => 'LIBRA', 'plural' => 'LIBRAS', 'symbol', 'Â£'),
     array('country' => 'Argentina', 'currency' => 'ARS', 'singular' => 'PESO', 'plural' => 'PESOS', 'symbol', '$')
   );
     private $separator = '.';
     private $decimal_mark = ',';
     private $glue = ' CON ';
     /**
-     * Evalua si el número contiene separadores o decimales
-     * formatea y ejecuta la función conversora
-     * @param $number número a convertir
+     * Evalua si el nÃºmero contiene separadores o decimales
+     * formatea y ejecuta la funciÃ³n conversora
+     * @param $number nÃºmero a convertir
      * @param $miMoneda clave de la moneda
      * @return string completo
      */
@@ -84,10 +84,10 @@ class NumberToLetterConverter {
         return implode($this->glue, array_filter($convertedNumber));
     }
     /**
-     * Convierte número a letras
+     * Convierte nÃºmero a letras
      * @param $number
      * @param $miMoneda
-     * @param $type tipo de dígito (entero/decimal)
+     * @param $type tipo de dÃ­gito (entero/decimal)
      * @return $converted string convertido
      */
     private function convertNumber($number, $miMoneda = null, $type) {   
@@ -101,7 +101,7 @@ class NumberToLetterConverter {
                 });
                 $moneda = array_values($moneda);
                 if (count($moneda) <= 0) {
-                    throw new Exception("Tipo de moneda inválido");
+                    throw new Exception("Tipo de moneda invÃ¡lido");
                     return;
                 }
                 ($number < 2 ? $moneda = $moneda[0]['singular'] : $moneda = $moneda[0]['plural']);
@@ -146,7 +146,7 @@ class NumberToLetterConverter {
         return $converted;
     }
     /**
-     * Define el tipo de representación decimal (centenas/millares/millones)
+     * Define el tipo de representaciÃ³n decimal (centenas/millares/millones)
      * @param $n
      * @return $output
      */

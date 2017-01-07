@@ -63,9 +63,13 @@ class Ajax extends CI_Controller
             'superficie' => $this->input->post('superficie'),
             'id_precio' => $this->input->post('id_precio'),
             'col_norte' => $this->input->post('col_norte'),
-            'col_sur' => $this->input->post('col_sur'),
+            'col_noreste' => $this->input->post('col_noreste'),
             'col_este' => $this->input->post('col_este'),
+            'col_sureste' => $this->input->post('col_sureste'),
+            'col_sur' => $this->input->post('col_sur'),
+            'col_suroeste' => $this->input->post('col_suroeste'),
             'col_oeste' => $this->input->post('col_oeste'),
+            'col_noroeste' => $this->input->post('col_noroeste'),
             ];
             $huerto = $this->Huerto_model->insert($insert);
             echo json_encode($huerto);
@@ -96,10 +100,14 @@ class Ajax extends CI_Controller
                 'huerto' => $this->input->post("huerto"),
                 'superficie' => $this->input->post("superficie"),
                 'id_precio' => $this->input->post("id_precio"),
-                'col_norte' => $this->input->post("col_norte"),
-                'col_sur' => $this->input->post("col_sur"),
-                'col_este' => $this->input->post("col_este"),
-                'col_oeste' => $this->input->post("col_oeste"),
+                'col_norte' => $this->input->post('col_norte'),
+                'col_noreste' => $this->input->post('col_noreste'),
+                'col_este' => $this->input->post('col_este'),
+                'col_sureste' => $this->input->post('col_sureste'),
+                'col_sur' => $this->input->post('col_sur'),
+                'col_suroeste' => $this->input->post('col_suroeste'),
+                'col_oeste' => $this->input->post('col_oeste'),
+                'col_noroeste' => $this->input->post('col_noroeste'),
             ];
             $where = ['id_huerto' => $this->input->post("id_huerto")];
             $response = $this->Huerto_model->update($set, $where);
@@ -267,7 +275,8 @@ class Ajax extends CI_Controller
         foreach ($data as $input) {
             $where['huertos.' . $input] = $this->input->post($input);
         }
-        $huertos = $this->Huerto_model->getHuertosPM($where, 'obj');
+        
+        $huertos = $this->Huerto_model->getHuertosPM($where, 'object');
         if (count($huertos)) { //Si el huerto por alguna razón deja de existir, un delete
             if ($huertos[0]->huerto == $this->input->post('huerto')) { //Si el huerto no ha cambiado
                 return true;
