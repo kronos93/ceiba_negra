@@ -1,6 +1,3 @@
-console.log(NumeroALetras(110000.00).replace(/\s{2,}/g, " "));
-console.log(NumeroALetras(10000.00).replace(/\s{2,}/g, " "));
-console.log(NumeroALetras(1500.00).replace(/\s{2,}/g, " "));
 //Datos globales
 var base_url = 'http://' + window.location.hostname + '/ceiba_negra/';
 var lang_esp_datatables = "https://cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json";
