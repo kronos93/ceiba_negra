@@ -7163,21 +7163,10 @@ footer {
   background: #1e252f;
   color: #fff;
   width: 100%;
-  min-height: 50px;
   text-align: center;
 }
 footer p {
-  line-height: 50px;
-}
-@media only screen and (min-width: 769px) {
-  footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-  }
-  footer p {
-    font-size: 11px;
-  }
+  padding: 20px 0px;
 }
 @font-face {
   font-family: 'panama-light';
@@ -7239,6 +7228,7 @@ p {
 }
 main.wrap-main {
   padding: 70px 0px 30px;
+  min-height: 100vh;
 }
 main.wrap-main .dataTables_wrapper {
   padding: 10px 0px;
@@ -7857,7 +7847,7 @@ g.mapplic-active > * {
   background: rgba(183,183,183,0.31);
 }
 .mapplic-element {
-  height: 75vh !important;
+  height: 80vh !important;
 }
 @media only screen and (max-width: 768px) {
   .mapplic-sidebar {
