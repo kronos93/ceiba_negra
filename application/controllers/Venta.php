@@ -134,8 +134,9 @@ class Venta extends CI_Controller
         $total = 110000.00;
         $enganche = 10000.00;
         $abono = 1500;
-        $historial = new Historial($total, $enganche, $abono, $fecha_inicial);
-        $historial_pagos = "<table>";
+        $historial = new Historial($total,$enganche,$abono,$fecha_inicial);
+        $historial_pagos = "<table class='pagares-tabla'>";
+
         $historial_pagos .=    "<thead>";
         $historial_pagos .=         "<tr>";
         $historial_pagos .=             "<th>Concepto</th>";
