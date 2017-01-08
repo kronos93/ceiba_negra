@@ -2,7 +2,7 @@
 
 class Cliente_model extends CI_Model {
     private $tabla = "clientes";
-    private $select = "id_cliente, nombre, apellidos, correo, telefono, calle, no_ext, no_int, colonia, municipio, estado, pais, cp";
+    private $select = "id_cliente, nombre, apellidos, correo, telefono, calle, no_ext, no_int, colonia, municipio, estado, ciudad, cp";
     public function __construct()
     {
         parent::__construct();
