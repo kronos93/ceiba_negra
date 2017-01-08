@@ -45,5 +45,4 @@
 				</div><!-- /.navbar-collapse -->
 			</div><!-- /.container-fluid -->
 		</nav>
-		<!-- Componer, poner dentro del nav, para nombres largos -->
 	</header>

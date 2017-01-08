@@ -9,4 +9,5 @@
             <li><a href="#">Otra cosa</a></li>
         </ul>
     </li>
+    <li><a href="#"><span class="fa fa-map"></span> Plano</a></li>
 </ul>

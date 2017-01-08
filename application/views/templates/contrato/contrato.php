@@ -39,7 +39,7 @@ Asimismo a partir de la fecha de entrega de <strong>"LA ESCRITURA PUBLICA DEFINI
 <h1>DATOS G E N E R A L E S</h1>                    
 <p>Los Contratantes por sus generales bajo Formal Protesta de decir verdad declaran ser: el Señor <strong>FRANCISCO ENRIQUE MARTÍNEZ CORDERO</strong>, Casado, Arquitecto, Natural de Cozumel; Estado de Quintana Roo, donde nació el día Cinco de Mayo del año de Mil Novecientos Sesenta y Uno, y vecino de esta Localidad, con domicilio en Ave. Montes Azules esquina Solidaridad mz.16, lt.14, de la colonia Bosque Real en Playa del Carmen Quintana Roo y <strong>[@nombre_cliente] con domicilio en [@domicilio_cliente]</strong></p>
 <p>Y para constancia y seguridad de las partes, se firma el presente Contrato Privado de Cesión de Derechos, en la <strong>Ciudad de Playa del Carmen, Municipio de Solidaridad</strong>, Estado de Quintana Roo, México, [@fecha_contrato_txt].</p>
-<table>
+<table class="testigos">
 	<thead>
 		<tr>
 			<th>EL CEDENTE</th>
@@ -48,14 +48,14 @@ Asimismo a partir de la fecha de entrega de <strong>"LA ESCRITURA PUBLICA DEFINI
 	</thead>
 	<tbody>
 		<tr>
-			<td>FRANCISCO ENRIQUE MARTÍNEZ CORDERO </td>
-			<td>[@nombre_cliente]</td>
+			<td><p><span class="underline">&nbsp;</span>FRANCISCO ENRIQUE MARTÍNEZ CORDERO</p></td>
+			<td><p><span class="underline">&nbsp;</span>[@nombre_cliente]</p></td>
 		</tr>
 	</tbody>
 	<tfoot>
 		<tr>
-			<td>[@testigo_1]</td>
-			<td>[@testigo_2]</td>
+			<td><p><span class="underline">&nbsp;</span>[@testigo_1]</p></td>
+			<td><p><span class="underline">&nbsp;</span>[@testigo_2]</p></td>
 		</tr>
 	</tfoot>
 </table>
@@ -75,7 +75,7 @@ EL deudor podrá, si así lo considera necesario, adelantar pagos con la intenci
 <p>CARGOS POR MORA.- En caso de que cualquier cantidad pagadera al Acreedor bajo este plan de pagos no sea pagada a su vencimiento, el Saldo Insoluto del presente Pagaré vencerá anticipadamente en ese momento y sin necesidad de aviso o requerimiento previo, el Suscriptor pagara a la vista del Acreedor, una pena por mora de [@porcentaje_penalizacion]% ([@porcentaje_penalizacion_txt] por ciento por cada día hábil) hasta que se reciba el pago.</p>
 <p>JURISDICCION Y LEY APLICABLE: Para la interpretación, ejecución, cumplimiento de este pagaré y en su caso para el requerimiento judicial del pago de su importe serán competentes los tribunales de la ciudad de Lázaro Cárdenas, Estado de Quintana Roo, México, renunciando expresamente a cualquier otro fuero que por razón de sus domicilios presentes o futuros pudieran corresponderles.</p>
 <p>El presente plan de pagos se establece [@fecha_primer_pago_txt] en la ciudad de [@ciudad] .</p>
-<table>
+<table class="testigos">
 	<thead>
 		<tr>
 			<th></th>
@@ -84,14 +84,14 @@ EL deudor podrá, si así lo considera necesario, adelantar pagos con la intenci
 	</thead>
 	<tbody>
 		<tr>
-			<td>FRANCISCO ENRIQUE MARTÍNEZ CORDERO </td>
-			<td>[@nombre_cliente]</td>
+			<td><p><span class="underline">&nbsp;</span>FRANCISCO ENRIQUE MARTÍNEZ CORDERO</p></td>
+			<td><p><span class="underline">&nbsp;</span>[@nombre_cliente]</p></td>
 		</tr>
 	</tbody>
 	<tfoot>
 		<tr>
-			<td>[@testigo_1]</td>
-			<td>[@testigo_2]</td>
+			<td><p><span class="underline">&nbsp;</span>[@testigo_1]</p></td>
+			<td><p><span class="underline">&nbsp;</span>[@testigo_2]</p></td>
 		</tr>
 	</tfoot>
 </table>
