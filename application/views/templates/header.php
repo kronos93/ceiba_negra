@@ -10,6 +10,7 @@
 		<link rel="stylesheet" href="<?= base_url() ?>assets/css/jquery.dataTables.css">
 		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.1.0/css/responsive.dataTables.min.css"/>
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+		<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css"/>
         <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/mapplic.css">
 		<link rel="stylesheet" href="<?= base_url() ?>assets/css/estilos.css?v=<?= date("Y-m-dH:i:s") ?>">
     </head>

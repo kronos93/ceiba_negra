@@ -139,11 +139,20 @@ $(document).ready(function() {
         selector: '#contrato',
     });
     $('#clientes_autocomplete').autocomplete({
-        serviceUrl: base_url + '/ajax/autocomplete_clientes',
+        serviceUrl: base_url + 'ajax/autocomplete_clientes',
         onSelect: function(suggestion) {
             data_in_form_edit(suggestion)
             console.log(suggestion);
         }
+    });
+    moment.locale('es');
+    var hoy = moment();
+
+    $.datepicker.setDefaults($.datepicker.regional["es"]);
+    $('#fecha_contrato').mask('00-00-0000');
+    $("#fecha_contrato").datepicker({
+
+        dateFormat: "dd-mm-yy"
     });
     //USUARIOS
     $("#form-user").on('hidden.bs.modal', function() {

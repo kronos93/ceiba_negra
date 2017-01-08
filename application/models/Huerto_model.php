@@ -50,6 +50,7 @@ class Huerto_model extends CI_Model
         if (count($where)) {
             $this->db->where($where);
         }
+        $this->db->order_by("CONVERT( {$this->tabla}.huerto ".','."decimal ) ASC");
         $query = $this->db->get();
         if ($type_return == "array") {
             return $query->result_array();
@@ -73,12 +74,14 @@ class Huerto_model extends CI_Model
         $this->db->select(" CONCAT('m',manzanas.manzana,'lote',{$this->tabla}.huerto) as id,         
                             CONCAT('Huerto número ', {$this->tabla}.huerto) as title, 
                             CONCAT('mz',manzanas.manzana) as category, 
-                            {$this->tabla}.id_huerto as link, 
+                           ".// IF(TRUE,'#ff0000','#00ff00') as fill,
+                           "{$this->tabla}.id_huerto as link, 
                             {$this->tabla}.x,
                             {$this->tabla}.y ");
         $this->db->join("manzanas", "{$this->tabla}.id_manzana = manzanas.id_manzana", 'left');
         $this->db->from("{$this->tabla}");
         $this->db->where( ["manzanas.manzana" => "{$mz}"] );
+        $this->db->order_by("CONVERT( {$this->tabla}.huerto ".','."decimal ) ASC");
         $query = $this->db->get();
         return $query->result();
     }
