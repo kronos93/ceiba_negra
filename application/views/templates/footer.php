@@ -82,7 +82,7 @@
 		bodyTag: "div",
 		transitionEffect: "none",
 		autoFocus: true,
-		onStepChanging: function (event, currentIndex, newIndex)
+		/*onStepChanging: function (event, currentIndex, newIndex)
 		{
 			form.validate().settings.ignore = ":disabled,:hidden";
 			return form.valid();
@@ -91,7 +91,7 @@
 		{
 			form.validate().settings.ignore = ":disabled";
 			return form.valid();
-		},
+		},*/
 		onFinished: function (event, currentIndex)
 		{
 			alert("Submitted!");

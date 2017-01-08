@@ -12,7 +12,8 @@
 	},
 	"require": {
 		"php": ">=5.2.4",
-		"nesbot/carbon": "^1.21"
+		"nesbot/carbon": "^1.21",
+		"dompdf/dompdf": "^0.7.0"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"

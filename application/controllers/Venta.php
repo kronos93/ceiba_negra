@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 use Carbon\Carbon;
-
+use Dompdf\Dompdf;
 class Venta extends CI_Controller
 {
     function __construct()
@@ -18,6 +18,41 @@ class Venta extends CI_Controller
         $fecha = Carbon::now();
         $data['fecha'] = $fecha->format('d-m-Y');
         $this->load->view('templates/template', $data);
+    }
+    public function pdf(){
+        $html = "";
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml("");
+
+        // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser
+        $dompdf->stream('hola.pdf',array('Attachment'=>0));
+    }
+    public function maxpdf(){
+        $html = "<html>
+            <style>
+                h1 {
+                    color: red;
+                }
+            </style>
+            <h1>MAX Y ANDREA :V</h1>
+        </html>";
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+
+        // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser
+        $dompdf->stream('hola.pdf',array('Attachment'=>0));
     }
     public function prueba()
     {
@@ -130,11 +165,11 @@ class Venta extends CI_Controller
                 $colindancias = "";
             }
         }
-        $fecha_inicial = '15-02-2015';
-        $total = 110000.00;
+        $fecha_init = '08-01-2017';
+        $precio = 110000.00;
         $enganche = 10000.00;
-        $abono = 1500;
-        $historial = new Historial($total,$enganche,$abono,$fecha_inicial);
+        $abono = 1500.00;
+        $historial = new Historial($precio,$enganche,$abono,$fecha_init);
         $historial_pagos = "<table class='pagares-tabla'>";
 
         $historial_pagos .=    "<thead>";
@@ -146,15 +181,15 @@ class Venta extends CI_Controller
         $historial_pagos .=    "</thead>";
         $historial_pagos .=    "<tbody>";
         foreach ($historial->getHistorial() as $key => $pago) {
-            if($key == 0){
+            if($key == 1){
                 $historial->setFechaPrimerPago($pago->getFecha());
             }else{
                 $historial->setFechaUltimoPago($pago->getFecha());
             }
-            $abono = number_format($pago->getAbono(), 2);
+            $abonos = number_format($pago->getAbono(), 2);
             $historial_pagos .=     "<tr>";
             $historial_pagos .=         "<td>{$pago->getConcepto()}</td>";
-            $historial_pagos .=         "<td>$ {$abono}</td>";
+            $historial_pagos .=         "<td>$ {$abonos}</td>";
             $historial_pagos .=         "<td>{$pago->getFecha()}</td>";
             $historial_pagos .=     "<tr>";
         }
@@ -175,9 +210,10 @@ class Venta extends CI_Controller
             $numero_manzana = "los Números {$mz_txt}"; //str_replace la penúltima coma para poner una y
             $manzana_txt = "LAS MANZANAS {$mz_txt}"; //str_replace la última coma para poner una y
         }
+        
         $vars =
         [
-                'fecha_contrato_txt' => 'el día martes, 03 de enero del año 2017', //
+                'fecha_init' => $fecha_init, 
                 'nombre_cliente' => 'Samuel Rojas Too', //
                 'domicilio_cliente' => 'Calle 51, No ext. 21, No. int S/N, Colonia Reg. 233, Benito Juarez, Quintana Roo, México, C.P. 77510', //
                 'fraccion' => $fraccion, //
@@ -187,18 +223,17 @@ class Venta extends CI_Controller
                 'manzana_txt' => $manzana_txt, //
                 'colindancias_mz' => $colindancias_mz, //
                 'colindancias_ht' => $colindancias_ht, //
-                'precio' => '$'.number_format(110000.00, 2), //
-                'precio_txt' => 'CIENTO DIEZ MIL PESOS 00/100 MN', //
-                'enganche' => '$'.number_format(10000.00, 2), //
-                'enganche_txt' => 'DIEZ MIL PESOS 00/100 MN', //
+                'precio' => '$'.number_format($precio, 2), //
+                'precio_txt' => $precio, //
+                'enganche' => '$'.number_format($enganche, 2), //
+                'enganche_txt' => $enganche, //
                 'n_pagos' => $historial->getNPago(),
-                'abono' => '$'.number_format(1500.00, 2),
-                'abono_txt' => 'UN MIL QUINIENTOS PESOS 00/100 MN',
-                'fecha_primer_pago_txt' => $historial->getFechaPrimerPago(),
-                'fecha_ultimo_pago_txt' => $historial->getFechaUltimoPago(),
-                'porcentaje_penalizacion' => 1,
-                'porcentaje_penalizacion_txt' => 'UNO',
-                'maximo_retrasos_permitidos' => 3,
+                'abono' => '$'.number_format($abono, 2),
+                'abono_txt' => $abono,
+                'fecha_primer_pago' => $historial->getFechaPrimerPago(),
+                'fecha_ultimo_pago' => $historial->getFechaUltimoPago(),
+                'porcentaje_penalizacion' => 1, //
+                'maximo_retrasos_permitidos' => 3, //
                 'testigo_1' => 'Testigo1 Testigo1 Testigo1',
                 'testigo_2' => 'Testigo2 Testigo2 Testigo2',
                 'historial_pagos' => $historial_pagos,
