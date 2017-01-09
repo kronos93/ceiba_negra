@@ -242,7 +242,13 @@ class Ajax extends CI_Controller
         $respuesta->abono = ($respuesta->abono);
         $respuesta->total = ($this->cart->total());
         $respuesta->count = $this->cart->total_items();
-        $respuesta->link = ($this->cart->total_items()>0) ? '<a href="'.base_url().'venta" class="btn btn-success center-block">Vender</a>' : '';
+        if ($this->ion_auth->in_group('administrador') || $this->ion_auth->in_group('miembro'))
+        {
+            $respuesta->link = ($this->cart->total_items()>0) ? '<a href="'.base_url().'venta" class="btn btn-success center-block">Vender</a>' : '';
+        }else if ($this->ion_auth->in_group('lider')){
+            $respuesta->link = ($this->cart->total_items()>0) ? '<a href="'.base_url().'venta" class="btn btn-warning center-block">Reservar</a>' : '';
+        }
+
         echo json_encode($respuesta);
     }
     //Utileria inutil xD.... Despreciar usando stdClass
