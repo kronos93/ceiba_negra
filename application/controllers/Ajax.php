@@ -11,6 +11,9 @@ class Ajax extends CI_Controller
         $this->load->model('Manzana_model');
         $this->load->model('Cliente_model');
     }
+    public function index(){
+        
+    }
     //DATOS PARA EL MAPA
     public function get_mapa()
     {

@@ -1,6 +1,128 @@
 //Datos globales
 var base_url = 'http://' + window.location.hostname + '/ceiba_negra/';
 var lang_esp_datatables = "https://cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json";
+////////////////////////////////////////////////
+moment.locale('es');
+
+////////////////////////////////////////////////
+var form = $("#example-basic");
+form.validate({
+    errorPlacement: function errorPlacement(error, element) { element.before(error); },
+    lang: 'es'
+});
+form.steps({
+    headerTag: "h3",
+    bodyTag: "div",
+    transitionEffect: "slide",
+    autoFocus: true,
+    onStepChanging: function(event, currentIndex, newIndex) {
+
+        if (newIndex == 2) {
+            var data = {
+                'nombre': '',
+                'apellidos': '',
+                'correo': '',
+                'telefono': '',
+                'calle': '',
+                'no_ext': '',
+                'no_int': '',
+                'colonia': '',
+                'municipio': '',
+                'estado': '',
+                'ciudad': '',
+                'cp': '',
+                'testigo_1': '',
+                'testigo_2': '',
+
+                'fecha_init': '',
+                'precio': 0,
+                'enganche': 0,
+                'abono': 0,
+            };
+            for (var campo in data) {
+                var input = $('#' + campo + '');
+                if (!input.hasClass('currency')) {
+                    data[campo] = input.val();
+                } else {
+                    data[campo] = input.autoNumeric('get');
+                }
+            }
+            console.log(data);
+            $.ajax({
+                data: data,
+                url: base_url + "venta/prueba/",
+                async: true,
+                type: 'post',
+                beforeSend: function() {
+                    setTimeout(function() { console.log('Saludo'); }, 10000);
+                },
+                success: function(xhr) {
+                    $("#contrato_html").html(xhr.html);
+                    tinymce.init({
+                        selector: '#contrato_html',
+                        mode: 'specifics_textareas',
+                        editor_selector: 'mceEditor',
+                        height: '600px',
+                        plugins: [
+                            'advlist autolink lists charmap print preview hr anchor pagebreak',
+                            'searchreplace wordcount visualblocks visualchars code fullscreen',
+                            'nonbreaking save table directionality',
+                            'template paste textcolor colorpicker textpattern'
+                        ],
+                        toolbar1: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+                        content_css: base_url + '/assets/css/tinymce.css',
+                        setup: function(ed) {
+                            ed.on('init', function(args) {
+                                var fechas = ['fecha_primer_pago', 'fecha_ultimo_pago', 'fecha_init_1', 'fecha_init_2', 'fecha_init_3', 'fecha_init_4'];
+                                for (var fecha in fechas) {
+                                    var fecha_tiny = tinymce.activeEditor.dom.get(fechas[fecha]);
+
+                                    var fecha_val = $(tinymce.activeEditor.dom.get(fechas[fecha])).html();
+                                    var fecha_moment = moment(fecha_val, 'DD-MM-YYYY');
+
+                                    this.dom.setHTML(fecha_tiny, fecha_moment.format("[el día ] dddd, DD [de] MMMM [del] [año] YYYY"));
+                                }
+
+                                var currencies = ['precio_1', 'precio_2', 'enganche', 'abono_1', 'abono_2', 'porcentaje'];
+                                for (var currency in currencies) {
+                                    var currency_tiny = tinymce.activeEditor.dom.get(currencies[currency]);
+                                    var currency_val = $(currency_tiny).html();
+                                    if (currencies[currency] == 'porcentaje') {
+                                        var currency_format = NumeroALetras(currency_val).replace(/\b00\/100 MN\b/, '').replace(/\bPeso\b/, '').replace(/\bCON\b/g, 'PUNTO').replace(/\bPESOS\b/g, '').replace(/\bCENTAVOS\b/g, '').replace(/\s{2,}/g, " ");
+                                    } else {
+                                        var currency_format = NumeroALetras(currency_val).replace(/\s{2,}/g, " ");
+                                    }
+                                    this.dom.setHTML(currency_tiny, currency_format);
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+        /*form.validate().settings.ignore = ":disabled,:hidden";
+        return form.valid();*/
+        return true;
+    },
+    onFinishing: function(event, currentIndex) {
+        /*form.validate().settings.ignore = ":disabled";
+        return form.valid();*/
+        return true;
+    },
+    onFinished: function(event, currentIndex) {
+        console.log($(this).serialize());
+    },
+    labels: {
+        cancel: "Cancelar",
+        current: "Paso Actual:",
+        pagination: "Pagination",
+        finish: "Finalizar",
+        next: "Siguiente",
+        previous: "Anterior",
+        loading: "Cargando ..."
+    }
+});
+///////////////////////////////////////////////
 //Funcion FormToObject
 $.fn.serializeObject = function() {
     var o = {};
@@ -132,8 +254,12 @@ $(document).ready(function() {
         e.stopPropagation();
     });
     $.get(base_url + "ajax/add_cart", function(response) { templateCart(response) });
-    tinymce.init({
-        selector: '#contrato',
+
+    $.datepicker.setDefaults($.datepicker.regional["es"]);
+    $('#fecha_init').mask('00-00-0000');
+    $("#fecha_init").datepicker({
+
+        dateFormat: "dd-mm-yy"
     });
     $('#clientes_autocomplete').autocomplete({
         serviceUrl: base_url + 'ajax/autocomplete_clientes',
@@ -142,15 +268,7 @@ $(document).ready(function() {
             console.log(suggestion);
         }
     });
-    moment.locale('es');
-    var hoy = moment();
 
-    $.datepicker.setDefaults($.datepicker.regional["es"]);
-    $('#fecha_contrato').mask('00-00-0000');
-    $("#fecha_contrato").datepicker({
-
-        dateFormat: "dd-mm-yy"
-    });
     //USUARIOS
     $("#form-user").on('hidden.bs.modal', function() {
         $(this).removeData('bs.modal');

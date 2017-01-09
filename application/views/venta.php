@@ -16,7 +16,7 @@
 										<div class="input-group-addon"><span class="fa fa-search"></span></div>
 									</div>
 								</div>
-								<legend>Datos Personales</legend>
+								<legend>Datos personales</legend>
 								<div class="form-group col-xs-12 col-sm-6">
 									<label class="required" for="nombre">Nombre(s):</label>
 									<input type="text" class="form-control required" name="nombre" id="nombre" placeholder="Nombre"/>
@@ -26,8 +26,12 @@
 									<input type="text" class="form-control required" name="apellidos" id="apellidos" placeholder="Apellido Apellido"/>
 								</div>
 								<div class="form-group col-xs-12 col-sm-6">
-									<label class="required" for="correo">Correo electrónico</label>
-									<input type="text" class="form-control required email" name="correo" id="correo" placeholder="alguien@dominio.com"  />
+									<label class="" for="correo">Correo electrónico</label>
+									<input type="text" class="form-control email" name="correo" id="correo" placeholder="alguien@dominio.com"  />
+								</div>
+								<div class="form-group col-xs-12 col-sm-6">
+									<label class="" for="telefono">Celular</label>
+									<input type="text" class="form-control" name="telefono" id="telefono" placeholder="1234908978"  />
 								</div>
 								<legend>Domicilio</legend>
 								<div class="form-group col-xs-12 col-sm-6">
@@ -39,8 +43,8 @@
 									<input type="text" class="form-control required" name="no_ext" id="no_ext" placeholder="Lt. 8"  />
 								</div>
 								<div class="form-group col-xs-12 col-sm-3 col-lg-2">
-									<label class="required" for="no_int">No. Interior:</label>
-									<input type="text" class="form-control required" name="no_int" id="no_int" placeholder="S/N"/>
+									<label class="" for="no_int">No. Interior:</label>
+									<input type="text" class="form-control" name="no_int" id="no_int" placeholder="S/N"/>
 								</div>
 								<div class="form-group col-xs-12 col-sm-6 col-lg-2">
 									<label class="required" for="colonia">Colonia:</label>
@@ -55,7 +59,7 @@
 									<input type="text" class="form-control required" name="estado" id="estado" placeholder="Quintana Roo" />
 								</div>
 								<div class="form-group col-xs-12 col-sm-3">
-									<label class="required" for="pais">Ciudad</label>
+									<label class="required" for="ciudad">Ciudad</label>
 									<input type="text" class="form-control required" name="ciudad" id="ciudad" placeholder="Cancún"  />
 								</div>
 								<div class="form-group col-xs-12 col-sm-3">
@@ -71,38 +75,38 @@
 							<div class="row">								
 								<legend>Contrato</legend>
 								<div class="form-group col-xs-12 col-sm-3">
-									<label class="required" for="manzana">Fecha del contrato:</label>
+									<label class="required" for="fecha_init">Fecha del contrato:</label>
 									<div class="input-group">
-										<input type="text" class="form-control" id="fecha_contrato" placeholder="dd-mm-yyyy" value="<?= $fecha ?>" name=""/>
+										<input type="text" class="form-control required" id="fecha_init" placeholder="dd-mm-yyyy" value="<?= $fecha ?>" name="fecha_init"/>
 										<span class="input-group-addon" id="sizing-addon1">
 											<i class="fa fa-calendar"></i>
 										</span>
 									</div>
 								</div>
 								<div class="form-group col-xs-12 col-sm-6">
-									<label class="required" for="manzana">Ciudad de expedición</label>
-									<input type="text" class="form-control" name="manzana" placeholder="Cancún" required />
+									<label class="required" for="ciudad">Ciudad de expedición</label>
+									<input type="text" class="form-control required" name="ciudad" placeholder="Cancún" required />
 								</div>
 								<div class="form-group col-xs-12 col-sm-6">
-									<label class="required" for="manzana">Nombre completo de testigo 1</label>
-									<input type="text" class="form-control" name="manzana" placeholder="Nombre Apellido Apellido" required />
+									<label class="required" for="testigo_1">Nombre completo de testigo 1</label>
+									<input type="text" class="form-control required" id="testigo_1" name="testigo_1" placeholder="Nombre Apellido Apellido" required />
 								</div>
 								<div class="form-group col-xs-12 col-sm-6">
-									<label class="required" for="manzana">Nombre completo de testigo 1</label>
-									<input type="text" class="form-control" name="manzana" placeholder="Nombre Apellido Apellido"  required />
+									<label class="required" for="testigo_2">Nombre completo de testigo 1</label>
+									<input type="text" class="form-control required" id="testigo_2" name="testigo_2" placeholder="Nombre Apellido Apellido"  required />
 								</div>
 								<legend>Precios</legend>
 								<div class="form-group col-xs-12 col-sm-4">
-									<label class="required" for="manzana">Precio del Huerto</label>
-									<input type="text" class="form-control currency" name="precio" id="precio" class="" value="" placeholder="" required />
+									<label class="required" for="precio">Precio del huerto</label>
+									<input type="text" class="form-control required currency" name="precio" id="precio" value="" placeholder="" required />
 								</div>
 								<div class="form-group col-xs-12 col-sm-4">
 									<label class="required" for="manzana">Enganche</label>
-									<input type="text" class="form-control currency" name="enganche" id="enganche" class="" placeholder="" required />
+									<input type="text" class="form-control required currency" name="enganche" id="enganche" placeholder="" required />
 								</div>
 								<div class="form-group col-xs-12 col-sm-4">
 									<label class="required" for="manzana">Abono</label>
-									<input type="text" class="form-control currency" name="abono" id="abono" class="" placeholder="" required />
+									<input type="text" class="form-control required currency" name="abono" id="abono" placeholder="" required />
 								</div>
 								<legend>Periodos de abono</legend>
 								<div class="form-group col-xs-12 col-sm-6">
@@ -137,35 +141,29 @@
 							</div>
 						</div>
 					</div>
+					<h3>Contrato</h3>
+                    <div>
+                        <textarea name="contrato_html" id="contrato_html"></textarea>
+                    </div>
 					<h3>Formas de pago:</h3>
 					<div>
 						<div class="container-fluid">
 							<div class="row">
-								<legend>Pagos</legend>
-								
+								<legend>Pago</legend>
 								<div class="form-group col-xs-12 col-sm-3">
-									<label class="required" for="manzana">Tipo de pago:</label>
+									<label class="required" for="manzana">Seleccione el ingreso</label>
 									<select name="#" id="" class="form-control">
-										<option value="">Hola</option>
-										<option value="">Hola</option>
-										<option value="">Hola</option>
-										<option value="">Hola</option>
-									</select>
-								</div>
-								<div class="form-group col-xs-12 col-sm-3">
-									<label class="required" for="manzana">Selección de Banco</label>
-									<select name="#" id="" class="form-control">
-										<option value="">Hola</option>
-										<option value="">Hola</option>
-										<option value="">Hola</option>
-										<option value="">Hola</option>
-									</select>
-								</div>								
-							</div>
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+										<?php foreach ($ingresos as $ingreso) : ?>
+                                        <option value="<?= $ingreso->id_ingreso?>"><?= $ingreso->nombre?> <?= !empty($ingreso->cuenta) ? ' - '.$ingreso->cuenta : ''; ?></option>
+                                        <?php endforeach?>
+                                    </select>
+                                </div>                              
+                            </div>
+                        </div>
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+    </div>
 </main>

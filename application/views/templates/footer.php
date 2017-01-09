@@ -72,41 +72,7 @@
 		max: jQuery.validator.format("Por favor, escribe un valor menor o igual a {0}."),
 		min: jQuery.validator.format("Por favor, escribe un valor mayor o igual a {0}.")
 	});
-	var form = $("#example-basic");
-	form.validate({
-		errorPlacement: function errorPlacement(error, element) { element.before(error); },
-		lang: 'es'
-	});
-	form.steps({
-		headerTag: "h3",
-		bodyTag: "div",
-		transitionEffect: "none",
-		autoFocus: true,
-		/*onStepChanging: function (event, currentIndex, newIndex)
-		{
-			form.validate().settings.ignore = ":disabled,:hidden";
-			return form.valid();
-		},
-		onFinishing: function (event, currentIndex)
-		{
-			form.validate().settings.ignore = ":disabled";
-			return form.valid();
-		},*/
-		onFinished: function (event, currentIndex)
-		{
-			alert("Submitted!");
-		},
-		labels: 
-			{
-		        cancel: "Cancelar",
-		        current: "Paso Actual:",
-		        pagination: "Pagination",
-		        finish: "Finalizar",
-		        next: "Siguiente",
-		        previous: "Anterior",
-		        loading: "Cargando ..."
-		    }
-	});
+	
 	</script>
 	<script type="text/javascript" src="<?= base_url() ?>assets/js/numToWord.js?v=<?= date("Y-m-dH:i:s") ?>"></script>
 	<script type="text/javascript" src="<?= base_url() ?>assets/js/script.js?v=<?= date("Y-m-dH:i:s") ?>"></script>
