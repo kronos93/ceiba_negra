@@ -9,6 +9,7 @@ class Venta extends CI_Controller
     {
         parent::__construct();
         $this->load->model('Contrato_model');
+        $this->load->model('Ingreso_model');
         $this->load->model('Manzana_model');
         $this->load->model('Huerto_model');
     }
@@ -18,6 +19,8 @@ class Venta extends CI_Controller
         $data['body'] = "venta";
         $fecha = Carbon::now();
         $data['fecha'] = $fecha->format('d-m-Y');
+        $data['ingresos'] = $this->Ingreso_model->get();
+       
         $this->load->view('templates/template', $data);
     }
     public function pdf(){
@@ -161,10 +164,10 @@ class Venta extends CI_Controller
                 $colindancias = "";
             }
         }
-        $fecha_init = '08-01-2017';
-        $precio = 110000.00;
-        $enganche = 10000.00;
-        $abono = 1500.00;
+        $fecha_init = $this->input->post('fecha_init');
+        $precio = $this->input->post('precio');
+        $enganche = $this->input->post('enganche');
+        $abono = $this->input->post('abono');
         $historial = new Historial($precio,$enganche,$abono,$fecha_init);
         $historial_pagos = "<table class='pagares-tabla'>";
 
@@ -189,6 +192,14 @@ class Venta extends CI_Controller
             $historial_pagos .=         "<td>{$pago->getFecha()}</td>";
             $historial_pagos .=     "<tr>";
         }
+        $pagado = number_format($historial->getPagado(),2);
+        $historial_pagos .=    "<tfoot>";
+        $historial_pagos .=         "<tr>";
+        $historial_pagos .=             "<td><strong>TOTAL:</strong></td>";
+        $historial_pagos .=             "<td>$ {$pagado}</td>";
+        $historial_pagos .=             "<td>&nbsp;</td>";
+        $historial_pagos .=         "</tr>";
+        $historial_pagos .=    "</tfoot>";
         $historial_pagos .=    "</tbody>";
         $historial_pagos .= "</table>";
             
@@ -206,12 +217,25 @@ class Venta extends CI_Controller
             $numero_manzana = "los Números {$mz_txt}"; //str_replace la penúltima coma para poner una y
             $manzana_txt = "LAS MANZANAS {$mz_txt}"; //str_replace la última coma para poner una y
         }
-        
+
+        $nombre_cliente = $this->input->post('nombre') . " " .$this->input->post('apellidos');
+        $domicilio_cliente = ($this->input->post('calle')) ? "Calle: ".$this->input->post('calle') : "";
+        $domicilio_cliente .= ($this->input->post('no_ext')) ? " No. ext: ".$this->input->post('no_ext') : "";
+        $domicilio_cliente .= ($this->input->post('no_int')) ? " No. int: ".$this->input->post('no_int') : "";
+        $domicilio_cliente .= ($this->input->post('colonia')) ? " No. int: ".$this->input->post('colonia') : "";
+        $domicilio_cliente .= ($this->input->post('municipio')) ? " Municipio: ".$this->input->post('municipio') : "";
+        $domicilio_cliente .= ($this->input->post('estado')) ? " Estado: ".$this->input->post('estado') : "";
+        $domicilio_cliente .= ($this->input->post('ciudad')) ? " Ciudad: ".$this->input->post('ciudad') : "";
+        $domicilio_cliente .= ($this->input->post('cp')) ? " Codigo postal: ".$this->input->post('cp') : "";
+        $ciudad = $this->input->post('ciudad');
+
+        $testigo_1 = $this->input->post('testigo_1');
+        $testigo_2 = $this->input->post('testigo_2');
         $vars =
         [
                 'fecha_init' => $fecha_init, 
-                'nombre_cliente' => 'Samuel Rojas Too', //
-                'domicilio_cliente' => 'Calle 51, No ext. 21, No. int S/N, Colonia Reg. 233, Benito Juarez, Quintana Roo, México, C.P. 77510', //
+                'nombre_cliente' => $nombre_cliente, 
+                'domicilio_cliente' => $domicilio_cliente, //
                 'fraccion' => $fraccion, //
                 'numero_manzana' => $numero_manzana, //
                 'complemento_manzana_ii' => $complemento_manzana_ii, //
@@ -230,10 +254,10 @@ class Venta extends CI_Controller
                 'fecha_ultimo_pago' => $historial->getFechaUltimoPago(),
                 'porcentaje_penalizacion' => 1, //
                 'maximo_retrasos_permitidos' => 3, //
-                'testigo_1' => 'Testigo1 Testigo1 Testigo1',
-                'testigo_2' => 'Testigo2 Testigo2 Testigo2',
+                'testigo_1' => $testigo_1,
+                'testigo_2' => $testigo_2,
                 'historial_pagos' => $historial_pagos,
-                'ciudad' => 'México',
+                'ciudad' => $ciudad,
         ];
         $contrato_template = file_get_contents('./application/views/templates/contrato/contrato.php', FILE_USE_INCLUDE_PATH);
         $output = $contrato_template;
@@ -242,8 +266,11 @@ class Venta extends CI_Controller
             $replace = $var;
             $output = str_replace($search, $replace, $output);
         }
-        $data['output'] = $output;
-        $this->load->view('./templates/contrato/prueba', $data);
+        header("Content-type: application/json; charset=utf-8");
+        $respuesta['html'] = $output;
+        echo json_encode($respuesta);
+        //$data['output'] = $output;
+        //$this->load->view('./templates/contrato/prueba', $data);
     }
     private $generate=[];
     public function read()
@@ -566,7 +593,9 @@ class Historial
     {
         return $this->n_pago;
     }
-
+    public function getPagado(){
+        return $this->pagado;
+    }
     public function setFechaPrimerPago($fecha){
         $this->fecha_primer_pago = $fecha;
     }
