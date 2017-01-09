@@ -3,7 +3,6 @@ var base_url = 'http://' + window.location.hostname + '/ceiba_negra/';
 var lang_esp_datatables = "https://cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json";
 ////////////////////////////////////////////////
 moment.locale('es');
-
 ////////////////////////////////////////////////
 var form = $("#example-basic");
 form.validate({
@@ -54,10 +53,12 @@ form.steps({
                 async: true,
                 type: 'post',
                 beforeSend: function() {
-                    setTimeout(function() { console.log('Saludo'); }, 10000);
+                    
                 },
                 success: function(xhr) {
-                    $("#contrato_html").html(xhr.html);
+                    //tinymce.execCommand('mceRemoveControl', true, '#contrato_html');
+                    //$("#contrato_html").html(xhr.html);
+                    tinymce.remove('#contrato_html');
                     tinymce.init({
                         selector: '#contrato_html',
                         mode: 'specifics_textareas',
@@ -73,19 +74,20 @@ form.steps({
                         content_css: base_url + '/assets/css/tinymce.css',
                         setup: function(ed) {
                             ed.on('init', function(args) {
+                                // this ==  tinymce.activeEditor;
+                                console.log(xhr.html);
+                                this.selection.setContent(xhr.html);
                                 var fechas = ['fecha_primer_pago', 'fecha_ultimo_pago', 'fecha_init_1', 'fecha_init_2', 'fecha_init_3', 'fecha_init_4'];
-                                for (var fecha in fechas) {
-                                    var fecha_tiny = tinymce.activeEditor.dom.get(fechas[fecha]);
-
-                                    var fecha_val = $(tinymce.activeEditor.dom.get(fechas[fecha])).html();
+                                for (var fecha in fechas) {                                   
+                                    var fecha_tiny = this.dom.get(fechas[fecha]);
+                                    var fecha_val = $(fecha_tiny).html();
                                     var fecha_moment = moment(fecha_val, 'DD-MM-YYYY');
-
                                     this.dom.setHTML(fecha_tiny, fecha_moment.format("[el día ] dddd, DD [de] MMMM [del] [año] YYYY"));
                                 }
 
                                 var currencies = ['precio_1', 'precio_2', 'enganche', 'abono_1', 'abono_2', 'porcentaje'];
                                 for (var currency in currencies) {
-                                    var currency_tiny = tinymce.activeEditor.dom.get(currencies[currency]);
+                                    var currency_tiny = this.dom.get(currencies[currency]);
                                     var currency_val = $(currency_tiny).html();
                                     if (currencies[currency] == 'porcentaje') {
                                         var currency_format = NumeroALetras(currency_val).replace(/\b00\/100 MN\b/, '').replace(/\bPeso\b/, '').replace(/\bCON\b/g, 'PUNTO').replace(/\bPESOS\b/g, '').replace(/\bCENTAVOS\b/g, '').replace(/\s{2,}/g, " ");
@@ -97,6 +99,7 @@ form.steps({
                             });
                         }
                     });
+                    
                 }
             });
         }

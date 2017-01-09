@@ -35,7 +35,7 @@
 						<span class="fa fa-shopping-cart fa-2x" id="shopCartSaleCount" data-venta="<?= $this->cart->total_items() ?>"></span>
 						<nav class="my-dropdown">
 							<ul id="listaVenta"></ul>
-							<a href="#" class="btn btn-success center-block">Vender</a>
+							
 						</nav>
 							
 					</div>

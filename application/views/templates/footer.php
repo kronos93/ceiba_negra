@@ -39,6 +39,7 @@
 				<li><a>Abonos: <label class="currency">{{abono}}</label></a></li>
 			</ul>
 		</li>
+		{{{link}}}
 	</script>
 	<script>
 		$(document).mouseup(function (e)

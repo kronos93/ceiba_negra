@@ -242,6 +242,7 @@ class Ajax extends CI_Controller
         $respuesta->abono = ($respuesta->abono);
         $respuesta->total = ($this->cart->total());
         $respuesta->count = $this->cart->total_items();
+        $respuesta->link = ($this->cart->total_items()>0) ? '<a href="'.base_url().'venta" class="btn btn-success center-block">Vender</a>' : '';
         echo json_encode($respuesta);
     }
     //Utileria inutil xD.... Despreciar usando stdClass
