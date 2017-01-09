@@ -2,6 +2,7 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 use Carbon\Carbon;
 use Dompdf\Dompdf;
+use Dompdf\Options as Options;
 class Venta extends CI_Controller
 {
     function __construct()
@@ -33,26 +34,21 @@ class Venta extends CI_Controller
         // Output the generated PDF to Browser
         $dompdf->stream('hola.pdf',array('Attachment'=>0));
     }
-    public function maxpdf(){
-        $html = "<html>
-            <style>
-                h1 {
-                    color: red;
-                }
-            </style>
-            <h1>MAX Y ANDREA :V</h1>
-        </html>";
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml($html);
 
+    public function maxpdf(){
+        $html = file_get_contents('./application/views/templates/pagares/pagare.php', FILE_USE_INCLUDE_PATH);
+        $options = new Options();
+        $options->set('isRemoteEnabled', TRUE);
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml($html);
+        
         // (Optional) Setup the paper size and orientation
         $dompdf->setPaper('A4', 'portrait');
-
         // Render the HTML as PDF
         $dompdf->render();
-
         // Output the generated PDF to Browser
         $dompdf->stream('hola.pdf',array('Attachment'=>0));
+        // echo $html;
     }
     public function prueba()
     {
