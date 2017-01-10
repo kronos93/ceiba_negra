@@ -340,6 +340,12 @@ $(document).ready(function() {
                 }
             },
             { "data": "calle" },
+            { 
+                "data": "superficie" ,
+                "render": function(data, type, full, meta) {
+                    return '<span class="superficie">' + data + '</span> mt<sup>2</sup>.';
+                }
+            },            
             {
                 "data": "disponibilidad",
                 //Supa kawaiesko funcion para el render
@@ -389,7 +395,10 @@ $(document).ready(function() {
                 "searchable": false,
                 "targets": [-1, -2, -3, -4, -5]
             }
-        ]
+        ],
+        "drawCallback": function(settings) {
+            format('init');
+        },
     });
     //Añade funcion de editar al datatable
     get_data("manzanas-table", manzanas_table);
@@ -609,21 +618,21 @@ $(document).ready(function() {
        format('init');
     });
     //Herramienta para capturar las coordenadas del mapa
-    // mapplic.on('locationopened', function(e, location) {
-    //     var manzana = (location.category.replace("mz", ""));
-    //     var lote = (location.title.replace("Lote número ", ""));
-    //     var data = {
-    //         manzana: manzana,
-    //         lote: lote,
-    //         x: ($(".mapplic-coordinates-x")[0].innerHTML),
-    //         y: $(".mapplic-coordinates-y")[0].innerHTML
-    //     };
-    //     console.log(data);
-    //     $.ajax({
-    //         url: base_url + "ajax/guardar_coordenadas/",
-    //         type: 'post',
-    //         asyn: true,
-    //         data: data
-    //     });
-    // });
+     mapplic.on('locationopened', function(e, location) {
+         var manzana = (location.category.replace("mz", ""));
+         var lote = (location.title.replace("Lote número ", ""));
+         var data = {
+             manzana: manzana,
+             lote: lote,
+             x: ($(".mapplic-coordinates-x")[0].innerHTML),
+             y: $(".mapplic-coordinates-y")[0].innerHTML
+         };
+         console.log(data);
+         $.ajax({
+             url: base_url + "ajax/guardar_coordenadas/",
+             type: 'post',
+             asyn: true,
+            data: data
+         });
+     });
 });

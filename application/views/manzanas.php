@@ -8,7 +8,8 @@
 						<tr>
 							<th>Id. Manzana</th>							
 							<th>Manzana</th>
-							<th>calle</th>
+							<th>Calle</th>
+							<th>Superficie</th>
 							<th>Estado</th>
 							<th>Col. Norte</th>
                             <th>Col. Noreste</th>
