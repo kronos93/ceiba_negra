@@ -10,7 +10,8 @@
 							<th>Manzana</th>
 							<th>Huerto</th>
 							<th>Superficie</th>	
-							<th>Precio</th>	
+                            <th>Valor del m<sup>^2</sup></th>
+                            <th>Precio por m<sup>^2</sup></th>									
                             <th>Enganche</th> 
                             <th>Abono</th> 
 							<th>Estado</th>
@@ -63,15 +64,23 @@
 							<div class="form-group col-xs-12 col-sm-4">
                                 <label class="required" for="superficie">Superficie:</label>
 								<div class="input-group">									
-								    <input type="text" class="form-control superficie" name="superficie" placeholder="1" required/>
+								    <input type="text" class="form-control superficie multiplicar" name="superficie" placeholder="1" required/>
 									<div class="input-group-addon">Mt<sup>2</sup>.</div>
 								</div>
                             </div>
+                            <div class="form-group col-xs-12 col-sm-4">
+                                <label class="required" for="precio_x_m2">Precio por m<sup>2</sup>:</label>
+							    <input type="text" class="form-control currency multiplicar" name="precio_x_m2" placeholder="$ 352.00" value="352" required/>							
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-4">
+                                <label class="required" for="">Precio</label>
+							    <input type="text" class="form-control currency" id="precio" name="" placeholder="0" value="0" readonly required/>							
+                            </div>
                             <div class="form-group col-xs-12 col-sm-12">
-								<label class="required" for="id_precio">Seleccione un precio: </label>								
+								<label class="required" for="id_precio">Seleccione un recomendación para la venta: </label>								
                                 <select class="form-control" name="id_precio" required >
                                     <?php foreach ($precios as $precio) { ?>
-                                    <option value="<?= $precio->id_precio ?>">Precio: $ <?= number_format($precio->precio,2) ?> - Enganche: $ <?= number_format($precio->enganche,2) ?> - Abono: $ <?= number_format($precio->abono,2) ?></option>
+                                    <option value="<?= $precio->id_precio ?>" <?= ($precio->enganche == 10000) ? 'selected' : '' ?>>Enganche: $ <?= number_format($precio->enganche,2) ?> - Abono: $ <?= number_format($precio->abono,2) ?></option>
                                     <?php } ?>
                                 </select>                                
                             </div>
@@ -79,20 +88,36 @@
                         <fieldset class="form-group row">   
                             <legend>Colindancias:</legend>
                             <div class="form-group col-xs-12 col-sm-6">
-                                <label for="col_norte">Colindancia al norte:</label>
+                                <label for="col_norte">Colindancia al Norte:</label>
                                 <input type="text" class="form-control" name="col_norte" placeholder="46.012 Mts. con Mz. 26 huerto. 15 más 35.00 Mts. con Mz. 26 huerto. 10" />
                             </div>
                             <div class="form-group col-xs-12 col-sm-6">
-                                <label for="col_sur">Colindancia al sur:</label>
+                                <label for="col_noreste">Colindancia al Noreste:</label>
+                                <input type="text" class="form-control" name="col_noreste" placeholder="46.012 Mts. con Mz. 26 huerto. 15 más 35.00 Mts. con Mz. 26 huerto. 10" />
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-6">
+                                <label for="col_este">Colindancia al Este:</label>
+                                <input type="text" class="form-control" name="col_este" placeholder="12.50 Mts. con Mz. 27 huerto. 12" />
+                            </div>                            
+                            <div class="form-group col-xs-12 col-sm-6">
+                                <label for="col_sureste">Colindancia al Sureste:</label>
+                                <input type="text" class="form-control" name="col_sureste" placeholder="45.468 Mts. con Mz. 26 huerto. 13 más 35.00 Mts. con Mz. 26 huerto. 12" />
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-6">
+                                <label for="col_sur">Colindancia al Sur:</label>
                                 <input type="text" class="form-control" name="col_sur" placeholder="45.468 Mts. con Mz. 26 huerto. 13 más 35.00 Mts. con Mz. 26 huerto. 12" />
                             </div>
                             <div class="form-group col-xs-12 col-sm-6">
-                                <label for="col_este">Colindancia al este:</label>
-                                <input type="text" class="form-control" name="col_este" placeholder="12.50 Mts. con Mz. 27 huerto. 12" />
+                                <label for="col_suroeste">Colindancia al Suroeste:</label>
+                                <input type="text" class="form-control" name="col_suroeste" placeholder="45.468 Mts. con Mz. 26 huerto. 13 más 35.00 Mts. con Mz. 26 huerto. 12" />
                             </div>
                             <div class="form-group col-xs-12 col-sm-6">
-                                <label for="col_oeste">Colindancia al oeste:</label>
+                                <label for="col_oeste">Colindancia al Oeste:</label>
                                 <input type="text" class="form-control" name="col_oeste" placeholder="12.50 Mts. con sendero La Ceiba" />
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-6">
+                                <label for="col_noroeste">Colindancia al Noreste:</label>
+                                <input type="text" class="form-control" name="col_noroeste" placeholder="12.50 Mts. con sendero La Ceiba" />
                             </div>
                         </fieldset>
                     </div>
@@ -149,15 +174,23 @@
 							<div class="form-group col-xs-12 col-sm-4">
                                 <label class="required" for="superficie">Superficie:</label>
 								<div class="input-group">									
-								    <input type="text" class="form-control superficie" name="superficie" id="superficie" placeholder="1" required/>
+								    <input type="text" class="form-control autoNumeric superficie multiplicar" name="superficie" id="superficie" placeholder="1" required/>
 									<div class="input-group-addon">Mt<sup>2</sup>.</div>
 								</div>
                             </div> 
+                            <div class="form-group col-xs-12 col-sm-4">
+                                <label class="required" for="precio_x_m2">Precio por m<sup>2</sup>:</label>
+							    <input type="text" class="form-control autoNumeric currency multiplicar" name="precio_x_m2" id="precio_x_m2" placeholder="$ 352.00" value="" required/>							
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-4">
+                                <label class="required" for="">Precio</label>
+							    <input type="text" class="form-control autoNumeric currency" id="precio" name="" placeholder="0" value="0" readonly required/>							
+                            </div>
 							<div class="form-group col-xs-12 col-sm-12">
 								<label class="required" for="precio">Precio:</label>
 									<select class="form-control" name="id_precio" id="id_precio" required >
 										<?php foreach ($precios as $precio) { ?>
-										<option value="<?= $precio->id_precio ?>">Precio: $<?= number_format($precio->precio,2) ?> - Enganche: $<?= number_format($precio->enganche,2) ?> - Abono: $<?= number_format($precio->abono,2) ?></option>
+										<option value="<?= $precio->id_precio ?>">Enganche: $<?= number_format($precio->enganche,2) ?> - Abono: $<?= number_format($precio->abono,2) ?></option>
                                         <?php } ?>
                                     </select>
                             </div>                         

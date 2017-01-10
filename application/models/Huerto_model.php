@@ -20,7 +20,7 @@ class Huerto_model extends CI_Model
         $this->db->insert($this->tabla, $insert);
         $id_nuevo_huerto = $this->db->insert_id();
         $where = ['id_huerto' => $id_nuevo_huerto];
-        $nuevo_huerto = $this->huertosPM($where);
+        $nuevo_huerto = $this->getHuertosPM($where);
         return $nuevo_huerto;
     }
     //Huertos precio y manzanas
@@ -32,7 +32,9 @@ class Huerto_model extends CI_Model
                             `manzanas`.`manzana`,
                             {$this->tabla}.`huerto`,
                             {$this->tabla}.`superficie`,
-                            `precios`.`precio`,
+                            {$this->tabla}.`precio_x_m2`,
+                            ({$this->tabla}.`superficie` * {$this->tabla}.`precio_x_m2`) as precio,
+                            
                             `precios`.`enganche`,
                             `precios`.`abono`,
                             {$this->tabla}.`vendido`,

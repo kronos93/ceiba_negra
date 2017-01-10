@@ -1,5 +1,5 @@
 <h1>CONTRATO PRIVADO DE CESIÓN DE DERECHOS A PLAZOS</h1>
-<p><strong>Contrato Privado de Cesión de Derechos a Plazos, que celebran en la Ciudad de Playa del Carmen</strong>, Municipio de Solidaridad, Estado de Quintana Roo, México, <strong id="fecha_init_1">[@fecha_init]</strong>, de una parte a quien de ahora en adelante se llamará <strong>"EL CEDENTE"</strong>, de una parte el Señor <strong>FRANCISCO ENRIQUE MARTÍNEZ CORDERO</strong>, en su carácter de Propietario, y de la otra parte el C.: <strong>[@nombre_cliente]</strong>, a quién en lo sucesivo se le designará <strong>"EL CESIONARIO"</strong>, y que junto con <strong>"EL CEDENTE"</strong> se denominarán <strong>"LAS PARTES"</strong>, por su Propio y Personal Derecho respecto a una Fracción del Predio Rustico, ubicado en el Municipio de Lázaro Cárdenas, Estado de Quintana Roo, México, de la posesión de la Primera de los nombrados, lo que verifican al tenor de las siguientes Declaraciones y Cláusulas:</p>
+<p><strong>Contrato Privado de Cesión de Derechos a Plazos, que celebran en la Ciudad de Playa del Carmen</strong>, Municipio de Solidaridad, Estado de Quintana Roo, México, <strong class="fecha_init" id="fecha_init_1">[@fecha_init]</strong>, de una parte a quien de ahora en adelante se llamará <strong>"EL CEDENTE"</strong>, de una parte el Señor <strong>FRANCISCO ENRIQUE MARTÍNEZ CORDERO</strong>, en su carácter de Propietario, y de la otra parte el C.: <strong>[@nombre_cliente]</strong>, a quién en lo sucesivo se le designará <strong>"EL CESIONARIO"</strong>, y que junto con <strong>"EL CEDENTE"</strong> se denominarán <strong>"LAS PARTES"</strong>, por su Propio y Personal Derecho respecto a una Fracción del Predio Rustico, ubicado en el Municipio de Lázaro Cárdenas, Estado de Quintana Roo, México, de la posesión de la Primera de los nombrados, lo que verifican al tenor de las siguientes Declaraciones y Cláusulas:</p>
 <h1>D E C L A R A C I O N E S</h1>  
 <p>El Señor <strong>FRANCISCO ENRIQUE MARTÍNEZ CORDERO</strong>, con la Personalidad antes indicada; bajo Formal Protesta de Decir Verdad, Declara:</p>
 <ol type="I">
@@ -38,7 +38,7 @@ Asimismo a partir de la fecha de entrega de <strong>"LA ESCRITURA PUBLICA DEFINI
 </ol>
 <h1>DATOS G E N E R A L E S</h1>                    
 <p>Los Contratantes por sus generales bajo Formal Protesta de decir verdad declaran ser: el Señor <strong>FRANCISCO ENRIQUE MARTÍNEZ CORDERO</strong>, Casado, Arquitecto, Natural de Cozumel; Estado de Quintana Roo, donde nació el día Cinco de Mayo del año de Mil Novecientos Sesenta y Uno, y vecino de esta Localidad, con domicilio en Ave. Montes Azules esquina Solidaridad mz.16, lt.14, de la colonia Bosque Real en Playa del Carmen Quintana Roo y <strong>[@nombre_cliente] con domicilio en [@domicilio_cliente]</strong></p>
-<p>Y para constancia y seguridad de las partes, se firma el presente Contrato Privado de Cesión de Derechos, en la <strong>Ciudad de Playa del Carmen, Municipio de Solidaridad</strong>, Estado de Quintana Roo, México, <span id="fecha_init_2">[@fecha_init]</span>.</p>
+<p>Y para constancia y seguridad de las partes, se firma el presente Contrato Privado de Cesión de Derechos, en la <strong>Ciudad de Playa del Carmen, Municipio de Solidaridad</strong>, Estado de Quintana Roo, México, <span class="fecha_init" id="fecha_init_2">[@fecha_init]</span>.</p>
 <table class="testigos">
 	<thead>
 		<tr>
@@ -61,7 +61,7 @@ Asimismo a partir de la fecha de entrega de <strong>"LA ESCRITURA PUBLICA DEFINI
 </table>
 <h1>ANEXO 1</h1>
 <h1>PAGARE GENERAL</h1>
-<p>El C. [@nombre_cliente] (el Deudor) con generales establecidas en el contrato de fecha <span id="fecha_init_3">[@fecha_init]</span> del cual forma parte integral el presente anexo y el C. FRANCISCO ENRIQUE MARTÍNEZ CORDERO (el Acreedor), con generales establecidas en las declaraciones del presente contrato, a través de este documento, un "PAGARE GENERAL" que establece lo siguiente:</p>
+<p>El C. [@nombre_cliente] (el Deudor) con generales establecidas en el contrato de fecha <span class="fecha_init" id="fecha_init_3">[@fecha_init]</span> del cual forma parte integral el presente anexo y el C. FRANCISCO ENRIQUE MARTÍNEZ CORDERO (el Acreedor), con generales establecidas en las declaraciones del presente contrato, a través de este documento, un "PAGARE GENERAL" que establece lo siguiente:</p>
 <p>Primero: El deudor acepta y se compromete a pagar la deuda contraída con el acreedor, la cual asciende a la cantidad de [@precio] (<span id="precio_2">[@precio_txt]</span>).</p>
 <p>Segundo: De mutuo acuerdo se establece el siguientes fechas de vencimiento:</p>
 [@historial_pagos]
@@ -74,7 +74,7 @@ EL deudor podrá, si así lo considera necesario, adelantar pagos con la intenci
 <p>APLICACIÓN DE VENCIMIENTO ANTICIPADO: “El Deudor/Suscriptor” reconoce y acepta que a la falta de pago oportuno de [@maximo_retrasos_permitidos] o más amortizaciones que conforme a este pagaré deba realizar, generará el vencimiento anticipado de los demás pagos sucesivos que falten por vencer y por lo tanto se da por rescindido el contrato objeto de la presente obligación, de manera automática sin ningún requerimiento de aviso, ni tramite, renunciando de esta manera a cualquier reclamación presente o futura de pagos realizados, y/o mejoras realizadas en el terreno, por parte del Cesionario.</p>
 <p>CARGOS POR MORA.- En caso de que cualquier cantidad pagadera al Acreedor bajo este plan de pagos no sea pagada a su vencimiento, el Saldo Insoluto del presente Pagaré vencerá anticipadamente en ese momento y sin necesidad de aviso o requerimiento previo, el Suscriptor pagara a la vista del Acreedor, una pena por mora de [@porcentaje_penalizacion]% (<span id="porcentaje">[@porcentaje_penalizacion]</span> por ciento por cada día hábil) hasta que se reciba el pago.</p>
 <p>JURISDICCION Y LEY APLICABLE: Para la interpretación, ejecución, cumplimiento de este pagaré y en su caso para el requerimiento judicial del pago de su importe serán competentes los tribunales de la ciudad de Lázaro Cárdenas, Estado de Quintana Roo, México, renunciando expresamente a cualquier otro fuero que por razón de sus domicilios presentes o futuros pudieran corresponderles.</p>
-<p>El presente plan de pagos se establece <span id="fecha_init_4">[@fecha_init]</span> en la ciudad de [@ciudad] .</p>
+<p>El presente plan de pagos se establece <span class="fecha_init" id="fecha_init_4">[@fecha_init]</span> en la ciudad de [@ciudad] .</p>
 <table class="testigos">
 	<thead>
 		<tr>

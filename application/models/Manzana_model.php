@@ -3,6 +3,8 @@
 class Manzana_model extends CI_Model
 {
     private $tabla = "manzanas";
+    private $select = "*";
+    private $where = [];
     public function __construct()
     {
         parent::__construct();
@@ -53,5 +55,19 @@ class Manzana_model extends CI_Model
         $this->db->order_by('manzana', 'ASC');
         $query = $this->db->get($this->tabla);
         return $query->result();
+    }
+    public function _get(){
+        $this->db->select($this->select);
+        $this->db->where($this->where);
+        $query = $this->db->get($this->tabla);
+        return $query->result();
+    }
+    public function where($where){        
+        $this->where = $where;
+        return $this;
+    }
+    public function select($select){
+        $this->select = $select;
+        return $this;
     }
 }

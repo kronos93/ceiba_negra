@@ -8,7 +8,8 @@ class Registros extends CI_Controller {
         $this->load->model('Manzana_model');
 		$this->load->model('Precio_model');
     }
-	public function manzanas() {		
+	public function manzanas() {	
+		//var_dump($this->Manzana_model->select("manzana")->where(['manzana'=>1])->_get());	
 		$data['title'] = "Manzanas"; //Titulo de la página -> require
 		$data['body'] = "manzanas";	 //Nombre de la vista de cuerpo -> require
 		$this->load->view('templates/template',$data);	//Combina header y footer con body

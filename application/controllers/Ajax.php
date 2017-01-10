@@ -58,12 +58,14 @@ class Ajax extends CI_Controller
             $this->form_validation->set_rules('id_manzana', 'Manzana', 'trim|required');
             $this->form_validation->set_rules('huerto', 'Huerto', 'trim|required|callback_mhi_check[huerto,id_manzana]');
             $this->form_validation->set_rules('superficie', 'Superficie', 'trim|required');
+            $this->form_validation->set_rules('precio_x_m2', 'Precio por metro cuadrado', 'trim|required');
             $this->form_validation->set_rules('id_precio', 'Precio', 'trim|required');
         if ($this->form_validation->run()) {
             $insert = [
             'id_manzana' => $this->input->post('id_manzana'),
             'huerto'   => $this->input->post('huerto'),
             'superficie' => $this->input->post('superficie'),
+            'precio_x_m2' => $this->input->post('precio_x_m2'),
             'id_precio' => $this->input->post('id_precio'),
             'col_norte' => $this->input->post('col_norte'),
             'col_noreste' => $this->input->post('col_noreste'),
@@ -176,15 +178,29 @@ class Ajax extends CI_Controller
             echo "No se detectó ningún cambio en los datos al actualizar.";
         }
     }
+
     public function autocomplete_clientes()
     {
         header("Content-type: application/json; charset=utf-8");
         if ($this->input->get('query')) {
-            $like = ["CONCAT(nombre, ' ' ,apellidos)" => $this->input->get('query')];
+            $full_name = "CONCAT(users.first_name,' ',users.last_name)";
+            $clientes = $this->ion_auth->select("{$full_name} AS data, {$full_name} AS value")->where(["{$full_name} LIKE" => '%i%'])->users('cliente')->result();
             $response = new stdClass();
-            $response->suggestions = $this->Cliente_model->clientes_autocomplete($like);
+            $response->suggestions = $clientes;
             echo json_encode($response);
         }
+    }
+    public function autocomplete_lideres(){
+        header("Content-type: application/json; charset=utf-8");
+        if ($this->input->get('query')) {
+            $full_name = "CONCAT(users.first_name,' ',users.last_name)";
+            $lideres = $this->ion_auth->select("users.id, {$full_name} AS data, {$full_name} AS value")->where(["{$full_name} LIKE" => '%i%'])->users('lider')->result();
+            $response = new stdClass();
+            $response->suggestions = $lideres;
+            echo json_encode($response);
+        }
+        
+			
     }
     public function add_cart()
     {

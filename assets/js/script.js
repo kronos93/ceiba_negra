@@ -4,128 +4,17 @@ var lang_esp_datatables = "https://cdn.datatables.net/plug-ins/1.10.12/i18n/Span
 ////////////////////////////////////////////////
 moment.locale('es');
 ////////////////////////////////////////////////
-var form = $("#example-basic");
-form.validate({
-    errorPlacement: function errorPlacement(error, element) { element.before(error); },
-    lang: 'es'
-});
-form.steps({
-    headerTag: "h3",
-    bodyTag: "div",
-    transitionEffect: "slide",
-    autoFocus: true,
-    onStepChanging: function(event, currentIndex, newIndex) {
-
-        if (newIndex == 2) {
-            var data = {
-                'nombre': '',
-                'apellidos': '',
-                'correo': '',
-                'telefono': '',
-                'calle': '',
-                'no_ext': '',
-                'no_int': '',
-                'colonia': '',
-                'municipio': '',
-                'estado': '',
-                'ciudad': '',
-                'cp': '',
-                'testigo_1': '',
-                'testigo_2': '',
-
-                'fecha_init': '',
-                'precio': 0,
-                'enganche': 0,
-                'abono': 0,
-            };
-            for (var campo in data) {
-                var input = $('#' + campo + '');
-                if (!input.hasClass('currency')) {
-                    data[campo] = input.val();
-                } else {
-                    data[campo] = input.autoNumeric('get');
-                }
-            }
-            console.log(data);
-            $.ajax({
-                data: data,
-                url: base_url + "venta/prueba/",
-                async: true,
-                type: 'post',
-                beforeSend: function() {
-                    
-                },
-                success: function(xhr) {
-                    //tinymce.execCommand('mceRemoveControl', true, '#contrato_html');
-                    //$("#contrato_html").html(xhr.html);
-                    tinymce.remove('#contrato_html');
-                    tinymce.init({
-                        selector: '#contrato_html',
-                        mode: 'specifics_textareas',
-                        editor_selector: 'mceEditor',
-                        height: '600px',
-                        plugins: [
-                            'advlist autolink lists charmap print preview hr anchor pagebreak',
-                            'searchreplace wordcount visualblocks visualchars code fullscreen',
-                            'nonbreaking save table directionality',
-                            'template paste textcolor colorpicker textpattern'
-                        ],
-                        toolbar1: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-                        content_css: base_url + '/assets/css/tinymce.css',
-                        setup: function(ed) {
-                            ed.on('init', function(args) {
-                                // this ==  tinymce.activeEditor;
-                                console.log(xhr.html);
-                                this.selection.setContent(xhr.html);
-                                var fechas = ['fecha_primer_pago', 'fecha_ultimo_pago', 'fecha_init_1', 'fecha_init_2', 'fecha_init_3', 'fecha_init_4'];
-                                for (var fecha in fechas) {                                   
-                                    var fecha_tiny = this.dom.get(fechas[fecha]);
-                                    var fecha_val = $(fecha_tiny).html();
-                                    var fecha_moment = moment(fecha_val, 'DD-MM-YYYY');
-                                    this.dom.setHTML(fecha_tiny, fecha_moment.format("[el día ] dddd, DD [de] MMMM [del] [año] YYYY"));
-                                }
-
-                                var currencies = ['precio_1', 'precio_2', 'enganche', 'abono_1', 'abono_2', 'porcentaje'];
-                                for (var currency in currencies) {
-                                    var currency_tiny = this.dom.get(currencies[currency]);
-                                    var currency_val = $(currency_tiny).html();
-                                    if (currencies[currency] == 'porcentaje') {
-                                        var currency_format = NumeroALetras(currency_val).replace(/\b00\/100 MN\b/, '').replace(/\bPeso\b/, '').replace(/\bCON\b/g, 'PUNTO').replace(/\bPESOS\b/g, '').replace(/\bCENTAVOS\b/g, '').replace(/\s{2,}/g, " ");
-                                    } else {
-                                        var currency_format = NumeroALetras(currency_val).replace(/\s{2,}/g, " ");
-                                    }
-                                    this.dom.setHTML(currency_tiny, currency_format);
-                                }
-                            });
-                        }
-                    });
-                    
-                }
-            });
-        }
-        /*form.validate().settings.ignore = ":disabled,:hidden";
-        return form.valid();*/
-        return true;
-    },
-    onFinishing: function(event, currentIndex) {
-        /*form.validate().settings.ignore = ":disabled";
-        return form.valid();*/
-        return true;
-    },
-    onFinished: function(event, currentIndex) {
-        console.log($(this).serialize());
-    },
-    labels: {
-        cancel: "Cancelar",
-        current: "Paso Actual:",
-        pagination: "Pagination",
-        finish: "Finalizar",
-        next: "Siguiente",
-        previous: "Anterior",
-        loading: "Cargando ..."
+function format() {
+    if ($('.superficie').length) {
+        $('.superficie').autoNumeric(); //Averiguar más del plugin para evitar menores a 0
     }
-});
-///////////////////////////////////////////////
+    if ($(".currency").length) {
+        $(".currency").autoNumeric({
+            aSign: "$ "
+        });
+    }
+}
+////////////////////////////////////////////////
 //Funcion FormToObject
 $.fn.serializeObject = function() {
     var o = {};
@@ -159,18 +48,23 @@ var dtRow;
 
 function get_data(dtTable, obj_dtTable) {
     $('#' + dtTable + ' tbody').on('click', 'button', function() {
+        var target = this.dataset.target;
         dtRow = $(this).parents('tr');
         parsedtRow = obj_dtTable.row(dtRow).data();
-        console.log(parsedtRow);
-        data_in_form_edit(parsedtRow);
+        data_in_form_edit(target, parsedtRow);
     });
 }
 
-function data_in_form_edit(json_data) {
+function data_in_form_edit(target, json_data) {
+    var target = target;
     for (var data in json_data) {
         if ($("#" + data).length) {
-            //console.log(json_data);
-            $("#" + data).val(json_data[data]);
+            var input = $(target + " #" + data);
+            if (input.hasClass('autoNumeric')) {
+                input.autoNumeric('set', json_data[data]);
+            } else {
+                input.val(json_data[data]);
+            }
         }
     }
 }
@@ -180,9 +74,9 @@ function ajax_done(that, dtTable, msj, type, response) {
         that.reset();
         console.log(response);
         var newData = dtTable.row.add(response[0]).draw().node();
-        $(newData)
+        /*$(newData)
             .css('background', 'blue')
-            .animate({ 'font-size': '30px' });
+            .animate({ 'font-size': '30px' });*/
         //dtTable.ajax.reload(null, false); // user paging is not reset on reload, usar row porque a max le gusta mas :v
         dtTable.order([0, 'desc']).draw(); //Ordenar por id
     } else if (type == "update") {
@@ -190,6 +84,8 @@ function ajax_done(that, dtTable, msj, type, response) {
             parsedtRow[data] = response[0][data];
         }
         dtTable.row(dtRow).data(parsedtRow).draw();
+        //console.log(dtTable.row(dtRow).selector.rows[0]);
+        format();
     }
 
     $('.container-icons').removeClass().addClass('container-icons showicon ok').find('i').removeClass().addClass('fa fa-check-circle-o');
@@ -241,15 +137,137 @@ function templateCart(response) {
 }
 //Al cargar la página
 $(document).ready(function() {
+    //////////////////////////////
+    tinymce.init({
+        selector: '#contrato_html',
+        mode: 'specifics_textareas',
+        editor_selector: 'mceEditor',
+        height: '600px',
+        plugins: [
+            'advlist autolink lists charmap print preview hr anchor pagebreak',
+            'searchreplace wordcount visualblocks visualchars code fullscreen',
+            'nonbreaking save table directionality',
+            'template paste textcolor colorpicker textpattern'
+        ],
+        toolbar1: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+        content_css: base_url + '/assets/css/tinymce.css',
+        setup: function(ed) {
+            ed.on('init', function(args) {
+                console.log(this);
+                // this ==  tinymce.activeEditor;
+                //tinyMCE.activeEditor.dom.select('.fecha_init'); Trae datos por clase probar después
+
+            });
+        },
+        init_instance_callback: function(editor) {
+            editor.on('SetContent', function(e) {
+                console.log("Asignando contenido dinamico");
+                var fechas = ['fecha_primer_pago', 'fecha_ultimo_pago', 'fecha_init_1', 'fecha_init_2', 'fecha_init_3', 'fecha_init_4'];
+                for (var fecha in fechas) {
+                    var fecha_tiny = this.dom.get(fechas[fecha]);
+                    var fecha_val = $(fecha_tiny).html();
+                    var fecha_moment = moment(fecha_val, 'DD-MM-YYYY');
+                    this.dom.setHTML(fecha_tiny, fecha_moment.format("[el día ] dddd, DD [de] MMMM [del] [año] YYYY"));
+                }
+
+                var currencies = ['precio_1', 'precio_2', 'enganche', 'abono_1', 'abono_2', 'porcentaje'];
+                for (var currency in currencies) {
+                    var currency_tiny = this.dom.get(currencies[currency]);
+                    var currency_val = $(currency_tiny).html();
+                    if (currencies[currency] == 'porcentaje') {
+                        var currency_format = NumeroALetras(currency_val).replace(/\b00\/100 MN\b/, '').replace(/\bPeso\b/, '').replace(/\bCON\b/g, 'PUNTO').replace(/\bPESOS\b/g, '').replace(/\bCENTAVOS\b/g, '').replace(/\s{2,}/g, " ");
+                    } else {
+                        var currency_format = NumeroALetras(currency_val).replace(/\s{2,}/g, " ");
+                    }
+                    this.dom.setHTML(currency_tiny, currency_format);
+                }
+            });
+        }
+    });
+    ///////////////////////////////////////////////
+    var form = $("#example-basic");
+    form.validate({
+        errorPlacement: function errorPlacement(error, element) { element.before(error); },
+        lang: 'es'
+    });
+    form.steps({
+        headerTag: "h3",
+        bodyTag: "div",
+        transitionEffect: "slide",
+        autoFocus: true,
+        onStepChanging: function(event, currentIndex, newIndex) {
+            /*tinymce.remove('#contrato_html');*/
+            if (newIndex == 2) {
+
+                var data = {
+                    'nombre': '',
+                    'apellidos': '',
+                    'correo': '',
+                    'telefono': '',
+                    'calle': '',
+                    'no_ext': '',
+                    'no_int': '',
+                    'colonia': '',
+                    'municipio': '',
+                    'estado': '',
+                    'ciudad': '',
+                    'cp': '',
+                    'testigo_1': '',
+                    'testigo_2': '',
+
+                    'fecha_init': '',
+                    'precio': 0,
+                    'enganche': 0,
+                    'abono': 0,
+                };
+                for (var campo in data) {
+                    var input = $('#' + campo + '');
+                    if (!input.hasClass('currency')) {
+                        data[campo] = input.val();
+                    } else {
+                        data[campo] = input.autoNumeric('get');
+                    }
+                }
+                console.log(data);
+                $.ajax({
+                    data: data,
+                    url: base_url + "venta/prueba/",
+                    async: true,
+                    type: 'post',
+                    beforeSend: function() {
+                        tinymce.activeEditor.setContent("");
+                    },
+                    success: function(xhr) {
+                        tinymce.activeEditor.selection.setContent(xhr.html);
+                    }
+                });
+            }
+            /*form.validate().settings.ignore = ":disabled,:hidden";
+            return form.valid();*/
+            return true;
+        },
+        onFinishing: function(event, currentIndex) {
+            /*form.validate().settings.ignore = ":disabled";
+            return form.valid();*/
+            return true;
+        },
+        onFinished: function(event, currentIndex) {
+            console.log($(this).serialize());
+        },
+        labels: {
+            cancel: "Cancelar",
+            current: "Paso Actual:",
+            pagination: "Pagination",
+            finish: "Finalizar",
+            next: "Siguiente",
+            previous: "Anterior",
+            loading: "Cargando ..."
+        }
+    });
+    ///////////////////////////////////////////////
+
     //GENERAL
-    if ($('.superficie').length) {
-        $('.superficie').autoNumeric(); //Averiguar más del plugin para evitar menores a 0
-    }
-    if ($(".currency")) {
-        $(".currency").autoNumeric({
-            aSign: "$ "
-        });
-    }
+    format();
     $('#shopCartSale').on('click', function(e) {
         $(this).find('.my-dropdown').slideToggle('3500');
     });
@@ -267,11 +285,15 @@ $(document).ready(function() {
     $('#clientes_autocomplete').autocomplete({
         serviceUrl: base_url + 'ajax/autocomplete_clientes',
         onSelect: function(suggestion) {
-            data_in_form_edit(suggestion)
-            console.log(suggestion);
+            data_in_form_edit(suggestion);
         }
     });
+    $('#lideres_autocomplete').autocomplete({
+        serviceUrl: base_url + 'ajax/autocomplete_lideres',
+        onSelect: function(suggestion) {
 
+        }
+    });
     //USUARIOS
     $("#form-user").on('hidden.bs.modal', function() {
         $(this).removeData('bs.modal');
@@ -391,6 +413,18 @@ $(document).ready(function() {
     });
     //Huertos
     //Datatable de los huertos
+    $('.multiplicar').on('keyup', multiplicar);
+
+    function multiplicar() {
+        //El contexto es para saber en que formulario debe remplazarce el valor de un ID
+        var context = '#' + $(this).parents('form').attr('id');
+        var multiplicar = $(context + ' .multiplicar');
+        var total = 1;
+        for (var i = 0; i < multiplicar.length; i++) {
+            total *= $(multiplicar[i]).autoNumeric('get');
+        }
+        $(context + " " + '#precio').autoNumeric('set', total);
+    }
     var huertos_table = $('#huertos-table').DataTable({
         "ajax": base_url + 'ajax/get_huertos_pmz',
         "columns": [ //Atributos para la tabla
@@ -413,6 +447,7 @@ $(document).ready(function() {
                     return '<span class="superficie">' + data + '</span> mt<sup>2</sup>.';
                 }
             },
+            { "data": "precio_x_m2" },
             { "data": "precio" },
             { "data": "enganche" },
             { "data": "abono" },
@@ -449,7 +484,7 @@ $(document).ready(function() {
                 "defaultContent": '<button data-toggle="modal" data-target="#edit-huerto" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>'
             },
             {
-                "targets": [4, 5, 6],
+                "targets": [4, 5, 6, 7],
                 "className": "currency"
             },
 
@@ -477,6 +512,7 @@ $(document).ready(function() {
         e.preventDefault();
         var data = $(this).serializeObject(); //Serializar formulario
         data.superficie = $(this.superficie).autoNumeric('get');
+        data.precio_x_m2 = $(this.precio_x_m2).autoNumeric('get');
         var that = this; //Almacenar el formulario donde sucedio el evento submit
         //Llamada ajax
         $.ajax({
@@ -497,8 +533,10 @@ $(document).ready(function() {
     //Formulario para editar lotes
     $("#frm-edit-huertos").on('submit', function(e) {
         e.preventDefault();
-        var data = $(this).serializeArray(); //Serializar formulario
-        data.push({ "name": "id_huerto", "value": parsedtRow.id_huerto }); //Añadimos el ID de la manzana en formato json
+        var data = $(this).serializeObject(); //Serializar formulario
+        data.superficie = $(this.superficie).autoNumeric('get');
+        data.precio_x_m2 = $(this.precio_x_m2).autoNumeric('get');
+        data.id_huerto = parsedtRow.id_huerto; //Añadimos el ID de la manzana en formato json
         var that = this; //Almacenar el formulario donde sucedio el evento submit
         //Llamada ajax
         $.ajax({
