@@ -4,12 +4,13 @@ var lang_esp_datatables = "https://cdn.datatables.net/plug-ins/1.10.12/i18n/Span
 ////////////////////////////////////////////////
 moment.locale('es');
 ////////////////////////////////////////////////
-function format() {
+function format(action) {
+    console.log("Format");
     if ($('.superficie').length) {
-        $('.superficie').autoNumeric(); //Averiguar más del plugin para evitar menores a 0
+        $('.superficie').autoNumeric(action); //Averiguar más del plugin para evitar menores a 0
     }
     if ($(".currency").length) {
-        $(".currency").autoNumeric({
+        $(".currency").autoNumeric(action,{
             aSign: "$ "
         });
     }
@@ -90,7 +91,6 @@ function ajax_done(that, dtTable, msj, type, response) {
         }
         dtTable.row(dtRow).data(parsedtRow).draw();
         //console.log(dtTable.row(dtRow).selector.rows[0]);
-        format();
     }
 
     $('.container-icons').removeClass().addClass('container-icons showicon ok').find('i').removeClass().addClass('fa fa-check-circle-o');
@@ -121,11 +121,7 @@ function templateCart(response) {
         $('#enganche').autoNumeric('set', response.enganche);
         $('#abono').autoNumeric('set', response.abono);
     }
-    if ($(".currency")) {
-        $(".currency").autoNumeric({
-            aSign: "$ "
-        });
-    }
+    format('init');
     $(".itemCartDelete").on('click', function(e) {
         $.ajax({
                 url: base_url + "ajax/delete_cart/",
@@ -140,8 +136,10 @@ function templateCart(response) {
             });
     });
 }
+
 //Al cargar la página
 $(document).ready(function() {
+     
     //////////////////////////////
     tinymce.init({
         selector: '#contrato_html',
@@ -200,15 +198,18 @@ $(document).ready(function() {
         bodyTag: "div",
         transitionEffect: "slide",
         autoFocus: true,
+        onInit : function(){
+            format('init');
+        },
         onStepChanging: function(event, currentIndex, newIndex) {
             /*tinymce.remove('#contrato_html');*/
             if (newIndex == 2) {
 
                 var data = {
-                    'nombre': '',
-                    'apellidos': '',
-                    'correo': '',
-                    'telefono': '',
+                    'first_name': '',
+                    'last_name': '',
+                    'email': '',
+                    'phone': '',
                     'calle': '',
                     'no_ext': '',
                     'no_int': '',
@@ -224,6 +225,8 @@ $(document).ready(function() {
                     'precio': 0,
                     'enganche': 0,
                     'abono': 0,
+                    'porcentaje_penalizacion' : 0,
+                    'maximo_retrasos_permitidos' : 0
                 };
                 for (var campo in data) {
                     var input = $('#' + campo + '');
@@ -247,14 +250,14 @@ $(document).ready(function() {
                     }
                 });
             }
-            /*form.validate().settings.ignore = ":disabled,:hidden";
-            return form.valid();*/
-            return true;
+            form.validate().settings.ignore = ":disabled,:hidden";
+            return form.valid();
+            //return true;
         },
         onFinishing: function(event, currentIndex) {
-            /*form.validate().settings.ignore = ":disabled";
-            return form.valid();*/
-            return true;
+            form.validate().settings.ignore = ":disabled";
+            return form.valid();
+            //return true;
         },
         onFinished: function(event, currentIndex) {
             console.log($(this).serialize());
@@ -269,10 +272,10 @@ $(document).ready(function() {
             loading: "Cargando ..."
         }
     });
+    
     ///////////////////////////////////////////////
 
     //GENERAL
-    format();
     $('#shopCartSale').on('click', function(e) {
         $(this).find('.my-dropdown').slideToggle('3500');
     });
@@ -505,10 +508,7 @@ $(document).ready(function() {
             }
         ],
         "drawCallback": function(settings) {
-            $(".currency").autoNumeric({
-                aSign: "$ "
-            });
-            $(".superficie").autoNumeric();
+            format('init');
         },
     });
     get_data("huertos-table", huertos_table);
@@ -554,6 +554,7 @@ $(document).ready(function() {
             })
             .done(function(response) {
                 ajax_done(that, huertos_table, "Datos del huerto actualizados correctamente", "update", response);
+                format('update');
             })
             .fail(function(response) {
                 ajax_fail(response);
@@ -588,8 +589,7 @@ $(document).ready(function() {
 
     });
     mapplic.on('locationopened', function(e, self) {        
-       $('.superficie').autoNumeric();
-       $('.currency').autoNumeric();
+       format('init');
     });
     //Herramienta para capturar las coordenadas del mapa
     // mapplic.on('locationopened', function(e, location) {

@@ -26,8 +26,8 @@
 									<input type="text" class="form-control required" name="last_name" id="last_name" placeholder="Apellido Apellido"/>
 								</div>
 								<div class="form-group col-xs-12 col-sm-6">
-									<label class="" for="email">Correo electrónico</label>
-									<input type="text" class="form-control email" name="email" id="email" placeholder="alguien@dominio.com"  />
+									<label class="required" for="email">Correo electrónico</label>
+									<input type="text" class="form-control required email" name="email" id="email" placeholder="alguien@dominio.com"  />
 								</div>
 								<div class="form-group col-xs-12 col-sm-6">
 									<label class="" for="phone">Celular</label>
@@ -119,10 +119,10 @@
 								</div>
 								<legend>Lider de manzana</legend>
 								<div class="form-group col-xs-12  col-sm-8 col-sm-4">
-									<label class="" for="lider">Nombre</label>
+									<label class="required" for="lider">Nombre</label>
 									<div class="clearfix"></div>
 									<div class="input-group">
-										<input id="lideres_autocomplete" type="text" class="form-control" name=""/>
+										<input id="lideres_autocomplete" type="text" class="form-control required" name="lider"/>
 										<div class="input-group-addon"><span class="fa fa-search"></span></div>
 									</div>
 								</div>
@@ -130,13 +130,13 @@
 								<div class="form-group col-xs-12 col-sm-4">
 									<label class="required" for="manzana">Porcentaje de penalización:</label>
 									<div class="input-group">
-										<input type="number" class="form-control" id="penalizacion" placeholder="1" value="1" name="penalizacion" min="0" max="100" step="1"/>
+										<input type="number" class="form-control required" id="porcentaje_penalizacion" placeholder="1" value="1" name="porcentaje_penalizacion" min="0" max="100" step="1"/>
 										<span class="input-group-addon" id="sizing-addon1">%</span>
 									</div>
 								</div>
 								<div class="form-group col-xs-12 col-sm-4">
-									<label class="required" for="manzana">Máximo de retrasos permitidos en pagos:</label>
-									<input type="number" class="form-control" id="penalizacion" placeholder="1" value="3" name="penalizacion" min="0" max="100" step="1"/>	
+									<label class="required" for="maximo_retrasos">Máximo de retrasos permitidos en pagos:</label>
+									<input type="number" class="form-control required" id="maximo_retrasos_permitidos" placeholder="1" value="3" name="maximo_retrasos_permitidos" min="0" max="100" step="1"/>	
 								</div>
 							</div>
 						</div>

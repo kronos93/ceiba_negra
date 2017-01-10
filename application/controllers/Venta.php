@@ -218,7 +218,7 @@ class Venta extends CI_Controller
             $manzana_txt = "LAS MANZANAS {$mz_txt}"; //str_replace la última coma para poner una y
         }
 
-        $nombre_cliente = $this->input->post('nombre') . " " .$this->input->post('apellidos');
+        $nombre_cliente = $this->input->post('first_name') . " " .$this->input->post('last_name');
         $domicilio_cliente = ($this->input->post('calle')) ? "Calle: ".$this->input->post('calle') : "";
         $domicilio_cliente .= ($this->input->post('no_ext')) ? " No. ext: ".$this->input->post('no_ext') : "";
         $domicilio_cliente .= ($this->input->post('no_int')) ? " No. int: ".$this->input->post('no_int') : "";
@@ -252,8 +252,8 @@ class Venta extends CI_Controller
                 'abono_txt' => $abono,
                 'fecha_primer_pago' => $historial->getFechaPrimerPago(),
                 'fecha_ultimo_pago' => $historial->getFechaUltimoPago(),
-                'porcentaje_penalizacion' => 1, //
-                'maximo_retrasos_permitidos' => 3, //
+                'porcentaje_penalizacion' => $this->input->post('porcentaje_penalizacion'), //
+                'maximo_retrasos_permitidos' => $this->input->post('maximo_retrasos_permitidos'), //
                 'testigo_1' => $testigo_1,
                 'testigo_2' => $testigo_2,
                 'historial_pagos' => $historial_pagos,
