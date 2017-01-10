@@ -10,7 +10,7 @@ function format(action) {
         $('.superficie').autoNumeric(action); //Averiguar más del plugin para evitar menores a 0
     }
     if ($(".currency").length) {
-        $(".currency").autoNumeric(action,{
+        $(".currency").autoNumeric(action, {
             aSign: "$ "
         });
     }
@@ -60,9 +60,9 @@ function data_in_form_edit(target, json_data) {
     var target = target;
     for (var data in json_data) {
         if ($("#" + data).length) {
-            if(target != undefined){
+            if (target != undefined) {
                 var input = $(target + " " + "#" + data);
-            }else{
+            } else {
                 var input = $("#" + data);
             }
             console.log(input);
@@ -110,49 +110,49 @@ function ajax_fail(response) {
 }
 
 function templateCart(response) {
-    
-        $("#shopCartSale")
-            .find('span')
-            .attr("data-venta", response.count);
 
-        var template = document.getElementById('template-venta').innerHTML;
-        var output = Mustache.render(template, response);
-        document.getElementById("listaVenta").innerHTML = output;
-        if ($('#precio').length && $('#enganche').length && $('#abono').length) {
-            $('#precio').autoNumeric('set', response.total);
-            $('#enganche').autoNumeric('set', response.enganche);
-            $('#abono').autoNumeric('set', response.abono);
+    $("#shopCartSale")
+        .find('span')
+        .attr("data-venta", response.count);
+
+    var template = document.getElementById('template-venta').innerHTML;
+    var output = Mustache.render(template, response);
+    document.getElementById("listaVenta").innerHTML = output;
+    if ($('#precio').length && $('#enganche').length && $('#abono').length) {
+        $('#precio').autoNumeric('set', response.total);
+        $('#enganche').autoNumeric('set', response.enganche);
+        $('#abono').autoNumeric('set', response.abono);
+    }
+
+    format('init');
+    if (!response.count) {
+        var uri = window.location.pathname;
+        var split = uri.split('/');
+        var c = split[split.length - 1];
+        console.log(c);
+        if (c == 'venta') {
+            window.location.href = base_url;
         }
+    }
+    $(".itemCartDelete").on('click', function(e) {
+        $.ajax({
+                url: base_url + "ajax/delete_cart/",
+                data: { rowid: $(this).val() },
+                type: "post",
+            })
+            .done(function(response) {
+                templateCart(response);
+            })
+            .fail(function(response) {
 
-        format('init');
-        if(!response.count){
-            var uri =window.location.pathname;
-            var split = uri.split('/');
-            var c = split[split.length - 1];
-            console.log(c);
-            if(c == 'venta'){
-                window.location.href = base_url;
-            }
-        }
-        $(".itemCartDelete").on('click', function(e) {
-            $.ajax({
-                    url: base_url + "ajax/delete_cart/",
-                    data: { rowid: $(this).val() },
-                    type: "post",
-                })
-                .done(function(response) {
-                    templateCart(response);
-                })
-                .fail(function(response) {
-
-                });
-        });
+            });
+    });
 
 }
 
 //Al cargar la página
 $(document).ready(function() {
-     
+
     //////////////////////////////
     tinymce.init({
         selector: '#contrato_html',
@@ -211,7 +211,7 @@ $(document).ready(function() {
         bodyTag: "div",
         transitionEffect: "slide",
         autoFocus: true,
-        onInit : function(){
+        onInit: function() {
             format('init');
         },
         onStepChanging: function(event, currentIndex, newIndex) {
@@ -238,8 +238,8 @@ $(document).ready(function() {
                     'precio': 0,
                     'enganche': 0,
                     'abono': 0,
-                    'porcentaje_penalizacion' : 0,
-                    'maximo_retrasos_permitidos' : 0
+                    'porcentaje_penalizacion': 0,
+                    'maximo_retrasos_permitidos': 0
                 };
                 for (var campo in data) {
                     var input = $('#' + campo + '');
@@ -285,7 +285,7 @@ $(document).ready(function() {
             loading: "Cargando ..."
         }
     });
-    
+
     ///////////////////////////////////////////////
 
     //GENERAL
@@ -306,7 +306,7 @@ $(document).ready(function() {
     $('#clientes_autocomplete').autocomplete({
         serviceUrl: base_url + 'ajax/autocomplete_clientes',
         onSelect: function(suggestion) {
-            data_in_form_edit('',suggestion);
+            data_in_form_edit('', suggestion);
         }
     });
     $('#lideres_autocomplete').autocomplete({
@@ -332,15 +332,18 @@ $(document).ready(function() {
     var manzanas_table = $('#manzanas-table').DataTable({
         "ajax": base_url + 'ajax/get_manzanas', //URL de datos
         "columns": [ //Atributos para la tabla
-            { "data": "id_manzana" },
-            {
+            { "data": "id_manzana" }, {
                 "data": "manzana",
                 "render": function(data, type, full, meta) {
                     return 'Mz.  ' + data;
                 }
             },
-            { "data": "calle" },
-            {
+            { "data": "calle" }, {
+                "data": "superficie",
+                "render": function(data, type, full, meta) {
+                    return '<span class="superficie">' + data + '</span> mt<sup>2</sup>.';
+                }
+            }, {
                 "data": "disponibilidad",
                 //Supa kawaiesko funcion para el render
                 "render": function(data, type, full, meta) {
@@ -353,9 +356,13 @@ $(document).ready(function() {
                 }
             },
             { "data": "col_norte" },
-            { "data": "col_sur" },
+            { "data": "col_noreste" },
             { "data": "col_este" },
+            { "data": "col_sureste" },
+            { "data": "col_sur" },
+            { "data": "col_suroeste" },
             { "data": "col_oeste" },
+            { "data": "col_noroeste" },
             { "data": "" } //Espacio extra para el boton o botones de opciones
         ],
         columnDefs: [ //Configuracion de la tabla de manzanas
@@ -363,29 +370,28 @@ $(document).ready(function() {
                 //Ocultar columna*
                 "targets": 0,
                 "visible": false
-            },
-            {
+            }, {
                 //Añadir boton dinamicamente, para esta columna*
                 "targets": -1,
                 "data": null,
                 "defaultContent": '<button data-toggle="modal" data-target="#edit-manzana" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>'
-            },
-            {
+            }, {
                 //Añadir super clase kawai, para esta columna*
                 "targets": 1,
                 "className": "col-mz"
-            },
-            {
+            }, {
                 //Quitar ordenamiento para estas columnas
                 "sortable": false,
                 "targets": [2, -1, -2, -3, -4, -5]
-            },
-            {
+            }, {
                 //Quitar busqueda para esta columna
                 "searchable": false,
                 "targets": [-1, -2, -3, -4, -5]
             }
-        ]
+        ],
+        "drawCallback": function(settings) {
+            format('init');
+        },
     });
     //Añade funcion de editar al datatable
     get_data("manzanas-table", manzanas_table);
@@ -449,20 +455,17 @@ $(document).ready(function() {
     var huertos_table = $('#huertos-table').DataTable({
         "ajax": base_url + 'ajax/get_huertos_pmz',
         "columns": [ //Atributos para la tabla
-            { "data": "id_huerto" },
-            {
+            { "data": "id_huerto" }, {
                 "data": "manzana",
                 "render": function(data, type, full, meta) {
                     return 'Mz.  ' + data;
                 }
-            },
-            {
+            }, {
                 "data": "huerto",
                 "render": function(data, type, full, meta) {
                     return 'Ht.  ' + data;
                 }
-            },
-            {
+            }, {
                 "data": "superficie",
                 "render": function(data, type, full, meta) {
                     return '<span class="superficie">' + data + '</span> mt<sup>2</sup>.';
@@ -471,8 +474,7 @@ $(document).ready(function() {
             { "data": "precio_x_m2" },
             { "data": "precio" },
             { "data": "enganche" },
-            { "data": "abono" },
-            {
+            { "data": "abono" }, {
                 "data": "vendido", //Supa kawaiesko funcion para el render
                 "render": function(data, type, full, meta) {
                     if (!parseInt(data)) {
@@ -497,14 +499,12 @@ $(document).ready(function() {
             {
                 "targets": 0,
                 "visible": false
-            },
-            {
+            }, {
                 //Añadir boton dinamicamente, para esta columna*
                 "targets": -1,
                 "data": null,
                 "defaultContent": '<button data-toggle="modal" data-target="#edit-huerto" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>'
-            },
-            {
+            }, {
                 "targets": [4, 5, 6, 7],
                 "className": "currency"
             },
@@ -513,8 +513,7 @@ $(document).ready(function() {
                 //Quitar ordenamiento para estas columnas
                 "sortable": false,
                 "targets": [-1, -2, -3, -4, -5]
-            },
-            {
+            }, {
                 //Quitar busqueda para esta columna
                 "targets": [-1, -2, -3, -4, -5],
                 "searchable": false,
@@ -601,26 +600,25 @@ $(document).ready(function() {
         deeplinking: false, //inhabilita nombres en uri,
 
     });
-    mapplic.on('locationopened', function(e, self) {        
-       format('init');
+    mapplic.on('locationopened', function(e, self) {
+        format('init');
     });
     //Herramienta para capturar las coordenadas del mapa
- // mapplic.on('locationopened', function(e, location) {
- //     var manzana = (location.category.replace("mz", ""));
- //     var lote = (location.title.replace("Lote número ", ""));
- //     var data = {
- //         manzana: manzana,
- //         lote: lote,
- //         x: ($(".mapplic-coordinates-x")[0].innerHTML),
- //         y: $(".mapplic-coordinates-y")[0].innerHTML
- //     };
- //     console.log(data);
- //     $.ajax({
- //         url: base_url + "ajax/guardar_coordenadas/",
- //         type: 'post',
- //         asyn: true,
- //         data: data
- //     });
- // });
-
+    mapplic.on('locationopened', function(e, location) {
+        var manzana = (location.category.replace("mz", ""));
+        var lote = (location.title.replace("Lote número ", ""));
+        var data = {
+            manzana: manzana,
+            lote: lote,
+            x: ($(".mapplic-coordinates-x")[0].innerHTML),
+            y: $(".mapplic-coordinates-y")[0].innerHTML
+        };
+        console.log(data);
+        $.ajax({
+            url: base_url + "ajax/guardar_coordenadas/",
+            type: 'post',
+            asyn: true,
+            data: data
+        });
+    });
 });
