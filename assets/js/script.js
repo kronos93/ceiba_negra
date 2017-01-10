@@ -600,25 +600,26 @@ $(document).ready(function() {
         deeplinking: false, //inhabilita nombres en uri,
 
     });
-    mapplic.on('locationopened', function(e, self) {
-        format('init');
-    });
-    //Herramienta para capturar las coordenadas del mapa
-    mapplic.on('locationopened', function(e, location) {
-        var manzana = (location.category.replace("mz", ""));
-        var lote = (location.title.replace("Huerto número ", ""));
-        var data = {
-            manzana: manzana,
-            lote: lote,
-            x: ($(".mapplic-coordinates-x")[0].innerHTML),
-            y: $(".mapplic-coordinates-y")[0].innerHTML
-        };
-        console.log(data);
-        $.ajax({
-            url: base_url + "ajax/guardar_coordenadas/",
-            type: 'post',
-            asyn: true,
-            data: data
-        });
-    });
+    // mapplic.on('locationopened', function(e, self) {
+            //     format('init');
+            // });
+            // //Herramienta para capturar las coordenadas del mapa
+            // mapplic.on('locationopened', function(e, location) {
+            //     var manzana = (location.category.replace("mz", ""));
+            //     var lote = (location.title.replace("Huerto número ", ""));
+            //     var data = {
+            //         manzana: manzana,
+            //         lote: lote,
+            //         x: ($(".mapplic-coordinates-x")[0].innerHTML),
+            //         y: $(".mapplic-coordinates-y")[0].innerHTML
+            //     };
+            //     console.log(data);
+            //     $.ajax({
+            //         url: base_url + "ajax/guardar_coordenadas/",
+            //         type: 'post',
+            //         asyn: true,
+            //         data: data
+            //     });
+            // });
+
 });
