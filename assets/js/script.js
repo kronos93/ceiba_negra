@@ -110,31 +110,44 @@ function ajax_fail(response) {
 }
 
 function templateCart(response) {
-    $("#shopCartSale")
-        .find('span')
-        .attr("data-venta", response.count);
-    var template = document.getElementById('template-venta').innerHTML;
-    var output = Mustache.render(template, response);
-    document.getElementById("listaVenta").innerHTML = output;
-    if ($('#precio').length && $('#enganche').length && $('#abono').length) {
-        $('#precio').autoNumeric('set', response.total);
-        $('#enganche').autoNumeric('set', response.enganche);
-        $('#abono').autoNumeric('set', response.abono);
-    }
-    format('init');
-    $(".itemCartDelete").on('click', function(e) {
-        $.ajax({
-                url: base_url + "ajax/delete_cart/",
-                data: { rowid: $(this).val() },
-                type: "post",
-            })
-            .done(function(response) {
-                templateCart(response);
-            })
-            .fail(function(response) {
+    
+        $("#shopCartSale")
+            .find('span')
+            .attr("data-venta", response.count);
 
-            });
-    });
+        var template = document.getElementById('template-venta').innerHTML;
+        var output = Mustache.render(template, response);
+        document.getElementById("listaVenta").innerHTML = output;
+        if ($('#precio').length && $('#enganche').length && $('#abono').length) {
+            $('#precio').autoNumeric('set', response.total);
+            $('#enganche').autoNumeric('set', response.enganche);
+            $('#abono').autoNumeric('set', response.abono);
+        }
+
+        format('init');
+        if(!response.count){
+            var uri =window.location.pathname;
+            var split = uri.split('/');
+            var c = split[split.length - 1];
+            console.log(c);
+            if(c == 'venta'){
+                window.location.href = base_url;
+            }
+        }
+        $(".itemCartDelete").on('click', function(e) {
+            $.ajax({
+                    url: base_url + "ajax/delete_cart/",
+                    data: { rowid: $(this).val() },
+                    type: "post",
+                })
+                .done(function(response) {
+                    templateCart(response);
+                })
+                .fail(function(response) {
+
+                });
+        });
+
 }
 
 //Al cargar la página

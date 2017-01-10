@@ -238,7 +238,7 @@ class Ajax extends CI_Controller
     {
         header("Content-type: application/json; charset=utf-8");
         if ($this->input->post("rowid")) {
-            $this->cart->remove($this->input->post("rowid"));
+            $this->cart->remove($this->input->post("rowid"));            
         }
         $this->show_cart();
     }

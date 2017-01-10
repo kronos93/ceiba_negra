@@ -126,6 +126,17 @@
 										<div class="input-group-addon"><span class="fa fa-search"></span></div>
 									</div>
 								</div>
+								<div class="form-group col-xs-12  col-sm-8 col-sm-4">
+									<label class="required" for="lider">Contemplar comisión</label>
+									<div class="radiobutton-custom">
+										<input id="confirmyes" type="radio" name="confirm" value="yes" checked="checked">
+										<label for="confirmyes">Sí:</label>						
+										<input id="confirmno" type="radio" name="confirm" value="no">
+										<label for="confirmno">No:</label>						
+										<input type="hidden" name="JOBCoG4S" value="CuUQ0HlbcOEhokFiY6Bz">													
+										<input type="hidden" name="id" value="6">
+									</div>
+								</div>
 								<legend>Penalizaciones</legend>
 								<div class="form-group col-xs-12 col-sm-4">
 									<label class="required" for="manzana">Porcentaje de penalización:</label>
