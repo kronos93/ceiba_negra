@@ -1,5 +1,6 @@
 //Datos globales
 var base_url = 'http://' + window.location.hostname + '/ceiba_negra/';
+//var base_url = 'http://huertoslaceiba.com/';
 var lang_esp_datatables = "https://cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json";
 ////////////////////////////////////////////////
 moment.locale('es');
@@ -600,9 +601,9 @@ $(document).ready(function() {
         deeplinking: false, //inhabilita nombres en uri,
 
     });
-    // mapplic.on('locationopened', function(e, self) {
-            //     format('init');
-            // });
+     mapplic.on('locationopened', function(e, self) {
+                 format('init');
+             });
             // //Herramienta para capturar las coordenadas del mapa
             // mapplic.on('locationopened', function(e, location) {
             //     var manzana = (location.category.replace("mz", ""));
