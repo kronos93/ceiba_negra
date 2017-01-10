@@ -59,7 +59,12 @@ function data_in_form_edit(target, json_data) {
     var target = target;
     for (var data in json_data) {
         if ($("#" + data).length) {
-            var input = $(target + " #" + data);
+            if(target != undefined){
+                var input = $(target + " " + "#" + data);
+            }else{
+                var input = $("#" + data);
+            }
+            console.log(input);
             if (input.hasClass('autoNumeric')) {
                 input.autoNumeric('set', json_data[data]);
             } else {
@@ -285,7 +290,7 @@ $(document).ready(function() {
     $('#clientes_autocomplete').autocomplete({
         serviceUrl: base_url + 'ajax/autocomplete_clientes',
         onSelect: function(suggestion) {
-            data_in_form_edit(suggestion);
+            data_in_form_edit('',suggestion);
         }
     });
     $('#lideres_autocomplete').autocomplete({
@@ -581,6 +586,10 @@ $(document).ready(function() {
         smartip: false,
         deeplinking: false, //inhabilita nombres en uri,
 
+    });
+    mapplic.on('locationopened', function(e, self) {        
+       $('.superficie').autoNumeric();
+       $('.currency').autoNumeric();
     });
     //Herramienta para capturar las coordenadas del mapa
     // mapplic.on('locationopened', function(e, location) {

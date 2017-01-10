@@ -183,8 +183,10 @@ class Ajax extends CI_Controller
     {
         header("Content-type: application/json; charset=utf-8");
         if ($this->input->get('query')) {
+            $like = $this->input->get('query');
             $full_name = "CONCAT(users.first_name,' ',users.last_name)";
-            $clientes = $this->ion_auth->select("{$full_name} AS data, {$full_name} AS value")->where(["{$full_name} LIKE" => '%i%'])->users('cliente')->result();
+            $select = 'users.first_name, users.last_name, users.email, users.phone, users.calle, users.no_ext, users.no_int, users.phone, users.colonia, users.municipio, users.estado,users.ciudad,users.cp';            
+            $clientes = $this->ion_auth->select("{$select},{$full_name} AS data, {$full_name} AS value")->where(["{$full_name} LIKE" => "%{$like}%"])->users('cliente')->result();
             $response = new stdClass();
             $response->suggestions = $clientes;
             echo json_encode($response);
@@ -193,8 +195,9 @@ class Ajax extends CI_Controller
     public function autocomplete_lideres(){
         header("Content-type: application/json; charset=utf-8");
         if ($this->input->get('query')) {
+            $like = $this->input->get('query');
             $full_name = "CONCAT(users.first_name,' ',users.last_name)";
-            $lideres = $this->ion_auth->select("users.id, {$full_name} AS data, {$full_name} AS value")->where(["{$full_name} LIKE" => '%i%'])->users('lider')->result();
+            $lideres = $this->ion_auth->select("users.id, {$full_name} AS data, {$full_name} AS value")->where(["{$full_name} LIKE" => "%{$like}%"])->users('lider')->result();
             $response = new stdClass();
             $response->suggestions = $lideres;
             echo json_encode($response);

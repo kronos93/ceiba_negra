@@ -18,20 +18,20 @@
 								</div>
 								<legend>Datos personales</legend>
 								<div class="form-group col-xs-12 col-sm-6">
-									<label class="required" for="nombre">Nombre(s):</label>
-									<input type="text" class="form-control required" name="nombre" id="nombre" placeholder="Nombre"/>
+									<label class="required" for="first_name">Nombre(s):</label>
+									<input type="text" class="form-control required" name="first_name" id="first_name" placeholder="Nombre"/>
 								</div>
 								<div class="form-group col-xs-12 col-sm-6">
-									<label class="required" for="apellidos">Apellidos</label>
-									<input type="text" class="form-control required" name="apellidos" id="apellidos" placeholder="Apellido Apellido"/>
+									<label class="required" for="last_name">Apellidos</label>
+									<input type="text" class="form-control required" name="last_name" id="last_name" placeholder="Apellido Apellido"/>
 								</div>
 								<div class="form-group col-xs-12 col-sm-6">
-									<label class="" for="correo">Correo electrónico</label>
-									<input type="text" class="form-control email" name="correo" id="correo" placeholder="alguien@dominio.com"  />
+									<label class="" for="email">Correo electrónico</label>
+									<input type="text" class="form-control email" name="email" id="email" placeholder="alguien@dominio.com"  />
 								</div>
 								<div class="form-group col-xs-12 col-sm-6">
-									<label class="" for="telefono">Celular</label>
-									<input type="text" class="form-control" name="telefono" id="telefono" placeholder="1234908978"  />
+									<label class="" for="phone">Celular</label>
+									<input type="text" class="form-control" name="phone" id="phone" placeholder="1234908978"  />
 								</div>
 								<legend>Domicilio</legend>
 								<div class="form-group col-xs-12 col-sm-6">
@@ -122,7 +122,7 @@
 									<label class="" for="lider">Nombre</label>
 									<div class="clearfix"></div>
 									<div class="input-group">
-										<input id="" type="text" class="form-control" name=""/>
+										<input id="lideres_autocomplete" type="text" class="form-control" name=""/>
 										<div class="input-group-addon"><span class="fa fa-search"></span></div>
 									</div>
 								</div>
