@@ -620,7 +620,7 @@ $(document).ready(function() {
     //Herramienta para capturar las coordenadas del mapa
      mapplic.on('locationopened', function(e, location) {
          var manzana = (location.category.replace("mz", ""));
-         var lote = (location.title.replace("Lote número ", ""));
+         var lote = (location.title.replace("Huerto número ", ""));
          var data = {
              manzana: manzana,
              lote: lote,
