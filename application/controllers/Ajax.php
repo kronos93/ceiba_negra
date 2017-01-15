@@ -139,11 +139,16 @@ class Ajax extends CI_Controller
             $insert = [
             'manzana' => $this->input->post('manzana'),
             'calle'   => $this->input->post('calle'),
+            'superficie' => $this->input->post('superficie'),
             'disponibilidad' => $this->input->post('disponibilidad'),
             'col_norte' => $this->input->post('col_norte'),
-            'col_sur' => $this->input->post('col_sur'),
+            'col_noreste' => $this->input->post('col_noreste'),
             'col_este' => $this->input->post('col_este'),
+            'col_sureste' => $this->input->post('col_sureste'),
+            'col_sur' => $this->input->post('col_sur'),
+            'col_suroeste' => $this->input->post('col_suroeste'),
             'col_oeste' => $this->input->post('col_oeste'),
+            'col_noreste' => $this->input->post('col_noreste'),
             ];
             $manzana = $this->Manzana_model->insert($insert);
             echo json_encode($manzana);
