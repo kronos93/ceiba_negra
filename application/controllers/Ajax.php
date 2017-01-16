@@ -148,7 +148,7 @@ class Ajax extends CI_Controller
             'col_sur' => $this->input->post('col_sur'),
             'col_suroeste' => $this->input->post('col_suroeste'),
             'col_oeste' => $this->input->post('col_oeste'),
-            'col_noreste' => $this->input->post('col_noreste'),
+            'col_noroeste' => $this->input->post('col_noroeste'),
             ];
             $manzana = $this->Manzana_model->insert($insert);
             echo json_encode($manzana);

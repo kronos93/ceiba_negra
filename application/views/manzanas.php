@@ -19,7 +19,7 @@
 							<th>Col. Suroeste</th>
 							<th>Col. Oeste</th>
                             <th>Col. Noroeste</th>
-							<th class="all">Opciones</th>	                
+							<th class="all esconder">Opciones</th>	                
 						</tr>
 					</thead>
 				</table>

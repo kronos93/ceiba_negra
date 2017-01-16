@@ -364,16 +364,14 @@ $(document).ready(function() {
                 //Ocultar columna*
                 "targets": 0,
                 "visible": false
-            }, {
+            },
+            {
                 //Añadir boton dinamicamente, para esta columna*
                 "targets": -1,
                 "data": null,
-                "defaultContent": '<button data-toggle="modal" data-target="#edit-manzana" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>'
-            }, {
-                //Añadir super clase kawai, para esta columna*
-                "targets": 1,
-                "className": "col-mz"
-            }, {
+                "defaultContent": '<button data-toggle="modal" data-target="#edit-manzana" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>',
+            },
+            {
                 //Quitar ordenamiento para estas columnas
                 "sortable": false,
                 "targets": [2, -1, -2, -3, -4, -5]
@@ -383,7 +381,9 @@ $(document).ready(function() {
                 "targets": [-1, -2, -3, -4, -5]
             }
         ],
-        "drawCallback": function(settings) {},
+        "drawCallback": function(settings) {
+
+        },
     });
     //Añade funcion de editar al datatable
     get_data("manzanas-table", manzanas_table);
@@ -495,7 +495,7 @@ $(document).ready(function() {
                 //Añadir boton dinamicamente, para esta columna*
                 "targets": -1,
                 "data": null,
-                "defaultContent": '<button data-toggle="modal" data-target="#edit-huerto" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>'
+                "defaultContent": '<button data-toggle="modal" data-target="#edit-huerto" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>',
             }, {
                 "targets": [4, 5, 6, 7],
                 "className": "currency"
