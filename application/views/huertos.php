@@ -2,7 +2,12 @@
 	<div class="container-fluid container">
 		<div class="row">
 			<div class="col-xs-12">
-				<legend>Huertos <button  data-toggle="modal" data-target="#add-huerto" class="btn btn-success pull-right"><i class="fa fa-plus"></i></button> <div class="clearfix"></div></legend>
+				<legend>
+                    Huertos
+                    <?php if($this->ion_auth->in_group('administrador')): ?>					
+                    <button  data-toggle="modal" data-target="#add-huerto" class="btn btn-success pull-right"><i class="fa fa-plus"></i></button> <div class="clearfix"></div>
+                    <?php endif ?>
+                </legend>
 				<table id="huertos-table" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
 					<thead>
 						<tr>
@@ -23,7 +28,7 @@
 							<th>Col. Suroeste</th>
 							<th>Col. Oeste</th>
                             <th>Col. Noroeste</th>
-							<th class="all">Opciones</th>            
+							<th <?= ($this->ion_auth->in_group('administrador')) ? 'data-visible="true" class="all"' : 'data-visible="false"' ?>>Opciones</th>            
 						</tr>
 					</thead>
 				</table>
@@ -31,6 +36,7 @@
 		</div>
 	</div>
 </main>
+<?php if($this->ion_auth->in_group('administrador')): ?>
 <!-- Modal para insertar -->
 <div class="modal fade" id="add-huerto" tabindex="-1" role="dialog" aria-labelledby="modalAddHuerto" aria-hidden="true">
  	<div class="modal-dialog" role="document">
@@ -251,3 +257,4 @@
         </div>
     </div>
 </div>
+<?php endif ?>

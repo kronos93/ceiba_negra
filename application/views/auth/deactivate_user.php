@@ -2,16 +2,17 @@
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 		<h4 class="model-title"><?= lang('deactivate_heading')?></h4>
-		<p class="text-left"><?php echo sprintf(lang('deactivate_subheading'), $user->username);?></p>
 	</div>
 	<div class="modal-body">
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-xs-12">
+					<p class="text-left"><?php echo sprintf(lang('deactivate_subheading'), $user->username);?></p>
+				</div>
+				<div class="col-xs-12">
 					<div class="radiobutton-custom">
 						<input id="confirmyes" type="radio" name="confirm" value="yes" checked="checked" />
-						<?php echo lang('deactivate_confirm_y_label', 'confirmyes');?>
-						
+						<?php echo lang('deactivate_confirm_y_label', 'confirmyes');?>						
 						<input id="confirmno" type="radio" name="confirm" value="no" />
 						<?php echo lang('deactivate_confirm_n_label', 'confirmno');?>
 						<?php echo form_hidden($csrf); ?>

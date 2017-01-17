@@ -5,7 +5,9 @@ var lang_esp_datatables = "https://cdn.datatables.net/plug-ins/1.10.12/i18n/Span
 ////////////////////////////////////////////////
 moment.locale('es');
 ////////////////////////////////////////////////
-function format(action) {
+$.datepicker.setDefaults($.datepicker.regional["es"]);
+////////////////////////////////////////////////
+function format_numeric(action) {
     console.log("Dar formato de moneda y superficie");
     if ($('.superficie').length) {
         $('.superficie').autoNumeric(action); //Averiguar más del plugin para evitar menores a 0
@@ -43,6 +45,7 @@ $.extend(true, $.fn.dataTable.defaults, {
         "caseInsensitive": false
     },
     "responsive": true,
+    "deferRender": true,
 });
 
 var parsedtRow;
@@ -151,7 +154,6 @@ function templateCart(response) {
 
 //Al cargar la página
 $(document).ready(function() {
-
     //////////////////////////////
     tinymce.init({
         selector: '#contrato_html',
@@ -280,9 +282,7 @@ $(document).ready(function() {
             loading: "Cargando ..."
         }
     });
-
     ///////////////////////////////////////////////
-
     //GENERAL
     $('#shopCartSale').on('click', function(e) {
         $(this).find('.my-dropdown').slideToggle('3500');
@@ -292,7 +292,6 @@ $(document).ready(function() {
     });
     $.get(base_url + "ajax/add_cart", function(response) { templateCart(response) });
 
-    $.datepicker.setDefaults($.datepicker.regional["es"]);
     $('#fecha_init').mask('00-00-0000');
     $("#fecha_init").datepicker({
         dateFormat: "dd-mm-yy"
@@ -309,18 +308,6 @@ $(document).ready(function() {
 
         }
     });
-    //USUARIOS
-    $("#form-user").on('hidden.bs.modal', function() {
-        $(this).removeData('bs.modal');
-    });
-    $("#add-user").on('shown.bs.modal', function() {
-        $("#ion_addUser").on('submit', function(e) {
-            e.preventDefault();
-            console.log($(this).serializeArray());
-        });
-    }).on('hidden.bs.modal', function() {
-        $(this).removeData('bs.modal');
-    });
     //MANZANAS
     //Estructura de Datatable para las Manzanas (La tabla de vista)
     var manzanas_table = $('#manzanas-table').DataTable({
@@ -332,12 +319,14 @@ $(document).ready(function() {
                     return 'Mz.  ' + data;
                 }
             },
-            { "data": "calle" }, {
+            { "data": "calle" },
+            {
                 "data": "superficie",
                 "render": function(data, type, full, meta) {
                     return '<span class="superficie">' + data + '</span> mt<sup>2</sup>.';
                 }
-            }, {
+            },
+            {
                 "data": "disponibilidad",
                 //Supa kawaiesko funcion para el render
                 "render": function(data, type, full, meta) {
@@ -430,7 +419,7 @@ $(document).ready(function() {
                 ajax_fail(response);
             });
     });
-    //Huertos
+    //HUERTOS
     //Datatable de los huertos
     $('.multiplicar').on('keyup', multiplicar);
 
@@ -561,15 +550,33 @@ $(document).ready(function() {
                 ajax_fail(response);
             });
     });
-    // Datatables de Usuarios
-    $('#tableUsers').DataTable({
-        columnDefs: [ //Configuracion de la tabla de manzanas
-            {
-                //Ocultar columna*
-                /*"targets": 3,
-                "visible": false*/
-            }
-        ]
+    //USUARIOS
+    var users_table = $('#users-table').DataTable();
+
+    $("#form-user").on('hidden.bs.modal', function() {
+        $(this).removeData('bs.modal');
+    });
+    $("#add-user").on('shown.bs.modal', function() {
+        $("#ion_addUser").on('submit', function(e) {
+            e.preventDefault();
+            var data = $(this).serializeArray();
+            $.ajax({
+                    url: base_url + "ajax/create_user/",
+                    type: "post",
+                    data: data,
+                    beforeSend: function(xhr) {
+                        //$("input[type='submit']").attr("disabled", true).next().css('visibility', 'visible');
+                    }
+                })
+                .done(function(response) {
+                    //ajax_done(that, huertos_table, "Huerto insertado correctamente", "insert", response);
+                })
+                .fail(function(response) {
+                    //ajax_fail(response);
+                });
+        });
+    }).on('hidden.bs.modal', function() {
+        $(this).removeData('bs.modal');
     });
     //MAPA
     //Desplegar mapa
@@ -589,24 +596,25 @@ $(document).ready(function() {
         deeplinking: false, //inhabilita nombres en uri,
 
     });
+    //Poner formato númerico
     mapplic.on('locationopened', function(e, self) {});
-    // //Herramienta para capturar las coordenadas del mapa
-    // mapplic.on('locationopened', function(e, location) {
-    //     var manzana = (location.category.replace("mz", ""));
-    //     var lote = (location.title.replace("Huerto número ", ""));
-    //     var data = {
-    //         manzana: manzana,
-    //         lote: lote,
-    //         x: ($(".mapplic-coordinates-x")[0].innerHTML),
-    //         y: $(".mapplic-coordinates-y")[0].innerHTML
-    //     };
-    //     console.log(data);
-    //     $.ajax({
-    //         url: base_url + "ajax/guardar_coordenadas/",
-    //         type: 'post',
-    //         asyn: true,
-    //         data: data
-    //     });
-    // });
+    /*//Herramienta para capturar las coordenadas del mapa
+    mapplic.on('locationopened', function(e, location) {
+        var manzana = (location.category.replace("mz", ""));
+        var lote = (location.title.replace("Huerto número ", ""));
+        var data = {
+            manzana: manzana,
+            lote: lote,
+            x: ($(".mapplic-coordinates-x")[0].innerHTML),
+            y: $(".mapplic-coordinates-y")[0].innerHTML
+        };
+        console.log(data);
+        $.ajax({
+            url: base_url + "ajax/guardar_coordenadas/",
+            type: 'post',
+            asyn: true,
+            data: data
+        });
+    });*/
 
 });

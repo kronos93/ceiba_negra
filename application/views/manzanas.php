@@ -1,8 +1,13 @@
 <main class="wrap-main">
 	<div class="container-fluid container">
 		<div class="row">
-			<div class="col-xs-12">
-				<legend>Manzanas <button  data-toggle="modal" data-target="#add-manzana" class="btn btn-success pull-right"><i class="fa fa-plus"></i></button> <div class="clearfix"></div></legend>
+			<div class="col-xs-12">				
+				<legend>
+					Manzanas 
+					<?php if($this->ion_auth->in_group('administrador')): ?>
+					<button  data-toggle="modal" data-target="#add-manzana" class="btn btn-success pull-right"><i class="fa fa-plus"></i></button> <div class="clearfix"></div>
+					<?php endif ?>
+				</legend>
 				<table id="manzanas-table" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
 					<thead>
 						<tr>
@@ -19,7 +24,7 @@
 							<th>Col. Suroeste</th>
 							<th>Col. Oeste</th>
                             <th>Col. Noroeste</th>
-							<th class="all esconder">Opciones</th>	                
+							<th <?= ($this->ion_auth->in_group('administrador')) ? 'data-visible="true" class="all"' : 'data-visible="false"' ?> >Opciones</th>	                
 						</tr>
 					</thead>
 				</table>
@@ -27,6 +32,7 @@
 		</div>
 	</div>
 </main>
+<?php if($this->ion_auth->in_group('administrador')): ?>
 <!-- Modal para insertar -->
 <!-- Los inputs no llevan ID -->
 <div class="modal fade" id="add-manzana" tabindex="-1" role="dialog" aria-labelledby="modalAddManzana" aria-hidden="true">
@@ -210,3 +216,4 @@
 	    </div>
   	</div>
 </div>
+<?php endif ?>

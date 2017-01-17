@@ -10,10 +10,10 @@
             <div class="col-xs-12">
                 <!-- <p><?php echo lang('index_subheading');?></p> -->
                 <div id="infoMessage"><?php echo $message;?></div>
-                <table id="tableUsers" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
+                <table id="users-table" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th><?php echo lang('index_fname_th');?></th>
+                            <th class="all"><?php echo lang('index_fname_th');?></th>
                             <th><?php echo lang('index_lname_th');?></th>
                             <th><?php echo lang('index_email_th');?></th>
                             <th><?php echo lang('index_groups_th');?></th>
@@ -36,7 +36,7 @@
                                 </td>
                                 <td><?php echo ($user->active) ? anchor("auth/deactivate/".$user->id, lang('index_active_link'), ["class"=>"btn btn-success", "data-target"=>'#form-user', 'data-toggle'=>"modal"]) : anchor("auth/activate/". $user->id, lang('index_inactive_link'), ["class"=>"btn btn-danger"]);?>
                                 </td>
-                                <td><?php echo anchor("auth/edit_user/".$user->id, 'Edit', ["class"=>"btn btn-info","data-target"=>'#form-user','data-toggle'=>'modal']) ;?>
+                                <td><?php echo anchor("auth/edit_user/".$user->id, lang('edit_user_heading'), ["class"=>"btn btn-info","data-target"=>'#form-user','data-toggle'=>'modal']) ;?>
                                 </td>
                             </tr>
                             <?php endforeach;?>
@@ -49,8 +49,7 @@
 </main>
 <div class="modal fade" id="add-user" tabindex="-1" role="dialog" aria-labelledby="modalAddUser" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
-                  
+        <div class="modal-content">                  
         </div>
     </div>
 </div>
