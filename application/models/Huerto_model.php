@@ -34,7 +34,6 @@ class Huerto_model extends CI_Model
                             {$this->tabla}.`superficie`,
                             {$this->tabla}.`precio_x_m2`,
                             ({$this->tabla}.`superficie` * {$this->tabla}.`precio_x_m2`) as precio,
-                            
                             `precios`.`enganche`,
                             `precios`.`abono`,
                             {$this->tabla}.`vendido`,
@@ -76,10 +75,10 @@ class Huerto_model extends CI_Model
         $this->db->select(" CONCAT('m',manzanas.manzana,'lote',{$this->tabla}.huerto) as id,         
                             CONCAT('Huerto número ', {$this->tabla}.huerto) as title, 
                             CONCAT('mz',manzanas.manzana) as category, 
-                           ".// IF(TRUE,'#ff0000','#00ff00') as fill,
-                           "CONCAT('<div>Superficie: <span class=\"superficie\">',{$this->tabla}.superficie,'</span>m<sup>2</sup></div>',
+                            IF({$this->tabla}.vendido=0,'','#ff0000') as fill,
+                            CONCAT('<div>Superficie: <span class=\"superficie\">',{$this->tabla}.superficie,'</span>m<sup>2</sup></div>',
                                    '<div class=\"currency\">Precio: <span class=\"currency\">',({$this->tabla}.precio_x_m2 * {$this->tabla}.superficie),'</span></div>') as description,
-                            {$this->tabla}.id_huerto as link, 
+                            IF({$this->tabla}.vendido=0,{$this->tabla}.id_huerto,'') AS link, 
                             {$this->tabla}.x,
                             {$this->tabla}.y ");
         $this->db->join("manzanas", "{$this->tabla}.id_manzana = manzanas.id_manzana", 'left');
