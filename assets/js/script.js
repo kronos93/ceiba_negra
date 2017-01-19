@@ -82,7 +82,7 @@ function data_in_form_edit(target, json_data) {
 function ajax_done(that, dtTable, msg, type, response) {
     if (type == "insert") {
         that.reset();
-        console.log(response);
+        //console.log(response);
         var newData = dtTable.row.add(response[0]).draw().node();
         /*$(newData)
             .css('background', 'blue')
@@ -96,20 +96,30 @@ function ajax_done(that, dtTable, msg, type, response) {
         dtTable.row(dtRow).data(parsedtRow).draw(false); //
         //console.log(dtTable.row(dtRow).selector.rows[0]);
     }
-    $('.container-icons').removeClass().addClass('container-icons showicon ok').find('i').removeClass().addClass('fa fa-check-circle-o');
-    $("input[type='submit']").attr("disabled", false).next().css('visibility', 'hidden');
+    if($('.container-icons').hasClass('showicon error')){
+        $('.container-icons').removeClass('showicon error').find('i').removeClass('fa-times-circle-o');                       
+    }    
+    $('.container-icons').addClass('container-icons showicon ok').find('i').addClass('fa-check-circle-o'); 
+    $('.container-icons').slideUp(0);   
     $('.container-icons').find('.message').text(msg);
+    $('.container-icons').slideDown(625);
+    $("input[type='submit']").attr("disabled", false).next().css('visibility', 'hidden');        
 }
 
 function ajax_fail(response) {
-    $('.container-icons').removeClass().addClass('container-icons showicon error').find('i').removeClass().addClass('fa fa-times-circle-o');
-    $('.modal-body').find('.container-icons.error').fadeIn();
+    if($('.container-icons').hasClass('showicon ok')){
+        $('.container-icons').removeClass('showicon ok').find('i').removeClass('fa-check-circle-o');                
+    }    
+    $('.container-icons').addClass('container-icons showicon error').find('i').addClass('fa-times-circle-o');    
+
+    var msg = "Mensaje de error: " + response.responseText;
+    msg += "\nVerificar los datos ingresados con los registros existentes.";
+    msg += "\nCódigo de error: " + response.status + ".";
+    msg += "\nMensaje de código error: " + response.statusText + ".";
+    $('.container-icons').slideUp(0);   
+    $('.container-icons').find('.message').text(msg);
+    $('.container-icons').slideDown(625);
     $("input[type='submit']").attr("disabled", false).next().css('visibility', 'hidden');
-    var mensaje = "Mensaje de error: " + response.responseText;
-    mensaje += "\nVerificar los datos ingresados con los registros existentes.";
-    mensaje += "\nCódigo de error: " + response.status + ".";
-    mensaje += "\nMensaje de código error: " + response.statusText + ".";
-    $('.container-icons').find('.message').text(mensaje);
 }
 
 function templateCart(response) {
@@ -373,79 +383,92 @@ $(document).ready(function() {
 
         },
     });
+    
     $('#manzanaModal').on('show.bs.modal', function(e) {
+        //Compactar
+        if($('.container-icons').find('.message').text().length > 0){ 
+            $('.container-icons').slideUp(0);
+            $('.container-icons').find('.message').text('');
+        }
+        //Remover iconos
+        if($('.container-icons').hasClass('showicon ok')){
+            $('.container-icons').removeClass('showicon ok').find('i').removeClass('fa-check-circle-o');               
+        }else if($('.container-icons').hasClass('showicon error')){
+            $('.container-icons').removeClass('showicon error').find('i').removeClass('fa-times-circle-o');                            
+        }
+           
+
         var button = $(e.relatedTarget); // Button that triggered the modal
         var title = button.data('title'); // Extract info from data-* attributes
         var readonly = button.data('readonly');
 
         var modal = $(this);
         modal.find('.model-title').html(title);
-
+        var url = "";
         if (readonly) {
             $('#manzana').attr('readonly', true);
-
-
             var target = '#frm-manzana';
             dtRow = button.parents('tr');
             parsedtRow = manzanas_table.row(dtRow).data();
             data_in_form_edit(target, parsedtRow);
+            url = "ajax/update_manzana";
         } else {
+            $('#frm-manzana')[0].reset();
             $('#manzana').attr('readonly', false);
+            url = "ajax/add_manzana";
         }
-        $('#frm-manzana').on('submit', function(e) {
+        $('#frm-manzana').off('submit').on('submit', function(e) {
             e.preventDefault();
-            $('.container-icons').removeClass().addClass('container-icons');
             $(this.submitFrm).attr("disabled", true);
-            $('.container-icons').find('.message').text('');
-            var data = $(this).serializeArray(); //Serializar formulario
+
+            if($('.container-icons').find('.message').text().length > 0){ 
+                $('.container-icons').slideUp(0);
+                $('.container-icons').find('.message').text('');
+            }
+            //Remover iconos
+            if($('.container-icons').hasClass('showicon ok')){
+                $('.container-icons').removeClass('showicon ok').find('i').removeClass('fa-check-circle-o');               
+            }else if($('.container-icons').hasClass('showicon error')){
+                $('.container-icons').removeClass('showicon error').find('i').removeClass('fa-times-circle-o');                            
+            }
+           
+            
+            if (!readonly) {
+                //Para insertar
+                var data = $(this).serializeArray(); //Serializar formulario
+                
+            } else {
+                //Para editar
+                var data = $(this).serializeArray(); //Serializar formulario
+                data.push({ "name": "id_manzana", "value": parsedtRow.id_manzana }); //Añadimos el ID de la manzana en formato json               
+                
+            }
             var that = this; //Almacenar el formulario donde sucedio el evento submit
+            
             //Llamada ajax
             $.ajax({
-                    url: base_url + "ajax/add_manzana",
+                    url: base_url + url,
                     type: "post",
                     data: data,
                     beforeSend: function(xhr) {
+                        console.log(readonly);
                         $("input[type='submit']").next().css('visibility', 'visible');
                     }
                 })
                 .done(function(response) {
-                    ajax_done(that, manzanas_table, "Manzana insertada correctamente", "insert", response);
+                    
+                    if (!readonly) {
+                        ajax_done(that, manzanas_table, "Manzana insertada correctamente", "insert", response);
+                    }else{
+                        ajax_done(that, manzanas_table, "Datos de la manzana actualizados correctamente", "update", response);
+                    }
                 })
                 .fail(function(response) {
                     ajax_fail(response);
                 });
         });
     });
-    /*
-        //Añade funcion de editar al datatable
-        get_data("manzanas-table", manzanas_table);
-        //Formulario para agregar manzana
-        $('#frm-add-manzanas').on('submit', function(e) {
-            e.preventDefault();
-            
-        });
-        //Formulario para editar manzanas
-        $("#frm-edit-manzanas").on('submit', function(e) {
-            e.preventDefault();
-            var data = $(this).serializeArray(); //Serializar formulario
-            data.push({ "name": "id_manzana", "value": parsedtRow.id_manzana }); //Añadimos el ID de la manzana en formato json
-            var that = this; //Almacenar el formulario donde sucedio el evento submit
-            //Llamada ajax
-            $.ajax({
-                    url: base_url + "ajax/update_manzana",
-                    type: "post",
-                    data: data,
-                    beforeSend: function(xhr) {
-                        $("input[type='submit']").attr("disabled", true).next().css('visibility', 'visible');
-                    }
-                })
-                .done(function(response) {
-                    ajax_done(that, manzanas_table, "Datos de la manzana actualizados correctamente", "update", response);
-                })
-                .fail(function(response) {
-                    ajax_fail(response);
-                });
-        });*/
+
     //HUERTOS
     //Datatable de los huertos
     $('.multiplicar').on('keyup', multiplicar);

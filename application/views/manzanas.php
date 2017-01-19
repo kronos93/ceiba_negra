@@ -108,7 +108,7 @@
 						</fieldset>	
 					</div>	
 					<div class="container-icons" >
-				      	<i></i>
+				      	<i class="fa"></i>
 					    <h4 class="message"></h4>
 					</div>
 				</div>
