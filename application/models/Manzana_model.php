@@ -39,7 +39,7 @@ class Manzana_model extends CI_Model
         $this->db->where($where);
         $this->db->update($this->tabla);
         if ($this->db->affected_rows()) {
-            $select = "calle, disponibilidad, col_norte, col_sur, col_este, col_oeste";
+            $select = "calle, superficie, disponibilidad, col_norte, col_noreste, col_este, col_sureste, col_sur, col_suroeste, col_oeste, col_noroeste";
             return $this->get($select, $where);
         } else {
             return [];

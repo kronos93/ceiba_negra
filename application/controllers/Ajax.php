@@ -51,15 +51,15 @@ class Ajax extends CI_Controller
     //Huertos
     public function add_huerto()
     {
-            //Cabazera de respuesta JSON
-            header("Content-type: application/json; charset=utf-8");
-            //Validación de form
-            $this->form_validation->set_error_delimiters('', '');
-            $this->form_validation->set_rules('id_manzana', 'Manzana', 'trim|required');
-            $this->form_validation->set_rules('huerto', 'Huerto', 'trim|required|callback_mhi_check[huerto,id_manzana]');
-            $this->form_validation->set_rules('superficie', 'Superficie', 'trim|required');
-            $this->form_validation->set_rules('precio_x_m2', 'Precio por metro cuadrado', 'trim|required');
-            $this->form_validation->set_rules('id_precio', 'Precio', 'trim|required');
+        //Cabazera de respuesta JSON
+        header("Content-type: application/json; charset=utf-8");
+        //Validación de form
+        $this->form_validation->set_error_delimiters('', '');
+        $this->form_validation->set_rules('id_manzana', 'Manzana', 'trim|required');
+        $this->form_validation->set_rules('huerto', 'Huerto', 'trim|required|callback_mhi_check[huerto,id_manzana]');
+        $this->form_validation->set_rules('superficie', 'Superficie', 'trim|required');
+        $this->form_validation->set_rules('precio_x_m2', 'Precio por metro cuadrado', 'trim|required');
+        $this->form_validation->set_rules('id_precio', 'Precio', 'trim|required');
         if ($this->form_validation->run()) {
             $insert = [
             'id_manzana' => $this->input->post('id_manzana'),
@@ -168,13 +168,19 @@ class Ajax extends CI_Controller
     {
         header("Content-type: application/json; charset=utf-8");
         $where = ['id_manzana' => $this->input->post("id_manzana")];
-        $set = ['calle' => $this->input->post("calle"),
+        $set = [
+                'calle' => $this->input->post("calle"),
+                'superficie' => $this->input->post("superficie"),
                 'disponibilidad' => $this->input->post("disponibilidad"),
                 'col_norte' => $this->input->post("col_norte"),
-                'col_sur' => $this->input->post("col_sur"),
+                'col_noreste' => $this->input->post("col_noreste"),
                 'col_este' => $this->input->post("col_este"),
+                'col_sureste' => $this->input->post("col_sureste"),
+                'col_sur' => $this->input->post("col_sur"),
+                'col_suroeste' => $this->input->post("col_suroeste"),
                 'col_oeste' => $this->input->post("col_oeste"),
-            ];
+                'col_noroeste' => $this->input->post("col_noroeste"),
+        ];
         $response = $this->Manzana_model->update($set, $where);
 
         if (count($response)) {

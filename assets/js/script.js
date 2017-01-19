@@ -52,6 +52,7 @@ var parsedtRow;
 var dtRow;
 
 function get_data(dtTable, obj_dtTable) {
+    console.log(this);
     $('#' + dtTable + ' tbody').on('click', 'button', function() {
         var target = this.dataset.target;
         dtRow = $(this).parents('tr');
@@ -69,7 +70,6 @@ function data_in_form_edit(target, json_data) {
             } else {
                 var input = $("#" + data);
             }
-            console.log(input);
             if (input.hasClass('autoNumeric')) {
                 input.autoNumeric('set', json_data[data]);
             } else {
@@ -79,7 +79,7 @@ function data_in_form_edit(target, json_data) {
     }
 }
 
-function ajax_done(that, dtTable, msj, type, response) {
+function ajax_done(that, dtTable, msg, type, response) {
     if (type == "insert") {
         that.reset();
         console.log(response);
@@ -93,13 +93,12 @@ function ajax_done(that, dtTable, msj, type, response) {
         for (var data in response[0]) {
             parsedtRow[data] = response[0][data];
         }
-        dtTable.row(dtRow).data(parsedtRow).draw();
+        dtTable.row(dtRow).data(parsedtRow).draw(false); //
         //console.log(dtTable.row(dtRow).selector.rows[0]);
     }
-
     $('.container-icons').removeClass().addClass('container-icons showicon ok').find('i').removeClass().addClass('fa fa-check-circle-o');
     $("input[type='submit']").attr("disabled", false).next().css('visibility', 'hidden');
-    $('.container-icons').find('.message').text(msj);
+    $('.container-icons').find('.message').text(msg);
 }
 
 function ajax_fail(response) {
@@ -358,7 +357,7 @@ $(document).ready(function() {
                 //Añadir boton dinamicamente, para esta columna*
                 "targets": -1,
                 "data": null,
-                "defaultContent": '<button data-toggle="modal" data-target="#edit-manzana" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>',
+                "defaultContent": '<button data-toggle="modal" data-target="#manzanaModal" data-title="Editar manzana" data-readonly="true" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>',
             },
             {
                 //Quitar ordenamiento para estas columnas
@@ -374,51 +373,79 @@ $(document).ready(function() {
 
         },
     });
-    //Añade funcion de editar al datatable
-    get_data("manzanas-table", manzanas_table);
-    //Formulario para agregar manzana
-    $('#frm-add-manzanas').on('submit', function(e) {
-        e.preventDefault();
-        var data = $(this).serializeArray(); //Serializar formulario
-        var that = this; //Almacenar el formulario donde sucedio el evento submit
-        //Llamada ajax
-        $.ajax({
-                url: base_url + "ajax/add_manzana",
-                type: "post",
-                data: data,
-                beforeSend: function(xhr) {
-                    $("input[type='submit']").attr("disabled", true).next().css('visibility', 'visible');
-                }
-            })
-            .done(function(response) {
-                ajax_done(that, manzanas_table, "Manzana insertada correctamente", "insert", response);
-            })
-            .fail(function(response) {
-                ajax_fail(response);
-            });
+    $('#manzanaModal').on('show.bs.modal', function(e) {
+        var button = $(e.relatedTarget); // Button that triggered the modal
+        var title = button.data('title'); // Extract info from data-* attributes
+        var readonly = button.data('readonly');
+
+        var modal = $(this);
+        modal.find('.model-title').html(title);
+
+        if (readonly) {
+            $('#manzana').attr('readonly', true);
+
+
+            var target = '#frm-manzana';
+            dtRow = button.parents('tr');
+            parsedtRow = manzanas_table.row(dtRow).data();
+            data_in_form_edit(target, parsedtRow);
+        } else {
+            $('#manzana').attr('readonly', false);
+        }
+        $('#frm-manzana').on('submit', function(e) {
+            e.preventDefault();
+            $('.container-icons').removeClass().addClass('container-icons');
+            $(this.submitFrm).attr("disabled", true);
+            $('.container-icons').find('.message').text('');
+            var data = $(this).serializeArray(); //Serializar formulario
+            var that = this; //Almacenar el formulario donde sucedio el evento submit
+            //Llamada ajax
+            $.ajax({
+                    url: base_url + "ajax/add_manzana",
+                    type: "post",
+                    data: data,
+                    beforeSend: function(xhr) {
+                        $("input[type='submit']").next().css('visibility', 'visible');
+                    }
+                })
+                .done(function(response) {
+                    ajax_done(that, manzanas_table, "Manzana insertada correctamente", "insert", response);
+                })
+                .fail(function(response) {
+                    ajax_fail(response);
+                });
+        });
     });
-    //Formulario para editar manzanas
-    $("#frm-edit-manzanas").on('submit', function(e) {
-        e.preventDefault();
-        var data = $(this).serializeArray(); //Serializar formulario
-        data.push({ "name": "id_manzana", "value": parsedtRow.id_manzana }); //Añadimos el ID de la manzana en formato json
-        var that = this; //Almacenar el formulario donde sucedio el evento submit
-        //Llamada ajax
-        $.ajax({
-                url: base_url + "ajax/update_manzana",
-                type: "post",
-                data: data,
-                beforeSend: function(xhr) {
-                    $("input[type='submit']").attr("disabled", true).next().css('visibility', 'visible');
-                }
-            })
-            .done(function(response) {
-                ajax_done(that, manzanas_table, "Datos de la manzana actualizados correctamente", "update", response);
-            })
-            .fail(function(response) {
-                ajax_fail(response);
-            });
-    });
+    /*
+        //Añade funcion de editar al datatable
+        get_data("manzanas-table", manzanas_table);
+        //Formulario para agregar manzana
+        $('#frm-add-manzanas').on('submit', function(e) {
+            e.preventDefault();
+            
+        });
+        //Formulario para editar manzanas
+        $("#frm-edit-manzanas").on('submit', function(e) {
+            e.preventDefault();
+            var data = $(this).serializeArray(); //Serializar formulario
+            data.push({ "name": "id_manzana", "value": parsedtRow.id_manzana }); //Añadimos el ID de la manzana en formato json
+            var that = this; //Almacenar el formulario donde sucedio el evento submit
+            //Llamada ajax
+            $.ajax({
+                    url: base_url + "ajax/update_manzana",
+                    type: "post",
+                    data: data,
+                    beforeSend: function(xhr) {
+                        $("input[type='submit']").attr("disabled", true).next().css('visibility', 'visible');
+                    }
+                })
+                .done(function(response) {
+                    ajax_done(that, manzanas_table, "Datos de la manzana actualizados correctamente", "update", response);
+                })
+                .fail(function(response) {
+                    ajax_fail(response);
+                });
+        });*/
     //HUERTOS
     //Datatable de los huertos
     $('.multiplicar').on('keyup', multiplicar);
@@ -530,8 +557,8 @@ $(document).ready(function() {
     $("#frm-edit-huertos").on('submit', function(e) {
         e.preventDefault();
         var data = $(this).serializeObject(); //Serializar formulario
-        data.superficie = $(this.superficie).autoNumeric('get');
-        data.precio_x_m2 = $(this.precio_x_m2).autoNumeric('get');
+        /*data.superficie = $(this.superficie).autoNumeric('get');
+        data.precio_x_m2 = $(this.precio_x_m2).autoNumeric('get');*/
         data.id_huerto = parsedtRow.id_huerto; //Añadimos el ID de la manzana en formato json
         var that = this; //Almacenar el formulario donde sucedio el evento submit
         //Llamada ajax
