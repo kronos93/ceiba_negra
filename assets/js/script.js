@@ -80,20 +80,20 @@ function data_in_form_edit(target, json_data) {
 }
 
 function ajax_done(that, dtTable, msg, type, response) {
+    var newData;
     if (type == "insert") {
         that.reset();
-        //console.log(response);
-        var newData = dtTable.row.add(response[0]).draw().node();
-        /*$(newData)
-            .css('background', 'blue')
-            .animate({ 'font-size': '30px' });*/
-        //dtTable.ajax.reload(null, false); // user paging is not reset on reload, usar row porque a max le gusta mas :v
+        newData = dtTable.row.add(response[0]).draw(false).node();
+        console.log(newData);
+        $(newData).animate({backgroundColor:'yellow'}); //Animación para MAX
+
         dtTable.order([0, 'desc']).draw(); //Ordenar por id
     } else if (type == "update") {
         for (var data in response[0]) {
             parsedtRow[data] = response[0][data];
         }
-        dtTable.row(dtRow).data(parsedtRow).draw(false); //
+        newData = dtTable.row(dtRow).data(parsedtRow).draw(false).node(); //
+        $(newData).animate({backgroundColor:'yellow'}); //Animación para MAX
         //console.log(dtTable.row(dtRow).selector.rows[0]);
     }
     if($('.container-icons').hasClass('showicon error')){
