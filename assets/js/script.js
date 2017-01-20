@@ -12,10 +12,48 @@ function format_numeric(action) {
     if ($('.superficie').length) {
         $('.superficie').autoNumeric(action); //Averiguar más del plugin para evitar menores a 0
     }
-    if ($(".currency").length) {
-        $(".currency").autoNumeric(action, {
-            aSign: "$ "
-        });
+    $(".currency").autoNumeric(action, {
+        aSign: "$ "
+    });
+}
+////////////////////////////////////////////////
+var ajax_msg = {
+    hidden: function() {
+        //Remover mensaje
+        if($('.container-icons').find('.message').text().length > 0){ 
+            $('.container-icons').slideUp(0);
+            $('.container-icons').find('.message').text('');
+        }
+        this.clean_box();
+    },
+    show_error: function(response){
+        this.clean_box();  
+        $('.container-icons').addClass('container-icons showicon error').find('i').addClass('fa-times-circle-o');    
+        var msg = "Mensaje de error: " + response.responseText;
+        msg += "\nVerificar los datos ingresados con los registros existentes.";
+        msg += "\nCódigo de error: " + response.status + ".";
+        msg += "\nMensaje de código error: " + response.statusText + ".";        
+        this.set_msg(msg);
+        $("input[type='submit']").attr("disabled", false).next().css('visibility', 'hidden');
+    },
+    show_success: function (msg){
+        this.clean_box();  
+        $('.container-icons').addClass('container-icons showicon ok').find('i').addClass('fa-check-circle-o'); 
+        this.set_msg(msg);
+        $("input[type='submit']").attr("disabled", false).next().css('visibility', 'hidden');     
+    },
+    clean_box: function() {
+        //Remover iconos
+        if($('.container-icons').hasClass('showicon ok')){
+            $('.container-icons').removeClass('showicon ok').find('i').removeClass('fa-check-circle-o');               
+        }else if($('.container-icons').hasClass('showicon error')){
+            $('.container-icons').removeClass('showicon error').find('i').removeClass('fa-times-circle-o');                            
+        } 
+    },
+    set_msg: function (msg) {
+        $('.container-icons').slideUp(0);   
+        $('.container-icons').find('.message').text(msg);
+        $('.container-icons').slideDown(625);
     }
 }
 ////////////////////////////////////////////////
@@ -50,77 +88,6 @@ $.extend(true, $.fn.dataTable.defaults, {
 
 var parsedtRow;
 var dtRow;
-
-function get_data(dtTable, obj_dtTable) {
-    console.log(this);
-    $('#' + dtTable + ' tbody').on('click', 'button', function() {
-        var target = this.dataset.target;
-        dtRow = $(this).parents('tr');
-        parsedtRow = obj_dtTable.row(dtRow).data();
-        data_in_form_edit(target, parsedtRow);
-    });
-}
-
-function data_in_form_edit(target, json_data) {
-    var target = target;
-    for (var data in json_data) {
-        if ($("#" + data).length) {
-            if (target != undefined) {
-                var input = $(target + " " + "#" + data);
-            } else {
-                var input = $("#" + data);
-            }
-            if (input.hasClass('autoNumeric')) {
-                input.autoNumeric('set', json_data[data]);
-            } else {
-                input.val(json_data[data]);
-            }
-        }
-    }
-}
-
-function ajax_done(that, dtTable, msg, type, response) {
-    var newData;
-    if (type == "insert") {
-        that.reset();
-        newData = dtTable.row.add(response[0]).draw(false).node();
-        console.log(newData);
-        $(newData).animate({backgroundColor:'yellow'}); //Animación para MAX
-
-        dtTable.order([0, 'desc']).draw(); //Ordenar por id
-    } else if (type == "update") {
-        for (var data in response[0]) {
-            parsedtRow[data] = response[0][data];
-        }
-        newData = dtTable.row(dtRow).data(parsedtRow).draw(false).node(); //
-        $(newData).animate({backgroundColor:'yellow'}); //Animación para MAX
-        //console.log(dtTable.row(dtRow).selector.rows[0]);
-    }
-    if($('.container-icons').hasClass('showicon error')){
-        $('.container-icons').removeClass('showicon error').find('i').removeClass('fa-times-circle-o');                       
-    }    
-    $('.container-icons').addClass('container-icons showicon ok').find('i').addClass('fa-check-circle-o'); 
-    $('.container-icons').slideUp(0);   
-    $('.container-icons').find('.message').text(msg);
-    $('.container-icons').slideDown(625);
-    $("input[type='submit']").attr("disabled", false).next().css('visibility', 'hidden');        
-}
-
-function ajax_fail(response) {
-    if($('.container-icons').hasClass('showicon ok')){
-        $('.container-icons').removeClass('showicon ok').find('i').removeClass('fa-check-circle-o');                
-    }    
-    $('.container-icons').addClass('container-icons showicon error').find('i').addClass('fa-times-circle-o');    
-
-    var msg = "Mensaje de error: " + response.responseText;
-    msg += "\nVerificar los datos ingresados con los registros existentes.";
-    msg += "\nCódigo de error: " + response.status + ".";
-    msg += "\nMensaje de código error: " + response.statusText + ".";
-    $('.container-icons').slideUp(0);   
-    $('.container-icons').find('.message').text(msg);
-    $('.container-icons').slideDown(625);
-    $("input[type='submit']").attr("disabled", false).next().css('visibility', 'hidden');
-}
 
 function templateCart(response) {
 
@@ -380,23 +347,15 @@ $(document).ready(function() {
             }
         ],
         "drawCallback": function(settings) {
-
+            format_numeric('init'); 
         },
     });
-    
+    manzanas_table.on('responsive-display', function (e, datatable, row, showHide, update) {
+        format_numeric('init');                    
+    });
     $('#manzanaModal').on('show.bs.modal', function(e) {
-        //Compactar
-        if($('.container-icons').find('.message').text().length > 0){ 
-            $('.container-icons').slideUp(0);
-            $('.container-icons').find('.message').text('');
-        }
-        //Remover iconos
-        if($('.container-icons').hasClass('showicon ok')){
-            $('.container-icons').removeClass('showicon ok').find('i').removeClass('fa-check-circle-o');               
-        }else if($('.container-icons').hasClass('showicon error')){
-            $('.container-icons').removeClass('showicon error').find('i').removeClass('fa-times-circle-o');                            
-        }
-           
+        //Ocultar mensajes de la caja AJAX
+        ajax_msg.hidden();          
 
         var button = $(e.relatedTarget); // Button that triggered the modal
         var title = button.data('title'); // Extract info from data-* attributes
@@ -405,70 +364,131 @@ $(document).ready(function() {
         var modal = $(this);
         modal.find('.model-title').html(title);
         var url = "";
+        
+        var gen_frm = new GenericFrm({
+            frm : 'frm-manzana',
+            pre_config : function(){
+                console.log(this);
+                $('#manzana').attr('readonly', true);
+            },
+            on_submit: function(e){
+                e.preventDefault();
+                console.log("Submit");
+                console.log(this);
+                console.log("Enviando datos");                                             
+            },
+        });
         if (readonly) {
-            $('#manzana').attr('readonly', true);
+            
+            /*
             var target = '#frm-manzana';
             dtRow = button.parents('tr');
-            parsedtRow = manzanas_table.row(dtRow).data();
-            data_in_form_edit(target, parsedtRow);
-            url = "ajax/update_manzana";
+            get_data();
+            url = "ajax/update_manzana";*/
         } else {
-            $('#frm-manzana')[0].reset();
+            /*$(frm)[0].reset();
             $('#manzana').attr('readonly', false);
-            url = "ajax/add_manzana";
+            url = "ajax/add_manzana";*/
         }
+        /*gen_frm.show();
         $('#frm-manzana').off('submit').on('submit', function(e) {
             e.preventDefault();
             $(this.submitFrm).attr("disabled", true);
-
-            if($('.container-icons').find('.message').text().length > 0){ 
-                $('.container-icons').slideUp(0);
-                $('.container-icons').find('.message').text('');
-            }
-            //Remover iconos
-            if($('.container-icons').hasClass('showicon ok')){
-                $('.container-icons').removeClass('showicon ok').find('i').removeClass('fa-check-circle-o');               
-            }else if($('.container-icons').hasClass('showicon error')){
-                $('.container-icons').removeClass('showicon error').find('i').removeClass('fa-times-circle-o');                            
-            }
-           
+            ajax_msg.hidden();        
             
             if (!readonly) {
                 //Para insertar
-                var data = $(this).serializeArray(); //Serializar formulario
-                
+                var data = $(this).serializeObject(); //Serializar formulario
+                data.superficie = $(this.superficie).autoNumeric('get');
             } else {
                 //Para editar
-                var data = $(this).serializeArray(); //Serializar formulario
-                data.push({ "name": "id_manzana", "value": parsedtRow.id_manzana }); //Añadimos el ID de la manzana en formato json               
-                
+                var data = $(this).serializeObject(); //Serializar formulario //Serializar formulario
+                data.id_manzana = parsedtRow.id_manzana; //Añadimos el ID de la manzana en formato json               
+                data.superficie = $(this.superficie).autoNumeric('get');
             }
             var that = this; //Almacenar el formulario donde sucedio el evento submit
             
-            //Llamada ajax
-            $.ajax({
-                    url: base_url + url,
-                    type: "post",
-                    data: data,
-                    beforeSend: function(xhr) {
-                        console.log(readonly);
-                        $("input[type='submit']").next().css('visibility', 'visible');
-                    }
-                })
-                .done(function(response) {
-                    
-                    if (!readonly) {
-                        ajax_done(that, manzanas_table, "Manzana insertada correctamente", "insert", response);
-                    }else{
-                        ajax_done(that, manzanas_table, "Datos de la manzana actualizados correctamente", "update", response);
-                    }
-                })
-                .fail(function(response) {
-                    ajax_fail(response);
-                });
-        });
+        });*/
     });
+    var GenericFrm = function(config){
+        this.frm = document.getElementById(config.frm);
+        config.pre_config();
+        this.addEventToFrm('submit');
+        this.on_submit = config.on_submit;
+    }
+    GenericFrm.prototype.show = function(){
+        console.log(this.frm);
+    }
+    GenericFrm.prototype.addEventToFrm = function(event){
+        
+        $(this.frm).off('submit').on('submit', function(e) {           
+            this.call(this.on_submit(e));
+        }.bind(this));
+    }
+    /*
+    var generic_ajax = {
+        ajax : function(){
+            $.ajax({
+                url: base_url + url,
+                type: "post",
+                data: data,
+                beforeSend: function(xhr) {
+                    $("input[type='submit']").next().css('visibility', 'visible');
+                }
+            })
+            .done(function(response) {                
+                /*if (!readonly) {
+                    ajax_done(that, manzanas_table, "Manzana insertada correctamente", "insert", response);
+                }else{
+                    ajax_done(that, manzanas_table, "Datos de la manzana actualizados correctamente", "update", response);
+                }
+            })
+            .fail(function(response) {
+                ajax_msg.show_error(response);
+            });
+        },
+        fn_on_done: function(fn){
+            fn();
+        }
+    }
+    function ajax_done(that, dtTable, msg, type, response) {
+        var newData;
+        if (type == "insert") {
+            that.reset();
+            newData = dtTable.row.add(response[0]).draw(false).node();       
+            $(newData).animate({backgroundColor:'yellow'}); //Animación para MAX
+            dtTable.order([0, 'desc']).draw(); //Ordenar por id
+        } else if (type == "update") {
+            for (var data in response[0]) {
+                parsedtRow[data] = response[0][data];
+            }
+            newData = dtTable.row(dtRow).data(parsedtRow).draw(false).node(); //
+            $(newData).animate({backgroundColor:'yellow'}); //Animación para MAX
+            //console.log(dtTable.row(dtRow).selector.rows[0]);
+        }    
+        ajax_msg.show_success(msg);   
+    }
+    
 
+
+    */
+    function get_data(dtTable, obj_dtTable) {        
+        parsedtRow = obj_dtTable.row(dtRow).data();
+        data_in_form_edit(parsedtRow);
+    }
+    function data_in_form_edit(json_data) {
+        for (var data in json_data) {
+            //Sí existe el elemento con id
+            if ($("#" + data).length) {
+                var input = $("#" + data);                
+                if (input.hasClass('autoNumeric')) {
+                    input.autoNumeric('set', json_data[data]);
+                } else {
+                    input.val(json_data[data]);
+                }
+            }
+        }
+    }
     //HUERTOS
     //Datatable de los huertos
     $('.multiplicar').on('keyup', multiplicar);
