@@ -371,9 +371,9 @@ $(document).ready(function() {
                 console.log(this);
                 $('#manzana').attr('readonly', true);
             },
-            on_submit: function(e){
-                e.preventDefault();
+            on_submit: function(e){                
                 console.log("Submit");
+                console.log(e);
                 console.log(this);
                 console.log("Enviando datos");                                             
             },
@@ -420,10 +420,16 @@ $(document).ready(function() {
         console.log(this.frm);
     }
     GenericFrm.prototype.addEventToFrm = function(event){
-        
-        $(this.frm).off('submit').on('submit', function(e) {           
-            this.call(this.on_submit(e));
-        }.bind(this));
+        var that = this;
+        $(this.frm).off('submit').on('submit', function(e) {
+            e.preventDefault();       
+            console.log(e);   
+            var event = e;
+            that.on_submit.apply(this,event);
+        });
+    }
+    GenericFrm.prototype.on_submit = function(){
+
     }
     /*
     var generic_ajax = {
