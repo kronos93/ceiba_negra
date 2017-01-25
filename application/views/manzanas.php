@@ -5,13 +5,12 @@
 				<legend>
 					Manzanas 
 					<?php if($this->ion_auth->in_group('administrador')): ?>
-					<button  data-toggle="modal" data-target="#manzanaModal" data-title="Añadir manzana" data-readonly="false" class="btn btn-success pull-right"><i class="fa fa-plus"></i></button> <div class="clearfix"></div>
+					<button  data-toggle="modal" data-target="#manzanaModal" data-title="Añadir manzana" data-btn-type="add" class="btn btn-success pull-right"><i class="fa fa-plus"></i></button> <div class="clearfix"></div>
 					<?php endif ?>
 				</legend>
 				<table id="manzanas-table" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
 					<thead>
-						<tr>
-							<th>Id. Manzana</th>							
+						<tr>							
 							<th>Manzana</th>
 							<th>Calle</th>
 							<th>Superficie</th>

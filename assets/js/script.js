@@ -18,46 +18,46 @@ function format_numeric(action) {
 }
 ////////////////////////////////////////////////
 var ajax_msg = {
-    hidden: function() {
-        //Remover mensaje
-        if($('.container-icons').find('.message').text().length > 0){ 
+        hidden: function() {
+            //Remover mensaje
+            if ($('.container-icons').find('.message').text().length > 0) {
+                $('.container-icons').slideUp(0);
+                $('.container-icons').find('.message').text('');
+            }
+            this.clean_box();
+        },
+        show_error: function(response) {
+            this.clean_box();
+            $('.container-icons').addClass('container-icons showicon error').find('i').addClass('fa-times-circle-o');
+            var msg = "Mensaje de error: " + response.responseText;
+            msg += "\nVerificar los datos ingresados con los registros existentes.";
+            msg += "\nCódigo de error: " + response.status + ".";
+            msg += "\nMensaje de código error: " + response.statusText + ".";
+            this.set_msg(msg);
+            $("input[type='submit']").attr("disabled", false).next().css('visibility', 'hidden');
+        },
+        show_success: function(msg) {
+            this.clean_box();
+            $('.container-icons').addClass('container-icons showicon ok').find('i').addClass('fa-check-circle-o');
+            this.set_msg(msg);
+            $("input[type='submit']").attr("disabled", false).next().css('visibility', 'hidden');
+        },
+        clean_box: function() {
+            //Remover iconos
+            if ($('.container-icons').hasClass('showicon ok')) {
+                $('.container-icons').removeClass('showicon ok').find('i').removeClass('fa-check-circle-o');
+            } else if ($('.container-icons').hasClass('showicon error')) {
+                $('.container-icons').removeClass('showicon error').find('i').removeClass('fa-times-circle-o');
+            }
+        },
+        set_msg: function(msg) {
             $('.container-icons').slideUp(0);
-            $('.container-icons').find('.message').text('');
+            $('.container-icons').find('.message').text(msg);
+            $('.container-icons').slideDown(625);
         }
-        this.clean_box();
-    },
-    show_error: function(response){
-        this.clean_box();  
-        $('.container-icons').addClass('container-icons showicon error').find('i').addClass('fa-times-circle-o');    
-        var msg = "Mensaje de error: " + response.responseText;
-        msg += "\nVerificar los datos ingresados con los registros existentes.";
-        msg += "\nCódigo de error: " + response.status + ".";
-        msg += "\nMensaje de código error: " + response.statusText + ".";        
-        this.set_msg(msg);
-        $("input[type='submit']").attr("disabled", false).next().css('visibility', 'hidden');
-    },
-    show_success: function (msg){
-        this.clean_box();  
-        $('.container-icons').addClass('container-icons showicon ok').find('i').addClass('fa-check-circle-o'); 
-        this.set_msg(msg);
-        $("input[type='submit']").attr("disabled", false).next().css('visibility', 'hidden');     
-    },
-    clean_box: function() {
-        //Remover iconos
-        if($('.container-icons').hasClass('showicon ok')){
-            $('.container-icons').removeClass('showicon ok').find('i').removeClass('fa-check-circle-o');               
-        }else if($('.container-icons').hasClass('showicon error')){
-            $('.container-icons').removeClass('showicon error').find('i').removeClass('fa-times-circle-o');                            
-        } 
-    },
-    set_msg: function (msg) {
-        $('.container-icons').slideUp(0);   
-        $('.container-icons').find('.message').text(msg);
-        $('.container-icons').slideDown(625);
     }
-}
-////////////////////////////////////////////////
-//Funcion FormToObject
+    ////////////////////////////////////////////////
+    //Funcion FormToObject
 $.fn.serializeObject = function() {
     var o = {};
     var a = this.serializeArray();
@@ -84,6 +84,7 @@ $.extend(true, $.fn.dataTable.defaults, {
     },
     "responsive": true,
     "deferRender": true,
+    "pageLength": 25,
 });
 
 var parsedtRow;
@@ -288,8 +289,11 @@ $(document).ready(function() {
     //Estructura de Datatable para las Manzanas (La tabla de vista)
     var manzanas_table = $('#manzanas-table').DataTable({
         "ajax": base_url + 'ajax/get_manzanas', //URL de datos
+        "order": [
+            [0, "asc"]
+        ],
         "columns": [ //Atributos para la tabla
-            { "data": "id_manzana" }, {
+            {
                 "data": "manzana",
                 "render": function(data, type, full, meta) {
                     return 'Mz.  ' + data;
@@ -326,60 +330,49 @@ $(document).ready(function() {
         ],
         columnDefs: [ //Configuracion de la tabla de manzanas
             {
-                //Ocultar columna*
-                "targets": 0,
-                "visible": false
-            },
-            {
                 //Añadir boton dinamicamente, para esta columna*
                 "targets": -1,
                 "data": null,
-                "defaultContent": '<button data-toggle="modal" data-target="#manzanaModal" data-title="Editar manzana" data-readonly="true" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>',
+                "defaultContent": '<button data-toggle="modal" data-target="#manzanaModal" data-title="Editar manzana" data-btn-type="edit" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>',
             },
             {
                 //Quitar ordenamiento para estas columnas
                 "sortable": false,
-                "targets": [2, -1, -2, -3, -4, -5]
+                "targets": [-1, -2, -3, -4, -5, -6, -7, -8, -9, -12]
             }, {
                 //Quitar busqueda para esta columna
                 "searchable": false,
-                "targets": [-1, -2, -3, -4, -5]
+                "targets": [-1]
             }
         ],
         "drawCallback": function(settings) {
-            format_numeric('init'); 
+            format_numeric('init');
         },
     });
-    manzanas_table.on('responsive-display', function (e, datatable, row, showHide, update) {
-        format_numeric('init');                    
+    manzanas_table.on('responsive-display', function(e, datatable, row, showHide, update) {
+        format_numeric('init');
     });
     $('#manzanaModal').on('show.bs.modal', function(e) {
         //Ocultar mensajes de la caja AJAX
-        ajax_msg.hidden();          
+        ajax_msg.hidden();
 
-        var button = $(e.relatedTarget); // Button that triggered the modal
-        var title = button.data('title'); // Extract info from data-* attributes
-        var readonly = button.data('readonly');
+        var button = $(e.relatedTarget); // Boton que despliega el modal (Existe en el datatable)
+        var title = button.data('title'); // Extraer informacipon desde atributos data-* 
+        var btnType = button.data('btnType');
 
         var modal = $(this);
         modal.find('.model-title').html(title);
-        var url = "";
-        
-        var gen_frm = new GenericFrm({
-            frm : 'frm-manzana',
-            pre_config : function(){
-                console.log(this);
-                $('#manzana').attr('readonly', true);
-            },
-            on_submit: function(e){                
-                console.log("Submit");
-                console.log(e);
-                console.log(this);
-                console.log("Enviando datos");                                             
-            },
-        });
-        if (readonly) {
-            
+
+        //console.log(btnType);
+        var config = {
+            'frm': '#frm-manzana',
+            'readonly': { 'inputs': '#manzana' },
+        };
+        var genericFrm = new GenericFrm(config);
+        genericFrm[btnType]();
+
+        if (true) {
+
             /*
             var target = '#frm-manzana';
             dtRow = button.parents('tr');
@@ -410,83 +403,112 @@ $(document).ready(function() {
             
         });*/
     });
-    var GenericFrm = function(config){
-        this.frm = document.getElementById(config.frm);
-        config.pre_config();
-        this.addEventToFrm('submit');
-        this.on_submit = config.on_submit;
-    }
-    GenericFrm.prototype.show = function(){
-        console.log(this.frm);
-    }
-    GenericFrm.prototype.addEventToFrm = function(event){
+
+    var GenericFrm = function(config) {
+        this.readonly = config.readonly;
+        this.frm = config.frm;
+        this.on_submit();
+    };
+    GenericFrm.prototype.add = function() {
+        this.readonly.status = false;
+        this.fnReadonly(this.readonly);
+        console.log('add');
+    };
+    GenericFrm.prototype.edit = function() {
+        this.readonly.status = true;
+        this.fnReadonly(this.readonly);
+        console.log('edit');
+    };
+    GenericFrm.prototype.fnReadonly = function(readonly) {
+        $(readonly.inputs).attr('readonly', readonly.status);
+    };
+    GenericFrm.prototype.on_submit = function() {
         var that = this;
         $(this.frm).off('submit').on('submit', function(e) {
-            e.preventDefault();       
-            console.log(e);   
-            var event = e;
-            that.on_submit.apply(this,event);
+            e.preventDefault();
+            console.log(this);
+            console.log(that);
+            console.log('enviando');
         });
-    }
-    GenericFrm.prototype.on_submit = function(){
+    };
+    /* var GenericFrm = function(config) {
+         this.frm = document.getElementById(config.frm);
+         config.pre_config();
+         this.addEventToFrm('submit');
+         this.on_submit = config.on_submit;
+     }
+     GenericFrm.prototype.show = function() {
+         console.log(this.frm);
+     }
+     GenericFrm.prototype.addEventToFrm = function(event) {
+         var that = this;
+         $(this.frm).off('submit').on('submit', function(e) {
+             e.preventDefault();
+             console.log(e);
+             var event = e;
+             that.on_submit.apply(this, event);
+         });
+     }
+     GenericFrm.prototype.on_submit = function() {
 
-    }
+         }*/
     /*
-    var generic_ajax = {
-        ajax : function(){
-            $.ajax({
-                url: base_url + url,
-                type: "post",
-                data: data,
-                beforeSend: function(xhr) {
-                    $("input[type='submit']").next().css('visibility', 'visible');
+                var generic_ajax = {
+                    ajax : function(){
+                        $.ajax({
+                            url: base_url + url,
+                            type: "post",
+                            data: data,
+                            beforeSend: function(xhr) {
+                                $("input[type='submit']").next().css('visibility', 'visible');
+                            }
+                        })
+                        .done(function(response) {                
+                            /*if (!readonly) {
+                                ajax_done(that, manzanas_table, "Manzana insertada correctamente", "insert", response);
+                            }else{
+                                ajax_done(that, manzanas_table, "Datos de la manzana actualizados correctamente", "update", response);
+                            }
+                        })
+                        .fail(function(response) {
+                            ajax_msg.show_error(response);
+                        });
+                    },
+                    fn_on_done: function(fn){
+                        fn();
+                    }
                 }
-            })
-            .done(function(response) {                
-                /*if (!readonly) {
-                    ajax_done(that, manzanas_table, "Manzana insertada correctamente", "insert", response);
-                }else{
-                    ajax_done(that, manzanas_table, "Datos de la manzana actualizados correctamente", "update", response);
+                function ajax_done(that, dtTable, msg, type, response) {
+                    var newData;
+                    if (type == "insert") {
+                        that.reset();
+                        newData = dtTable.row.add(response[0]).draw(false).node();       
+                        $(newData).animate({backgroundColor:'yellow'}); //Animación para MAX
+                        dtTable.order([0, 'desc']).draw(); //Ordenar por id
+                    } else if (type == "update") {
+                        for (var data in response[0]) {
+                            parsedtRow[data] = response[0][data];
+                        }
+                        newData = dtTable.row(dtRow).data(parsedtRow).draw(false).node(); //
+                        $(newData).animate({backgroundColor:'yellow'}); //Animación para MAX
+                        //console.log(dtTable.row(dtRow).selector.rows[0]);
+                    }    
+                    ajax_msg.show_success(msg);   
                 }
-            })
-            .fail(function(response) {
-                ajax_msg.show_error(response);
-            });
-        },
-        fn_on_done: function(fn){
-            fn();
-        }
-    }
-    function ajax_done(that, dtTable, msg, type, response) {
-        var newData;
-        if (type == "insert") {
-            that.reset();
-            newData = dtTable.row.add(response[0]).draw(false).node();       
-            $(newData).animate({backgroundColor:'yellow'}); //Animación para MAX
-            dtTable.order([0, 'desc']).draw(); //Ordenar por id
-        } else if (type == "update") {
-            for (var data in response[0]) {
-                parsedtRow[data] = response[0][data];
-            }
-            newData = dtTable.row(dtRow).data(parsedtRow).draw(false).node(); //
-            $(newData).animate({backgroundColor:'yellow'}); //Animación para MAX
-            //console.log(dtTable.row(dtRow).selector.rows[0]);
-        }    
-        ajax_msg.show_success(msg);   
-    }
     
 
 
-    */
-    function get_data(dtTable, obj_dtTable) {        
+                */
+    function get_data(dtTable, obj_dtTable) {
         parsedtRow = obj_dtTable.row(dtRow).data();
         data_in_form_edit(parsedtRow);
     }
+
     function data_in_form_edit(json_data) {
         for (var data in json_data) {
             //Sí existe el elemento con id
             if ($("#" + data).length) {
-                var input = $("#" + data);                
+                var input = $("#" + data);
                 if (input.hasClass('autoNumeric')) {
                     input.autoNumeric('set', json_data[data]);
                 } else {
