@@ -86,10 +86,109 @@ $.extend(true, $.fn.dataTable.defaults, {
     "deferRender": true,
     "pageLength": 25,
 });
+///////////////////////////////////////////////////
+var GenericFrm = function(config) {
+    this.data = {};
+    this.urls = config.urls;
+    this.url = "";
+    this.msgs = config.msgs;
+    this.msg = "";
+    this.frm = $(config.frm);
+    this.btn = config.btn;
 
-var parsedtRow;
-var dtRow;
+    this.append = config.append;
+    this.readonly = config.readonly;
+    this.dtTable = config.dtTable;
+    this.autoNumeric = config.autoNumeric;
 
+    this.dtRow = this.btn.parents('tr');
+    this.parseDtRow = this.dtTable.row(this.dtRow).data();
+    this.response;
+    this.fnOnDone;
+
+    this.on_submit();
+};
+GenericFrm.prototype.add = function() {
+    this.frm[0].reset();
+    this.data = {};
+    this.readonly.status = false;
+    this.fnReadonly();
+    this.url = this.urls.add;
+    this.msg = this.msgs.add;
+    this.fnOnDone = this.ajaxAddDone;
+};
+GenericFrm.prototype.edit = function() {
+    this.data = {};
+    this.readonly.status = true;
+    this.fnReadonly();
+    this.url = this.urls.edit;
+    this.msg = this.msgs.edit;
+    this.fnOnDone = this.ajaxEditDone;
+    for (var data in this.parseDtRow) {
+        //Sí existe el elemento con id
+        if ($("#" + data).length) {
+            var input = $("#" + data);
+            if (input.hasClass('autoNumeric')) {
+                input.autoNumeric('set', this.parseDtRow[data]);
+            } else {
+                input.val(this.parseDtRow[data]);
+            }
+        }
+    }
+    for (var data in this.append) {
+        this.data[this.append[data]] = this.parseDtRow[this.append[data]];
+    }
+};
+GenericFrm.prototype.fnReadonly = function() {
+    $(this.readonly.inputs).attr('readonly', this.readonly.status);
+};
+GenericFrm.prototype.submit = function() {
+    var self = this;
+    $.ajax({
+            url: base_url + self.url,
+            type: "post",
+            data: self.data,
+            beforeSend: function(xhr) {
+                $("input[type='submit']").next().css('visibility', 'visible');
+            }
+        })
+        .done(function(response) {
+            self.response = response;
+            self.fnOnDone.apply(self);
+        })
+        .fail(function(response) {
+            ajax_msg.show_error(response);
+        });;
+}
+GenericFrm.prototype.ajaxAddDone = function() {
+    this.frm[0].reset();
+    var newData = this.dtTable.row.add(this.response[0]).draw(false).node();
+    $(newData).animate({ backgroundColor: 'yellow' }); //Animación para MAX
+    this.dtTable.order([0, 'desc']).draw(); //Ordenar por id
+    ajax_msg.show_success(this.msg);
+}
+GenericFrm.prototype.ajaxEditDone = function() {
+    for (var data in this.response[0]) {
+        this.parseDtRow[data] = this.response[0][data];
+    }
+    var newData = this.dtTable.row(this.dtRow).data(this.parseDtRow).draw(false).node(); //
+    $(newData).animate({ backgroundColor: 'yellow' }); //Animación para MAX
+    ajax_msg.show_success(this.msg);
+}
+GenericFrm.prototype.on_submit = function() {
+    var self = this;
+    this.frm.off('submit').on('submit', function(e) {
+        e.preventDefault();
+        Object.assign(self.data, $(this).serializeObject());
+        for (data in self.autoNumeric) {
+            if ($('#' + self.autoNumeric[data]).length > 0) {
+                self.data[self.autoNumeric[data]] = $('#' + self.autoNumeric[data]).autoNumeric('get');
+            }
+        }
+        self.submit();
+    });
+};
+///////////////////////////////////////////////////
 function templateCart(response) {
 
     $("#shopCartSale")
@@ -289,10 +388,9 @@ $(document).ready(function() {
     //Estructura de Datatable para las Manzanas (La tabla de vista)
     var manzanas_table = $('#manzanas-table').DataTable({
         "ajax": base_url + 'ajax/get_manzanas', //URL de datos
-        "order": [
-            [0, "asc"]
-        ],
+
         "columns": [ //Atributos para la tabla
+            { "data": "id_manzana" },
             {
                 "data": "manzana",
                 "render": function(data, type, full, meta) {
@@ -359,164 +457,24 @@ $(document).ready(function() {
         var button = $(e.relatedTarget); // Boton que despliega el modal (Existe en el datatable)
         var title = button.data('title'); // Extraer informacipon desde atributos data-* 
         var btnType = button.data('btnType');
-
+        console.log(button);
         var modal = $(this);
         modal.find('.model-title').html(title);
 
         //console.log(btnType);
         var config = {
             'frm': '#frm-manzana',
-            'readonly': { 'inputs': '#manzana' },
+            'urls': { 'edit': 'ajax/update_manzana', 'add': 'ajax/add_manzana' },
+            'msgs': { 'edit': 'Manzana actualizada correctamente.', 'add': 'Manzana agregada correctamente.' },
+            'autoNumeric': ["superficie"], //A que campos quitarle las comas y signos.
+            'readonly': { 'inputs': '#manzana' }, //Que campos son de lectura para agregar y quitar
+            'append': ["id_manzana"], //Que campo anexar de dtRow al data a enviar por AJAX
+            'btn': button, //Boton que disparó el evento de abrir modal
+            'dtTable': manzanas_table, //Data table que se parseará
         };
         var genericFrm = new GenericFrm(config);
         genericFrm[btnType]();
-
-        if (true) {
-
-            /*
-            var target = '#frm-manzana';
-            dtRow = button.parents('tr');
-            get_data();
-            url = "ajax/update_manzana";*/
-        } else {
-            /*$(frm)[0].reset();
-            $('#manzana').attr('readonly', false);
-            url = "ajax/add_manzana";*/
-        }
-        /*gen_frm.show();
-        $('#frm-manzana').off('submit').on('submit', function(e) {
-            e.preventDefault();
-            $(this.submitFrm).attr("disabled", true);
-            ajax_msg.hidden();        
-            
-            if (!readonly) {
-                //Para insertar
-                var data = $(this).serializeObject(); //Serializar formulario
-                data.superficie = $(this.superficie).autoNumeric('get');
-            } else {
-                //Para editar
-                var data = $(this).serializeObject(); //Serializar formulario //Serializar formulario
-                data.id_manzana = parsedtRow.id_manzana; //Añadimos el ID de la manzana en formato json               
-                data.superficie = $(this.superficie).autoNumeric('get');
-            }
-            var that = this; //Almacenar el formulario donde sucedio el evento submit
-            
-        });*/
     });
-
-    var GenericFrm = function(config) {
-        this.readonly = config.readonly;
-        this.frm = config.frm;
-        this.on_submit();
-    };
-    GenericFrm.prototype.add = function() {
-        this.readonly.status = false;
-        this.fnReadonly(this.readonly);
-        console.log('add');
-    };
-    GenericFrm.prototype.edit = function() {
-        this.readonly.status = true;
-        this.fnReadonly(this.readonly);
-        console.log('edit');
-    };
-    GenericFrm.prototype.fnReadonly = function(readonly) {
-        $(readonly.inputs).attr('readonly', readonly.status);
-    };
-    GenericFrm.prototype.on_submit = function() {
-        var that = this;
-        $(this.frm).off('submit').on('submit', function(e) {
-            e.preventDefault();
-            console.log(this);
-            console.log(that);
-            console.log('enviando');
-        });
-    };
-    /* var GenericFrm = function(config) {
-         this.frm = document.getElementById(config.frm);
-         config.pre_config();
-         this.addEventToFrm('submit');
-         this.on_submit = config.on_submit;
-     }
-     GenericFrm.prototype.show = function() {
-         console.log(this.frm);
-     }
-     GenericFrm.prototype.addEventToFrm = function(event) {
-         var that = this;
-         $(this.frm).off('submit').on('submit', function(e) {
-             e.preventDefault();
-             console.log(e);
-             var event = e;
-             that.on_submit.apply(this, event);
-         });
-     }
-     GenericFrm.prototype.on_submit = function() {
-
-         }*/
-    /*
-                var generic_ajax = {
-                    ajax : function(){
-                        $.ajax({
-                            url: base_url + url,
-                            type: "post",
-                            data: data,
-                            beforeSend: function(xhr) {
-                                $("input[type='submit']").next().css('visibility', 'visible');
-                            }
-                        })
-                        .done(function(response) {                
-                            /*if (!readonly) {
-                                ajax_done(that, manzanas_table, "Manzana insertada correctamente", "insert", response);
-                            }else{
-                                ajax_done(that, manzanas_table, "Datos de la manzana actualizados correctamente", "update", response);
-                            }
-                        })
-                        .fail(function(response) {
-                            ajax_msg.show_error(response);
-                        });
-                    },
-                    fn_on_done: function(fn){
-                        fn();
-                    }
-                }
-                function ajax_done(that, dtTable, msg, type, response) {
-                    var newData;
-                    if (type == "insert") {
-                        that.reset();
-                        newData = dtTable.row.add(response[0]).draw(false).node();       
-                        $(newData).animate({backgroundColor:'yellow'}); //Animación para MAX
-                        dtTable.order([0, 'desc']).draw(); //Ordenar por id
-                    } else if (type == "update") {
-                        for (var data in response[0]) {
-                            parsedtRow[data] = response[0][data];
-                        }
-                        newData = dtTable.row(dtRow).data(parsedtRow).draw(false).node(); //
-                        $(newData).animate({backgroundColor:'yellow'}); //Animación para MAX
-                        //console.log(dtTable.row(dtRow).selector.rows[0]);
-                    }    
-                    ajax_msg.show_success(msg);   
-                }
-    
-
-
-                */
-    function get_data(dtTable, obj_dtTable) {
-        parsedtRow = obj_dtTable.row(dtRow).data();
-        data_in_form_edit(parsedtRow);
-    }
-
-    function data_in_form_edit(json_data) {
-        for (var data in json_data) {
-            //Sí existe el elemento con id
-            if ($("#" + data).length) {
-                var input = $("#" + data);
-                if (input.hasClass('autoNumeric')) {
-                    input.autoNumeric('set', json_data[data]);
-                } else {
-                    input.val(json_data[data]);
-                }
-            }
-        }
-    }
     //HUERTOS
     //Datatable de los huertos
     $('.multiplicar').on('keyup', multiplicar);
@@ -600,8 +558,8 @@ $(document).ready(function() {
         ],
         "drawCallback": function(settings) {},
     });
-    get_data("huertos-table", huertos_table);
-    //Formulario para agregar huertos
+    /*    get_data("huertos-table", huertos_table);
+     */ //Formulario para agregar huertos
     $('#frm-add-huertos').on('submit', function(e) {
         e.preventDefault();
         var data = $(this).serializeObject(); //Serializar formulario

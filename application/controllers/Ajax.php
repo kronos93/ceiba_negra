@@ -11,8 +11,8 @@ class Ajax extends CI_Controller
         $this->load->model('Manzana_model');
         $this->load->model('Cliente_model');
     }
-    public function index(){
-        
+    public function index()
+    {
     }
     //DATOS PARA EL MAPA
     public function get_mapa()
@@ -128,27 +128,27 @@ class Ajax extends CI_Controller
     //MANZANAS
     public function add_manzana()
     {
-            //Cabazera de respuesta JSON
-            header("Content-type: application/json; charset=utf-8");
-            //Validación de form
-            $this->form_validation->set_error_delimiters('', '');
-            $this->form_validation->set_rules('manzana', 'Manzana', 'trim|required|is_unique[manzanas.manzana]');
-            $this->form_validation->set_rules('calle', 'Calle', 'trim|required');
-            $this->form_validation->set_rules('disponibilidad', 'Disponibilidad de la manzana', 'trim|required');
+        //Cabazera de respuesta JSON
+        header("Content-type: application/json; charset=utf-8");
+        //Validación de form
+        $this->form_validation->set_error_delimiters('', '');
+        $this->form_validation->set_rules('manzana', 'Manzana', 'trim|required|is_unique[manzanas.manzana]');
+        $this->form_validation->set_rules('calle', 'Calle', 'trim|required');
+        $this->form_validation->set_rules('disponibilidad', 'Disponibilidad de la manzana', 'trim|required');
         if ($this->form_validation->run()) {
             $insert = [
-            'manzana' => $this->input->post('manzana'),
-            'calle'   => $this->input->post('calle'),
-            'superficie' => $this->input->post('superficie'),
-            'disponibilidad' => $this->input->post('disponibilidad'),
-            'col_norte' => $this->input->post('col_norte'),
-            'col_noreste' => $this->input->post('col_noreste'),
-            'col_este' => $this->input->post('col_este'),
-            'col_sureste' => $this->input->post('col_sureste'),
-            'col_sur' => $this->input->post('col_sur'),
-            'col_suroeste' => $this->input->post('col_suroeste'),
-            'col_oeste' => $this->input->post('col_oeste'),
-            'col_noroeste' => $this->input->post('col_noroeste'),
+                        'manzana' => $this->input->post('manzana'),
+                        'calle'   => $this->input->post('calle'),
+                        'superficie' => $this->input->post('superficie'),
+                        'disponibilidad' => $this->input->post('disponibilidad'),
+                        'col_norte' => $this->input->post('col_norte'),
+                        'col_noreste' => $this->input->post('col_noreste'),
+                        'col_este' => $this->input->post('col_este'),
+                        'col_sureste' => $this->input->post('col_sureste'),
+                        'col_sur' => $this->input->post('col_sur'),
+                        'col_suroeste' => $this->input->post('col_suroeste'),
+                        'col_oeste' => $this->input->post('col_oeste'),
+                        'col_noroeste' => $this->input->post('col_noroeste'),
             ];
             $manzana = $this->Manzana_model->insert($insert);
             echo json_encode($manzana);
@@ -196,14 +196,15 @@ class Ajax extends CI_Controller
         if ($this->input->get('query')) {
             $like = $this->input->get('query');
             $full_name = "CONCAT(users.first_name,' ',users.last_name)";
-            $select = 'users.first_name, users.last_name, users.email, users.phone, users.calle, users.no_ext, users.no_int, users.phone, users.colonia, users.municipio, users.estado,users.ciudad,users.cp';            
+            $select = 'users.first_name, users.last_name, users.email, users.phone, users.calle, users.no_ext, users.no_int, users.phone, users.colonia, users.municipio, users.estado,users.ciudad,users.cp';
             $clientes = $this->ion_auth->select("{$select},{$full_name} AS data, {$full_name} AS value")->where(["{$full_name} LIKE" => "%{$like}%"])->users('cliente')->result();
             $response = new stdClass();
             $response->suggestions = $clientes;
             echo json_encode($response);
         }
     }
-    public function autocomplete_lideres(){
+    public function autocomplete_lideres()
+    {
         header("Content-type: application/json; charset=utf-8");
         if ($this->input->get('query')) {
             $like = $this->input->get('query');
@@ -213,8 +214,6 @@ class Ajax extends CI_Controller
             $response->suggestions = $lideres;
             echo json_encode($response);
         }
-        
-			
     }
     public function add_cart()
     {
@@ -226,7 +225,7 @@ class Ajax extends CI_Controller
             ];
             $huertos = $this->Huerto_model->getHuertosPM($where, "object");
             if (count($huertos)) {
-                foreach($huertos as $huerto){
+                foreach ($huertos as $huerto) {
                     $data = array(
                         'id'      => 'huerto_'.$huerto->id_huerto,
                         'qty'     => 1,
@@ -249,7 +248,7 @@ class Ajax extends CI_Controller
     {
         header("Content-type: application/json; charset=utf-8");
         if ($this->input->post("rowid")) {
-            $this->cart->remove($this->input->post("rowid"));            
+            $this->cart->remove($this->input->post("rowid"));
         }
         $this->show_cart();
     }
@@ -272,44 +271,38 @@ class Ajax extends CI_Controller
         $respuesta->abono = ($respuesta->abono);
         $respuesta->total = ($this->cart->total());
         $respuesta->count = $this->cart->total_items();
-        if ($this->ion_auth->in_group('administrador') || $this->ion_auth->in_group('miembro'))
-        {
+        if ($this->ion_auth->in_group('administrador') || $this->ion_auth->in_group('miembro')) {
             $respuesta->link = ($this->cart->total_items()>0) ? '<a href="'.base_url().'venta" class="btn btn-success center-block">Vender</a>' : '';
-        }else if ($this->ion_auth->in_group('lider')){
+        } elseif ($this->ion_auth->in_group('lider')) {
             $respuesta->link = ($this->cart->total_items()>0) ? '<a href="'.base_url().'venta" class="btn btn-warning center-block">Reservar</a>' : '';
         }
 
         echo json_encode($respuesta);
     }
-    public function create_user(){
-        $tables = $this->config->item('tables','ion_auth');
+    public function create_user()
+    {
+        $tables = $this->config->item('tables', 'ion_auth');
 
-        $identity_column = $this->config->item('identity','ion_auth');
+        $identity_column = $this->config->item('identity', 'ion_auth');
         $this->data['identity_column'] = $identity_column;
 
         // validate form input
         $this->form_validation->set_rules('first_name', $this->lang->line('create_user_validation_fname_label'), 'required');
         $this->form_validation->set_rules('last_name', $this->lang->line('create_user_validation_lname_label'), 'required');
-        if($identity_column!=='email')
-        {
-
-            $this->form_validation->set_rules('identity',$this->lang->line('create_user_validation_identity_label'),'required|is_unique['.$tables['users'].'.'.$identity_column.']');
+        if ($identity_column!=='email') {
+            $this->form_validation->set_rules('identity', $this->lang->line('create_user_validation_identity_label'), 'required|is_unique['.$tables['users'].'.'.$identity_column.']');
             $this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'required|valid_email');
-        }
-        else
-        {
-        	
+        } else {
             $this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'required|valid_email|is_unique[' . $tables['users'] . '.email]');
         }
         $this->form_validation->set_rules('phone', $this->lang->line('create_user_validation_phone_label'), 'trim');
         $this->form_validation->set_rules('company', $this->lang->line('create_user_validation_company_label'), 'trim');
         //$this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
-		//$this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length["3"]|max_length["3"]|matches[password_confirm]');
+        //$this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length["3"]|max_length["3"]|matches[password_confirm]');
 
         $this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
 
-        if ($this->form_validation->run() == true)
-        {
+        if ($this->form_validation->run() == true) {
             $email    = strtolower($this->input->post('email'));
             $identity = ($identity_column==='email') ? $email : $this->input->post('identity');
             $password = $this->input->post('password');
@@ -321,15 +314,12 @@ class Ajax extends CI_Controller
                 'phone'      => $this->input->post('phone'),
             );
         }
-        if ($this->form_validation->run() == true && $this->ion_auth->register($identity, $password, $email, $additional_data))
-        {
-            // check to see if we are creating the user
+        if ($this->form_validation->run() == true && $this->ion_auth->register($identity, $password, $email, $additional_data)) {
+        // check to see if we are creating the user
             // redirect them back to the admin page
             $this->session->set_flashdata('message', $this->ion_auth->messages());
             redirect("auth", 'refresh');
-        }
-        else
-        {
+        } else {
             // display the create user form
             // set the flash data error message if there is one
             $this->data['message'] = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? $this->ion_auth->errors() : $this->session->flashdata('message')));

@@ -10,7 +10,8 @@
 				</legend>
 				<table id="manzanas-table" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
 					<thead>
-						<tr>							
+						<tr>
+							<th data-visible="false">Id. manzana</th>					
 							<th>Manzana</th>
 							<th>Calle</th>
 							<th>Superficie</th>
