@@ -57,10 +57,7 @@
 							</div>
 							<div class="form-group col-xs-12 col-sm-6">
 								<label class="required" for="superficie">superficie:</label>
-								<div class="input-group">
-									<input type="text" class="form-control superficie autoNumeric" id="superficie" name="superficie" placeholder="10,0000" required />
-									<div class="input-group-addon">Mt<sup>2</sup>.</div>
-								</div>
+								<input type="text" class="form-control superficie autoNumeric" id="superficie" name="superficie" placeholder="10,0000" required />
 							</div>
 							<div class="form-group col-xs-12 col-sm-6">
 								<label class="required" for="disponibilidad">Disponibilidad:</label>
