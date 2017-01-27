@@ -33,7 +33,6 @@
 	</div>
 </main>
 <?php if($this->ion_auth->in_group('administrador')): ?>
-<!-- Los inputs si llevan ID nombrados como en la base de datos-->
 <div class="modal fade" id="manzanaModal" tabindex="-1" role="dialog" aria-labelledby="manzanaModal" aria-hidden="true">
  	<div class="modal-dialog" role="document">
 	    <div class="modal-content">

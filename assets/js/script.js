@@ -388,7 +388,6 @@ $(document).ready(function() {
     //Estructura de Datatable para las Manzanas (La tabla de vista)
     var manzanas_table = $('#manzanas-table').DataTable({
         "ajax": base_url + 'ajax/get_manzanas', //URL de datos
-
         "columns": [ //Atributos para la tabla
             { "data": "id_manzana" },
             {
@@ -477,7 +476,7 @@ $(document).ready(function() {
     });
     //HUERTOS
     //Datatable de los huertos
-    $('.multiplicar').on('keyup', multiplicar);
+    /*$('.multiplicar').on('keyup', multiplicar);
 
     function multiplicar() {
         //El contexto es para saber en que formulario debe remplazarce el valor de un ID
@@ -488,7 +487,7 @@ $(document).ready(function() {
             total *= $(multiplicar[i]).autoNumeric('get');
         }
         $(context + " " + '#precio').autoNumeric('set', total);
-    }
+    }*/
     var huertos_table = $('#huertos-table').DataTable({
         "ajax": base_url + 'ajax/get_huertos_pmz',
         "columns": [ //Atributos para la tabla
@@ -497,21 +496,44 @@ $(document).ready(function() {
                 "render": function(data, type, full, meta) {
                     return 'Mz.  ' + data;
                 }
-            }, {
+            },
+            {
                 "data": "huerto",
                 "render": function(data, type, full, meta) {
                     return 'Ht.  ' + data;
                 }
-            }, {
+            },
+            {
                 "data": "superficie",
                 "render": function(data, type, full, meta) {
                     return '<span class="superficie">' + data + '</span> mt<sup>2</sup>.';
                 }
             },
-            { "data": "precio_x_m2" },
-            { "data": "precio" },
-            { "data": "enganche" },
-            { "data": "abono" }, {
+            {
+                "data": "precio_x_m2",
+                "render": function(data, type, full, meta) {
+                    return '<span class="currency">' + data + '</span>';
+                }
+            },
+            {
+                "data": "precio",
+                "render": function(data, type, full, meta) {
+                    return '<span class="currency">' + data + '</span>';
+                }
+            },
+            {
+                "data": "enganche",
+                "render": function(data, type, full, meta) {
+                    return '<span class="currency">' + data + '</span>';
+                }
+            },
+            {
+                "data": "abono",
+                "render": function(data, type, full, meta) {
+                    return '<span class="currency">' + data + '</span>';
+                }
+            },
+            {
                 "data": "vendido", //Supa kawaiesko funcion para el render
                 "render": function(data, type, full, meta) {
                     if (!parseInt(data)) {
@@ -534,18 +556,11 @@ $(document).ready(function() {
         ],
         columnDefs: [ //
             {
-                "targets": 0,
-                "visible": false
-            }, {
                 //Añadir boton dinamicamente, para esta columna*
                 "targets": -1,
                 "data": null,
-                "defaultContent": '<button data-toggle="modal" data-target="#edit-huerto" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>',
-            }, {
-                "targets": [4, 5, 6, 7],
-                "className": "currency"
+                "defaultContent": '<button data-toggle="modal" data-title="Editar huerto" data-btn-type="edit" data-target="#huertoModal" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>',
             },
-
             {
                 //Quitar ordenamiento para estas columnas
                 "sortable": false,
@@ -556,56 +571,36 @@ $(document).ready(function() {
                 "searchable": false,
             }
         ],
-        "drawCallback": function(settings) {},
+        "drawCallback": function(settings) {
+            format_numeric('init');
+        },
     });
-    /*    get_data("huertos-table", huertos_table);
-     */ //Formulario para agregar huertos
-    $('#frm-add-huertos').on('submit', function(e) {
-        e.preventDefault();
-        var data = $(this).serializeObject(); //Serializar formulario
-        data.superficie = $(this.superficie).autoNumeric('get');
-        data.precio_x_m2 = $(this.precio_x_m2).autoNumeric('get');
-        var that = this; //Almacenar el formulario donde sucedio el evento submit
-        //Llamada ajax
-        $.ajax({
-                url: base_url + "ajax/add_huerto",
-                type: "post",
-                data: data,
-                beforeSend: function(xhr) {
-                    $("input[type='submit']").attr("disabled", true).next().css('visibility', 'visible');
-                }
-            })
-            .done(function(response) {
-                ajax_done(that, huertos_table, "Huerto insertado correctamente", "insert", response);
-            })
-            .fail(function(response) {
-                ajax_fail(response);
-            });
+    huertos_table.on('responsive-display', function(e, datatable, row, showHide, update) {
+        format_numeric('init');
     });
-    //Formulario para editar lotes
-    $("#frm-edit-huertos").on('submit', function(e) {
-        e.preventDefault();
-        var data = $(this).serializeObject(); //Serializar formulario
-        /*data.superficie = $(this.superficie).autoNumeric('get');
-        data.precio_x_m2 = $(this.precio_x_m2).autoNumeric('get');*/
-        data.id_huerto = parsedtRow.id_huerto; //Añadimos el ID de la manzana en formato json
-        var that = this; //Almacenar el formulario donde sucedio el evento submit
-        //Llamada ajax
-        $.ajax({
-                url: base_url + "ajax/update_huerto",
-                type: "post",
-                data: data,
-                beforeSend: function(xhr) {
-                    $("input[type='submit']").attr("disabled", true).next().css('visibility', 'visible');
-                }
-            })
-            .done(function(response) {
-                ajax_done(that, huertos_table, "Datos del huerto actualizados correctamente", "update", response);
-            })
-            .fail(function(response) {
-                ajax_fail(response);
-            });
+    $('#huertoModal').on('show.bs.modal', function(e) {
+        //Ocultar mensajes de la caja AJAX
+        ajax_msg.hidden();
+        var button = $(e.relatedTarget); // Boton que despliega el modal (Existe en el datatable)
+        var title = button.data('title'); // Extraer informacipon desde atributos data-* 
+        var btnType = button.data('btnType');
+        var modal = $(this);
+        modal.find('.model-title').html(title);
+
+        var config = {
+            'frm': '#frm-huerto',
+            'urls': { 'edit': 'ajax/add_huerto', 'add': 'ajax/update_huerto' },
+            'msgs': { 'edit': 'Huerto actualizado correctamente.', 'add': 'Huerto agregado correctamente.' },
+            'autoNumeric': ["superficie"], //A que campos quitarle las comas y signos.
+            //'readonly': { 'inputs': '#id_manzana' }, //Que campos son de lectura para agregar y quitar
+            'append': ["id_huerto"], //Que campo anexar de dtRow al data a enviar por AJAX
+            'btn': button, //Boton que disparó el evento de abrir modal
+            'dtTable': huertos_table, //Data table que se parseará
+        };
+        var genericFrm = new GenericFrm(config);
+        genericFrm[btnType]();
     });
+
     //USUARIOS
     var users_table = $('#users-table').DataTable();
 
