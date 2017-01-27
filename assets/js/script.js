@@ -97,7 +97,10 @@ var GenericFrm = function(config) {
     this.btn = config.btn;
 
     this.append = config.append;
-    this.readonly = config.readonly;
+    if (config.readonly !== undefined) {
+        this.readonly = config.readonly;
+    }
+   
     this.dtTable = config.dtTable;
     this.autoNumeric = config.autoNumeric;
 
@@ -111,16 +114,21 @@ var GenericFrm = function(config) {
 GenericFrm.prototype.add = function() {
     this.frm[0].reset();
     this.data = {};
-    this.readonly.status = false;
-    this.fnReadonly();
+    if (this.readonly !== undefined) {
+        this.readonly.status = false;
+        this.fnReadonly();
+    }
     this.url = this.urls.add;
     this.msg = this.msgs.add;
     this.fnOnDone = this.ajaxAddDone;
 };
 GenericFrm.prototype.edit = function() {
+
     this.data = {};
-    this.readonly.status = true;
-    this.fnReadonly();
+    if (this.readonly !== undefined) {
+        this.readonly.status = true;
+        this.fnReadonly();
+    }
     this.url = this.urls.edit;
     this.msg = this.msgs.edit;
     this.fnOnDone = this.ajaxEditDone;
@@ -180,7 +188,7 @@ GenericFrm.prototype.on_submit = function() {
     this.frm.off('submit').on('submit', function(e) {
         e.preventDefault();
         Object.assign(self.data, $(this).serializeObject());
-        for (data in self.autoNumeric) {
+        for (data in self.autoNumeric) { //Convertir de númerico a número
             if ($('#' + self.autoNumeric[data]).length > 0) {
                 self.data[self.autoNumeric[data]] = $('#' + self.autoNumeric[data]).autoNumeric('get');
             }
@@ -476,18 +484,17 @@ $(document).ready(function() {
     });
     //HUERTOS
     //Datatable de los huertos
-    /*$('.multiplicar').on('keyup', multiplicar);
+    $('.multiplicar').on('keyup', multiplicar);
 
     function multiplicar() {
-        //El contexto es para saber en que formulario debe remplazarce el valor de un ID
-        var context = '#' + $(this).parents('form').attr('id');
-        var multiplicar = $(context + ' .multiplicar');
-        var total = 1;
-        for (var i = 0; i < multiplicar.length; i++) {
-            total *= $(multiplicar[i]).autoNumeric('get');
+        console.log($('.multiplicar'));
+        var campos = $('.multiplicar');
+        var resultado = 1;
+        for(var i = 0; i < campos.length; i++){
+            resultado*=($(campos[i]).autoNumeric('get'));
         }
-        $(context + " " + '#precio').autoNumeric('set', total);
-    }*/
+        $('#precio').autoNumeric('set',resultado);
+    }
     var huertos_table = $('#huertos-table').DataTable({
         "ajax": base_url + 'ajax/get_huertos_pmz',
         "columns": [ //Atributos para la tabla
@@ -589,9 +596,9 @@ $(document).ready(function() {
 
         var config = {
             'frm': '#frm-huerto',
-            'urls': { 'edit': 'ajax/add_huerto', 'add': 'ajax/update_huerto' },
+            'urls': { 'edit': 'ajax/update_huerto', 'add': 'ajax/add_huerto' },
             'msgs': { 'edit': 'Huerto actualizado correctamente.', 'add': 'Huerto agregado correctamente.' },
-            'autoNumeric': ["superficie"], //A que campos quitarle las comas y signos.
+            'autoNumeric': ['superficie','precio_x_m2','precio'], //A que campos quitarle las comas y signos.
             //'readonly': { 'inputs': '#id_manzana' }, //Que campos son de lectura para agregar y quitar
             'append': ["id_huerto"], //Que campo anexar de dtRow al data a enviar por AJAX
             'btn': button, //Boton que disparó el evento de abrir modal

@@ -79,7 +79,7 @@
                             </div>
                             <div class="form-group col-xs-12 col-sm-4">
                                 <label class="required" for="">Precio</label>
-							    <input type="text" class="form-control autoNumeric currency" id="precio" name="" placeholder="0" value="0" readonly required/>							
+							    <input type="text" class="form-control autoNumeric currency" id="precio" name="precio" placeholder="0" value="$ 0.00" readonly required/>							
                             </div>
 							<div class="form-group col-xs-12 col-sm-12">
 								<label class="required" for="precio">Precio:</label>
@@ -127,7 +127,7 @@
                         </fieldset>
                     </div>
                     <div class="container-icons" >
-                        <i></i>
+                        <i class="fa"></i>
                         <h4 class="message"></h4>
                     </div>
                 </div>
