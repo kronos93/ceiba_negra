@@ -76,7 +76,7 @@ class Huerto_model extends CI_Model
                             CONCAT('Huerto número ', {$this->tabla}.huerto) as title, 
                             CONCAT('mz',manzanas.manzana) as category, 
                             IF({$this->tabla}.vendido=0,'','#ff0000') as fill,
-                            CONCAT('<div>Superficie: <span class=\"superficie\">',{$this->tabla}.superficie,'</span>m<sup>2</sup></div>',
+                            CONCAT('<div>Superficie: <span class=\"superficie\">',{$this->tabla}.superficie,'</div>',
                                    '<div class=\"currency\">Precio: <span class=\"currency\">',({$this->tabla}.precio_x_m2 * {$this->tabla}.superficie),'</span></div>') as description,
                             IF({$this->tabla}.vendido=0,{$this->tabla}.id_huerto,'') AS link, 
                             {$this->tabla}.x,

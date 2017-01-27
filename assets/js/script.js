@@ -10,7 +10,9 @@ $.datepicker.setDefaults($.datepicker.regional["es"]);
 function format_numeric(action) {
     console.log("Dar formato de moneda y superficie");
     if ($('.superficie').length) {
-        $('.superficie').autoNumeric(action); //Averiguar más del plugin para evitar menores a 0
+        $('.superficie').autoNumeric(action, {
+        aSign:' m\u00B2', pSign:'s' 
+    }); //Averiguar más del plugin para evitar menores a 0
     }
     $(".currency").autoNumeric(action, {
         aSign: "$ "
@@ -408,7 +410,7 @@ $(document).ready(function() {
             {
                 "data": "superficie",
                 "render": function(data, type, full, meta) {
-                    return '<span class="superficie">' + data + '</span> mt<sup>2</sup>.';
+                    return '<span class="superficie">' + data + '</span>';
                 }
             },
             {
@@ -485,9 +487,8 @@ $(document).ready(function() {
     //HUERTOS
     //Datatable de los huertos
     $('.multiplicar').on('keyup', multiplicar);
-
     function multiplicar() {
-        console.log($('.multiplicar'));
+        //console.log($('.multiplicar'));
         var campos = $('.multiplicar');
         var resultado = 1;
         for(var i = 0; i < campos.length; i++){
@@ -513,7 +514,7 @@ $(document).ready(function() {
             {
                 "data": "superficie",
                 "render": function(data, type, full, meta) {
-                    return '<span class="superficie">' + data + '</span> mt<sup>2</sup>.';
+                    return '<span class="superficie">' + data + '</span>';
                 }
             },
             {
@@ -655,7 +656,9 @@ $(document).ready(function() {
 
     });
     //Poner formato númerico
-    mapplic.on('locationopened', function(e, self) {});
+    mapplic.on('locationopened', function(e, self) {
+        format_numeric('init');
+    });
     /*//Herramienta para capturar las coordenadas del mapa
     mapplic.on('locationopened', function(e, location) {
         var manzana = (location.category.replace("mz", ""));

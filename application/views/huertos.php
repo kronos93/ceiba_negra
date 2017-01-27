@@ -68,10 +68,7 @@
                             </div>
 							<div class="form-group col-xs-12 col-sm-4">
                                 <label class="required" for="superficie">Superficie:</label>
-								<div class="input-group">									
-								    <input type="text" class="form-control autoNumeric superficie multiplicar" name="superficie" id="superficie" placeholder="1" required/>
-									<div class="input-group-addon">Mt<sup>2</sup>.</div>
-								</div>
+                                <input type="text" class="form-control autoNumeric superficie multiplicar" name="superficie" id="superficie" placeholder="1" required/>
                             </div> 
                             <div class="form-group col-xs-12 col-sm-4">
                                 <label class="required" for="precio_x_m2">Precio por m<sup>2</sup>:</label>
