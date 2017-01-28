@@ -1,10 +1,9 @@
 
-<?php echo form_open(uri_string());?>
+<?php echo form_open(uri_string(),['id'=>'frm-ion-user']);?>
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		<h4 class="modal-title"><?php echo lang('edit_user_heading');?></h4>
-		<p><?php echo lang('edit_user_subheading');?></p>
-		<div id="infoMessage"><?php echo $message;?></div>
+		<h4 class="modal-title"><?= lang('edit_user_heading'); ?></h4>
+		<p><?= lang('edit_user_subheading'); ?></p>
 	</div>
 	<div class="modal-body">
 		<div class="container-fluid">

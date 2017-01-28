@@ -279,8 +279,10 @@ class Ajax extends CI_Controller
 
         echo json_encode($respuesta);
     }
-    public function create_user()
+    public function add_ion_user()
     {
+        header("Content-type: application/json; charset=utf-8");
+         $this->form_validation->set_error_delimiters('', '');
         $tables = $this->config->item('tables', 'ion_auth');
 
         $identity_column = $this->config->item('identity', 'ion_auth');
@@ -297,9 +299,7 @@ class Ajax extends CI_Controller
         }
         $this->form_validation->set_rules('phone', $this->lang->line('create_user_validation_phone_label'), 'trim');
         $this->form_validation->set_rules('company', $this->lang->line('create_user_validation_company_label'), 'trim');
-        //$this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
-        //$this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length["3"]|max_length["3"]|matches[password_confirm]');
-
+        $this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
         $this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
 
         if ($this->form_validation->run() == true) {
@@ -314,16 +314,18 @@ class Ajax extends CI_Controller
                 'phone'      => $this->input->post('phone'),
             );
         }
-        if ($this->form_validation->run() == true && $this->ion_auth->register($identity, $password, $email, $additional_data)) {
-        // check to see if we are creating the user
+
+        if ($this->form_validation->run() == true && $newUser = $this->ion_auth->register($identity, $password, $email, $additional_data)) {
+            // check to see if we are creating the user
             // redirect them back to the admin page
-            $this->session->set_flashdata('message', $this->ion_auth->messages());
-            redirect("auth", 'refresh');
+            //$this->session->set_flashdata('message', $this->ion_auth->messages());
+            //redirect("auth", 'refresh');
+            echo json_encode($this->ion_auth->user($newUser)->row());
         } else {
             // display the create user form
             // set the flash data error message if there is one
             $this->data['message'] = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? $this->ion_auth->errors() : $this->session->flashdata('message')));
-            var_dump( $this->data['message'] );
+            echo $this->data['message'];
         }
     }
     //Utileria inutil xD.... Despreciar usando stdClass

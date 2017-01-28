@@ -1,9 +1,8 @@
-<?php echo form_open("auth/create_user",['id'=>'ion_addUser']);?>
+<?= form_open("auth/create_user",['id'=>'frm-ion-user']);?>
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		<h4 class="modal-title"><?php echo lang('create_user_heading');?></h4>
-		<p><?php echo lang('create_user_subheading');?></p>
-		<div id="infoMessage"><?php echo $message;?></div>
+		<h4 class="modal-title"><?= lang('create_user_heading'); ?></h4>
+		<p><?= lang('create_user_subheading'); ?></p>
 	</div>
 	<div class="modal-body">
 		<div class="container-fluid">
@@ -54,6 +53,10 @@
 					<?php echo form_input($password_confirm);?>
                 </div>
 			</div>
+		</div>
+		<div class="container-icons" >
+	      	<i class="fa"></i>
+		    <h4 class="message"></h4>
 		</div>
 	</div>
 	<div class="modal-footer">

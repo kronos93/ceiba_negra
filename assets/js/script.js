@@ -611,32 +611,28 @@ $(document).ready(function() {
 
     //USUARIOS
     var users_table = $('#users-table').DataTable();
-
-    $("#form-user").on('hidden.bs.modal', function() {
-        $(this).removeData('bs.modal');
-    });
-    $("#add-user").on('shown.bs.modal', function() {
-        $("#ion_addUser").on('submit', function(e) {
-            e.preventDefault();
-            var data = $(this).serializeArray();
-            $.ajax({
-                    url: base_url + "ajax/create_user/",
-                    type: "post",
-                    data: data,
-                    beforeSend: function(xhr) {
-                        //$("input[type='submit']").attr("disabled", true).next().css('visibility', 'visible');
-                    }
-                })
-                .done(function(response) {
-                    //ajax_done(that, huertos_table, "Huerto insertado correctamente", "insert", response);
-                })
-                .fail(function(response) {
-                    //ajax_fail(response);
-                });
-        });
+    $('#userModal').on('shown.bs.modal', function(e) {
+        console.log($("#frm-ion-user"));        
+        //Ocultar mensajes de la caja AJAX
+        ajax_msg.hidden();
+        var button = $(e.relatedTarget); // Boton que despliega el modal (Existe en el datatable
+        var btnType = button.data('btnType');
+        var config = {
+            'frm': '#frm-ion-user',
+            'urls': { 'edit': 'ajax/update_ion_user', 'add': 'ajax/add_ion_user' },
+            'msgs': { 'edit': 'Usuario actualizado correctamente.', 'add': 'Usuario agregado correctamente.' },
+            //'autoNumeric': ['superficie','precio_x_m2','precio'], //A que campos quitarle las comas y signos.
+            //'readonly': { 'inputs': '#id_manzana' }, //Que campos son de lectura para agregar y quitar
+            //'append': ["id_huerto"], //Que campo anexar de dtRow al data a enviar por AJAX
+            'btn': button, //Boton que disparó el evento de abrir modal
+            'dtTable': users_table, //Data table que se parseará
+        };
+        var genericFrm = new GenericFrm(config);
+        genericFrm[btnType]();
     }).on('hidden.bs.modal', function() {
         $(this).removeData('bs.modal');
     });
+
     //MAPA
     //Desplegar mapa
     var mapplic = $('#mapplic').mapplic({

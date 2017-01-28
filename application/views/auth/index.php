@@ -3,7 +3,7 @@
 		<div class="row">
 			<div class="col-xs-12">
 				<legend><?php echo lang('index_heading');?>
-                    <button  data-toggle="modal" data-target="#add-user" data-remote="<?= base_url()?>auth/create_user/" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Nuevo Usuario</button>
+                    <button  data-toggle="modal" data-target="#userModal" data-btn-type="add" data-remote="<?= base_url()?>auth/create_user/" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Nuevo Usuario</button>
                     <div class="clearfix"></div>
                 </legend>
             </div>
@@ -36,7 +36,7 @@
                                 </td>
                                 <td><?php echo ($user->active) ? anchor("auth/deactivate/".$user->id, lang('index_active_link'), ["class"=>"btn btn-success", "data-target"=>'#form-user', 'data-toggle'=>"modal"]) : anchor("auth/activate/". $user->id, lang('index_inactive_link'), ["class"=>"btn btn-danger"]);?>
                                 </td>
-                                <td><?php echo anchor("auth/edit_user/".$user->id, lang('edit_user_heading'), ["class"=>"btn btn-info","data-target"=>'#form-user','data-toggle'=>'modal']) ;?>
+                                <td><?php echo anchor("auth/edit_user/".$user->id, lang('edit_user_heading'), ["class"=>"btn btn-info","data-target"=>'#userModal','data-toggle'=>'modal','data-btn-type'=>"add"]) ;?>
                                 </td>
                             </tr>
                             <?php endforeach;?>
@@ -47,15 +47,9 @@
     </div>
     <!-- <p><?php echo anchor('auth/create_user', lang('index_create_user_link'))?> | <?php echo anchor('auth/create_group', lang('index_create_group_link'))?></p> -->
 </main>
-<div class="modal fade" id="add-user" tabindex="-1" role="dialog" aria-labelledby="modalAddUser" aria-hidden="true">
+<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">                  
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="form-user" tabindex="-1" role="dialog" aria-labelledby="modalEditUser" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
         </div>
     </div>
 </div>
