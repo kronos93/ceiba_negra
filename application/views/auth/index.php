@@ -9,38 +9,38 @@
             </div>
             <div class="col-xs-12">
                 <!-- <p><?php echo lang('index_subheading');?></p> -->
-                <div id="infoMessage"><?php echo $message;?></div>
+                <div id="infoMessage"><?= $message;?></div>
                 <table id="users-table" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th class="all"><?php echo lang('index_fname_th');?></th>
-                            <th><?php echo lang('index_lname_th');?></th>
-                            <th><?php echo lang('index_email_th');?></th>
-                            <th><?php echo lang('index_groups_th');?></th>
-                            <th class="all"><?php echo lang('index_status_th');?></th>
-                            <th class="all"><?php echo lang('index_action_th');?></th>
+                            <th class="all"><?= lang('index_fname_th'); ?></th>
+                            <th><?= lang('index_lname_th');?></th>
+                            <th><?= lang('index_email_th');?></th>
+                            <th><?= lang('index_groups_th');?></th>
+                            <th class="all"><?= lang('index_status_th');?></th>
+                            <th class="all"><?= lang('index_action_th');?></th>
                         </tr>
                     </thead>
-                        <tbody>
-                         <?php foreach ($users as $user) :?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($user->first_name, ENT_QUOTES, 'UTF-8');?></td>
-                                <td><?php echo htmlspecialchars($user->last_name, ENT_QUOTES, 'UTF-8');?></td>
-                                <td><?php echo htmlspecialchars($user->email, ENT_QUOTES, 'UTF-8');?></td>
-                                <td>
-                                    <ul>
-                                    <?php foreach ($user->groups as $group) :?>
-                                        <li><?= htmlspecialchars($group->name, ENT_QUOTES, 'UTF-8') ?></li>
-                                    <?php endforeach?>
-                                    </ul>
-                                </td>
-                                <td><?php echo ($user->active) ? anchor("auth/deactivate/".$user->id, lang('index_active_link'), ["class"=>"btn btn-success", "data-target"=>'#form-user', 'data-toggle'=>"modal"]) : anchor("auth/activate/". $user->id, lang('index_inactive_link'), ["class"=>"btn btn-danger"]);?>
-                                </td>
-                                <td><?php echo anchor("auth/edit_user/".$user->id, lang('edit_user_heading'), ["class"=>"btn btn-info","data-target"=>'#userModal','data-toggle'=>'modal','data-btn-type'=>"add"]) ;?>
-                                </td>
-                            </tr>
-                            <?php endforeach;?>
-                        </tbody>
+                    <tbody>
+                        <?php foreach ($users as $user) :?>
+                        <tr>
+                            <td><?= htmlspecialchars($user->first_name, ENT_QUOTES, 'UTF-8');?></td>
+                            <td><?= htmlspecialchars($user->last_name, ENT_QUOTES, 'UTF-8');?></td>
+                            <td><?= htmlspecialchars($user->email, ENT_QUOTES, 'UTF-8');?></td>
+                            <td>
+                                <ul>
+                                <?php foreach ($user->groups as $group) :?>
+                                    <li><?= htmlspecialchars($group->name, ENT_QUOTES, 'UTF-8') ?></li>
+                                <?php endforeach?>
+                                </ul>
+                            </td>
+                            <td><?php echo ($user->active) ? anchor("auth/deactivate/".$user->id, lang('index_active_link'), ["class"=>"btn btn-success", "data-target"=>'#form-user', 'data-toggle'=>"modal"]) : anchor("auth/activate/". $user->id, lang('index_inactive_link'), ["class"=>"btn btn-danger"]);?>
+                            </td>
+                            <td><?php echo anchor("auth/edit_user/".$user->id, lang('edit_user_heading'), ["class"=>"btn btn-info","data-target"=>'#userModal','data-toggle'=>'modal','data-btn-type'=>"add"]) ;?>
+                            </td>
+                        </tr>
+                        <?php endforeach;?>
+                    </tbody>
                 </table>
             </div>
         </div>

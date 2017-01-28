@@ -11,8 +11,9 @@ function format_numeric(action) {
     console.log("Dar formato de moneda y superficie");
     if ($('.superficie').length) {
         $('.superficie').autoNumeric(action, {
-        aSign:' m\u00B2', pSign:'s' 
-    }); //Averiguar más del plugin para evitar menores a 0
+            aSign: ' m\u00B2',
+            pSign: 's'
+        }); //Averiguar más del plugin para evitar menores a 0
     }
     $(".currency").autoNumeric(action, {
         aSign: "$ "
@@ -102,7 +103,7 @@ var GenericFrm = function(config) {
     if (config.readonly !== undefined) {
         this.readonly = config.readonly;
     }
-   
+
     this.dtTable = config.dtTable;
     this.autoNumeric = config.autoNumeric;
 
@@ -163,6 +164,7 @@ GenericFrm.prototype.submit = function() {
             }
         })
         .done(function(response) {
+            console.log(response);
             self.response = response;
             self.fnOnDone.apply(self);
         })
@@ -172,6 +174,7 @@ GenericFrm.prototype.submit = function() {
 }
 GenericFrm.prototype.ajaxAddDone = function() {
     this.frm[0].reset();
+    console.log(this.response);
     var newData = this.dtTable.row.add(this.response[0]).draw(false).node();
     $(newData).animate({ backgroundColor: 'yellow' }); //Animación para MAX
     this.dtTable.order([0, 'desc']).draw(); //Ordenar por id
@@ -487,14 +490,15 @@ $(document).ready(function() {
     //HUERTOS
     //Datatable de los huertos
     $('.multiplicar').on('keyup', multiplicar);
+
     function multiplicar() {
         //console.log($('.multiplicar'));
         var campos = $('.multiplicar');
         var resultado = 1;
-        for(var i = 0; i < campos.length; i++){
-            resultado*=($(campos[i]).autoNumeric('get'));
+        for (var i = 0; i < campos.length; i++) {
+            resultado *= ($(campos[i]).autoNumeric('get'));
         }
-        $('#precio').autoNumeric('set',resultado);
+        $('#precio').autoNumeric('set', resultado);
     }
     var huertos_table = $('#huertos-table').DataTable({
         "ajax": base_url + 'ajax/get_huertos_pmz',
@@ -599,7 +603,7 @@ $(document).ready(function() {
             'frm': '#frm-huerto',
             'urls': { 'edit': 'ajax/update_huerto', 'add': 'ajax/add_huerto' },
             'msgs': { 'edit': 'Huerto actualizado correctamente.', 'add': 'Huerto agregado correctamente.' },
-            'autoNumeric': ['superficie','precio_x_m2','precio'], //A que campos quitarle las comas y signos.
+            'autoNumeric': ['superficie', 'precio_x_m2', 'precio'], //A que campos quitarle las comas y signos.
             //'readonly': { 'inputs': '#id_manzana' }, //Que campos son de lectura para agregar y quitar
             'append': ["id_huerto"], //Que campo anexar de dtRow al data a enviar por AJAX
             'btn': button, //Boton que disparó el evento de abrir modal
@@ -612,7 +616,7 @@ $(document).ready(function() {
     //USUARIOS
     var users_table = $('#users-table').DataTable();
     $('#userModal').on('shown.bs.modal', function(e) {
-        console.log($("#frm-ion-user"));        
+        console.log($("#frm-ion-user"));
         //Ocultar mensajes de la caja AJAX
         ajax_msg.hidden();
         var button = $(e.relatedTarget); // Boton que despliega el modal (Existe en el datatable
