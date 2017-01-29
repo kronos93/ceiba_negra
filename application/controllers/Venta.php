@@ -577,7 +577,32 @@ class Venta extends CI_Controller
     {
         var_dump($this->generate);
     }
+    public function correos(){
+        $this->load->library('email');
+
+        $this->email->from('admin@huertoslaceiba.com', 'Administrador');
+        $this->email->to('samuel_-_rojas@hotmail.com');
+       // $this->email->cc('another@another-example.com');
+       // $this->email->bcc('them@their-example.com');
+
+        $this->email->subject('Email Test');
+        $this->email->message('Testing the email class.');
+
+        $this->email->send();
+
+        $this->email->clear();
+         $this->email->from('huertosl@huertoslaceiba.com', 'Administrador 2');
+        $this->email->to('samuel_-_rojas@hotmail.com');
+       // $this->email->cc('another@another-example.com');
+       // $this->email->bcc('them@their-example.com');
+
+        $this->email->subject('Email Test');
+        $this->email->message('Testing the email class.');
+
+        $this->email->send();
+    }
 }
+
 class Pago
 {
     private $concepto;

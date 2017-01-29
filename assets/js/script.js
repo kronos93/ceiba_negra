@@ -211,6 +211,7 @@ function templateCart(response) {
     var output = Mustache.render(template, response);
     document.getElementById("listaVenta").innerHTML = output;
     if ($('#precio').length && $('#enganche').length && $('#abono').length) {
+        format_numeric('init');
         $('#precio').autoNumeric('set', response.total);
         $('#enganche').autoNumeric('set', response.enganche);
         $('#abono').autoNumeric('set', response.abono);
@@ -237,7 +238,7 @@ function templateCart(response) {
 
             });
     });
-    format_numeric('init');
+
 }
 
 //Al cargar la página
@@ -327,17 +328,17 @@ $(document).ready(function() {
                     'porcentaje_penalizacion': 0,
                     'maximo_retrasos_permitidos': 0
                 };
-                /*for (var campo in data) {
+                for (var campo in data) {
                     var input = $('#' + campo + '');
                     if (!input.hasClass('currency')) {
                         data[campo] = input.val();
                     } else {
                         data[campo] = input.autoNumeric('get');
                     }
-                }*/
+                }
                 $.ajax({
                     data: data,
-                    url: base_url + "venta/prueba/",
+                    url: base_url + "venta/generacion_contrato/",
                     async: true,
                     type: 'post',
                     beforeSend: function() {
@@ -348,13 +349,13 @@ $(document).ready(function() {
                     }
                 });
             }
-            form.validate().settings.ignore = ":disabled,:hidden";
-            return form.valid();
+            form_venta.validate().settings.ignore = ":disabled,:hidden";
+            return form_venta.valid();
             //return true;
         },
         onFinishing: function(event, currentIndex) {
-            form.validate().settings.ignore = ":disabled";
-            return form.valid();
+            form_venta.validate().settings.ignore = ":disabled";
+            return form_venta.valid();
             //return true;
         },
         onFinished: function(event, currentIndex) {
