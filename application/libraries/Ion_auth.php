@@ -158,11 +158,18 @@ class Ion_auth
 				{
 					$message = $this->load->view($this->config->item('email_templates', 'ion_auth').$this->config->item('email_forgot_password', 'ion_auth'), $data, true);
 					$this->email->clear();
+					$this->email->set_header('MIME-Version', '1.0');
+					$this->email->set_header('Content-type', 'text/html; charset=utf-8');
+					$this->email->set_header('X-Priority', '3');
+					$this->email->set_header('X-MSMail-Priority', 'normal');
+					$this->email->set_header('X-Mailer', 'php');
+					$this->email->set_header('From', "huertoslaceiba.com<huertosl@huertoslaceiba.com>");
+					$this->email->set_newline("\r\n");
 					$this->email->from($this->config->item('admin_email', 'ion_auth'), $this->config->item('site_title', 'ion_auth'));
 					$this->email->to($user->email);
 					$this->email->subject($this->config->item('site_title', 'ion_auth') . ' - ' . $this->lang->line('email_forgotten_password_subject'));
 					$this->email->message($message);
-
+					
 					if ($this->email->send())
 					{
 						$this->set_message('forgot_password_successful');
