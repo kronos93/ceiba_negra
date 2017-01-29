@@ -66,6 +66,10 @@
 					<?php endif ?>
 			</div>
 		</div>
+		<div class="container-icons" >
+	      	<i class="fa"></i>
+		    <h4 class="message"></h4>
+		</div>
 	</div>
 	<?php echo form_hidden('id', $user->id);?>
 	<?php echo form_hidden($csrf); ?>

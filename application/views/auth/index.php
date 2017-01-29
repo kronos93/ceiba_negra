@@ -34,9 +34,9 @@
                                 <?php endforeach?>
                                 </ul>
                             </td>
-                            <td><?php echo ($user->active) ? anchor("auth/deactivate/".$user->id, lang('index_active_link'), ["class"=>"btn btn-success", "data-target"=>'#form-user', 'data-toggle'=>"modal"]) : anchor("auth/activate/". $user->id, lang('index_inactive_link'), ["class"=>"btn btn-danger"]);?>
+                            <td><?php echo ($user->active) ? anchor("auth/deactivate/".$user->id, lang('index_active_link'), ["class"=>"btn btn-success", "data-target"=>'#userModal', 'data-toggle'=>"modal"]) : anchor("auth/activate/". $user->id, lang('index_inactive_link'), ["class"=>"btn btn-danger"]);?>
                             </td>
-                            <td><?php echo anchor("auth/edit_user/".$user->id, lang('edit_user_heading'), ["class"=>"btn btn-info","data-target"=>'#userModal','data-toggle'=>'modal','data-btn-type'=>"add"]) ;?>
+                            <td><?php echo anchor("auth/edit_user/".$user->id, lang('edit_user_heading'), ["class"=>"btn btn-info","data-target"=>'#userModal','data-toggle'=>'modal','data-btn-type'=>"edit"]) ;?>
                             </td>
                         </tr>
                         <?php endforeach;?>

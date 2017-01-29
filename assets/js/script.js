@@ -164,7 +164,6 @@ GenericFrm.prototype.submit = function() {
             }
         })
         .done(function(response) {
-            console.log(response);
             self.response = response;
             self.fnOnDone.apply(self);
         })
@@ -181,6 +180,8 @@ GenericFrm.prototype.ajaxAddDone = function() {
     ajax_msg.show_success(this.msg);
 }
 GenericFrm.prototype.ajaxEditDone = function() {
+    console.log(this.response[0]);
+
     for (var data in this.response[0]) {
         this.parseDtRow[data] = this.response[0][data];
     }
@@ -611,10 +612,20 @@ $(document).ready(function() {
         };
         var genericFrm = new GenericFrm(config);
         genericFrm[btnType]();
+        genericFrm.prototype.edit = function() { console.log("Haz nada"); };
     });
 
     //USUARIOS
-    var users_table = $('#users-table').DataTable();
+    var users_table = $('#users-table').DataTable({
+        "columns": [ //Atributos para la tabla
+            { "data": "first_name" },
+            { "data": "last_name" },
+            { "data": "email" },
+            { "data": "groups" },
+            { "data": "btn_activar_desactivar" },
+            { "data": "btn_editar" },
+        ]
+    });
     $('#userModal').on('shown.bs.modal', function(e) {
         console.log($("#frm-ion-user"));
         //Ocultar mensajes de la caja AJAX
@@ -632,7 +643,15 @@ $(document).ready(function() {
             'dtTable': users_table, //Data table que se parseará
         };
         var genericFrm = new GenericFrm(config);
-        genericFrm[btnType]();
+        if (btnType) {
+            genericFrm.edit = function() {
+                console.log("Haz nada");
+                this.url = this.urls.edit;
+                this.msg = this.msgs.edit;
+                this.fnOnDone = this.ajaxEditDone;
+            };
+            genericFrm[btnType]();
+        }
     }).on('hidden.bs.modal', function() {
         $(this).removeData('bs.modal');
     });
