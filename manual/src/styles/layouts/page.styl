@@ -1,0 +1,52 @@
+.page
+	background #fff
+	box-shadow 5px 5px 20px darken(#ccc,30%)
+	// padding 80px
+	padding 20px 10px
+	margin 10px 0px
+	// min-height 27cm
+	position relative
+	box-sizing border-box
+	.encabezado
+		absolute top 0 left 0
+		height 80px
+		width 100%
+		display flex
+		align-items center
+		// padding 0px 80px
+		padding 20px 10px
+		box-sizing border-box
+		background-color #b88d2c
+		.wrap-img
+			display block
+			height 60px
+			width 60px
+			background url('../images/logos/logo_blanco.png') no-repeat
+			background-position center center
+			background-size cover
+			line-height 80px
+	.footer
+		display block
+		absolute bottom 0 left 0
+		width 100%
+		height 60px
+		// padding 0px 30px
+		padding 20px 10px
+		box-sizing border-box
+		// background-color green
+		span.counter
+			width 30px
+			height 30px
+			border-radius 50%
+			line-height 30px
+			text-align center
+			border 2px solid #b88d2c
+			float right
+			color #000
+	+from-width(4,anti-overlap:false)
+		padding 80px
+		min-height 27cm
+		.encabezado
+			padding 0px 80px
+		.footer
+			padding 0px 30px

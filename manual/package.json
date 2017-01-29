@@ -1,0 +1,29 @@
+{
+  "name": "huertoslaceiba",
+  "version": "1.0.0",
+  "description": "Manual de usuario",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "MaxTec",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.18.5",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-cache": "^0.4.5",
+    "gulp-concat": "^2.6.1",
+    "gulp-imagemin": "^3.1.1",
+    "gulp-minify-css": "^1.2.4",
+    "gulp-plumber": "^1.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-stylus": "^2.6.0",
+    "gulp-uglify": "^2.0.0",
+    "nib": "^1.1.2",
+    "rupture": "^0.6.2"
+  },
+  "dependencies": {
+    "flexboxgrid": "^6.3.1"
+  }
+}

@@ -1,0 +1,144 @@
+html
+	height:100%
+	position relative
+	overflow-x hidden
+body
+	position relative
+	height: 100%
+	width:100%
+	font-family: $font-lato
+	overflow-x hidden
+	background rgba(#ccc,60%)
+// Estilos de Fuentes Globales
+a
+	text-decoration: none
+	color $blackColor
+	// &:hover
+	// 	color: darken($pinkColor, 30%)
+h1
+	font-family: $font-raleway
+	font-size $texth1
+	text-transform uppercase
+	font-weight bold
+	margin 15px 0px
+h2, h3, h4, h5, h6
+	font-family: $font-sans
+p
+	font-family $font-sans
+	font-size:15px
+	font-weight:300
+	letter-spacing:0.6px
+	color: #4A4A4A
+	line-height: 21px
+	margin-bottom 10px
+	text-align left
+h2
+	font-size: $texth2
+h3
+	font-size: $texth3
+h4
+	font-size: $texth4
+strong 
+	font-weight: 700
+small
+	font-size: 12px
+.container
+	max-width 960px
+.container-fluid
+	padding-right: 1rem
+	padding-left: 1rem
+.link
+	color #867462
+	text-decoration underline
+	font-weight 400
+.no-padding
+	padding:0!important
+.text-center
+	text-align:center
+.clearfix
+	&:after,&:before
+		content ''
+		display block
+		clear both
+.text-left
+	text-align:left
+.text-right
+	text-align:right
+.pull-right
+	float: right!important
+.pull-left
+	float: left!important
+// Alineaciones flex 
+.self-bottom
+	align-self flex-end
+.self-top
+	align-self flex-start
+.img-responsive
+	max-width:100%
+	height auto
+.center-block
+	display:block
+	margin:0 auto
+// Herraminetas para responsividad
+.visible
+	&-xs,&-sm,&-md,&-lg
+		display:none!important
+	&-inline-xs,&-inline-sm,&-inline-md,&-inline-lg
+		display:none!important
+	//@media only screen and (max-width: 767px)
+	+between(0,3,anti-overlap:-1px)
+		&-xs
+			display:block!important
+		&-inline-xs
+			display:inline-block!important
+	//Tablets @media only screen and (min-width: 768px) and (max-width: 1023px)
+	+from-width(4, anti-overlap:false)
+		&-sm
+			display:block!important
+		&-inline-sm
+			display:inline-block!important
+	//Small Desktops @media only screen and (min-width: 1024px)
+	+from-width(5)
+		&-md
+			display:block!important
+		&-inline-md
+			display:inline-block!important
+	//Desktops @media only screen and (min-width: 1201px)
+	+from-width(6)
+		&-lg
+			display:block!important
+		&-inline-lg
+			display:inline-block!important
+.hidden
+	display none!important
+	+between(0,3,anti-overlap:-1px)
+		&-xs
+			display:none!important
+	//Tablets ()
+	+from-width(4, anti-overlap:false)
+		&-sm
+			display:none!important
+	//small Desktops
+	+from-width(5)
+		&-md
+			display:none!important
+	// Desktops
+	+from-width(6)
+		&-lg
+			display:none!important
+.initial-order
+	+between(0,3,anti-overlap:-1px)
+		&-xs
+			order:0
+	//Tablets ()
+	+from-width(4, anti-overlap:false)
+		&-sm
+			order:0
+	//small Desktops
+	+from-width(5)
+		&-md
+			order:0
+	// Desktops
+	+from-width(6)
+		&-lg
+			order:0

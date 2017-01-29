@@ -28,3 +28,4 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 #Node Modules
 #-------------------------
 /assets/node_modules/
+/manual/node_modules/
