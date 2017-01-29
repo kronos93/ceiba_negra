@@ -3,7 +3,7 @@
     <div class="container-fluid container">
         <div class="row">
             <div class="col-xs-12">
-                <form id="example-basic">
+                <form id="frm-venta">
                     <h3>Datos del Cliente:</h3>
                     <div>
                         <div class="container-fluid">

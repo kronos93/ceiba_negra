@@ -204,18 +204,16 @@ GenericFrm.prototype.on_submit = function() {
 };
 ///////////////////////////////////////////////////
 function templateCart(response) {
-
     $("#shopCartSale")
         .find('span')
         .attr("data-venta", response.count);
-
     var template = document.getElementById('template-venta').innerHTML;
     var output = Mustache.render(template, response);
     document.getElementById("listaVenta").innerHTML = output;
     if ($('#precio').length && $('#enganche').length && $('#abono').length) {
-        /*$('#precio').autoNumeric('set', response.total);
+        $('#precio').autoNumeric('set', response.total);
         $('#enganche').autoNumeric('set', response.enganche);
-        $('#abono').autoNumeric('set', response.abono);*/
+        $('#abono').autoNumeric('set', response.abono);
     }
     //Validar cuando se vacie el carrito
     if (!response.count) {
@@ -239,7 +237,7 @@ function templateCart(response) {
 
             });
     });
-
+    format_numeric('init');
 }
 
 //Al cargar la página
@@ -292,12 +290,12 @@ $(document).ready(function() {
         }
     });
     ///////////////////////////////////////////////
-    var form = $("#example-basic");
-    form.validate({
+    var form_venta = $("#frm-venta");
+    form_venta.validate({
         errorPlacement: function errorPlacement(error, element) { element.before(error); },
         lang: 'es'
     });
-    form.steps({
+    form_venta.steps({
         headerTag: "h3",
         bodyTag: "div",
         transitionEffect: "slide",

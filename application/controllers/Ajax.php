@@ -341,6 +341,7 @@ class Ajax extends CI_Controller
     }
     public function update_ion_user(){
         header("Content-type: application/json; charset=utf-8");
+        $this->form_validation->set_error_delimiters('', '');
         $id = $this->input->post('id');
         $user = $this->ion_auth->user($id)->row();
 		$groups=$this->ion_auth->groups()->result_array();
@@ -444,7 +445,9 @@ class Ajax extends CI_Controller
 
 			    }
 
-			}
+			}else{
+                echo validation_errors();
+            }
 		}
 
 		// display the edit user form
