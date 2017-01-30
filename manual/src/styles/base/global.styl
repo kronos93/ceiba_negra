@@ -1,13 +1,11 @@
 html
 	height:100%
 	position relative
-	overflow-x hidden
 body
 	position relative
 	height: 100%
 	width:100%
 	font-family: $font-lato
-	overflow-x hidden
 	background rgba(#ccc,60%)
 // Estilos de Fuentes Globales
 a
@@ -34,6 +32,9 @@ p
 	text-align left
 h2
 	font-size: $texth2
+	text-transform uppercase
+	font-weight bold
+	margin-bottom 10px
 h3
 	font-size: $texth3
 h4
@@ -42,6 +43,13 @@ strong
 	font-weight: 700
 small
 	font-size: 12px
+// .b-lazy
+// 	opacity:0
+// 	transform: scale(3)
+// 	transition: all 500ms
+// .b-loaded
+// 	opacity:1
+// 	transform: scale(1)
 .container
 	max-width 960px
 .container-fluid

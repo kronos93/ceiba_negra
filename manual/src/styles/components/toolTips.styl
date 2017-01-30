@@ -1,0 +1,43 @@
+.mapplicManual
+	position relative
+.toolTip
+	background-color $primaryColor
+	display inline-block
+	height 30px
+	width 30px
+	text-align center
+	line-height 30px
+	border-radius 50%
+	box-shadow 1px 1px 4px #000
+	position absolute
+	&:after
+		content attr(data-text)
+		position absolute
+		background #ccc
+		border-radius 5px
+		padding 15px
+		min-width 13em
+		line-height normal
+		text-align left
+		display none
+		z-index 1
+	&:hover:after
+		display block
+	&.search
+		top 45px
+		left 160px
+	&.contador
+		top 90px 
+		left 170px
+	&.controls
+		top 340px
+		left 220px
+	&.cdManzana
+		top 40px
+		right 0px
+	&.huerto
+		top 50%
+		left 50%
+	&.sidebar
+		top 180px
+		left 0px

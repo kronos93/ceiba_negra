@@ -53,8 +53,8 @@ gulp.task('styles', function() {
 });
 
 gulp.task('scripts', function() {
-    // return gulp.src('src/scripts/**/*.js')//para todos los scripts
-    return gulp.src(['src/scripts/slicknav/**/*.js', 'src/scripts/sliders/**/*.js', 'src/scripts/tools/**/*.js'])
+    return gulp.src('src/scripts/**/*.js') //para todos los scripts
+        // return gulp.src(['src/scripts/slicknav/**/*.js', 'src/scripts/sliders/**/*.js', 'src/scripts/tools/**/*.js'])
         .pipe(plumber({
             errorHandler: function(error) {
                 console.log(error.message);
