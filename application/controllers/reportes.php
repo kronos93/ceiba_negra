@@ -34,8 +34,8 @@ class Reportes extends CI_Controller
         }
             
     }
-    public function historial($id){
-        $condicion = ['id_venta' => $id];
+    public function pagares($id){
+        $condicion = ['historial.id_venta' => $id];
         $historial = $this->Historial_model->get($condicion);
         $pagares = "";
         $count = 1;
@@ -52,7 +52,7 @@ class Reportes extends CI_Controller
                                         </div>
                                         <div class='pagare__body'>
                                             <p>
-                                                RECIBI: DEL (LA) C. <strong>HUGO SAUL FRANCO PUERTO</strong> LA CANTIDAD DE <strong>$ ".number_format($historial->abono,2)." PESOS 00/100 M.N</strong> POR
+                                                RECIBI: DEL (LA) C. <strong>{$historial->first_name} {$historial->last_name}</strong> LA CANTIDAD DE <strong>$ ".number_format($historial->abono,2)." PESOS 00/100 M.N</strong> POR
                                                 CONCEPTO DE PAGO PARCIAL DE LA CESION PRIVADA , DE DERECHOS EN CO-PROPIEDAD DEL TERRENO EN BREÑA No. 21 MZ. 15B DEL PREDIO 'LA CEIBA', UBICADO EN EL MUNICIPIO DE
                                                 LAZARO CARDENAS, QUINTANA ROO.
                                             </p>
@@ -75,7 +75,7 @@ class Reportes extends CI_Controller
                                         </div>
                                         <div class='pagare__body'>
                                             <p>
-                                                RECIBI: DEL(A) C. <strong>HUGO SAUL FRANCO PUERTO</strong> LA CANTIDAD DE <strong>$ ".number_format($historial->abono,2)." PESOS 00/100 M.N</strong> POR
+                                                RECIBI: DEL(A) C. <strong>{$historial->first_name} {$historial->last_name}</strong> LA CANTIDAD DE <strong>$ ".number_format($historial->abono,2)." PESOS 00/100 M.N</strong> POR
                                                 CONCEPTO DE PAGO PARCIAL DE LA CESION PRIVADA , DE DERECHOS EN CO-PROPIEDAD DEL TERRENO EN BREÑA No. 21 MZ. 15B DEL PREDIO 'LA CEIBA', UBICADO EN EL MUNICIPIO DE
                                                 LAZARO CARDENAS, QUINTANA ROO.
                                             </p>

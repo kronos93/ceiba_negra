@@ -24,6 +24,12 @@ class Venta extends CI_Controller
         $data['ingresos'] = $this->Ingreso_model->get();     
         $this->load->view('templates/template', $data);
     }
+    public function historial_de_ventas(){
+        $data['title'] = "Historial de ventas";
+        $data['body'] = "historial_ventas";
+        $data['ventas'] = $this->Venta_model->get();
+        $this->load->view('templates/template', $data);
+    }
     public function generar_contrato()
     {
         //Obtener datos de la manzanas
@@ -291,15 +297,28 @@ class Venta extends CI_Controller
                     $db_pago->id_venta = $id_venta;
                     $db_pago->created_at = $now->toDateTimeString();
                     $db_pago->updated_at = $now->toDateTimeString();
-                   /* if($key == 0){
+                    if($key == 0){
                         $db_pago->id_ingreso = $this->input->post('id_ingreso');
+                        $db_pago->fecha_pago = $pago->getFecha()->format('Y-m-d');
+                        if($this->input->post('confirm') == 'yes'){
+                            $db_pago->descuento = $pago->getAbono() * .05;                            
+                        }else{
+                            $db_pago->descuento = 0;
+                        }
+                        $db_pago->estado = 1; //Pagado
+                        $db_pago->extra = 0; //Pagado
                     }else{
                         $db_pago->id_ingreso = 0;
-                    }*/
+                        $db_pago->fecha_pago = NULL;
+                        $db_pago->descuento = 0;
+                        $db_pago->estado = 0; //No Pagado
+                        $db_pago->extra = 0; //Pagado
+                    }
                     array_push($db_historial,$db_pago);
                 }
-                var_dump($db_historial);
+                
                 $this->Historial_model->insert_batch($db_historial);
+                //$this->cart->destroy();
             }
         }
     }
@@ -627,15 +646,34 @@ class Historial
             foreach($this->historial as $key => $row){
                 if($key === 0){
                     $this->historial[$key]->setFecha($this->fecha_inicial);
+                    $dia = ($this->fecha_inicial->day);
+                    if($dia <= 5){
+                        $next = "quincena";
+                        $fecha->startOfMonth();
+                    }else if($dia > 5 && $dia <= 15){
+                        $next = "fin_de_mes";
+                    }else{
+                        $new_date_end = Carbon::createFromFormat('d-m-Y', $fecha->format('d-m-Y'));
+                        $endDay = $new_date_end->endOfMonth()->day;
+                       
+                        if(($dia + 10) > $endDay){
+                            $fecha = $new_date_end->addDay(1);
+                            
+                            $next = 'quincena';
+                        }else{
+                            $next = 'fin_de_mes';
+                        }
+                    }
                 }else{
                     if($next == 'fin_de_mes'){
                         $fecha = $fecha->endOfMonth();
                         $new_date = Carbon::createFromFormat('d-m-Y', $fecha->format('d-m-Y'));
                         $row->setFecha($new_date);
-                        $this->historial[$key] = $row;           
+                        $this->historial[$key] = $row;   
+                        $fecha = $fecha->endOfMonth()->addDay(1);        
                         $next = "quincena";
                     }else if($next == 'quincena'){ 
-                        $fecha = $fecha->addDay(15);
+                        $fecha = $fecha->addDay(14);
                         $new_date = Carbon::createFromFormat('d-m-Y', $fecha->format('d-m-Y'));
                         $row->setFecha($new_date);
                         $this->historial[$key] = $row;          

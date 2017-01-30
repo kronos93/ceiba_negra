@@ -82,9 +82,9 @@ $.extend(true, $.fn.dataTable.defaults, {
     "language": {
         "url": lang_esp_datatables
     },
-    "search": {
+    /*"search": {
         "caseInsensitive": false
-    },
+    },*/
     "responsive": true,
     "deferRender": true,
     "pageLength": 25,
@@ -189,7 +189,7 @@ GenericFrm.prototype.submit = function() {
         })
         .fail(function(response) {
             ajax_msg.show_error(response);
-        });;
+        });
 }
 GenericFrm.prototype.ajaxAddDone = function() {
     this.frm[0].reset();
@@ -404,17 +404,32 @@ $(document).ready(function() {
             data.abono = $('#abono').autoNumeric('get');
             console.log(data);
             $.ajax({
-                data: data,
-                url: base_url + "venta/guardar_contrato/",
-                async: true,
-                type: 'post',
-                beforeSend: function() {
+                    data: data,
+                    url: base_url + "venta/guardar_contrato/",
+                    async: true,
+                    type: 'post',
+                    beforeSend: function() {
+                        //$('a[href="#finish"]').attr("disabled", true);
+                    },
+                    success: function(xhr) {
 
-                },
-                success: function(xhr) {
-
-                }
-            });
+                    }
+                }).done(function(response) {
+                    /* swal({
+                             title: "Datos guardos",
+                             text: "Se ha generado un contrato satisfactoriamente",
+                             type: "info",
+                             //showCancelButton: true,
+                             closeOnConfirm: false,
+                             showLoaderOnConfirm: true,
+                         },
+                         function() {
+                             window.location.href = base_url + "venta/historial_de_ventas";
+                         });*/
+                })
+                .fail(function(response) {
+                    /*swal("Algo salio mal");*/
+                });
         },
         labels: {
             cancel: "Cancelar",
@@ -716,7 +731,7 @@ $(document).ready(function() {
     }).on('hidden.bs.modal', function() {
         $(this).removeData('bs.modal');
     });
-
+    var historial_ventas_table = $('#historial-ventas-table').DataTable();
     //MAPA
     //Desplegar mapa
     var mapplic = $('#mapplic').mapplic({

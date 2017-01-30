@@ -7,12 +7,13 @@ class Venta_model extends CI_Model {
         parent::__construct();
         $this->load->database();
     }
-    public function get($condicion){
+    public function get($condicion = array()){
        
         $this->db->from($this->table);
         if (count($condicion)) {
             $this->db->where($condicion);
         }
+        $this->db->join('users','ventas.id_cliente = users.id','left');
         $query = $this->db->get();
         return $query->result();
     }

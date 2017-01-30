@@ -12,6 +12,8 @@ class Historial_model extends CI_Model {
         if (count($condicion)) {
             $this->db->where($condicion);
         }
+        $this->db->join('ventas','historial.id_venta = ventas.id_venta','left');
+        $this->db->join('users','ventas.id_cliente = users.id','left');
         $query = $this->db->get();
         return $query->result();
     }
