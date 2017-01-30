@@ -1282,6 +1282,7 @@ h2 {
 }
 h3 {
   font-size: 18px;
+  font-weight: bold;
 }
 h4 {
   font-size: 16px;
@@ -1291,6 +1292,9 @@ strong {
 }
 small {
   font-size: 12px;
+}
+ul li {
+  line-height: 20px;
 }
 .container {
   max-width: 960px;
@@ -1610,6 +1614,7 @@ table tbody tr td {
 @media only screen and (min-width: 768px) {
   .page {
     padding: 80px;
+    padding-top: 90px;
     min-height: 27cm;
   }
   .page .encabezado {
