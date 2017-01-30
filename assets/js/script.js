@@ -350,6 +350,7 @@ $(document).ready(function() {
                     'cp': '',
                     'testigo_1': '',
                     'testigo_2': '',
+                    'ciudad_expedicion': '',
                     'tipo_historial': '',
                     'confirmyes': '',
                     'confirmno': '',
@@ -379,7 +380,7 @@ $(document).ready(function() {
                         tinymce.activeEditor.setContent("");
                     },
                     success: function(xhr) {
-                        console.log(xhr.html);
+
                         tinymce.activeEditor.selection.setContent(xhr.html);
                     }
                 });
@@ -396,7 +397,24 @@ $(document).ready(function() {
             //return true;
         },
         onFinished: function(event, currentIndex) {
-            console.log($(this).serialize());
+            var data = $(this).serializeObject();
+            data.contrato_html = tinymce.activeEditor.getContent();
+            data.precio = $('#precio').autoNumeric('get');
+            data.enganche = $('#enganche').autoNumeric('get');
+            data.abono = $('#abono').autoNumeric('get');
+            console.log(data);
+            $.ajax({
+                data: data,
+                url: base_url + "venta/guardar_contrato/",
+                async: true,
+                type: 'post',
+                beforeSend: function() {
+
+                },
+                success: function(xhr) {
+
+                }
+            });
         },
         labels: {
             cancel: "Cancelar",
@@ -656,7 +674,6 @@ $(document).ready(function() {
         };
         var genericFrm = new GenericFrm(config);
         genericFrm[btnType]();
-        genericFrm.prototype.edit = function() { console.log("Haz nada"); };
     });
 
     //USUARIOS

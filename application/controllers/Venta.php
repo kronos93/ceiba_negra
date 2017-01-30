@@ -12,6 +12,8 @@ class Venta extends CI_Controller
         $this->load->model('Ingreso_model');
         $this->load->model('Manzana_model');
         $this->load->model('Huerto_model');
+        $this->load->model('Venta_model');
+        $this->load->model('Historial_model');
     }
     public function index()
     {
@@ -19,141 +21,8 @@ class Venta extends CI_Controller
         $data['body'] = "venta";
         $fecha = Carbon::now();
         $data['fecha'] = $fecha->format('d-m-Y');
-        $data['ingresos'] = $this->Ingreso_model->get();
-       
+        $data['ingresos'] = $this->Ingreso_model->get();     
         $this->load->view('templates/template', $data);
-    }
-    public function pdf(){
-        $html = "";
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml("");
-
-        // (Optional) Setup the paper size and orientation
-        $dompdf->setPaper('A4', 'portrait');
-
-        // Render the HTML as PDF
-        $dompdf->render();
-
-        // Output the generated PDF to Browser
-        $dompdf->stream('hola.pdf',array('Attachment'=>0));
-    }
-
-    public function maxpdf(){
-        $html = "<html>
-            <style>
-                h1,h2,h3,h4,h5,h6,p{
-                    margin: 0px;
-                }
-                table {
-                    width:100%;
-                }
-                table td{
-                    position: relative;
-                    border: 1px solid #ff0000;
-                    padding: 10px;
-                    border:1px dashed #ccc;
-                    background: url('".base_url()."assets/img/logos/logo-small.png');
-                    background-position: center center;
-                    background-repeat: no-repeat;
-                    width: 50%;
-                }
-                /*@page {
-                    margin: 1cm 1cm 1cm 1cm;
-                }*/
-                body{
-                    font-family: 'Helvetica';
-                }
-               .pagare__header h3 {
-                    font-size: 9pt;
-                    text-transform:uppercase;
-                    text-align:right;
-                }
-                .pagare__header p{
-                    color: #B88D2C;
-                    font-size: 9pt;
-                    padding: 5px 0px 10px;
-                    text-align:right;
-                }
-                .pagare__body p {
-                    font-size: 8pt;
-                    text-align: justify;
-                }
-                .pagare__footer p {
-                    font-size: 9pt;
-                    text-align: center;
-                }
-                .pagare__footer .copy {
-                    font-size: 9pt;
-                    text-align: right;
-                    color: #ccc;
-                    text-transform: uppercase;
-                }
-            </style>
-            <table>
-                <thead>
-                    
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <div class='pagare'>                            
-                                <div class='pagare__header'>
-                                    <h3>Recibo de Dinero 30 de 90 <strong>Fecha:31/11/2016</strong></h3>
-                                    <p><strong>FOLIO:MT-3456-345678</strong></p>
-                                </div>
-                                <div class='pagare__body'>
-                                   <p>
-                                        RECIBI: DEL(A) C. <strong>HUGO SAUL FRANCO PUERTO</strong> LA CANTIDAD DE <strong>500 PESOS 00/100 M.N</strong> POR
-                                        CONCEPTO DE PAGO PARCIAL DE LA CESION PRIVADA , DE DERECHOS EN CO-PROPIEDAD DEL TERRENO EN BREÑA No. 21 MZ. 15B DEL PREDIO 'LA CEIBA', UBICADO EN EL MUNICIPIO DE
-                                        LAZARO CARDENAS, QUINTANA ROO.
-                                    </p>
-
-                                </div>
-                                <div class='pagare__footer'>
-                                    <p>RECIBI:</p>
-                                    <br><br><br>
-                                    <p>FRANCISCO ENRIQUE MARTINEZ CORDERO</p>
-                                    <p class='copy'>Original</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class='pagare'>
-                                <div class='pagare__header'>
-                                    <h3>Recibo de Dinero 30 de 90 <strong>Fecha:31/11/2016</strong></h3>
-                                    <p><strong>FOLIO:MT-3456-345678</strong></p>
-                                </div>
-                                <div class='pagare__body'>
-                                   <p>
-                                        RECIBI: DEL(A) C. <strong>HUGO SAUL FRANCO PUERTO</strong> LA CANTIDAD DE <strong>500 PESOS 00/100 M.N</strong> POR
-                                        CONCEPTO DE PAGO PARCIAL DE LA CESION PRIVADA , DE DERECHOS EN CO-PROPIEDAD DEL TERRENO EN BREÑA No. 21 MZ. 15B DEL PREDIO 'LA CEIBA', UBICADO EN EL MUNICIPIO DE
-                                        LAZARO CARDENAS, QUINTANA ROO.
-                                    </p>
-                                </div>
-                                <div class='pagare__footer'>
-                                    <p>RECIBI:</p>
-                                    <br><br><br>
-                                    <p>FRANCISCO ENRIQUE MARTINEZ CORDERO</p>
-                                    <p class='copy'>Original</p>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </html>";
-        $options = new Options();
-        $options->set('isRemoteEnabled', TRUE);
-        $dompdf = new Dompdf($options);
-        $dompdf->loadHtml($html);
-        
-        // (Optional) Setup the paper size and orientation
-        $dompdf->setPaper('A4', 'portrait');
-        // Render the HTML as PDF
-        $dompdf->render();
-        // Output the generated PDF to Browser
-        $dompdf->stream('hola.pdf',array('Attachment'=>0));
-        // echo $html;
     }
     public function generar_contrato()
     {
@@ -331,7 +200,7 @@ class Venta extends CI_Controller
         $domicilio_cliente .= ($this->input->post('estado')) ? " Estado: ".$this->input->post('estado') : "";
         $domicilio_cliente .= ($this->input->post('ciudad')) ? " Ciudad: ".$this->input->post('ciudad') : "";
         $domicilio_cliente .= ($this->input->post('cp')) ? " Codigo postal: ".$this->input->post('cp') : "";
-        $ciudad = $this->input->post('ciudad');
+        $ciudad = $this->input->post('ciudad_expedicion');
 
         $testigo_1 = $this->input->post('testigo_1');
         $testigo_2 = $this->input->post('testigo_2');
@@ -376,7 +245,65 @@ class Venta extends CI_Controller
         //$data['output'] = $output;
         //$this->load->view('./templates/contrato/prueba', $data);
     }
-
+    public function guardar_contrato(){
+        $email    = strtolower($this->input->post('email'));
+        $identity =  $email ;
+        $password = 'usuario1234';
+        $additional_data = [
+            'first_name' => $this->input->post('first_name'),
+            'last_name' => $this->input->post('last_name'),
+            'phone' => $this->input->post('phone'),
+            'calle' => $this->input->post('calle'),
+            'no_ext' => $this->input->post('no_ext'),
+            'no_int' => $this->input->post('no_int' ),
+            'colonia' => $this->input->post('colonia'),
+            'municipio' => $this->input->post('municipio'),
+            'estado' => $this->input->post('estado'),
+            'ciudad' => $this->input->post('ciudad'),
+            'cp' => $this->input->post('cp'),
+        ];
+        $group = array('4');
+        if($idNewUser = $this->ion_auth->register($identity, $password, $email, $additional_data,$group)){
+            $venta = [
+                'id_cliente' => $idNewUser,
+                'id_lider' =>  $this->input->post('id_lider'),
+                'estado' => 0,//En proceso de Pago
+                'contrato_html' => html_entity_decode($this->input->post('contrato_html')),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ];
+            $id_venta = $this->Venta_model->insert($venta);
+            if($id_venta){
+                $db_historial = [];
+                
+                $precio = $this->input->post('precio');
+                $enganche = $this->input->post('enganche');
+                $abono = $this->input->post('abono');
+                $fecha_init = $this->input->post('fecha_init');
+                $tipo_historial = $this->input->post('tipo_historial');
+                $historial = new Historial($precio,$enganche,$abono,$fecha_init,$tipo_historial);
+                $now = Carbon::now();
+                foreach ($historial->getHistorial() as $key => $pago) {
+                    $db_pago = new stdClass();
+                    $db_pago->fecha = $pago->getFecha()->format('Y-m-d');
+                    $db_pago->concepto = $pago->getConcepto();
+                    $db_pago->abono = $pago->getAbono();
+                    $db_pago->id_venta = $id_venta;
+                    $db_pago->created_at = $now->toDateTimeString();
+                    $db_pago->updated_at = $now->toDateTimeString();
+                   /* if($key == 0){
+                        $db_pago->id_ingreso = $this->input->post('id_ingreso');
+                    }else{
+                        $db_pago->id_ingreso = 0;
+                    }*/
+                    array_push($db_historial,$db_pago);
+                }
+                var_dump($db_historial);
+                $this->Historial_model->insert_batch($db_historial);
+            }
+        }
+    }
+    
     private $generate=[];
     public function read()
     {

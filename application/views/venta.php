@@ -12,7 +12,7 @@
                                     <label class="pull-right" for="clientes_autocomplete">Buscar Cliente</label>
                                     <div class="clearfix"></div>
                                     <div class="input-group">
-                                        <input id="clientes_autocomplete" type="text" class="form-control" name="" />
+                                        <input id="clientes_autocomplete" type="text" class="form-control" name="cliente" />
                                         <div class="input-group-addon"><span class="fa fa-search"></span></div>
                                     </div>
                                 </div>
@@ -85,7 +85,7 @@
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6">
                                     <label class="required" for="ciudad">Ciudad de expedición</label>
-                                    <input type="text" class="form-control required" name="ciudad" placeholder="Cancún" required />
+                                    <input type="text" class="form-control required" name="ciudad_expedicion" id="ciudad_expedicion" placeholder="Cancún" required />
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6">
                                     <label class="required" for="testigo_1">Nombre completo de testigo 1</label>
@@ -137,8 +137,6 @@
                                         <label for="confirmyes">Sí:</label>
                                         <input id="confirmno" type="radio" name="confirm" value="no">
                                         <label for="confirmno">No:</label>
-                                        <input type="hidden" name="JOBCoG4S" value="CuUQ0HlbcOEhokFiY6Bz">
-                                        <input type="hidden" name="id" value="6">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -171,7 +169,7 @@
                                 <legend>Pago</legend>
                                 <div class="form-group col-xs-12 col-sm-3">
                                     <label class="required" for="manzana">Seleccione el ingreso</label>
-                                    <select name="#" id="" class="form-control">
+                                    <select name="id_ingreso" id="id_ingreso" class="form-control">
                                         <?php foreach ($ingresos as $ingreso) : ?>
                                         <option value="<?= $ingreso->id_ingreso?>">
                                             <?= $ingreso->nombre?>
