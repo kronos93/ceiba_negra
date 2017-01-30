@@ -16,6 +16,8 @@ class Reportes extends CI_Controller
         $this->load->model('Historial_model');
     }
     public function contrato($id){
+        ini_set('memory_limit', '1024M');
+        set_time_limit(60);
         $condicion = ['id_venta' => $id];
         $ventas = $this->Venta_model->get($condicion);
         foreach($ventas as $venta){
@@ -35,6 +37,8 @@ class Reportes extends CI_Controller
             
     }
     public function pagares($id){
+        ini_set('memory_limit', '1024M');
+        set_time_limit(60);
         $condicion = ['historial.id_venta' => $id];
         $historial = $this->Historial_model->get($condicion);
         $pagares = "";

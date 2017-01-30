@@ -402,8 +402,16 @@ $(document).ready(function() {
             data.precio = $('#precio').autoNumeric('get');
             data.enganche = $('#enganche').autoNumeric('get');
             data.abono = $('#abono').autoNumeric('get');
-            console.log(data);
-            $.ajax({
+            swal({   
+                    title: "¿Desea guardar los datos?",
+                    text: "Generar contrato",
+                    type: "info",
+                    showCancelButton: true,
+                    closeOnConfirm: false,
+                    showLoaderOnConfirm: true,
+            }, 
+            function () {   
+               $.ajax({
                     data: data,
                     url: base_url + "venta/guardar_contrato/",
                     async: true,
@@ -415,21 +423,16 @@ $(document).ready(function() {
 
                     }
                 }).done(function(response) {
-                    /* swal({
-                             title: "Datos guardos",
-                             text: "Se ha generado un contrato satisfactoriamente",
-                             type: "info",
-                             //showCancelButton: true,
-                             closeOnConfirm: false,
-                             showLoaderOnConfirm: true,
-                         },
-                         function() {
-                             window.location.href = base_url + "venta/historial_de_ventas";
-                         });*/
+                    swal("¡Contrato generado exitosamente!");
+                    window.location.href = base_url + "venta/historial_de_ventas";
+
                 })
                 .fail(function(response) {
-                    /*swal("Algo salio mal");*/
+                    swal("Algo salio mal");
                 });
+            });
+            console.log(data);
+                
         },
         labels: {
             cancel: "Cancelar",

@@ -22,8 +22,8 @@ class Historial_model extends CI_Model {
         $id_historial = $this->db->insert_id();
         return $id_historial;
     }
-    public function insert_batch($data){
-        $query = $this->db->insert_batch($this->table, $data);
+    public function insert_batch($data) {
+        $this->db->insert_batch($this->table, $data);
         /*$id_historial = $this->db->insert_id();
         return $id_historial;*/
     }

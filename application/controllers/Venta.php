@@ -14,6 +14,7 @@ class Venta extends CI_Controller
         $this->load->model('Huerto_model');
         $this->load->model('Venta_model');
         $this->load->model('Historial_model');
+        $this->load->model('HuertosVentas_model');
     }
     public function index()
     {
@@ -297,6 +298,8 @@ class Venta extends CI_Controller
                     $db_pago->id_venta = $id_venta;
                     $db_pago->created_at = $now->toDateTimeString();
                     $db_pago->updated_at = $now->toDateTimeString();
+                    $db_pago->porcentaje_penalizacion = $this->input->post('porcentaje_penalizacion');
+                    $db_pago->retrasos_permitidos = $this->input->post('maximo_retrasos_permitidos');
                     if($key == 0){
                         $db_pago->id_ingreso = $this->input->post('id_ingreso');
                         $db_pago->fecha_pago = $pago->getFecha()->format('Y-m-d');
@@ -318,7 +321,15 @@ class Venta extends CI_Controller
                 }
                 
                 $this->Historial_model->insert_batch($db_historial);
-                //$this->cart->destroy();
+                $huertos_venta = [];
+                foreach ($this->cart->contents() as $items) {
+                    $huerto_venta = new stdClass();
+                    $huerto_venta->id_venta = $id_venta;
+                    $huerto_venta->id_huerto = $items['id_huerto'];
+                    array_push($huertos_venta, $huerto_venta);
+                }
+                $this->HuertosVentas_model->insert_batch($huertos_venta);
+                $this->cart->destroy();
             }
         }
     }
