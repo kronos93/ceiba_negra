@@ -89,6 +89,26 @@ $.extend(true, $.fn.dataTable.defaults, {
     "deferRender": true,
     "pageLength": 25,
 });
+////////////////////////////////////////////////////////
+jQuery.extend(jQuery.validator.messages, {
+    required: "Este campo es obligatorio.",
+    remote: "Por favor, rellena este campo.",
+    email: "Por favor, escribe una dirección de correo válida",
+    url: "Por favor, escribe una URL válida.",
+    date: "Por favor, escribe una fecha válida.",
+    dateISO: "Por favor, escribe una fecha (ISO) válida.",
+    number: "Por favor, escribe un número entero válido.",
+    digits: "Por favor, escribe sólo dígitos.",
+    creditcard: "Por favor, escribe un número de tarjeta válido.",
+    equalTo: "Por favor, escribe el mismo valor de nuevo.",
+    accept: "Por favor, escribe un valor con una extensión aceptada.",
+    maxlength: jQuery.validator.format("Por favor, no escribas más de {0} caracteres."),
+    minlength: jQuery.validator.format("Por favor, no escribas menos de {0} caracteres."),
+    rangelength: jQuery.validator.format("Por favor, escribe un valor entre {0} y {1} caracteres."),
+    range: jQuery.validator.format("Por favor, escribe un valor entre {0} y {1}."),
+    max: jQuery.validator.format("Por favor, escribe un valor menor o igual a {0}."),
+    min: jQuery.validator.format("Por favor, escribe un valor mayor o igual a {0}.")
+});
 ///////////////////////////////////////////////////
 var GenericFrm = function(config) {
     this.data = {};
@@ -210,6 +230,7 @@ function templateCart(response) {
     var template = document.getElementById('template-venta').innerHTML;
     var output = Mustache.render(template, response);
     document.getElementById("listaVenta").innerHTML = output;
+    format_numeric('init');
     if ($('#precio').length && $('#enganche').length && $('#abono').length) {
         format_numeric('init');
         $('#precio').autoNumeric('set', response.total);
@@ -232,6 +253,7 @@ function templateCart(response) {
                 type: "post",
             })
             .done(function(response) {
+                format_numeric('init');
                 templateCart(response);
             })
             .fail(function(response) {
@@ -291,7 +313,9 @@ $(document).ready(function() {
         }
     });
     ///////////////////////////////////////////////
+
     var form_venta = $("#frm-venta");
+    var content = "";
     form_venta.validate({
         errorPlacement: function errorPlacement(error, element) { element.before(error); },
         lang: 'es'
@@ -301,10 +325,16 @@ $(document).ready(function() {
         bodyTag: "div",
         transitionEffect: "slide",
         autoFocus: true,
-        onInit: function() {},
+        onInit: function() {
+            $('#fecha_init').mask('00-00-0000');
+            $("#fecha_init").datepicker({
+                dateFormat: "dd-mm-yy"
+            });
+        },
         onStepChanging: function(event, currentIndex, newIndex) {
             /*tinymce.remove('#contrato_html');*/
             if (newIndex == 2) {
+                tinymce.activeEditor.setContent("");
                 var data = {
                     'first_name': '',
                     'last_name': '',
@@ -320,7 +350,10 @@ $(document).ready(function() {
                     'cp': '',
                     'testigo_1': '',
                     'testigo_2': '',
-
+                    'tipo_historial': '',
+                    'confirmyes': '',
+                    'confirmno': '',
+                    'id_lider': '',
                     'fecha_init': '',
                     'precio': 0,
                     'enganche': 0,
@@ -336,23 +369,27 @@ $(document).ready(function() {
                         data[campo] = input.autoNumeric('get');
                     }
                 }
+
                 $.ajax({
                     data: data,
-                    url: base_url + "venta/generacion_contrato/",
+                    url: base_url + "venta/generar_contrato/",
                     async: true,
                     type: 'post',
                     beforeSend: function() {
                         tinymce.activeEditor.setContent("");
                     },
                     success: function(xhr) {
+                        console.log(xhr.html);
                         tinymce.activeEditor.selection.setContent(xhr.html);
                     }
                 });
             }
+
             form_venta.validate().settings.ignore = ":disabled,:hidden";
             return form_venta.valid();
             //return true;
         },
+
         onFinishing: function(event, currentIndex) {
             form_venta.validate().settings.ignore = ":disabled";
             return form_venta.valid();
@@ -371,32 +408,40 @@ $(document).ready(function() {
             loading: "Cargando ..."
         }
     });
-    ///////////////////////////////////////////////
-    //GENERAL
+    $('#clientes_autocomplete').autocomplete({
+        serviceUrl: base_url + 'ajax/autocomplete_clientes',
+        onSelect: function(suggestion) {
+            console.log(suggestion);
+            alert('Estas a punto de hacer una reventa a un nuevo cliente');
+        }
+    });
+    $('#lideres_autocomplete').autocomplete({
+        serviceUrl: base_url + 'ajax/autocomplete_lideres',
+        onSelect: function(suggestion) {
+            console.log('Se ha cargado un Lider');
+            console.log(suggestion);
+            $("#id_lider").val(suggestion.id);
+        }
+    });
+    ////////////////////////////////////////////////////////////////////////////
+    $.get(base_url + "ajax/add_cart", function(response) { templateCart(response) });
     $('#shopCartSale').on('click', function(e) {
         $(this).find('.my-dropdown').slideToggle('3500');
     });
     $('#shopCartSale').find('nav').on('click', function(e) {
         e.stopPropagation();
     });
-    $.get(base_url + "ajax/add_cart", function(response) { templateCart(response) });
+    $(document).mouseup(function(e) {
+        var container = $(".my-dropdown");
 
-    $('#fecha_init').mask('00-00-0000');
-    $("#fecha_init").datepicker({
-        dateFormat: "dd-mm-yy"
-    });
-    $('#clientes_autocomplete').autocomplete({
-        serviceUrl: base_url + 'ajax/autocomplete_clientes',
-        onSelect: function(suggestion) {
-            data_in_form_edit('', suggestion);
+        if (!container.is(e.target) // if the target of the click isn't the container...
+            &&
+            container.has(e.target).length === 0) // ... nor a descendant of the container
+        {
+            container.hide();
         }
     });
-    $('#lideres_autocomplete').autocomplete({
-        serviceUrl: base_url + 'ajax/autocomplete_lideres',
-        onSelect: function(suggestion) {
-
-        }
-    });
+    ////////////////////////////////////////////////////////////////////////////
     //MANZANAS
     //Estructura de Datatable para las Manzanas (La tabla de vista)
     var manzanas_table = $('#manzanas-table').DataTable({

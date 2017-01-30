@@ -155,7 +155,7 @@ class Venta extends CI_Controller
         $dompdf->stream('hola.pdf',array('Attachment'=>0));
         // echo $html;
     }
-    public function prueba()
+    public function generar_contrato()
     {
         //Obtener datos de la manzanas
         $datosMz = new stdClass();
@@ -270,7 +270,8 @@ class Venta extends CI_Controller
         $precio = $this->input->post('precio');
         $enganche = $this->input->post('enganche');
         $abono = $this->input->post('abono');
-        $historial = new Historial($precio,$enganche,$abono,$fecha_init);
+        $tipo_historial = $this->input->post('tipo_historial');
+        $historial = new Historial($precio,$enganche,$abono,$fecha_init,$tipo_historial);
         $historial_pagos = "<table class='pagares-tabla'>";
 
         $historial_pagos .=    "<thead>";
@@ -291,9 +292,10 @@ class Venta extends CI_Controller
             $historial_pagos .=     "<tr>";
             $historial_pagos .=         "<td>{$pago->getConcepto()}</td>";
             $historial_pagos .=         "<td>$ {$abonos}</td>";
-            $historial_pagos .=         "<td>{$pago->getFecha()}</td>";
-            $historial_pagos .=     "<tr>";
+            $historial_pagos .=         "<td>{$pago->getFecha()->format('d-m-Y')}</td>";
+            $historial_pagos .=     "</tr>";
         }
+        $historial_pagos .=    "</tbody>";
         $pagado = number_format($historial->getPagado(),2);
         $historial_pagos .=    "<tfoot>";
         $historial_pagos .=         "<tr>";
@@ -302,7 +304,7 @@ class Venta extends CI_Controller
         $historial_pagos .=             "<td>&nbsp;</td>";
         $historial_pagos .=         "</tr>";
         $historial_pagos .=    "</tfoot>";
-        $historial_pagos .=    "</tbody>";
+        
         $historial_pagos .= "</table>";
             
         //Una manzana manzana
@@ -374,6 +376,7 @@ class Venta extends CI_Controller
         //$data['output'] = $output;
         //$this->load->view('./templates/contrato/prueba', $data);
     }
+
     private $generate=[];
     public function read()
     {
@@ -605,17 +608,17 @@ class Venta extends CI_Controller
 
 class Pago
 {
+    private $fecha;
     private $concepto;
     private $abono;
     private $pagado;
-    public $fecha;
+    
     public function __construct($concepto, $abono, $pagado, $fecha)
     {
-        $this->concepto = $concepto;
-        $this->abono = $abono;
-        $this->pagado = $pagado;
-        
         $this->fecha = $fecha;
+        $this->concepto = $concepto;
+        $this->abono = $abono;       
+        $this->pagado = $pagado;  
     }
     public function getConcepto()
     {
@@ -629,6 +632,9 @@ class Pago
     {
         return $this->fecha;
     }
+    public function setFecha($fecha){
+        $this->fecha = $fecha;
+    }
 }
 class Historial
 {
@@ -640,35 +646,22 @@ class Historial
     private $historial = [];
     private $pagado = 0;    
     private $getQuincena;
-    private $_fecha;
+    private $fecha;
 
     private $fecha_primer_pago;
     private $fecha_ultimo_pago;
-    public function __construct($total, $enganche, $abono, $fecha_inicial)
+    private $tipo_historial;
+    public function __construct($total, $enganche, $abono, $fecha_inicial, $tipo_historial)
     {
         $this->total = $total;
         $this->enganche = $enganche;
         $this->abono = $abono;
         
+        $this->tipo_historial = $tipo_historial;
         $this->fecha_inicial = Carbon::createFromFormat('d-m-Y', $fecha_inicial);
-        $dia = $this->fecha_inicial->day;
-
-        $this->_fecha = Carbon::createFromFormat('d-m-Y', $fecha_inicial);
-        if ($dia < 15) {
-            $this->_fecha = $this->_fecha->startOfMonth();
-            $this->_fecha = $this->_fecha->subDay();
-            $this->getQuincena = true;
-        } else {
-            $fin =  $this->_fecha->endOfMonth();
-            $dia_f = $fin->day;
-            if ($dia < $dia_f) {
-                $this->getQuincena = false;
-            } else {
-                $this->_fecha = $this->_fecha->endOfMonth();
-                $this->getQuincena = true;
-            }
-        }
+        $this->fecha = Carbon::createFromFormat('d-m-Y', $fecha_inicial);
         $this->generarHistorial();
+        $this->setDates();
     }
 
     public function generarHistorial()
@@ -679,12 +672,10 @@ class Historial
             $fecha = $this->fecha_inicial;
             $concepto = "ENGANCHE";
             $this->pagado += $this->enganche;
-            array_push($this->historial, new Pago($concepto, $abono, $this->pagado, $fecha->format('d-m-Y')));
+            array_push($this->historial, new Pago($concepto, $abono, $this->pagado, 'Fecha calculada'));
         }
         if ($this->pagado > 0) {
             while ($this->pagado < $this->total) {
-                $fecha_h = $this->getFecha();
-
                 $this->n_pago++;
                 $concepto = "PAGO ".$this->n_pago;
                 $abono = $this->abono;
@@ -693,12 +684,42 @@ class Historial
                     $this->pagado-= $abono;
                     $abono = $this->total - $this->pagado;
                     $this->pagado+= $abono;
-                    array_push($this->historial, new Pago($concepto, $abono, $this->pagado, $fecha_h->format('d-m-Y')));
+                    array_push($this->historial, new Pago($concepto, $abono, $this->pagado, 'Fecha calculada'));
                     break;
                 }
-                array_push($this->historial, new Pago($concepto, $abono, $this->pagado, $fecha_h->format('d-m-Y')));
+                array_push($this->historial, new Pago($concepto, $abono, $this->pagado, 'Fecha calculada'));
             }
         }
+    }
+
+    public function setDates(){
+        
+        if($this->tipo_historial == 'nuevo'){
+            $next = "fin_de_mes";
+            $fecha = $this->fecha;
+            foreach($this->historial as $key => $row){
+                if($key === 0){
+                    $this->historial[$key]->setFecha($this->fecha_inicial);
+                }else{
+                    if($next == 'fin_de_mes'){
+                        $fecha = $fecha->endOfMonth();
+                        $new_date = Carbon::createFromFormat('d-m-Y', $fecha->format('d-m-Y'));
+                        $row->setFecha($new_date);
+                        $this->historial[$key] = $row;           
+                        $next = "quincena";
+                    }else if($next == 'quincena'){ 
+                        $fecha = $fecha->addDay(15);
+                        $new_date = Carbon::createFromFormat('d-m-Y', $fecha->format('d-m-Y'));
+                        $row->setFecha($new_date);
+                        $this->historial[$key] = $row;          
+                        $next = "fin_de_mes";
+                    }
+                    
+                }
+                
+            }
+            
+        }   
     }
 
     public function getHistorial()
@@ -706,7 +727,7 @@ class Historial
         return $this->historial;
     }
 
-    public function getFecha()
+    /*public function getFecha()
     {
         if ($this->getQuincena == true) {
             $this->getQuincena = false;
@@ -715,7 +736,7 @@ class Historial
             $this->getQuincena = true;
             return $this->_fecha->endOfMonth();
         }
-    }
+    }*/
     public function getNPago()
     {
         return $this->n_pago;

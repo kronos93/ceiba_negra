@@ -111,8 +111,8 @@
                                 <legend>Periodos de abono</legend>
                                 <div class="form-group col-xs-12 col-sm-6">
                                     <label class="required" for="manzana">Forma de pago:</label>
-                                    <select name="#" id="" class="form-control">
-                                        <option selected value="15-f">Quincenal (15 a fin de mes)</option>
+                                    <select name="tipo_historial" id="tipo_historial" class="form-control">
+                                        <option selected value="nuevo">Quincenal (15 a fin de mes, nuevos clientes, 10 días de solapamiento)</option>
                                         <option value="1-16">Quincenal (01 al 16 de mes)</option>
                                         <option value="15-1">Quincenal (15 al 01 del siguiente mes)</option>
                                     </select>
@@ -183,6 +183,7 @@
                             </div>
                         </div>
                     </div>
+                    <input type="hidden" id="id_lider" name="id_lider" value=""/>
                 </form>
             </div>
         </div>
