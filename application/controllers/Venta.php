@@ -28,7 +28,14 @@ class Venta extends CI_Controller
     public function historial_de_ventas(){
         $data['title'] = "Historial de ventas";
         $data['body'] = "historial_ventas";
-        $data['ventas'] = $this->Venta_model->get();
+
+        $data['ventas'] = $this->Venta_model->select("ventas.id_venta,
+                                                      CONCAT(cliente.first_name,' ',cliente.last_name) AS nombre_cliente,
+                                                      CONCAT(lider.first_name,' ',lider.last_name) AS nombre_lider")
+                                            ->join('users as cliente','ventas.id_cliente = cliente.id','left')
+                                            ->join('users as lider','ventas.id_lider = lider.id','left')
+                                            ->get();
+
         $this->load->view('templates/template', $data);
     }
     public function generar_contrato()

@@ -14,8 +14,8 @@
                     <tbody>
                         <?php foreach($ventas as $venta):?>
                         <tr>
-                            <td><?= $venta->first_name; ?> <?= $venta->last_name; ?></td>
-                            <td>Líder</td>
+                            <td><?= $venta->nombre_cliente; ?></td>
+                            <td><?= $venta->nombre_lider; ?></td>
                             <td><a href="<?= base_url(); ?>reportes/contrato/<?= $venta->id_venta; ?>" class="btn btn-success" target="_blank">Contrato</a></td>
                             <td><a href="<?= base_url(); ?>reportes/pagares/<?= $venta->id_venta; ?>" class="btn btn-info" target="_blank">Pagares</a></td>
                         </tr>

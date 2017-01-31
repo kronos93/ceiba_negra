@@ -18,8 +18,11 @@ class Reportes extends CI_Controller
     public function contrato($id){
         ini_set('memory_limit', '1024M');
         set_time_limit(60);
-        $condicion = ['id_venta' => $id];
-        $ventas = $this->Venta_model->get($condicion);
+        $condicion = ['ventas.id_venta' => $id];
+        $ventas = $this->Venta_model
+                                    ->select("contrato_html")
+                                    ->where($condicion)
+                                    ->get();
         $html = "";
         foreach($ventas as $venta){
             $html.= "<html><head><title>Contrato</title></head><body>";

@@ -8,14 +8,23 @@ class Venta_model extends CI_Model {
         $this->load->database();
     }
     public function get($condicion = array()){
-       
         $this->db->from($this->table);
-        if (count($condicion)) {
-            $this->db->where($condicion);
-        }
-        $this->db->join('users','ventas.id_cliente = users.id','left');
+        ///$this->db->join('users as cliente','ventas.id_cliente = cliente.id','left');
+        ///$this->db->join('users as lider','ventas.id_lider = lider.id','left');
         $query = $this->db->get();
         return $query->result();
+    }
+    public function select($select){
+        $this->db->select($select);
+        return $this;
+    }
+    public function where($condicion){
+        $this->db->where($condicion);
+        return $this;
+    }
+    public function join($table_join,$condicion,$type='left'){
+        $this->db->join($table_join,$condicion,$type);
+        return $this;
     }
     public function insert($data){
         $query = $this->db->insert($this->table, $data);
