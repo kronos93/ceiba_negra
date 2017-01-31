@@ -29,6 +29,10 @@
 					<?php echo form_input($phone);?>
 				</div>
 				<div class="form-group col-xs-12 col-sm-6">
+					<label for="password">Correo electrónico: (Sí se desea cambiar)</label>
+					<input type="email" name="email" id="email" placeholder="alguien@dominio.com" class="form-control"/>
+				</div>
+				<div class="form-group col-xs-12 col-sm-6">
 					<?php $password['class'] = 'form-control';?>
 					<?php echo lang('edit_user_password_label', 'password');?>
 					<?php echo form_input($password);?>

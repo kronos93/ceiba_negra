@@ -7,7 +7,7 @@
             <li><a href="<?= base_url() ?>registros/manzanas">Mazanas</a></li>
             <li><a href="<?= base_url() ?>registros/huertos">Huertos</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="#">Otra cosa</a></li>
+            <li><a href="<?= base_url() ?>venta/historial_de_ventas">Historial de ventas</a></li>
         </ul>
     </li>   
 </ul>

@@ -20,11 +20,14 @@ class Reportes extends CI_Controller
         set_time_limit(60);
         $condicion = ['id_venta' => $id];
         $ventas = $this->Venta_model->get($condicion);
+        $html = "";
         foreach($ventas as $venta){
-            $html = "<link rel='stylesheet' type='text/css' href='".base_url().'assets/css/tinymce.css'."' />";
+            $html.= "<html><head><title>Contrato</title></head><body>";
+            $html.= "<link rel='stylesheet' type='text/css' href='".base_url().'assets/css/tinymce.css'."' />";
             $html.= "<div class='mce-content-body'";
             $html.= $venta->contrato_html;
             $html.= "</div>";
+            $html.= "</body></html>";
             $dompdf = new Dompdf();
             $dompdf->loadHtml($html);
             // (Optional) Setup the paper size and orientation
@@ -102,7 +105,7 @@ class Reportes extends CI_Controller
             $pagares.="<td></td></tr>";
         }
         
-        $html = "<html>
+        $html = "<html><head><title>Pagarés</title></head><body>
             <style>
                 h1,h2,h3,h4,h5,h6,p{
                     margin: 0px;
@@ -157,13 +160,12 @@ class Reportes extends CI_Controller
                     {$pagares}
                 </tbody>
             </table>
+            </body>
         </html>";
         
-        $options = new Options();
-        $options->set('isRemoteEnabled', TRUE);
-        $dompdf = new Dompdf($options);
-        $dompdf->loadHtml($html);
         
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
         // (Optional) Setup the paper size and orientation
         $dompdf->setPaper('A4', 'portrait');
         // Render the HTML as PDF

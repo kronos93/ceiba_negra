@@ -367,7 +367,11 @@ class Ajax extends CI_Controller
 				$this->form_validation->set_rules('password', $this->lang->line('edit_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
 				$this->form_validation->set_rules('password_confirm', $this->lang->line('edit_user_validation_password_confirm_label'), 'required');
 			}
+            if ($this->input->post('email'))
+            {
 
+                $this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'required|valid_email|is_unique[users.email]');
+            }
 			if ($this->form_validation->run() === TRUE)
 			{
 				$data = array(
@@ -384,7 +388,11 @@ class Ajax extends CI_Controller
 				}
 
 
-
+                if ($this->input->post('email'))
+                {
+                    $data['email'] = strtolower($this->input->post('email'));
+                    $data['username'] = strtolower($this->input->post('email'));
+                }
 				// Only allow updating groups if user is admin
 				if ($this->ion_auth->is_admin())
 				{
