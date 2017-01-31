@@ -55,7 +55,7 @@ class Reportes extends CI_Controller
                                     <div class='pagare'>                            
                                         <div class='pagare__header'>
                                             <h3>Recibo de Dinero {$n} de {$n_historial} <strong>de fecha : {$historial->fecha}</strong></h3>
-                                            <p><strong>FOLIO:MT-3456-345678</strong></p>
+                                            <p><strong>FOLIO:MT-{$n}-{$historial->fecha}</strong></p>
                                         </div>
                                         <div class='pagare__body'>
                                             <p>
