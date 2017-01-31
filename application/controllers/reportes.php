@@ -66,7 +66,7 @@ class Reportes extends CI_Controller
                                         </div>
                                         <div class='pagare__footer'>
                                             <p>RECIBI:</p>
-                                            <br><br><br>
+                                            <br>
                                             <p>FRANCISCO ENRIQUE MARTINEZ CORDERO</p>
                                             <p class='copy'>Original</p>
                                         </div>
@@ -89,7 +89,7 @@ class Reportes extends CI_Controller
                                         </div>
                                         <div class='pagare__footer'>
                                             <p>RECIBI:</p>
-                                            <br><br><br>
+                                            <br>
                                             <p>FRANCISCO ENRIQUE MARTINEZ CORDERO</p>
                                             <p class='copy'>Original</p>
                                         </div>
@@ -116,7 +116,7 @@ class Reportes extends CI_Controller
                 table td{
                     position: relative;
                     border: 1px solid #ff0000;
-                    padding: 10px;
+                    padding: 5px;
                     border:1px dashed #ccc;
                     background: url('".base_url()."assets/img/logos/logo-small.png');
                     background-position: center center;
