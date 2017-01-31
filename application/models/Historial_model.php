@@ -7,15 +7,20 @@ class Historial_model extends CI_Model {
         parent::__construct();
         $this->load->database();
     }
-    public function get($condicion){       
+    public function get(){       
         $this->db->from($this->table);
-        if (count($condicion)) {
-            $this->db->where($condicion);
-        }
         $this->db->join('ventas','historial.id_venta = ventas.id_venta','left');
         $this->db->join('users','ventas.id_cliente = users.id','left');
         $query = $this->db->get();
         return $query->result();
+    }
+    public function select($select){
+        $this->db->select($select);
+        return $this;
+    }
+    public function where($condicion){
+        $this->db->where($condicion);
+        return $this;
     }
     public function insert($data){
         $query = $this->db->insert($this->table, $data);
