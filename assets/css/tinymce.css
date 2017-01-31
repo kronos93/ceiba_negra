@@ -6,23 +6,24 @@
     text-decoration: none;
     color: inherit;
     box-sizing: border-box;
-    font-weight: 400
+    font-weight: 400;
+    font-family: Helvetica;
 }
 
 :focus {
-    outline: 0
+    outline: 0;
 }
 
 b,
 b *,
 strong,
 strong * {
-    font-weight: 700
+    font-weight: 700;
 }
 
 ol,
 ul {
-    list-style: none
+    list-style: none;
 }
 
 button,
@@ -48,21 +49,18 @@ input[type=tel],
 pre,
 select,
 textarea {
-    font: inherit
+    font: inherit;
 }
 
-
-/*@font-face{font-family:aileron;font-style:normal;font-weight:200;src:url(../fonts/aileron-ultra-light.eot?#iefix) format("embedded-opentype"),url(../fonts/aileron-ultra-light.woff) format("woff"),url(../fonts/aileron-ultra-light.ttf) format("truetype")}*/
-
 .mce-container textarea {
-    display: initial!important
+    display: initial!important;
 }
 
 .mce-content-body {
     font-family: Helvetica;
     font-size: 14px;
     color: #626262;
-    padding: 0 25px 25px
+    padding: 0 25px 25px;
 }
 
 .mce-content-body h1,
@@ -73,42 +71,42 @@ textarea {
 .mce-content-body h6 {
     font-weight: 200;
     line-height: 1.4em;
-    margin: 25px 0 15px
+    margin: 25px 0 15px;
 }
 
-.mce-content-body h1 {
-    font-size: 34px
+.mce-content-body h1!important {
+    font-size: 34px;
 }
 
 .mce-content-body h2 {
-    font-size: 30px
+    font-size: 30px;
 }
 
 .mce-content-body h3 {
-    font-size: 26px
+    font-size: 26px;
 }
 
 .mce-content-body h4 {
-    font-size: 22px
+    font-size: 22px;
 }
 
 .mce-content-body h5 {
-    font-size: 18px
+    font-size: 18px;
 }
 
 .mce-content-body h6 {
-    font-size: 14px
+    font-size: 14px;
 }
 
 .mce-content-body p {
-    margin: 25px 0
+    margin: 25px 0;
 }
 
 .mce-content-body ol,
 .mce-content-body ul {
     margin-left: 15px;
     list-style-position: outside;
-    margin-bottom: 20px
+    margin-bottom: 20px;
 }
 
 .mce-content-body ol li,
@@ -119,22 +117,22 @@ textarea {
 }
 
 .mce-content-body ul {
-    list-style-type: disc
+    list-style-type: disc;
 }
 
 .mce-content-body ol {
-    list-style-type: decimal
+    list-style-type: decimal;
 }
 
 .mce-content-body a[href] {
-    text-decoration: underline
+    text-decoration: underline;
 }
 
 .mce-content-body table {
     width: 100%;
     border-spacing: 0;
     border-collapse: separate;
-    border: 1px solid #aaa
+    border: 1px solid #aaa;
 }
 
 .mce-content-body table.testigos {
@@ -151,6 +149,7 @@ textarea {
 }
 
 .mce-content-body table.testigos td p {
+    font-family: Helvetica;
     display: inline-block;
     padding: 0px 20px;
     text-align: center;
@@ -160,12 +159,16 @@ textarea {
     margin: 0 auto;
     display: block;
     width: 300px;
-    border-bottom: 2px solid #000;
+    border-bottom: 1px solid #000;
 }
 
 .mce-content-body table.pagares-tabla {
-    max-width: 400px;
+    width: 400px;
     margin: 0 auto;
+}
+
+.mce-content-body table.pagares-tabla tbody tr td {
+    font-family: Helvetica;
 }
 
 .mce-content-body table.pagares-tabla th {
@@ -173,21 +176,20 @@ textarea {
     color: #fff;
 }
 
-.mce-content-body table tr:nth-child(even) {
+.mce-content-body table.pagares-tabla tr:nth-child(even) {
     background: #daf1f8;
+    border: none;
 }
 
 .mce-content-body table caption,
 .mce-content-body table td,
 .mce-content-body table th {
-    padding: 15px 7px;
-    font: inherit
+    padding: 12px 7px;
+    font: inherit;
+    font-family: Helvetica;
 }
 
 .mce-content-body table th {
     font-weight: 400;
     color: #000;
 }
-
-
-/*.mce-content-body table th:last-child{background:0 0}*/

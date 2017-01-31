@@ -148,7 +148,7 @@ class Venta extends CI_Controller
         $abono = $this->input->post('abono');
         $tipo_historial = $this->input->post('tipo_historial');
         $historial = new Historial($precio,$enganche,$abono,$fecha_init,$tipo_historial);
-        $historial_pagos = "<table class='pagares-tabla'>";
+        $historial_pagos = "<table style='width:400px;' class='pagares-tabla'>";
 
         $historial_pagos .=    "<thead>";
         $historial_pagos .=         "<tr>";
