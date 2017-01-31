@@ -46,7 +46,7 @@ class Reportes extends CI_Controller
     }
     public function pagares($id){
         ini_set('memory_limit', '1024M');
-        set_time_limit(60);
+        set_time_limit(180);
         $condicion = ['historial.id_venta' => $id];
 
         $historial = $this->Historial_model ->select("historial.abono,historial.fecha,CONCAT(users.first_name,' ',users.last_name) as nombre_cliente,huertos_ventas.id_venta")
@@ -71,7 +71,7 @@ class Reportes extends CI_Controller
                     if($key > 0){
                         $txt_huertos.= ',';
                     }
-                    $txt_huertos.= "{$huerto->huerto} MZ. {$huerto->manzana}";
+                    $txt_huertos.= "No. {$huerto->huerto} MZ. {$huerto->manzana}";
                 }
             }       
                                      
@@ -95,7 +95,7 @@ class Reportes extends CI_Controller
                                             </div>
                                             <div class='pagare__body'>
                                                 <p>
-                                                    RECIBI: DEL(A) C. <strong>{$historial->nombre_cliente}</strong> LA CANTIDAD DE <strong>$ ".number_format($historial->abono,2)." PESOS 00/100 M.N</strong> POR CONCEPTO DE PAGO PARCIAL DE LA CESION PRIVADA , DE DERECHOS EN CO-PROPIEDAD DEL TERRENO EN BREÑA No. {$txt_huertos} DEL PREDIO 'LA CEIBA', UBICADO EN EL MUNICIPIO DE LAZARO CARDENAS, QUINTANA ROO.
+                                                    RECIBI: DEL(A) C. <strong>{$historial->nombre_cliente}</strong> LA CANTIDAD DE <strong>$ ".number_format($historial->abono,2)." PESOS 00/100 M.N</strong> POR CONCEPTO DE PAGO PARCIAL DE LA CESION PRIVADA , DE DERECHOS EN CO-PROPIEDAD DEL TERRENO EN BREÑA {$txt_huertos} DEL PREDIO 'LA CEIBA', UBICADO EN EL MUNICIPIO DE LAZARO CARDENAS, QUINTANA ROO.
                                                 </p>
                                             </div>
                                             <div class='pagare__footer'>
@@ -116,7 +116,7 @@ class Reportes extends CI_Controller
                                             </div>
                                             <div class='pagare__body'>
                                                 <p>
-                                                    RECIBI: DEL(A) C. <strong>{$historial->nombre_cliente}</strong> LA CANTIDAD DE <strong>$ ".number_format($historial->abono,2)." PESOS 00/100 M.N</strong> POR CONCEPTO DE PAGO PARCIAL DE LA CESION PRIVADA , DE DERECHOS EN CO-PROPIEDAD DEL TERRENO EN BREÑA No. {$txt_huertos} DEL PREDIO 'LA CEIBA', UBICADO EN EL MUNICIPIO DE LAZARO CARDENAS, QUINTANA ROO.
+                                                    RECIBI: DEL(A) C. <strong>{$historial->nombre_cliente}</strong> LA CANTIDAD DE <strong>$ ".number_format($historial->abono,2)." PESOS 00/100 M.N</strong> POR CONCEPTO DE PAGO PARCIAL DE LA CESION PRIVADA , DE DERECHOS EN CO-PROPIEDAD DEL TERRENO EN BREÑA {$txt_huertos} DEL PREDIO 'LA CEIBA', UBICADO EN EL MUNICIPIO DE LAZARO CARDENAS, QUINTANA ROO.
                                                 </p>
                                             </div>
                                             <div class='pagare__footer'>
