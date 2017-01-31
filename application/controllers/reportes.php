@@ -54,14 +54,12 @@ class Reportes extends CI_Controller
                                 <td>
                                     <div class='pagare'>                            
                                         <div class='pagare__header'>
-                                            <h3>Recibo de Dinero {$n} de {$n_historial} <strong>Fecha : {$historial->fecha}</strong></h3>
+                                            <h3>Recibo de Dinero {$n} de {$n_historial} <strong>de fecha : {$historial->fecha}</strong></h3>
                                             <p><strong>FOLIO:MT-3456-345678</strong></p>
                                         </div>
                                         <div class='pagare__body'>
                                             <p>
-                                                RECIBI: DEL (LA) C. <strong>{$historial->first_name} {$historial->last_name}</strong> LA CANTIDAD DE <strong>$ ".number_format($historial->abono,2)." PESOS 00/100 M.N</strong> POR
-                                                CONCEPTO DE PAGO PARCIAL DE LA CESION PRIVADA , DE DERECHOS EN CO-PROPIEDAD DEL TERRENO EN BREÑA No. 21 MZ. 15B DEL PREDIO 'LA CEIBA', UBICADO EN EL MUNICIPIO DE
-                                                LAZARO CARDENAS, QUINTANA ROO.
+                                                RECIBI: DEL(A) C. <strong>{$historial->first_name} {$historial->last_name}</strong> LA CANTIDAD DE <strong>$ ".number_format($historial->abono,2)." PESOS 00/100 M.N</strong> POR CONCEPTO DE PAGO PARCIAL DE LA CESION PRIVADA , DE DERECHOS EN CO-PROPIEDAD DEL TERRENO EN BREÑA No. 21 MZ. 15B DEL PREDIO 'LA CEIBA', UBICADO EN EL MUNICIPIO DE LAZARO CARDENAS, QUINTANA ROO.
                                             </p>
                                         </div>
                                         <div class='pagare__footer'>
@@ -77,14 +75,12 @@ class Reportes extends CI_Controller
                 $pagares.="     <td>
                                     <div class='pagare'>
                                         <div class='pagare__header'>
-                                            <h3>Recibo de Dinero {$n} de {$n_historial} <strong>{$historial->fecha}</strong></h3>
+                                            <h3>Recibo de Dinero {$n} de {$n_historial} <strong>de fecha{$historial->fecha}</strong></h3>
                                             <p><strong>FOLIO:MT-{$n}-{$historial->fecha}</strong></p>
                                         </div>
                                         <div class='pagare__body'>
                                             <p>
-                                                RECIBI: DEL(A) C. <strong>{$historial->first_name} {$historial->last_name}</strong> LA CANTIDAD DE <strong>$ ".number_format($historial->abono,2)." PESOS 00/100 M.N</strong> POR
-                                                CONCEPTO DE PAGO PARCIAL DE LA CESION PRIVADA , DE DERECHOS EN CO-PROPIEDAD DEL TERRENO EN BREÑA No. 21 MZ. 15B DEL PREDIO 'LA CEIBA', UBICADO EN EL MUNICIPIO DE
-                                                LAZARO CARDENAS, QUINTANA ROO.
+                                                RECIBI: DEL(A) C. <strong>{$historial->first_name} {$historial->last_name}</strong> LA CANTIDAD DE <strong>$ ".number_format($historial->abono,2)." PESOS 00/100 M.N</strong> POR CONCEPTO DE PAGO PARCIAL DE LA CESION PRIVADA , DE DERECHOS EN CO-PROPIEDAD DEL TERRENO EN BREÑA No. 21 MZ. 15B DEL PREDIO 'LA CEIBA', UBICADO EN EL MUNICIPIO DE LAZARO CARDENAS, QUINTANA ROO.
                                             </p>
                                         </div>
                                         <div class='pagare__footer'>
