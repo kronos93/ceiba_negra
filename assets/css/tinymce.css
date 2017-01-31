@@ -10,15 +10,17 @@
     font-family: Helvetica;
 }
 
+html {
+    margin: 40px 40px!important
+}
+
 :focus {
     outline: 0;
 }
 
-b,
-b *,
-strong,
-strong * {
-    font-weight: 700;
+strong {
+    font-weight: bold;
+    font-weight: 800;
 }
 
 ol,
@@ -50,6 +52,10 @@ pre,
 select,
 textarea {
     font: inherit;
+}
+
+h1.titulo {
+    font-size: 34px!important;
 }
 
 .mce-container textarea {
