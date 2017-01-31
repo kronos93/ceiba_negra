@@ -153,18 +153,15 @@ class Reportes extends CI_Controller
                     text-transform: uppercase;
                 }
             </style>
-            <table>
-                <thead>
-                </thead>
-                <tbody>
-                    {$pagares}
-                </tbody>
+            <table>       
+                {$pagares}                
             </table>
             </body>
         </html>";
         
-        
-        $dompdf = new Dompdf();
+        $options = new Options();
+        $options->set('isRemoteEnabled', TRUE);
+        $dompdf = new Dompdf($options);
         $dompdf->loadHtml($html);
         // (Optional) Setup the paper size and orientation
         $dompdf->setPaper('A4', 'portrait');

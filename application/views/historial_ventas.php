@@ -5,7 +5,8 @@
                 <table id="historial-ventas-table" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th class="all">Cliente</th>                            
+                            <th class="all">Cliente</th>          
+                            <th class="all">Líder</th>                            
                             <th class="all">Contrato</th>
                             <th class="all">Pagares</th>
                         </tr>
@@ -14,6 +15,7 @@
                         <?php foreach($ventas as $venta):?>
                         <tr>
                             <td><?= $venta->first_name; ?> <?= $venta->last_name; ?></td>
+                            <td>Líder</td>
                             <td><a href="<?= base_url(); ?>reportes/contrato/<?= $venta->id_venta; ?>" class="btn btn-success" target="_blank">Contrato</a></td>
                             <td><a href="<?= base_url(); ?>reportes/pagares/<?= $venta->id_venta; ?>" class="btn btn-info" target="_blank">Pagares</a></td>
                         </tr>
