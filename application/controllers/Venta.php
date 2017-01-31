@@ -29,7 +29,7 @@ class Venta extends CI_Controller
         $data['title'] = "Historial de ventas";
         $data['body'] = "historial_ventas";
         $data['ventas'] = $this->Venta_model->get();
-        var_dump($data['ventas']);
+        
         $this->load->view('templates/template', $data);
     }
     public function generar_contrato()
