@@ -8,11 +8,14 @@ class Historial_model extends CI_Model {
         $this->load->database();
     }
     public function get(){       
-        $this->db->from($this->table);
-        $this->db->join('ventas','historial.id_venta = ventas.id_venta','left');
-        $this->db->join('users','ventas.id_cliente = users.id','left');
+        $this->db->from($this->table);        
         $query = $this->db->get();
         return $query->result();
+    }
+    public function getArray(){       
+        $this->db->from($this->table);        
+        $query = $this->db->get();
+        return $query->result_array();
     }
     public function select($select){
         $this->db->select($select);
@@ -20,6 +23,10 @@ class Historial_model extends CI_Model {
     }
     public function where($condicion){
         $this->db->where($condicion);
+        return $this;
+    }
+    public function join($table_join,$condicion,$type='left'){
+        $this->db->join($table_join,$condicion,$type);
         return $this;
     }
     public function insert($data){
