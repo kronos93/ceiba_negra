@@ -1457,6 +1457,11 @@ ul li {
     order: 0;
   }
 }
+.required {
+  color: #3fbb9b !important;
+  font-weight: bold;
+  font-size: 1em;
+}
 img.shadow {
   -webkit-box-shadow: 2px 2px 10px #000;
   box-shadow: 2px 2px 10px #000;
@@ -1470,7 +1475,8 @@ table thead tr th {
 table tbody tr td {
   border: 1px solid #008000;
 }
-.mapplicManual {
+.mapplicManual,
+.toolTipContainer {
   position: relative;
 }
 .toolTip {
@@ -1523,6 +1529,18 @@ table tbody tr td {
 .toolTip.sidebar {
   top: 180px;
   left: 0px;
+}
+.toolTip.steps {
+  top: 0px;
+  left: 0px;
+}
+.toolTip.buscar-cliente {
+  top: 70px;
+  right: 0px;
+}
+.toolTip.next-step {
+  bottom: 0px;
+  right: 0px;
 }
 .indice {
   border: 1px solid #008000;
