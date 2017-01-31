@@ -23,8 +23,6 @@ class Reportes extends CI_Controller
                                     ->select("contrato_html")
                                     ->where($condicion)
                                     ->get();
-        
-        
         $html = "";
         foreach($ventas as $venta){
             $html.= "<html><head><title>Contrato</title></head><body>";

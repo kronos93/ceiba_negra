@@ -22,6 +22,10 @@ class Venta_model extends CI_Model {
         $this->db->where($condicion);
         return $this;
     }
+    public function join($table_join,$condicion,$type='left'){
+        $this->db->join($table_join,$condicion,$type);
+        return $this;
+    }
     public function insert($data){
         $query = $this->db->insert($this->table, $data);
         $id_venta = $this->db->insert_id();
