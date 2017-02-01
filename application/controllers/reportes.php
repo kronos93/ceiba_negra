@@ -18,7 +18,7 @@ class Reportes extends CI_Controller
     }
     public function contrato($id){
         ini_set('memory_limit', '1024M');
-        set_time_limit(60);
+        set_time_limit(180);
         $condicion = ['ventas.id_venta' => $id];
         $ventas = $this->Venta_model
                                     ->select("contrato_html")
@@ -32,7 +32,7 @@ class Reportes extends CI_Controller
             $html.= $venta->contrato_html;
             $html.= "</div>";
             $html.= "</body></html>";
-            header("Content-type: application/json; charset=utf-8");
+            
             $dompdf = new Dompdf();
             $dompdf->loadHtml($html);
             // (Optional) Setup the paper size and orientation
