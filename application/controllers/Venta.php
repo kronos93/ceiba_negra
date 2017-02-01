@@ -193,7 +193,7 @@ class Venta extends CI_Controller
             }                   
         }
         if($complemento){
-            $historial_pagos .=         "<td>&nbsp;/td>";
+            $historial_pagos .=         "<td>&nbsp;</td>";
             $historial_pagos .=         "<td>&nbsp;</td>";
             $historial_pagos .=         "<td>&nbsp;</td>";  
             $historial_pagos .=     "</tr>";  
