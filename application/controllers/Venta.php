@@ -287,6 +287,7 @@ class Venta extends CI_Controller
                 'id_cliente' => $idNewUser,
                 'id_lider' =>  $this->input->post('id_lider'),
                 'estado' => 0,//En proceso de Pago
+                'porcentaje_penalizacion' =>  $this->input->post('porcentaje_penalizacion'),
                 'contrato_html' => html_entity_decode($this->input->post('contrato_html')),
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),

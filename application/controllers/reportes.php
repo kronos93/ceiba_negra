@@ -49,16 +49,16 @@ class Reportes extends CI_Controller
         set_time_limit(180);
         $condicion = ['historial.id_venta' => $id];
 
-        $historial = $this->Historial_model ->select("historial.abono,historial.fecha,CONCAT(users.first_name,' ',users.last_name) as nombre_cliente,huertos_ventas.id_venta")
+        $historials = $this->Historial_model ->select("historial.abono,historial.fecha,CONCAT(users.first_name,' ',users.last_name) as nombre_cliente,huertos_ventas.id_venta, historial.porcentaje_penalizacion, ventas.nuevo")
                                             ->join('ventas','historial.id_venta = ventas.id_venta','left')
                                             ->join('users','ventas.id_cliente = users.id','left')
                                             ->join('huertos_ventas','historial.id_venta = huertos_ventas.id_venta','left')
                                             ->join('huertos','huertos_ventas.id_venta = huertos.id_huerto','left')
                                             ->where($condicion)
                                             ->get();
-       
         
-        if(count($historial)){
+        
+        if(count($historials)){
             $condicion = ['huertos_ventas.id_venta' => $id];
             $huertos_from_venta = $this->HuertosVentas_model->select('huertos.huerto,manzanas.manzana')
                                                         ->join('huertos','huertos_ventas.id_huerto = huertos.id_huerto','left')
@@ -78,67 +78,65 @@ class Reportes extends CI_Controller
             $pagares = "";
             $count = 1;
             $n = 1;
-            $n_historial = count($historial);
-            foreach($historial as $key => $historial){
+            $n_historial = count($historials);
+            
+            foreach ($historials as $key => $historial) {
                 $words = explode(" ", $historial->nombre_cliente);
                 $acronym="";
                 $fecha = Carbon::createFromFormat('Y-m-d', $historial->fecha);
                 foreach ($words as $w) {
                   $acronym .= $w[0];
                 }
-                if($count == 1){
-                    $pagares.="<tr>
-                                    <td>
-                                        <div class='pagare'>                            
-                                            <div class='pagare__header'>
-                                                <h3>Recibo de Dinero {$n} de {$n_historial} <strong>de fecha : {$historial->fecha}</strong></h3>
-                                                <p><strong>FOLIO:".strtoupper($acronym)."-{$n}-{$historial->fecha}</strong></p>
+                if ($historial->nuevo == 1) {
+                    if ($count == 1) {
+                        $pagares.="<tr>
+                                        <td>
+                                            <div class='pagare'>
+                                                <div class='pagare__header'>
+                                                    <h3>No. {$n}</h3>
+                                                    <p>En Playa del carmen, municipio de Solidaridad, estado de Quintana Roo el día{$fecha->format('d-m-Y')}</p>
+                                                </div>
+                                                <div class='pagare__body'>
+                                                    <p>Debe(mos) y pagare(mos) incondicionalmente por este Pagaré a la orden de FRANCISCO ENRIQUE MARTINEZ CORDERO en Playa del carmen, municipio de Solidaridad, estado de Quintana Roo el día {$fecha->format('d-m-Y')} la cantidad de: <strong>$ ".number_format($historial->abono,2)." PESOS 00/100 M.N</strong></p><p>Valor recibido a mi (nuestra entera satisfacción). Este pagaré forma pare te una serie numerdada de 1 al {$n_historial} y todos estan sujetos a la condición de que, al no pagarse cualquiera de ellos a su vencimiento, serán exigibles todos los que le sigan en número, además de los ya vencidos, desde la fecha de vencimiento de este documento hasta el día de su liquidación, causará intereses moratorios al tipo de {$historial->porcentaje_penalizacion}% por cada día de de pago incumplido, pagado en esta ciudad.</p>
+                                                </div>
+                                                <div class='pagare__footer'>
+                                                    <p>DEUDOR:</p>
+                                                    <br>
+                                                    <p>{$historial->nombre_cliente}</p>
+                                                    <p class='copy'>Original</p>
+                                                </div>
                                             </div>
-                                            <div class='pagare__body'>
-                                                <p>
-                                                    RECIBI: DEL(A) C. <strong>{$historial->nombre_cliente}</strong> LA CANTIDAD DE <strong>$ ".number_format($historial->abono,2)." PESOS 00/100 M.N</strong> POR CONCEPTO DE PAGO PARCIAL DE LA CESION PRIVADA , DE DERECHOS EN CO-PROPIEDAD DEL TERRENO EN BREÑA {$txt_huertos} DEL PREDIO 'LA CEIBA', UBICADO EN EL MUNICIPIO DE LAZARO CARDENAS, QUINTANA ROO.
-                                                </p>
+                                        </td>";
+                        $count++;
+                    } else if($count == 2) {
+                        $pagares.="     <td>
+                                            <div class='pagare'>
+                                                <div class='pagare__header'>
+                                                    <h3>No. {$n}</h3>
+                                                    <p>En Playa del carmen, municipio de Solidaridad, estado de Quintana Roo el día{$fecha->format('d-m-Y')}</p>
+                                                </div>
+                                                <div class='pagare__body'>
+                                                    <p>Debe(mos) y pagare(mos) incondicionalmente por este Pagaré a la orden de FRANCISCO ENRIQUE MARTINEZ CORDERO en Playa del carmen, municipio de Solidaridad, estado de Quintana Roo el día {$fecha->format('d-m-Y')} la cantidad de: <strong>$ ".number_format($historial->abono,2)." PESOS 00/100 M.N</strong></p><p>Valor recibido a mi (nuestra entera satisfacción). Este pagaré forma pare te una serie numerdada de 1 al {$n_historial} y todos estan sujetos a la condición de que, al no pagarse cualquiera de ellos a su vencimiento, serán exigibles todos los que le sigan en número, además de los ya vencidos, desde la fecha de vencimiento de este documento hasta el día de su liquidación, causará intereses moratorios al tipo de {$historial->porcentaje_penalizacion}% por cada día de de pago incumplido, pagado en esta ciudad.</p>
+                                                </div>
+                                                <div class='pagare__footer'>
+                                                    <p>DEUDOR:</p>
+                                                    <br>
+                                                    <p>{$historial->nombre_cliente}</p>
+                                                    <p class='copy'>Original</p>
+                                                </div>
                                             </div>
-                                            <div class='pagare__footer'>
-                                                <p>RECIBI:</p>
-                                                <br>
-                                                <p>FRANCISCO ENRIQUE MARTINEZ CORDERO</p>
-                                                <p class='copy'>Original</p>
-                                            </div>
-                                        </div>
-                                    </td>";
-                    $count++;
-                } else if($count == 2){
-                    $pagares.="     <td>
-                                        <div class='pagare'>
-                                            <div class='pagare__header'>
-                                                <h3>No. {$n}</h3>
-                                                <p>En Playa del carmen, municipio de Solidaridad, estado de Quintana Roo el día{$fecha->format('d-m-Y')}</p>
-                                            </div>
-                                            <div class='pagare__body'>
-                                                <p>
-                                                    Debe(mos) y pagare(mos) incondicionalmente por este Pagaré a la orden de FRANCISCO ENRIQUE MARTINEZ CORDERO en Playa del carmen, municipio de Solidaridad, estado de Quintana Roo el día {$fecha->format('d-m-Y')} la cantidad de: <strong>$ ".number_format($historial->abono,2)." PESOS 00/100 M.N</strong>
-
-                                                </p>
-                                            </div>
-                                            <div class='pagare__footer'>
-                                                <p>RECIBI:</p>
-                                                <br>
-                                                <p></p>
-                                                <p class='copy'>Original</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>";
-                    $count = 1;
-                    break;
+                                        </td>
+                                    </tr>";
+                            $count = 1;
+                            
+                    }
+                    $n++;                    
                 }
-                $n++;
-               
             }
             if($count==2){
                 $pagares.="<td></td></tr>";
             }
+           
             
             $html = "<html><head><title>Pagarés</title></head><body>
                 <style>
@@ -199,7 +197,7 @@ class Reportes extends CI_Controller
             $dompdf = new Dompdf($options);
             $dompdf->loadHtml($html);
             // (Optional) Setup the paper size and orientation
-            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->setPaper('office', 'portrait');
             // Render the HTML as PDF
             $dompdf->render();
             // Output the generated PDF to Browser
@@ -209,3 +207,23 @@ class Reportes extends CI_Controller
         
     }
 }
+/*
+<td>
+                                        <div class='pagare'>                            
+                                            <div class='pagare__header'>
+                                                <h3>Recibo de Dinero {$n} de {$n_historial} <strong>de fecha : {$historial->fecha}</strong></h3>
+                                                <p><strong>FOLIO:".strtoupper($acronym)."-{$n}-{$historial->fecha}</strong></p>
+                                            </div>
+                                            <div class='pagare__body'>
+                                                <p>
+                                                    RECIBI: DEL(A) C. <strong>{$historial->nombre_cliente}</strong> LA CANTIDAD DE <strong>$ ".number_format($historial->abono,2)." PESOS 00/100 M.N</strong> POR CONCEPTO DE PAGO PARCIAL DE LA CESION PRIVADA , DE DERECHOS EN CO-PROPIEDAD DEL TERRENO EN BREÑA {$txt_huertos} DEL PREDIO 'LA CEIBA', UBICADO EN EL MUNICIPIO DE LAZARO CARDENAS, QUINTANA ROO.
+                                                </p>
+                                            </div>
+                                            <div class='pagare__footer'>
+                                                <p>RECIBI:</p>
+                                                <br>
+                                                <p>FRANCISCO ENRIQUE MARTINEZ CORDERO</p>
+                                                <p class='copy'>Original</p>
+                                            </div>
+                                        </div>
+*/
