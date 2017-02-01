@@ -112,7 +112,7 @@ class Venta extends CI_Controller
         
             foreach ($huertos as $key => $huerto) {
                 $superficie_ht = number_format($huerto->superficie, 2);
-                $colindancias .= "una superficie de {$superficie_ht} M<sup>2</sup>, con las Medidas y Colindancias Siguientes: ";
+                $colindancias .= "el <strong>huerto {$huerto->huerto}</strong> con una superficie de {$superficie_ht} M<sup>2</sup>, con las Medidas y Colindancias Siguientes: ";
                 if (!empty($huerto->col_norte)) {
                     $colindancias .= "<strong>Al Norte</strong>, {$huerto->col_norte}; ";
                 }
@@ -167,9 +167,9 @@ class Venta extends CI_Controller
         $historial_pagos .=    "<tbody>";
         foreach ($historial->getHistorial() as $key => $pago) {
             if($key == 1){
-                $historial->setFechaPrimerPago($pago->getFecha());
+                $historial->setFechaPrimerPago($pago->getFecha()->format('d-m-Y'));
             }else{
-                $historial->setFechaUltimoPago($pago->getFecha());
+                $historial->setFechaUltimoPago($pago->getFecha()->format('d-m-Y'));
             }
             $abonos = number_format($pago->getAbono(), 2);
             $historial_pagos .=     "<tr>";
@@ -215,7 +215,7 @@ class Venta extends CI_Controller
         $domicilio_cliente .= ($this->input->post('ciudad')) ? " Ciudad: ".$this->input->post('ciudad') : "";
         $domicilio_cliente .= ($this->input->post('cp')) ? " Codigo postal: ".$this->input->post('cp') : "";
         $ciudad = $this->input->post('ciudad_expedicion');
-
+        $nacimiento_cliente = $this->input->post('lugar_nacimiento')." el <span id='fecha_init_5' class='fecha_init'>".$this->input->post('fecha_nacimiento')."</span>";
         $testigo_1 = $this->input->post('testigo_1');
         $testigo_2 = $this->input->post('testigo_2');
         $vars =
@@ -245,6 +245,7 @@ class Venta extends CI_Controller
                 'testigo_2' => $testigo_2,
                 'historial_pagos' => $historial_pagos,
                 'ciudad' => $ciudad,
+                'nacimiento_cliente' => $nacimiento_cliente,
         ];
         $contrato_template = file_get_contents('./application/views/templates/contrato/contrato.php', FILE_USE_INCLUDE_PATH);
         $output = $contrato_template;
@@ -263,6 +264,7 @@ class Venta extends CI_Controller
         $email    = strtolower($this->input->post('email'));
         $identity =  $email ;
         $password = 'usuario1234';
+        $fecha  =  Carbon::createFromFormat('d-m-Y',$this->input->post('fecha_nacimiento'));
         $additional_data = [
             'first_name' => $this->input->post('first_name'),
             'last_name' => $this->input->post('last_name'),
@@ -275,6 +277,9 @@ class Venta extends CI_Controller
             'estado' => $this->input->post('estado'),
             'ciudad' => $this->input->post('ciudad'),
             'cp' => $this->input->post('cp'),
+            'lugar_nacimiento' => $this->input->post('lugar_nacimiento'),
+            'fecha_nacimiento' => $fecha->format('Y-m-d'),
+            'company' => 'Huertos la ceiba',
         ];
         $group = array('4');
         if($idNewUser = $this->ion_auth->register($identity, $password, $email, $additional_data,$group)){
@@ -699,7 +704,6 @@ class Historial
                     }
                     
                 }
-                
             }
             
         }   

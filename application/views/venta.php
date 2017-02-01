@@ -33,6 +33,14 @@
                                     <label class="" for="phone">Celular</label>
                                     <input type="text" class="form-control" name="phone" id="phone" placeholder="1234908978" />
                                 </div>
+                                <div class="form-group col-xs-12 col-sm-6">
+                                    <label class="required" for="lugar_nacimiento">Lugar de nacimiento: </label>
+                                    <input type="text" class="form-control required" name="lugar_nacimiento" id="lugar_nacimiento" placeholder="Cáncun, Quintana Roo" />
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6">
+                                    <label class="" for="fecha_nacimiento">Fecha de nacimiento</label>
+                                    <input type="text" class="form-control required" name="fecha_nacimiento" id="fecha_nacimiento" placeholder="21-08-1992" />
+                                </div>
                                 <legend>Domicilio</legend>
                                 <div class="form-group col-xs-12 col-sm-6">
                                     <label class="required" for="calle">Calle</label>
