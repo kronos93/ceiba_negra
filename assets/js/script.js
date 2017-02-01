@@ -290,7 +290,7 @@ $(document).ready(function() {
         init_instance_callback: function(editor) {
             editor.on('SetContent', function(e) {
                 console.log("Asignando contenido dinamico");
-                var fechas = ['fecha_primer_pago', 'fecha_ultimo_pago', 'fecha_init_1', 'fecha_init_2', 'fecha_init_3', 'fecha_init_4'];
+                var fechas = ['fecha_primer_pago', 'fecha_ultimo_pago', 'fecha_init_1', 'fecha_init_2', 'fecha_init_3', 'fecha_init_4', 'fecha_init_5'];
                 for (var fecha in fechas) {
                     var fecha_tiny = this.dom.get(fechas[fecha]);
                     var fecha_val = $(fecha_tiny).html();
@@ -330,6 +330,10 @@ $(document).ready(function() {
             $("#fecha_init").datepicker({
                 dateFormat: "dd-mm-yy"
             });
+            $('#fecha_nacimiento').mask('00-00-0000');
+            $("#fecha_nacimiento").datepicker({
+                dateFormat: "dd-mm-yy"
+            });
         },
         onStepChanging: function(event, currentIndex, newIndex) {
             /*tinymce.remove('#contrato_html');*/
@@ -340,6 +344,8 @@ $(document).ready(function() {
                     'last_name': '',
                     'email': '',
                     'phone': '',
+                    'lugar_nacimiento': '',
+                    'fecha_nacimiento': '',
                     'calle': '',
                     'no_ext': '',
                     'no_int': '',
@@ -402,37 +408,37 @@ $(document).ready(function() {
             data.precio = $('#precio').autoNumeric('get');
             data.enganche = $('#enganche').autoNumeric('get');
             data.abono = $('#abono').autoNumeric('get');
-            swal({   
+            swal({
                     title: "¿Desea guardar los datos?",
                     text: "Generar contrato",
                     type: "info",
                     showCancelButton: true,
                     closeOnConfirm: false,
                     showLoaderOnConfirm: true,
-            }, 
-            function () {   
-               $.ajax({
-                    data: data,
-                    url: base_url + "venta/guardar_contrato/",
-                    async: true,
-                    type: 'post',
-                    beforeSend: function() {
-                        //$('a[href="#finish"]').attr("disabled", true);
-                    },
-                    success: function(xhr) {
+                },
+                function() {
+                    $.ajax({
+                            data: data,
+                            url: base_url + "venta/guardar_contrato/",
+                            async: true,
+                            type: 'post',
+                            beforeSend: function() {
+                                //$('a[href="#finish"]').attr("disabled", true);
+                            },
+                            success: function(xhr) {
 
-                    }
-                }).done(function(response) {
-                    swal("¡Contrato generado exitosamente!");
-                    window.location.href = base_url + "venta/historial_de_ventas";
+                            }
+                        }).done(function(response) {
+                            swal("¡Contrato generado exitosamente!");
+                            window.location.href = base_url + "venta/historial_de_ventas";
 
-                })
-                .fail(function(response) {
-                    swal("Algo salio mal");
+                        })
+                        .fail(function(response) {
+                            swal("Algo salio mal");
+                        });
                 });
-            });
             console.log(data);
-                
+
         },
         labels: {
             cancel: "Cancelar",

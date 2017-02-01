@@ -82,6 +82,7 @@ class Reportes extends CI_Controller
             foreach($historial as $key => $historial){
                 $words = explode(" ", $historial->nombre_cliente);
                 $acronym="";
+                $fecha = Carbon::createFromFormat('Y-m-d', $historial->fecha);
                 foreach ($words as $w) {
                   $acronym .= $w[0];
                 }
@@ -111,24 +112,25 @@ class Reportes extends CI_Controller
                     $pagares.="     <td>
                                         <div class='pagare'>
                                             <div class='pagare__header'>
-                                                <h3>Recibo de Dinero {$n} de {$n_historial} <strong>de fecha : {$historial->fecha}</strong></h3>
-                                                <p><strong>FOLIO:".strtoupper($acronym)."-{$n}-{$historial->fecha}</strong></p>
+                                                <h3>No. {$n}</h3>
+                                                <p>En Playa del carmen, municipio de Solidaridad, estado de Quintana Roo el día{$fecha->format('d-m-Y')}</p>
                                             </div>
                                             <div class='pagare__body'>
                                                 <p>
-                                                    RECIBI: DEL(A) C. <strong>{$historial->nombre_cliente}</strong> LA CANTIDAD DE <strong>$ ".number_format($historial->abono,2)." PESOS 00/100 M.N</strong> POR CONCEPTO DE PAGO PARCIAL DE LA CESION PRIVADA , DE DERECHOS EN CO-PROPIEDAD DEL TERRENO EN BREÑA No. {$txt_huertos} DEL PREDIO 'LA CEIBA', UBICADO EN EL MUNICIPIO DE LAZARO CARDENAS, QUINTANA ROO.
+                                                    Debe(mos) y pagare(mos) incondicionalmente por este Pagaré a la orden de FRANCISCO ENRIQUE MARTINEZ CORDERO en Playa del carmen, municipio de Solidaridad, estado de Quintana Roo el día {$fecha->format('d-m-Y')} la cantidad de: <strong>$ ".number_format($historial->abono,2)." PESOS 00/100 M.N</strong>
                                                 </p>
                                             </div>
                                             <div class='pagare__footer'>
                                                 <p>RECIBI:</p>
                                                 <br>
-                                                <p>FRANCISCO ENRIQUE MARTINEZ CORDERO</p>
+                                                <p></p>
                                                 <p class='copy'>Original</p>
                                             </div>
                                         </div>
                                     </td>
                                 </tr>";
                     $count = 1;
+                    break;
                 }
                 $n++;
                
