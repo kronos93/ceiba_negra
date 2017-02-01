@@ -28,6 +28,7 @@ ul {
     list-style: none;
     color: #000!important;
     text-align: justify;
+    font-size: 13px;
 }
 
 button,
@@ -57,7 +58,7 @@ textarea {
 }
 
 h1.titulo {
-    font-size: 34px!important;
+    font-size: 28px!important;
 }
 
 .mce-container textarea {
@@ -83,22 +84,22 @@ h1.titulo {
 }
 
 .mce-content-body h1 {
-    font-size: 32px;
-    line-height: 1em!important;
-    margin: 5px 0px;
+    font-size: 28px;
+    line-height: 1.1em!important;
+    margin: 9px 0px;
 }
 
 .mce-content-body h2 {
-    font-size: 30px;
+    font-size: 26px;
     /*margin: 15px 0px;*/
 }
 
 .mce-content-body h3 {
-    font-size: 26px;
+    font-size: 24px;
 }
 
 .mce-content-body h4 {
-    font-size: 22px;
+    font-size: 20px;
 }
 
 .mce-content-body h5 {
@@ -112,6 +113,7 @@ h1.titulo {
 .mce-content-body p {
     margin: 15px 0;
     text-align: justify!important;
+    font-size: 13px;
 }
 
 .mce-content-body ol,
@@ -201,7 +203,7 @@ h1.titulo {
 .mce-content-body table caption,
 .mce-content-body table td,
 .mce-content-body table th {
-    padding: 12px 7px;
+    padding: 10px 7px;
     font: inherit;
     font-family: Helvetica;
 }
