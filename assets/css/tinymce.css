@@ -26,6 +26,8 @@ strong {
 ol,
 ul {
     list-style: none;
+    color: #000!important;
+    text-align: justify;
 }
 
 button,
@@ -65,7 +67,7 @@ h1.titulo {
 .mce-content-body {
     font-family: Helvetica;
     font-size: 14px;
-    color: #626262;
+    color: #000;
     padding: 0 25px 25px;
 }
 
@@ -75,17 +77,20 @@ h1.titulo {
 .mce-content-body h4,
 .mce-content-body h5,
 .mce-content-body h6 {
-    font-weight: 200;
-    line-height: 1.4em;
-    margin: 25px 0 15px;
+    /*font-weight: 200;*/
+    line-height: 1.3em;
+    /*margin: 25px 0 15px;*/
 }
 
-.mce-content-body h1!important {
-    font-size: 34px;
+.mce-content-body h1 {
+    font-size: 32px;
+    line-height: 1em!important;
+    margin: 5px 0px;
 }
 
 .mce-content-body h2 {
     font-size: 30px;
+    /*margin: 15px 0px;*/
 }
 
 .mce-content-body h3 {
@@ -105,7 +110,8 @@ h1.titulo {
 }
 
 .mce-content-body p {
-    margin: 25px 0;
+    margin: 15px 0;
+    text-align: justify!important;
 }
 
 .mce-content-body ol,
@@ -161,11 +167,16 @@ h1.titulo {
     text-align: center;
 }
 
+.mce-content-body table.testigos td p {
+    text-align: center!important;
+}
+
 .mce-content-body table.testigos td p span.underline {
     margin: 0 auto;
     display: block;
     width: 300px;
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid #000!important;
+    text-align: left!important;
 }
 
 .mce-content-body table.pagares-tabla {
