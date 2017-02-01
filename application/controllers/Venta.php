@@ -155,8 +155,8 @@ class Venta extends CI_Controller
         $abono = $this->input->post('abono');
         $tipo_historial = $this->input->post('tipo_historial');
         $historial = new Historial($precio,$enganche,$abono,$fecha_init,$tipo_historial);
-        $historial_pagos = "<table style='width:400px;' class='pagares-tabla'>";
-
+        $historial_pagos = "";
+        $historial_pagos .= "<table class='pagares-tabla'>";
         $historial_pagos .=    "<thead>";
         $historial_pagos .=         "<tr>";
         $historial_pagos .=             "<th>Concepto</th>";
@@ -165,6 +165,8 @@ class Venta extends CI_Controller
         $historial_pagos .=         "</tr>";
         $historial_pagos .=    "</thead>";
         $historial_pagos .=    "<tbody>";
+        $size_history = count($historial->getHistorial());
+        $size_history_mid = (int) ($size_history/2);
         foreach ($historial->getHistorial() as $key => $pago) {
             if($key == 1){
                 $historial->setFechaPrimerPago($pago->getFecha()->format('d-m-Y'));
@@ -177,6 +179,45 @@ class Venta extends CI_Controller
             $historial_pagos .=         "<td>$ {$abonos}</td>";
             $historial_pagos .=         "<td>{$pago->getFecha()->format('d-m-Y')}</td>";
             $historial_pagos .=     "</tr>";
+            if($key == $size_history_mid ){
+                break;
+            }
+           
+        }
+        $historial_pagos .=    "</tbody>";
+        $pagado = number_format($historial->getPagado(),2);
+        $historial_pagos .= "</table>";
+        $td_1 = $historial_pagos;
+        $historial_pagos = "";
+
+        $historial_pagos = "";
+        $historial_pagos .= "<table class='pagares-tabla'>";
+        $historial_pagos .=    "<thead>";
+        $historial_pagos .=         "<tr>";
+        $historial_pagos .=             "<th>Concepto</th>";
+        $historial_pagos .=             "<th>Monto a pagar</th>";
+        $historial_pagos .=             "<th>Fecha de pago</th>";
+        $historial_pagos .=         "</tr>";
+        $historial_pagos .=    "</thead>";
+        $historial_pagos .=    "<tbody>";
+        $size_history = count($historial->getHistorial());
+        $size_history_mid = (int) ($size_history/2);
+        foreach ($historial->getHistorial() as $key => $pago) {
+            if($key > $size_history_mid ){
+                if($key == 1){
+                    $historial->setFechaPrimerPago($pago->getFecha()->format('d-m-Y'));
+                }else{
+                    $historial->setFechaUltimoPago($pago->getFecha()->format('d-m-Y'));
+                }
+                $abonos = number_format($pago->getAbono(), 2);
+                $historial_pagos .=     "<tr>";
+                $historial_pagos .=         "<td>{$pago->getConcepto()}</td>";
+                $historial_pagos .=         "<td>$ {$abonos}</td>";
+                $historial_pagos .=         "<td>{$pago->getFecha()->format('d-m-Y')}</td>";
+                $historial_pagos .=     "</tr>";
+            
+            }
+           
         }
         $historial_pagos .=    "</tbody>";
         $pagado = number_format($historial->getPagado(),2);
@@ -187,9 +228,22 @@ class Venta extends CI_Controller
         $historial_pagos .=             "<td>&nbsp;</td>";
         $historial_pagos .=         "</tr>";
         $historial_pagos .=    "</tfoot>";
-        
         $historial_pagos .= "</table>";
-            
+        $td_2 = $historial_pagos;
+        $historial_pagos = "";
+        
+        $historial_pagos .= "<table>";  
+        $historial_pagos .=     "<thead>";    
+        $historial_pagos .=     "</thead>"; 
+        $historial_pagos .=     "<tbody>";  
+        $historial_pagos .=         "<tr>";    
+        $historial_pagos .=             "<td>{$td_1}</td>";    
+        $historial_pagos .=             "<td>{$td_2}</td>";   
+        $historial_pagos .=         "</tr>";   
+        $historial_pagos .=     "</tbody>";     
+        $historial_pagos .=     "<tfoot>";    
+        $historial_pagos .=     "</tfoot>";       
+        $historial_pagos .= "</table>";   
         //Una manzana manzana
         if (!$multiple_mz) {
             $complemento_manzana_ii = ', que a continuación se describe';
