@@ -3,7 +3,7 @@
     <div class="container-fluid container">
         <div class="row">
             <div class="col-xs-12">
-                <form id="frm-venta">
+                <form id="frm-venta" autocomplete="off">
                     <h3>Datos del Cliente:</h3>
                     <div>
                         <div class="container-fluid">
@@ -117,10 +117,11 @@
                                     <input type="text" class="form-control required currency" name="abono" id="abono" placeholder="" required />
                                 </div>
                                 <legend>Periodos de abono</legend>
-                                <div class="form-group col-xs-12 col-sm-6">
+                                <div class="form-group col-xs-12 col-sm-7">
                                     <label class="required" for="manzana">Forma de pago:</label>
                                     <select name="tipo_historial" id="tipo_historial" class="form-control">
-                                        <option selected value="nuevo">Quincenal (15 a fin de mes, nuevos clientes, 10 días de solapamiento)</option>
+                                        <option selected value="nuevo-quincena">Quincenal (Nuevos clientes, días 15 a finales de mes, 10 días de solapamiento)</option>
+                                        <option value="nuevo-mensual">Mensual (Nuevos clientes,finales de mes, 10 días de solapamiento)</option>
                                         <option value="1-16">Quincenal (01 al 16 de mes)</option>
                                         <option value="15-1">Quincenal (15 al 01 del siguiente mes)</option>
                                     </select>

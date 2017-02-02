@@ -211,6 +211,7 @@ class Ajax extends CI_Controller
             $full_name = "CONCAT(users.first_name,' ',users.last_name)";
             $lideres = $this->ion_auth->select("users.id, {$full_name} AS data, {$full_name} AS value")->where(["{$full_name} LIKE" => "%{$like}%"])->users('lider')->result();
             $response = new stdClass();
+            $response->query = $this->input->get('query');
             $response->suggestions = $lideres;
             echo json_encode($response);
         }

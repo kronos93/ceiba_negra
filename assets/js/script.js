@@ -334,9 +334,31 @@ $(document).ready(function() {
             $("#fecha_nacimiento").datepicker({
                 dateFormat: "dd-mm-yy"
             });
+            $('#clientes_autocomplete').autocomplete({
+                serviceUrl: base_url + 'ajax/autocomplete_clientes',
+                noCache: true,
+                autoSelectFirst: true,
+                onSelect: function(suggestion) {
+                    console.log(suggestion);
+                },
+                onSearchError: function(query, jqXHR, textStatus, errorThrown) {
+                    console.log("Ha ocurrido un error.");
+                }
+            });
+            $('#lideres_autocomplete').autocomplete({
+                serviceUrl: base_url + 'ajax/autocomplete_lideres',
+                noCache: true,
+                autoSelectFirst: true,
+                onSelect: function(suggestion) {
+                    console.log(suggestion);
+                    $("#id_lider").val(suggestion.id);
+                },
+                onSearchError: function(query, jqXHR, textStatus, errorThrown) {
+                    console.log("Ha ocurrido un error.");
+                }
+            });
         },
         onStepChanging: function(event, currentIndex, newIndex) {
-            /*tinymce.remove('#contrato_html');*/
             if (newIndex == 2) {
                 tinymce.activeEditor.setContent("");
                 var data = {
@@ -376,31 +398,28 @@ $(document).ready(function() {
                         data[campo] = input.autoNumeric('get');
                     }
                 }
-
                 $.ajax({
-                    data: data,
-                    url: base_url + "venta/generar_contrato/",
-                    async: true,
-                    type: 'post',
-                    beforeSend: function() {
-                        tinymce.activeEditor.setContent("");
-                    },
-                    success: function(xhr) {
-
-                        tinymce.activeEditor.selection.setContent(xhr.html);
-                    }
-                });
+                        data: data,
+                        url: base_url + "venta/generar_contrato/",
+                        async: true,
+                        type: 'post',
+                        beforeSend: function() {
+                            tinymce.activeEditor.setContent("");
+                        },
+                    }).done(function(response) {
+                        tinymce.activeEditor.selection.setContent(response.html);
+                    })
+                    .fail(function(response) {
+                        sweetAlert("¡Error!", "Algo salió mal, contactar al administrador.", "error");
+                    });
             }
-
             form_venta.validate().settings.ignore = ":disabled,:hidden";
             return form_venta.valid();
-            //return true;
         },
 
         onFinishing: function(event, currentIndex) {
             form_venta.validate().settings.ignore = ":disabled";
             return form_venta.valid();
-            //return true;
         },
         onFinished: function(event, currentIndex) {
             var data = $(this).serializeObject();
@@ -430,11 +449,11 @@ $(document).ready(function() {
                             }
                         }).done(function(response) {
                             swal("¡Contrato generado exitosamente!");
-                            window.location.href = base_url + "venta/historial_de_ventas";
+                            //window.location.href = base_url + "venta/historial_de_ventas";
 
                         })
                         .fail(function(response) {
-                            swal("Algo salio mal");
+                            sweetAlert("¡Error!", "Algo salió mal, contactar al administrador.", "error");
                         });
                 });
             console.log(data);
@@ -448,21 +467,6 @@ $(document).ready(function() {
             next: "Siguiente",
             previous: "Anterior",
             loading: "Cargando ..."
-        }
-    });
-    $('#clientes_autocomplete').autocomplete({
-        serviceUrl: base_url + 'ajax/autocomplete_clientes',
-        onSelect: function(suggestion) {
-            console.log(suggestion);
-            alert('Estas a punto de hacer una reventa a un nuevo cliente');
-        }
-    });
-    $('#lideres_autocomplete').autocomplete({
-        serviceUrl: base_url + 'ajax/autocomplete_lideres',
-        onSelect: function(suggestion) {
-            console.log('Se ha cargado un Lider');
-            console.log(suggestion);
-            $("#id_lider").val(suggestion.id);
         }
     });
     ////////////////////////////////////////////////////////////////////////////
