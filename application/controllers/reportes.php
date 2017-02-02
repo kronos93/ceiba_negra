@@ -81,12 +81,13 @@ class Reportes extends CI_Controller
             $n_historial = count($historials);
             
             foreach ($historials as $key => $historial) {
-                $words = explode(" ", $historial->nombre_cliente);
-                $acronym="";
                 $fecha = Carbon::createFromFormat('Y-m-d', $historial->fecha);
+                /*$words = explode(" ", $historial->nombre_cliente);
+                $acronym="";
+                
                 foreach ($words as $w) {
                   $acronym .= $w[0];
-                }
+                }*/
                 if ($historial->nuevo == 1) {
                     if ($count == 1) {
                         $pagares.="<tr>
