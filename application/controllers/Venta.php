@@ -306,6 +306,7 @@ class Venta extends CI_Controller
             'company' => 'Huertos la ceiba',
         ];
         $group = array('4');
+        
         $this->Trans_model->start();
         if ($idNewUser = $this->ion_auth->register($identity, $password, $email, $additional_data, $group)) {
             $venta = [
@@ -376,7 +377,7 @@ class Venta extends CI_Controller
 
         if($this->Trans_model->status() === FALSE) {
             echo "Ocurrio un error";
-        }else{
+        }else{ 
             echo "All its ok";
         }
         

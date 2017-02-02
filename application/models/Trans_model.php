@@ -13,6 +13,6 @@ class Trans_model extends CI_Model {
         $this->db->trans_complete();
     }
     public function status () {
-        $this->db->trans_status();
+        return $this->db->trans_status();
     }
 }
