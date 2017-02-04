@@ -13,7 +13,10 @@
 	"require": {
 		"php": ">=5.2.4",
 		"nesbot/carbon": "^1.21",
-		"dompdf/dompdf": "^0.7.0"
+		"dompdf/dompdf": "^0.7.0",
+		"voku/html-min": "^1.0",
+		"wa72/html-pretty-min": "^0.1.4",
+		"zaininnari/html-minifier": "^0.4.2"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"

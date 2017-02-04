@@ -2,6 +2,9 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 use Carbon\Carbon;
 use Dompdf\Dompdf;
+use voku\helper\HtmlMin;
+use Wa72\HtmlPrettymin\PrettyMin;
+use zz\Html\HTMLMinify;
 use Dompdf\Options as Options;
 class Reportes extends CI_Controller
 {
@@ -26,15 +29,19 @@ class Reportes extends CI_Controller
                                     ->get();
         $html = "";
         foreach($ventas as $venta){
-            $html.= "<html><head><title>Contrato</title></head><body>";
-            $html.= "<link rel='stylesheet' type='text/css' href='".base_url().'assets/css/tinymce.css'."' />";
+            $html.= "<html><head><meta charset='utf-8'><title>Contrato</title></head><body>";
+            $html.= "<link rel='stylesheet' type='text/css' href='".base_url().'assets/css/tinymce.min.css'."' />";
             $html.= "<div class='mce-content-body'>";
             $html.= $venta->contrato_html;
             $html.= "</div>";
             $html.= "</body></html>";
+                      
+            $option = array('optimizationLevel' => HTMLMinify::OPTIMIZATION_ADVANCED);
+            $HTMLMinify = new HTMLMinify($html,$option);
+            $output = $HTMLMinify->process();
             
             $dompdf = new Dompdf();
-            $dompdf->loadHtml($html);
+            $dompdf->loadHtml($output);
             // (Optional) Setup the paper size and orientation
             $dompdf->setPaper('office', 'portrait');
             // Render the HTML as PDF
@@ -49,7 +56,7 @@ class Reportes extends CI_Controller
         set_time_limit(180);
         $condicion = ['historial.id_venta' => $id];
 
-        $historials = $this->Historial_model ->select("historial.abono,historial.fecha,CONCAT(users.first_name,' ',users.last_name) as nombre_cliente,huertos_ventas.id_venta, historial.porcentaje_penalizacion, ventas.nuevo")
+        $historials = $this->Historial_model ->select("historial.abono,historial.fecha,CONCAT(users.first_name,' ',users.last_name) as nombre_cliente,huertos_ventas.id_venta, historial.porcentaje_penalizacion, ventas.nuevo_esquema")
                                             ->join('ventas','historial.id_venta = ventas.id_venta','left')
                                             ->join('users','ventas.id_cliente = users.id','left')
                                             ->join('huertos_ventas','historial.id_venta = huertos_ventas.id_venta','left')
@@ -87,7 +94,7 @@ class Reportes extends CI_Controller
                 foreach ($words as $w) {
                   $acronym .= $w[0];
                 }
-                if ($historial->nuevo == 1) {
+                if ($historial->nuevo_esquema == 1) {
                     if ($count == 1) {
                         $pagares.="<tr>
                                         <td>
@@ -139,63 +146,21 @@ class Reportes extends CI_Controller
            
             
             $html = "<html><head><title>Pagarés</title></head><body>
-                <style>
-                    h1,h2,h3,h4,h5,h6,p{
-                        margin: 0px;
-                    }
-                    table {
-                        width:100%;
-                    }
-                    table td{
-                        position: relative;
-                        border: 1px solid #ff0000;
-                        padding: 5px;
-                        border:1px dashed #ccc;
-                        background: url('".base_url()."assets/img/logos/logo-small.png');
-                        background-position: center center;
-                        background-repeat: no-repeat;
-                        width: 50%;
-                    }
-                 
-                    body{
-                        font-family: 'Helvetica';
-                    }
-                   .pagare__header h3 {
-                        font-size: 9pt;
-                        text-transform:uppercase;
-                        text-align:right;
-                    }
-                    .pagare__header p{
-                        color: #B88D2C;
-                        font-size: 9pt;
-                        padding: 5px 0px 10px;
-                        text-align:right;
-                    }
-                    .pagare__body p {
-                        font-size: 8pt;
-                        text-align: justify;
-                    }
-                    .pagare__footer p {
-                        font-size: 9pt;
-                        text-align: center;
-                    }
-                    .pagare__footer .copy {
-                        font-size: 9pt;
-                        text-align: right;
-                        color: #ccc;
-                        text-transform: uppercase;
-                    }
-                </style>
+                <link rel='stylesheet' type='text/css' href='".base_url().'assets/css/pagares.min.css'."' />
                 <table>       
                     {$pagares}                
                 </table>
                 </body>
             </html>";
 
+            $option = array('optimizationLevel' => HTMLMinify::OPTIMIZATION_ADVANCED);
+            $HTMLMinify = new HTMLMinify($html,$option);
+            $output = $HTMLMinify->process();
+
             $options = new Options();
             $options->set('isRemoteEnabled', TRUE);
             $dompdf = new Dompdf($options);
-            $dompdf->loadHtml($html);
+            $dompdf->loadHtml($output);
             // (Optional) Setup the paper size and orientation
             $dompdf->setPaper('office', 'portrait');
             // Render the HTML as PDF
