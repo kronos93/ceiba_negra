@@ -2,8 +2,6 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 use Carbon\Carbon;
 use Dompdf\Dompdf;
-use voku\helper\HtmlMin;
-use Wa72\HtmlPrettymin\PrettyMin;
 use zz\Html\HTMLMinify;
 use Dompdf\Options as Options;
 class Reportes extends CI_Controller
@@ -62,8 +60,7 @@ class Reportes extends CI_Controller
                                             ->join('huertos_ventas','historial.id_venta = huertos_ventas.id_venta','left')
                                             ->join('huertos','huertos_ventas.id_venta = huertos.id_huerto','left')
                                             ->where($condicion)
-                                            ->get();
-        
+                                            ->get();       
         
         if(count($historials)){
             $condicion = ['huertos_ventas.id_venta' => $id];
@@ -97,14 +94,13 @@ class Reportes extends CI_Controller
                 }
                 }*/
                 if ($historial->nuevo_esquema == 1) {
-
                     if ($count == 1) {
                         $pagares.="<tr>
                                         <td>
                                             <div class='pagare'>
                                                 <div class='pagare__header'>
                                                     <h3>No. {$n}</h3>
-                                                    <p>En Playa del carmen, municipio de Solidaridad, estado de Quintana Roo el día{$fecha->format('d-m-Y')}</p>
+                                                    <p>En Playa del carmen, municipio de Solidaridad, estado de Quintana Roo el día {$fecha->format('d-m-Y')}</p>
                                                 </div>
                                                 <div class='pagare__body'>
                                                     <p>Debe(mos) y pagare(mos) incondicionalmente por este Pagaré a la orden de FRANCISCO ENRIQUE MARTINEZ CORDERO en Playa del carmen, municipio de Solidaridad, estado de Quintana Roo el día {$fecha->format('d-m-Y')} la cantidad de: <strong>$ ".number_format($historial->abono,2)." PESOS 00/100 M.N</strong></p><p>Valor recibido a mi (nuestra entera satisfacción). Este pagaré forma pare te una serie numerdada de 1 al {$n_historial} y todos estan sujetos a la condición de que, al no pagarse cualquiera de ellos a su vencimiento, serán exigibles todos los que le sigan en número, además de los ya vencidos, desde la fecha de vencimiento de este documento hasta el día de su liquidación, causará intereses moratorios al tipo de {$historial->porcentaje_penalizacion}% por cada día de de pago incumplido, pagado en esta ciudad.</p>
@@ -123,7 +119,7 @@ class Reportes extends CI_Controller
                                             <div class='pagare'>
                                                 <div class='pagare__header'>
                                                     <h3>No. {$n}</h3>
-                                                    <p>En Playa del carmen, municipio de Solidaridad, estado de Quintana Roo el día{$fecha->format('d-m-Y')}</p>
+                                                    <p>En Playa del carmen, municipio de Solidaridad, estado de Quintana Roo el día {$fecha->format('d-m-Y')}</p>
                                                 </div>
                                                 <div class='pagare__body'>
                                                     <p>Debe(mos) y pagare(mos) incondicionalmente por este Pagaré a la orden de FRANCISCO ENRIQUE MARTINEZ CORDERO en Playa del carmen, municipio de Solidaridad, estado de Quintana Roo el día {$fecha->format('d-m-Y')} la cantidad de: <strong>$ ".number_format($historial->abono,2)." PESOS 00/100 M.N</strong></p><p>Valor recibido a mi (nuestra entera satisfacción). Este pagaré forma pare te una serie numerdada de 1 al {$n_historial} y todos estan sujetos a la condición de que, al no pagarse cualquiera de ellos a su vencimiento, serán exigibles todos los que le sigan en número, además de los ya vencidos, desde la fecha de vencimiento de este documento hasta el día de su liquidación, causará intereses moratorios al tipo de {$historial->porcentaje_penalizacion}% por cada día de de pago incumplido, pagado en esta ciudad.</p>
