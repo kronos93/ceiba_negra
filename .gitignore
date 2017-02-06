@@ -27,5 +27,4 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 *.sublime-project
 #Node Modules
 #-------------------------
-/assets/node_modules/
-/manual/node_modules/
+**/node_modules/

@@ -10,6 +10,7 @@ class Ajax extends CI_Controller
         $this->load->model('Huerto_model');
         $this->load->model('Manzana_model');
         $this->load->model('Cliente_model');
+        $this->load->model('Trans_model');
     }
     public function index()
     {
@@ -49,19 +50,89 @@ class Ajax extends CI_Controller
         $this->Huerto_model->set_coordenadas($where, $update);
     }
     //Huertos
+    public function get_huertos_pmz()
+    {
+        header("Content-type: application/json; charset=utf-8");
+        $response = new stdClass();
+        $huertos = $this->Huerto_model->getHuertosPM();
+        $response->data = $huertos;
+        echo json_encode($response);
+    }
     public function add_huerto()
     {
         //Cabazera de respuesta JSON
         header("Content-type: application/json; charset=utf-8");
         //Validación de form
-        $this->form_validation->set_error_delimiters('', '');
-        $this->form_validation->set_rules('id_manzana', 'Manzana', 'trim|required');
-        $this->form_validation->set_rules('huerto', 'Huerto', 'trim|required|callback_mhi_check[huerto,id_manzana]');
-        $this->form_validation->set_rules('superficie', 'Superficie', 'trim|required');
-        $this->form_validation->set_rules('precio_x_m2', 'Precio por metro cuadrado', 'trim|required');
-        $this->form_validation->set_rules('id_precio', 'Precio', 'trim|required');
+        $config = [
+            [
+                'field' => 'id_manzana',
+                'label' => 'Referencia manzana',
+                'rules' => 'trim|required',
+            ],
+            [
+                'field' => 'huerto',
+                'label' => 'Huerto',
+                'rules' => 'trim|required|callback_mhi_check[huerto,id_manzana]',
+            ],
+            [
+                'field' => 'superficie',
+                'label' => 'Superficie',
+                'rules' => 'trim|required|numeric',
+            ],
+            [
+                'field' => 'precio_x_m2',
+                'label' => 'Precio por metro cuadrado',
+                'rules' => 'trim|required|numeric',
+            ],
+            [
+                'field' => 'id_precio',
+                'label' => 'Recomendación de pagos',
+                'rules' => 'trim|required|numeric',
+            ],
+            [
+                'field' => 'col_norte',
+                'label' => 'Colindancia al norte',
+                'rules' => 'trim',
+            ],
+            [
+                'field' => 'col_noreste',
+                'label' => 'Colindancia al noreste',
+                'rules' => 'trim',
+            ],
+            [
+                'field' => 'col_este',
+                'label' => 'Colindancia al este',
+                'rules' => 'trim',
+            ],
+            [
+                'field' => 'col_sureste',
+                'label' => 'Colindancia al sureste',
+                'rules' => 'trim',
+            ],
+            [
+                'field' => 'col_sur',
+                'label' => 'Colindancia al sur',
+                'rules' => 'trim',
+            ],
+            [
+                'field' => 'col_suroeste',
+                'label' => 'Colindancia al suroeste',
+                'rules' => 'trim',
+            ],
+            [
+                'field' => 'col_oeste',
+                'label' => 'Colindancia al oeste',
+                'rules' => 'trim',
+            ],
+            [
+                'field' => 'col_noroeste',
+                'label' => 'Colindancia al noroeste',
+                'rules' => 'trim',
+            ],
+        ];
+        $this->form_validation->set_rules($config);
         if ($this->form_validation->run()) {
-            $insert = [
+            $data = [
             'id_manzana' => $this->input->post('id_manzana'),
             'huerto'   => $this->input->post('huerto'),
             'superficie' => $this->input->post('superficie'),
@@ -76,31 +147,96 @@ class Ajax extends CI_Controller
             'col_oeste' => $this->input->post('col_oeste'),
             'col_noroeste' => $this->input->post('col_noroeste'),
             ];
-            $huerto = $this->Huerto_model->insert($insert);
+            $huerto = $this->Huerto_model->insert($data);
             echo json_encode($huerto);
         } else {
             echo validation_errors();
         }
     }
-    public function get_huertos_pmz()
-    {
-        header("Content-type: application/json; charset=utf-8");
-        $response = new stdClass();
-        $huertos = $this->Huerto_model->getHuertosPM();
-        $response->data = $huertos;
-        echo json_encode($response);
-    }
     public function update_huerto()
     {
         header("Content-type: application/json; charset=utf-8");
          //Validación de form
-            $this->form_validation->set_error_delimiters('', '');
-            $this->form_validation->set_rules('id_manzana', 'Manzana', 'trim|required');
-            $this->form_validation->set_rules('id_huerto', 'Huerto', 'trim|required|callback_mhu_check[id_huerto]');
-            $this->form_validation->set_rules('superficie', 'Superficie', 'trim|required');
-            $this->form_validation->set_rules('id_precio', 'Precio', 'trim|required');
+        $this->form_validation->set_rules('id_manzana', 'Manzana', 'trim|required');
+        $this->form_validation->set_rules('id_huerto', 'Huerto', 'trim|required|callback_mhu_check[id_huerto]');
+        $this->form_validation->set_rules('superficie', 'Superficie', 'trim|required');
+        $this->form_validation->set_rules('id_precio', 'Precio', 'trim|required');
+        $config = [
+            [
+                'field' => 'id_manzana',
+                'label' => 'Referencia manzana',
+                'rules' => 'trim|required',
+            ],
+            [
+                'field' => 'id_huerto',
+                'label' => 'Referencia huerto',
+                'rules' => 'trim|required|callback_mhu_check[id_huerto]',
+            ],
+            [
+                'field' => 'huerto',
+                'label' => 'Huerto',
+                'rules' => 'trim|required',
+            ],
+            [
+                'field' => 'superficie',
+                'label' => 'Superficie',
+                'rules' => 'trim|required|numeric',
+            ],
+            [
+                'field' => 'precio_x_m2',
+                'label' => 'Precio por metro cuadrado',
+                'rules' => 'trim|required|numeric',
+            ],
+            [
+                'field' => 'id_precio',
+                'label' => 'Recomendación de pagos',
+                'rules' => 'trim|required|numeric',
+            ],
+            [
+                'field' => 'col_norte',
+                'label' => 'Colindancia al norte',
+                'rules' => 'trim',
+            ],
+            [
+                'field' => 'col_noreste',
+                'label' => 'Colindancia al noreste',
+                'rules' => 'trim',
+            ],
+            [
+                'field' => 'col_este',
+                'label' => 'Colindancia al este',
+                'rules' => 'trim',
+            ],
+            [
+                'field' => 'col_sureste',
+                'label' => 'Colindancia al sureste',
+                'rules' => 'trim',
+            ],
+            [
+                'field' => 'col_sur',
+                'label' => 'Colindancia al sur',
+                'rules' => 'trim',
+            ],
+            [
+                'field' => 'col_suroeste',
+                'label' => 'Colindancia al suroeste',
+                'rules' => 'trim',
+            ],
+            [
+                'field' => 'col_oeste',
+                'label' => 'Colindancia al oeste',
+                'rules' => 'trim',
+            ],
+            [
+                'field' => 'col_noroeste',
+                'label' => 'Colindancia al noroeste',
+                'rules' => 'trim',
+            ],
+        ];
+        $this->form_validation->set_rules($config);
         if ($this->form_validation->run()) {
-            $set = [
+            $where = ['id_huerto' => $this->input->post("id_huerto")];
+            $set_data = [
                 'id_manzana' => $this->input->post("id_manzana"),
                 'huerto' => $this->input->post("huerto"),
                 'superficie' => $this->input->post("superficie"),
@@ -114,8 +250,8 @@ class Ajax extends CI_Controller
                 'col_oeste' => $this->input->post('col_oeste'),
                 'col_noroeste' => $this->input->post('col_noroeste'),
             ];
-            $where = ['id_huerto' => $this->input->post("id_huerto")];
-            $response = $this->Huerto_model->update($set, $where);
+            
+            $response = $this->Huerto_model->update($set_data, $where);
             if (count($response)) {
                 echo json_encode($response);
             } else {
@@ -126,17 +262,84 @@ class Ajax extends CI_Controller
         }
     }
     //MANZANAS
+    public function get_manzanas()
+    {
+        header("Content-type: application/json; charset=utf-8"); //Header generico
+        $response = new stdClass(); //Clase generica
+        $manzanas = $this->Manzana_model->getAll('array'); //<- Obtener datos
+        $response->data = $manzanas; // Atributo de la clase generico para el dataTable
+        echo json_encode($response); //Response JSON
+    }
     public function add_manzana()
     {
         //Cabazera de respuesta JSON
         header("Content-type: application/json; charset=utf-8");
         //Validación de form
-        $this->form_validation->set_error_delimiters('', '');
-        $this->form_validation->set_rules('manzana', 'Manzana', 'trim|required|is_unique[manzanas.manzana]');
-        $this->form_validation->set_rules('calle', 'Calle', 'trim|required');
-        $this->form_validation->set_rules('disponibilidad', 'Disponibilidad de la manzana', 'trim|required');
+        $config = [
+            [
+                'field' => 'manzana',
+                'label' => 'número de manzana',
+                'rules' => 'trim|required|numeric|is_unique[manzanas.manzana]',
+            ],
+            [
+                'field' => 'calle',
+                'label' => 'Calle',
+                'rules' => 'trim|required',
+            ],
+            [
+                'field' => 'superficie',
+                'label' => 'superficie',
+                'rules' => 'trim|required|numeric',
+            ],
+            [
+                'field' => 'disponibilidad',
+                'label' => 'Disponibilidad de la manzana',
+                'rules' => 'trim|required',
+            ],
+            [
+                'field' => 'col_norte',
+                'label' => 'Colindancia al norte',
+                'rules' => 'trim',
+            ],
+            [
+                'field' => 'col_noreste',
+                'label' => 'Colindancia al noreste',
+                'rules' => 'trim',
+            ],
+            [
+                'field' => 'col_este',
+                'label' => 'Colindancia al este',
+                'rules' => 'trim',
+            ],
+            [
+                'field' => 'col_sureste',
+                'label' => 'Colindancia al sureste',
+                'rules' => 'trim',
+            ],
+            [
+                'field' => 'col_sur',
+                'label' => 'Colindancia al sur',
+                'rules' => 'trim',
+            ],
+            [
+                'field' => 'col_suroeste',
+                'label' => 'Colindancia al suroeste',
+                'rules' => 'trim',
+            ],
+            [
+                'field' => 'col_oeste',
+                'label' => 'Colindancia al oeste',
+                'rules' => 'trim',
+            ],
+            [
+                'field' => 'col_noroeste',
+                'label' => 'Colindancia al noroeste',
+                'rules' => 'trim',
+            ],
+        ];
+        $this->form_validation->set_rules($config);
         if ($this->form_validation->run()) {
-            $insert = [
+            $data = [
                         'manzana' => $this->input->post('manzana'),
                         'calle'   => $this->input->post('calle'),
                         'superficie' => $this->input->post('superficie'),
@@ -150,46 +353,104 @@ class Ajax extends CI_Controller
                         'col_oeste' => $this->input->post('col_oeste'),
                         'col_noroeste' => $this->input->post('col_noroeste'),
             ];
-            $manzana = $this->Manzana_model->insert($insert);
+            
+            $manzana = $this->Manzana_model->insert($data);
             echo json_encode($manzana);
         } else {
             echo validation_errors();
         }
     }
-    public function get_manzanas()
-    {
-        header("Content-type: application/json; charset=utf-8"); //Header generico
-        $response = new stdClass(); //Clase generica
-        $manzanas = $this->Manzana_model->getAll('array'); //<- Obtener datos
-        $response->data = $manzanas; // Atributo de la clase generico para el dataTable
-        echo json_encode($response); //Response JSON
-    }
     public function update_manzana()
     {
         header("Content-type: application/json; charset=utf-8");
-        $where = ['id_manzana' => $this->input->post("id_manzana")];
-        $set = [
-                'calle' => $this->input->post("calle"),
-                'superficie' => $this->input->post("superficie"),
-                'disponibilidad' => $this->input->post("disponibilidad"),
-                'col_norte' => $this->input->post("col_norte"),
-                'col_noreste' => $this->input->post("col_noreste"),
-                'col_este' => $this->input->post("col_este"),
-                'col_sureste' => $this->input->post("col_sureste"),
-                'col_sur' => $this->input->post("col_sur"),
-                'col_suroeste' => $this->input->post("col_suroeste"),
-                'col_oeste' => $this->input->post("col_oeste"),
-                'col_noroeste' => $this->input->post("col_noroeste"),
+        $config = [
+            [
+                'field' => 'id_manzana',
+                'label' => 'Referencia de manzana',
+                'rules' => 'trim|required|numeric',
+            ],
+            [
+                'field' => 'calle',
+                'label' => 'Calle',
+                'rules' => 'trim|required',
+            ],
+            [
+                'field' => 'superficie',
+                'label' => 'superficie',
+                'rules' => 'trim|required|numeric',
+            ],
+            [
+                'field' => 'disponibilidad',
+                'label' => 'Disponibilidad de la manzana',
+                'rules' => 'trim|required',
+            ],
+            [
+                'field' => 'col_norte',
+                'label' => 'Colindancia al norte',
+                'rules' => 'trim',
+            ],
+            [
+                'field' => 'col_noreste',
+                'label' => 'Colindancia al noreste',
+                'rules' => 'trim',
+            ],
+            [
+                'field' => 'col_este',
+                'label' => 'Colindancia al este',
+                'rules' => 'trim',
+            ],
+            [
+                'field' => 'col_sureste',
+                'label' => 'Colindancia al sureste',
+                'rules' => 'trim',
+            ],
+            [
+                'field' => 'col_sur',
+                'label' => 'Colindancia al sur',
+                'rules' => 'trim',
+            ],
+            [
+                'field' => 'col_suroeste',
+                'label' => 'Colindancia al suroeste',
+                'rules' => 'trim',
+            ],
+            [
+                'field' => 'col_oeste',
+                'label' => 'Colindancia al oeste',
+                'rules' => 'trim',
+            ],
+            [
+                'field' => 'col_noroeste',
+                'label' => 'Colindancia al noroeste',
+                'rules' => 'trim',
+            ],
         ];
-        $response = $this->Manzana_model->update($set, $where);
-
-        if (count($response)) {
-            echo json_encode($response);
+        $this->form_validation->set_rules($config);
+        if ($this->form_validation->run()) {
+            $where = ['id_manzana' => $this->input->post("id_manzana")];
+            $set_data = [
+                    'calle' => $this->input->post("calle"),
+                    'superficie' => $this->input->post("superficie"),
+                    'disponibilidad' => $this->input->post("disponibilidad"),
+                    'col_norte' => $this->input->post("col_norte"),
+                    'col_noreste' => $this->input->post("col_noreste"),
+                    'col_este' => $this->input->post("col_este"),
+                    'col_sureste' => $this->input->post("col_sureste"),
+                    'col_sur' => $this->input->post("col_sur"),
+                    'col_suroeste' => $this->input->post("col_suroeste"),
+                    'col_oeste' => $this->input->post("col_oeste"),
+                    'col_noroeste' => $this->input->post("col_noroeste"),
+            ];
+            $response = $this->Manzana_model->update($set_data, $where);
+            if (count($response)) {
+                echo json_encode($response);
+            } else {
+                echo "No se detectó ningún cambio en los datos al actualizar.";
+            }
         } else {
-            echo "No se detectó ningún cambio en los datos al actualizar.";
+            echo validation_errors();
         }
     }
-
     public function autocomplete_clientes()
     {
         header("Content-type: application/json; charset=utf-8");

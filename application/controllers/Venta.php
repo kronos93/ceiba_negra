@@ -3,6 +3,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 use Carbon\Carbon;
 use Dompdf\Dompdf;
 use Dompdf\Options as Options;
+use zz\Html\HTMLMinify;
 
 class Venta extends CI_Controller
 {
@@ -278,10 +279,11 @@ class Venta extends CI_Controller
             $output = str_replace($search, $replace, $output);
         }
         header("Content-type: application/json; charset=utf-8");
-        $respuesta['html'] = $output;
+        $option = array('optimizationLevel' => HTMLMinify::OPTIMIZATION_ADVANCED);
+        $HTMLMinify = new HTMLMinify($output, $option);
+        $html_output = $HTMLMinify->process();
+        $respuesta['html'] = $html_output;
         echo json_encode($respuesta);
-        //$data['output'] = $output;
-        //$this->load->view('./templates/contrato/prueba', $data);
     }
     public function guardar_contrato()
     {
@@ -306,8 +308,8 @@ class Venta extends CI_Controller
             'company' => 'Huertos la ceiba',
         ];
         $group = array('4');
-        
-        $this->Trans_model->start();
+        $transact = $this->Trans_model->transact();
+        $transact->trans_begin();
         if ($idNewUser = $this->ion_auth->register($identity, $password, $email, $additional_data, $group)) {
             $venta = [
                 'id_cliente' => $idNewUser,
@@ -320,10 +322,10 @@ class Venta extends CI_Controller
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ];
+
             $id_venta = $this->Venta_model->insert($venta);
             if ($id_venta) {
                 $db_historial = [];
-                
                 $precio = $this->input->post('precio');
                 $enganche = $this->input->post('enganche');
                 $abono = $this->input->post('abono');
@@ -360,8 +362,6 @@ class Venta extends CI_Controller
                     }
                     array_push($db_historial, $db_pago);
                 }
-                
-                $this->Historial_model->insert_batch($db_historial);
                 $huertos_venta = [];
                 foreach ($this->cart->contents() as $items) {
                     $huerto_venta = new stdClass();
@@ -369,18 +369,24 @@ class Venta extends CI_Controller
                     $huerto_venta->id_huerto = $items['id_huerto'];
                     array_push($huertos_venta, $huerto_venta);
                 }
-                $this->HuertosVentas_model->insert_batch($huertos_venta);
+                if(count($huertos_venta) <= 0){
+                    $huerto_venta = new stdClass();
+                    $huerto_venta->id_venta = 0;
+                    $huerto_venta->id_huerto = 0;
+                    array_push($huertos_venta, $huerto_venta);
+                }
                 $this->cart->destroy();
+                $this->HuertosVentas_model->insert_batch($huertos_venta);
+                $this->Historial_model->insert_batch($db_historial);
             }
         }
-        $this->Trans_model->complete();
-
-        if($this->Trans_model->status() === FALSE) {
+        if ($transact->trans_status() === FALSE) {
             echo "Ocurrio un error";
-        }else{ 
+            $transact->trans_rollback();
+        } else {
             echo "All its ok";
+            $transact->trans_commit();
         }
-        
     }
 }
 
@@ -490,7 +496,7 @@ class Historial
                         $endDay = $new_date_end->endOfMonth()->day;
                        
                         if (($dia + 10) > $endDay) {
-                            $fecha = $new_date_end->addDay(1);                            
+                            $fecha = $new_date_end->addDay(1);
                             $next = 'quincena';
                         } else {
                             $next = 'fin_de_mes';
@@ -513,11 +519,9 @@ class Historial
                     }
                 }
             }
-        }
-        else if($this->tipo_historial ===  'nuevo-mensual'){
+        } elseif ($this->tipo_historial ===  'nuevo-mensual') {
              $fecha = $this->fecha;
-             foreach ($this->historial as $key => $row) {
-                 
+            foreach ($this->historial as $key => $row) {
                 if ($key === 0) {
                     $this->historial[$key]->setFecha($this->fecha_inicial);
                     $dia = ($this->fecha_inicial->day);
@@ -540,7 +544,7 @@ class Historial
                         $next = "fin_de_mes";
                     }
                 }
-             }
+            }
         }
     }
 

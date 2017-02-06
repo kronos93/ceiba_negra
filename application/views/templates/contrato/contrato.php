@@ -1,4 +1,4 @@
-<h1 class="titulo">CONTRATO PRIVADO DE CESIÓN DE DERECHOS A PLAZOS</h1>
+<h1>CONTRATO PRIVADO DE CESIÓN DE DERECHOS A PLAZOS</h1>
 <p><strong>Contrato Privado de Cesión de Derechos a Plazos, que celebran en la Ciudad de Playa del Carmen</strong>, Municipio de Solidaridad, Estado de Quintana Roo, México, <strong class="fecha_init" id="fecha_init_1">[@fecha_init]</strong>, de una parte a quien de ahora en adelante se llamará <strong>"EL CEDENTE"</strong>, de una parte el Señor <strong>FRANCISCO ENRIQUE MARTÍNEZ CORDERO</strong>, en su carácter de Propietario, y de la otra parte el C.: <strong>[@nombre_cliente]</strong>, a quién en lo sucesivo se le designará <strong>"EL CESIONARIO"</strong>, y que junto con <strong>"EL CEDENTE"</strong> se denominarán <strong>"LAS PARTES"</strong>, por su Propio y Personal Derecho respecto a una Fracción del Predio Rustico, ubicado en el Municipio de Lázaro Cárdenas, Estado de Quintana Roo, México, de la posesión de la Primera de los nombrados, lo que verifican al tenor de las siguientes Declaraciones y Cláusulas:</p>
 <h1>D E C L A R A C I O N E S</h1>
 <p>El Señor <strong>FRANCISCO ENRIQUE MARTÍNEZ CORDERO</strong>, con la Personalidad antes indicada; bajo Formal Protesta de Decir Verdad, Declara:</p>
@@ -72,41 +72,41 @@
 <p>Primero: El deudor acepta y se compromete a pagar la deuda contraída con el acreedor, la cual asciende a la cantidad de [@precio] (<span id="precio_2">[@precio_txt]</span>).</p>
 <p>Segundo: De mutuo acuerdo se establece el siguientes fechas de vencimiento:</p>
 [@historial_pagos]
-<p>El deudor pagará mensualmente [@abono] (<span id="abono_2">[@abono_txt]</span>) en un plazo no mayor a [@n_pagos] meses a partir del inicio de este plan de pagos a la cuenta definida por el acreedor:
-    <div>SCOTIABANK SUCURSAL 005</div>
-    <div>A NOMBRE DE FRANCISCO ENRIQUE MARTINEZ CORDERO</div>
-    <div>NUMERO DE CUENTA 237 0052 4891</div>
-    <div>CLABE INTERBANCARIA 0446 9423 7005 2489 18</div>
-    <p>EL deudor podrá, si así lo considera necesario, adelantar pagos con la intención de reducir su plazo de pago, o en su defecto, el monto mensual a pagar. Para tal efecto, El deudor y el Acreedor se pondrán de acuerdo sobre la modificación correspondiente en el presente anexo del contrato.</p>
-    <p>APLICACIÓN DE VENCIMIENTO ANTICIPADO: “El Deudor/Suscriptor” reconoce y acepta que a la falta de pago oportuno de [@maximo_retrasos_permitidos] o más amortizaciones que conforme a este pagaré deba realizar, generará el vencimiento anticipado de los demás pagos sucesivos que falten por vencer y por lo tanto se da por rescindido el contrato objeto de la presente obligación, de manera automática sin ningún requerimiento de aviso, ni tramite, renunciando de esta manera a cualquier reclamación presente o futura de pagos realizados, y/o mejoras realizadas en el terreno, por parte del Cesionario.</p>
-    <p>CARGOS POR MORA.- En caso de que cualquier cantidad pagadera al Acreedor bajo este plan de pagos no sea pagada a su vencimiento, el Saldo Insoluto del presente Pagaré vencerá anticipadamente en ese momento y sin necesidad de aviso o requerimiento previo, el Suscriptor pagara a la vista del Acreedor, una pena por mora de [@porcentaje_penalizacion]% (<span id="porcentaje">[@porcentaje_penalizacion]</span> por ciento por cada día hábil) hasta que se reciba el pago.</p>
-    <p>JURISDICCION Y LEY APLICABLE: Para la interpretación, ejecución, cumplimiento de este pagaré y en su caso para el requerimiento judicial del pago de su importe serán competentes los tribunales de la ciudad de Lázaro Cárdenas, Estado de Quintana Roo, México, renunciando expresamente a cualquier otro fuero que por razón de sus domicilios presentes o futuros pudieran corresponderles.</p>
-    <p>El presente plan de pagos se establece <span class="fecha_init" id="fecha_init_4">[@fecha_init]</span> en la ciudad de [@ciudad] .</p>
-    <table class="testigos">
-        <thead>
-            <tr>
-                <th></th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>
-                    <p><span class="underline">&nbsp;</span>FRANCISCO ENRIQUE MARTÍNEZ CORDERO</p>
-                </td>
-                <td>
-                    <p><span class="underline">&nbsp;</span>[@nombre_cliente]</p>
-                </td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr>
-                <td>
-                    <p><span class="underline">&nbsp;</span>[@testigo_1]</p>
-                </td>
-                <td>
-                    <p><span class="underline">&nbsp;</span>[@testigo_2]</p>
-                </td>
-            </tr>
-        </tfoot>
-    </table>
+<p>El deudor pagará mensualmente [@abono] (<span id="abono_2">[@abono_txt]</span>) en un plazo no mayor a [@n_pagos] meses a partir del inicio de este plan de pagos a la cuenta definida por el acreedor:</p>
+<div>SCOTIABANK SUCURSAL 005</div>
+<div>A NOMBRE DE FRANCISCO ENRIQUE MARTINEZ CORDERO</div>
+<div>NUMERO DE CUENTA 237 0052 4891</div>
+<div>CLABE INTERBANCARIA 0446 9423 7005 2489 18</div>
+<p>EL deudor podrá, si así lo considera necesario, adelantar pagos con la intención de reducir su plazo de pago, o en su defecto, el monto mensual a pagar. Para tal efecto, El deudor y el Acreedor se pondrán de acuerdo sobre la modificación correspondiente en el presente anexo del contrato.</p>
+<p>APLICACIÓN DE VENCIMIENTO ANTICIPADO: “El Deudor/Suscriptor” reconoce y acepta que a la falta de pago oportuno de [@maximo_retrasos_permitidos] o más amortizaciones que conforme a este pagaré deba realizar, generará el vencimiento anticipado de los demás pagos sucesivos que falten por vencer y por lo tanto se da por rescindido el contrato objeto de la presente obligación, de manera automática sin ningún requerimiento de aviso, ni tramite, renunciando de esta manera a cualquier reclamación presente o futura de pagos realizados, y/o mejoras realizadas en el terreno, por parte del Cesionario.</p>
+<p>CARGOS POR MORA.- En caso de que cualquier cantidad pagadera al Acreedor bajo este plan de pagos no sea pagada a su vencimiento, el Saldo Insoluto del presente Pagaré vencerá anticipadamente en ese momento y sin necesidad de aviso o requerimiento previo, el Suscriptor pagara a la vista del Acreedor, una pena por mora de [@porcentaje_penalizacion]% (<span id="porcentaje">[@porcentaje_penalizacion]</span> por ciento por cada día hábil) hasta que se reciba el pago.</p>
+<p>JURISDICCION Y LEY APLICABLE: Para la interpretación, ejecución, cumplimiento de este pagaré y en su caso para el requerimiento judicial del pago de su importe serán competentes los tribunales de la ciudad de Lázaro Cárdenas, Estado de Quintana Roo, México, renunciando expresamente a cualquier otro fuero que por razón de sus domicilios presentes o futuros pudieran corresponderles.</p>
+<p>El presente plan de pagos se establece <span class="fecha_init" id="fecha_init_4">[@fecha_init]</span> en la ciudad de [@ciudad] .</p>
+<table class="testigos">
+    <thead>
+        <tr>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <p><span class="underline">&nbsp;</span>FRANCISCO ENRIQUE MARTÍNEZ CORDERO</p>
+            </td>
+            <td>
+                <p><span class="underline">&nbsp;</span>[@nombre_cliente]</p>
+            </td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>
+                <p><span class="underline">&nbsp;</span>[@testigo_1]</p>
+            </td>
+            <td>
+                <p><span class="underline">&nbsp;</span>[@testigo_2]</p>
+            </td>
+        </tr>
+    </tfoot>
+</table>

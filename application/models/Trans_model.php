@@ -15,4 +15,7 @@ class Trans_model extends CI_Model {
     public function status () {
         return $this->db->trans_status();
     }
+    public function transact(){
+        return $this->db;
+    }
 }

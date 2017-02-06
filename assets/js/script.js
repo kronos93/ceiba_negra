@@ -55,7 +55,7 @@ var ajax_msg = {
         },
         set_msg: function(msg) {
             $('.container-icons').slideUp(0);
-            $('.container-icons').find('.message').text(msg);
+            $('.container-icons').find('.message').empty().html(msg);
             $('.container-icons').slideDown(625);
         }
     }
@@ -80,7 +80,9 @@ $.fn.serializeObject = function() {
 $.extend(true, $.fn.dataTable.defaults, {
     "pagingType": "full_numbers",
     "language": {
-        "url": lang_esp_datatables
+        "url": lang_esp_datatables,
+        "decimal": ".",
+        "thousands": ","
     },
     /*"search": {
         "caseInsensitive": false
@@ -493,12 +495,16 @@ $(document).ready(function() {
     var manzanas_table = $('#manzanas-table').DataTable({
         "ajax": base_url + 'ajax/get_manzanas', //URL de datos
         "columns": [ //Atributos para la tabla
-            { "data": "id_manzana" },
+            {
+                "data": "id_manzana",
+                "type": "num",
+            },
             {
                 "data": "manzana",
                 "render": function(data, type, full, meta) {
-                    return 'Mz.  ' + data;
-                }
+                    return "<span class='mz'>" + data + "</span>";
+                },
+                "type": "html-num",
             },
             { "data": "calle" },
             {
@@ -545,6 +551,9 @@ $(document).ready(function() {
                 "searchable": false,
                 "targets": [-1]
             }
+        ],
+        "order": [
+            [1, "asc"]
         ],
         "drawCallback": function(settings) {
             format_numeric('init');
@@ -594,17 +603,23 @@ $(document).ready(function() {
     var huertos_table = $('#huertos-table').DataTable({
         "ajax": base_url + 'ajax/get_huertos_pmz',
         "columns": [ //Atributos para la tabla
-            { "data": "id_huerto" }, {
+            {
+                "data": "id_huerto",
+                "type": "num",
+            },
+            {
                 "data": "manzana",
                 "render": function(data, type, full, meta) {
-                    return 'Mz.  ' + data;
-                }
+                    return '<span class="mz">' + data + '</span>';
+                },
+                "type": "html-num",
             },
             {
                 "data": "huerto",
                 "render": function(data, type, full, meta) {
-                    return 'Ht.  ' + data;
-                }
+                    return '<span class="ht">' + data + '</span>';
+                },
+                "type": "html-num",
             },
             {
                 "data": "superficie",
@@ -667,12 +682,15 @@ $(document).ready(function() {
             {
                 //Quitar ordenamiento para estas columnas
                 "sortable": false,
-                "targets": [-1, -2, -3, -4, -5]
+                "targets": [-1, -2, -3, -4, -5, -6, -7, -8, -9]
             }, {
                 //Quitar busqueda para esta columna
                 "targets": [-1, -2, -3, -4, -5],
                 "searchable": false,
             }
+        ],
+        "order": [
+            [1, "asc"]
         ],
         "drawCallback": function(settings) {
             format_numeric('init');
