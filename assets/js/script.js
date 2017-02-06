@@ -292,6 +292,8 @@ $(document).ready(function() {
         init_instance_callback: function(editor) {
             editor.on('SetContent', function(e) {
                 console.log("Asignando contenido dinamico");
+                /*console.log(this.dom.select('.fecha_init'));
+                console.log(tinymce.activeEditor.dom.select('.fecha_init'));*/
                 var fechas = ['fecha_primer_pago', 'fecha_ultimo_pago', 'fecha_init_1', 'fecha_init_2', 'fecha_init_3', 'fecha_init_4', 'fecha_init_5'];
                 for (var fecha in fechas) {
                     var fecha_tiny = this.dom.get(fechas[fecha]);
