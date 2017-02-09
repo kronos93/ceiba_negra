@@ -11,7 +11,7 @@ class Venta extends CI_Controller
     {
         parent::__construct();
         $this->load->model('Contrato_model');
-        $this->load->model('Ingreso_model');
+        $this->load->model('Opciones_ingreso_model');
         $this->load->model('Manzana_model');
         $this->load->model('Huerto_model');
         $this->load->model('Venta_model');
@@ -25,7 +25,7 @@ class Venta extends CI_Controller
         $data['body'] = "venta";
         $fecha = Carbon::now();
         $data['fecha'] = $fecha->format('d-m-Y');
-        $data['ingresos'] = $this->Ingreso_model->get();
+        $data['ingresos'] = $this->Opciones_ingreso_model->get();
         $this->load->view('templates/template', $data);
     }
     public function historial_de_ventas()

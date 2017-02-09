@@ -16,8 +16,8 @@
                         <tr>
                             <td><?= $venta->nombre_cliente; ?></td>
                             <td><?= $venta->nombre_lider; ?></td>
-                            <td><a href="<?= base_url(); ?>reportes/contrato/<?= $venta->id_venta; ?>" class="btn btn-success" target="_blank">Contrato</a></td>
-                            <td><a href="<?= base_url(); ?>reportes/pagares/<?= $venta->id_venta; ?>" class="btn btn-info" target="_blank">Pagares</a></td>
+                            <td><a href="<?= base_url(); ?>reportes/contrato/<?= $venta->id_venta; ?>" class="btn btn-success" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Ver contrato</a></td>
+                            <td><a href="<?= base_url(); ?>reportes/pagares/<?= $venta->id_venta; ?>" class="btn btn-info" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Ver pagarés</a></td>
                         </tr>
                         <?php endforeach;?>
                     </tbody>
