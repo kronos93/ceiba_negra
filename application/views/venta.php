@@ -180,7 +180,7 @@
                                     <label class="required" for="manzana">Seleccione el ingreso</label>
                                     <select name="id_ingreso" id="id_ingreso" class="form-control">
                                         <?php foreach ($ingresos as $ingreso) : ?>
-                                        <option value="<?= $ingreso->id_ingreso?>">
+                                        <option value="<?= $ingreso->id_opcion_ingreso?>">
                                             <?= $ingreso->nombre?>
                                                 <?= !empty($ingreso->cuenta) ? ' - '.$ingreso->cuenta : ''; ?>
                                         </option>

@@ -10,7 +10,7 @@ class Reportes extends CI_Controller
     {
         parent::__construct();
         $this->load->model('Contrato_model');
-        $this->load->model('Ingreso_model');
+        $this->load->model('Opciones_ingreso_model');
         $this->load->model('Manzana_model');
         $this->load->model('Huerto_model');
         $this->load->model('Venta_model');
@@ -19,7 +19,8 @@ class Reportes extends CI_Controller
     }
     public function contrato($id){
         ini_set('memory_limit', '1024M');
-        set_time_limit(180);
+        ini_set('max_execution_time', 300);
+        set_time_limit(300);
         $condicion = ['ventas.id_venta' => $id];
         $ventas = $this->Venta_model
                                     ->select("contrato_html")
@@ -51,10 +52,11 @@ class Reportes extends CI_Controller
     }
     public function pagares($id){
         ini_set('memory_limit', '1024M');
-        set_time_limit(180);
+        ini_set('max_execution_time', 300);
+        set_time_limit(300);
         $condicion = ['historial.id_venta' => $id];
 
-        $historials = $this->Historial_model ->select("historial.abono,historial.fecha,CONCAT(users.first_name,' ',users.last_name) as nombre_cliente,huertos_ventas.id_venta, historial.porcentaje_penalizacion, ventas.nuevo_esquema")
+        $historials = $this->Historial_model ->select("historial.abono,historial.fecha,CONCAT(users.first_name,' ',users.last_name) as nombre_cliente,huertos_ventas.id_venta, historial.porcentaje_penalizacion, ventas.version")
                                             ->join('ventas','historial.id_venta = ventas.id_venta','left')
                                             ->join('users','ventas.id_cliente = users.id','left')
                                             ->join('huertos_ventas','historial.id_venta = huertos_ventas.id_venta','left')
@@ -86,14 +88,63 @@ class Reportes extends CI_Controller
             
             foreach ($historials as $key => $historial) {
                 $fecha = Carbon::createFromFormat('Y-m-d', $historial->fecha);
-                /*$words = explode(" ", $historial->nombre_cliente);
-                $acronym="";
                 
-                foreach ($words as $w) {
-                  $acronym .= $w[0];
+
+                if($historial->version == 1){
+                    if ($count == 1) {
+                        $words = explode(" ", $historial->nombre_cliente);
+                        $acronym = "";                
+                        foreach ($words as $w) {
+                            $acronym .= $w[0];
+                        }
+                        $pagares.="<tr>
+                                        <td>
+                                            <div class='pagare'>                            
+                                            <div class='pagare__header'>
+                                                <h3>Recibo de Dinero {$n} de {$n_historial} <strong>de fecha : {$historial->fecha}</strong></h3>
+                                                <p><strong>FOLIO:".strtoupper($acronym)."-{$n}-{$historial->fecha}</strong></p>
+                                            </div>
+                                            <div class='pagare__body'>
+                                                <p>
+                                                    RECIBI: DEL(A) C. <strong>{$historial->nombre_cliente}</strong> LA CANTIDAD DE <strong>$ ".number_format($historial->abono,2)." PESOS 00/100 M.N</strong> POR CONCEPTO DE PAGO PARCIAL DE LA CESION PRIVADA , DE DERECHOS EN CO-PROPIEDAD DEL TERRENO EN BREÑA {$txt_huertos} DEL PREDIO 'LA CEIBA', UBICADO EN EL MUNICIPIO DE LAZARO CARDENAS, QUINTANA ROO.
+                                                </p>
+                                            </div>
+                                            <div class='pagare__footer'>
+                                                <p>RECIBI:</p>
+                                                <br>
+                                                <p>FRANCISCO ENRIQUE MARTINEZ CORDERO</p>
+                                                <p class='copy'>Original</p>
+                                            </div>
+                                        </div>
+                                        </td>";
+                        $count++;
+                    } else if($count == 2) {
+                        $pagares.="     <td>
+                                            <div class='pagare'>                            
+                                            <div class='pagare__header'>
+                                                <h3>Recibo de Dinero {$n} de {$n_historial} <strong>de fecha : {$historial->fecha}</strong></h3>
+                                                <p><strong>FOLIO:".strtoupper($acronym)."-{$n}-{$historial->fecha}</strong></p>
+                                            </div>
+                                            <div class='pagare__body'>
+                                                <p>
+                                                    RECIBI: DEL(A) C. <strong>{$historial->nombre_cliente}</strong> LA CANTIDAD DE <strong>$ ".number_format($historial->abono,2)." PESOS 00/100 M.N</strong> POR CONCEPTO DE PAGO PARCIAL DE LA CESION PRIVADA , DE DERECHOS EN CO-PROPIEDAD DEL TERRENO EN BREÑA {$txt_huertos} DEL PREDIO 'LA CEIBA', UBICADO EN EL MUNICIPIO DE LAZARO CARDENAS, QUINTANA ROO.
+                                                </p>
+                                            </div>
+                                            <div class='pagare__footer'>
+                                                <p>RECIBI:</p>
+                                                <br>
+                                                <p>FRANCISCO ENRIQUE MARTINEZ CORDERO</p>
+                                                <p class='copy'>Original</p>
+                                            </div>
+                                        </div>
+                                        </td>
+                                    </tr>";
+                            $count = 1;
+                            
+                    }
+                    $n++;     
                 }
-                }*/
-                if ($historial->nuevo_esquema == 1) {
+                else if ($historial->version == 2) {
                     if ($count == 1) {
                         $pagares.="<tr>
                                         <td>
@@ -139,6 +190,8 @@ class Reportes extends CI_Controller
                     $n++;                    
                 }
             }
+
+            //Si al terminar no se han cerrado todas las etiquetas de td, cerrar
             if($count==2){
                 $pagares.="<td></td></tr>";
             }
@@ -155,7 +208,7 @@ class Reportes extends CI_Controller
             $option = array('optimizationLevel' => HTMLMinify::OPTIMIZATION_ADVANCED);
             $HTMLMinify = new HTMLMinify($html,$option);
             $output = $HTMLMinify->process();
-
+            
             $options = new Options();
             $options->set('isRemoteEnabled', TRUE);
             $dompdf = new Dompdf($options);

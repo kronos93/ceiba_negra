@@ -7,7 +7,9 @@ h6,
 p {
     margin: 0
 }
-
+html {
+    margin: 30px 40px!important
+}
 table {
     width: 100%
 }
@@ -25,25 +27,25 @@ body {
 }
 
 .pagare__header h3 {
-    font-size: 9pt;
+    font-size: 8pt;
     text-transform: uppercase;
     text-align: right
 }
 
 .pagare__header p {
     color: #B88D2C;
-    font-size: 9pt;
+    font-size: 8pt;
     padding: 5px 0 10px;
     text-align: right
 }
 
 .pagare__body p {
-    font-size: 8pt;
+    font-size: 7pt;
     text-align: justify
 }
 
 .pagare__footer p {
-    font-size: 9pt;
+    font-size: 8pt;
     text-align: center
 }
 
