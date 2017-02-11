@@ -417,6 +417,7 @@ $(document).ready(function() {
                         sweetAlert("¡Error!", "Algo salió mal, contactar al administrador.", "error");
                     });
             }
+            
             form_venta.validate().settings.ignore = ":disabled,:hidden";
             return form_venta.valid();
         },

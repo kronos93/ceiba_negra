@@ -39,7 +39,7 @@
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6">
                                     <label class="" for="fecha_nacimiento">Fecha de nacimiento</label>
-                                    <input type="text" class="form-control required" name="fecha_nacimiento" id="fecha_nacimiento" placeholder="21-08-1992" />
+                                    <input type="text" class="form-control required" name="fecha_nacimiento" id="fecha_nacimiento" placeholder="dd-mm-yyyy" />
                                 </div>
                                 <legend>Domicilio</legend>
                                 <div class="form-group col-xs-12 col-sm-6">
@@ -120,10 +120,10 @@
                                 <div class="form-group col-xs-12 col-sm-7">
                                     <label class="required" for="manzana">Forma de pago:</label>
                                     <select name="tipo_historial" id="tipo_historial" class="form-control">
-                                        <option selected value="nuevo-quincena">Quincenal (Nuevos clientes, días 15 a finales de mes, 10 días de solapamiento)</option>
-                                        <option value="nuevo-mensual">Mensual (Nuevos clientes,finales de mes, 10 días de solapamiento)</option>
-                                        <option value="1-16">Quincenal (01 al 16 de mes)</option>
-                                        <option value="15-1">Quincenal (15 al 01 del siguiente mes)</option>
+                                        <option selected value="nuevo-quincena">Quincenal (Clientes nuevos, días 15 a finales de mes, 10 días de solapamiento)</option>
+                                        <option value="nuevo-mensual">Mensual (Clientes nuevos, finales de mes, 10 días de solapamiento)</option>
+                                        <option value="1-16">Quincenal (Clientes previos, días 01 a días 16 del mes)</option>
+                                        <option value="15-1">Quincenal (Clientes previos, días 15 de un mes al 01 del siguiente mes) </option>
                                     </select>
                                 </div>
                                 <div class="row">

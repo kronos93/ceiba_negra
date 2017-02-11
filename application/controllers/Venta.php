@@ -519,8 +519,9 @@ class Historial
                     }
                 }
             }
-        } elseif ($this->tipo_historial ===  'nuevo-mensual') {
-             $fecha = $this->fecha;
+        } 
+        else if ($this->tipo_historial === 'nuevo-mensual') {
+            $fecha = $this->fecha;
             foreach ($this->historial as $key => $row) {
                 if ($key === 0) {
                     $this->historial[$key]->setFecha($this->fecha_inicial);
@@ -545,6 +546,11 @@ class Historial
                     }
                 }
             }
+        }
+        else if($this->tipo_historial === '1-16'){
+            
+        }else if($this->tipo_historial === '15-1'){ 
+            
         }
     }
 
