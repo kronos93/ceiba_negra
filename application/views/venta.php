@@ -96,11 +96,11 @@
                                     <input type="text" class="form-control required" name="ciudad_expedicion" id="ciudad_expedicion" placeholder="Cancún" required />
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6">
-                                    <label class="required" for="testigo_1">Nombre completo de testigo 1</label>
+                                    <label class="required" for="testigo_1">Nombre completo del testigo #1</label>
                                     <input type="text" class="form-control required" id="testigo_1" name="testigo_1" placeholder="Nombre Apellido Apellido" required />
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6">
-                                    <label class="required" for="testigo_2">Nombre completo de testigo 1</label>
+                                    <label class="required" for="testigo_2">Nombre completo del testigo #2</label>
                                     <input type="text" class="form-control required" id="testigo_2" name="testigo_2" placeholder="Nombre Apellido Apellido" required />
                                 </div>
                                 <legend>Precios</legend>

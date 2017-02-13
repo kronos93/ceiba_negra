@@ -308,13 +308,19 @@ class Venta extends CI_Controller
             'company' => 'Huertos la ceiba',
         ];
         $group = array('4');
-        $transact = $this->Trans_model->transact();
-        $transact->trans_begin();
+        //$transact = $this->Trans_model->transact();
+        //$transact->trans_begin();
         if ($idNewUser = $this->ion_auth->register($identity, $password, $email, $additional_data, $group)) {
             $venta = [
                 'id_cliente' => $idNewUser,
                 'id_lider' =>  $this->input->post('id_lider'),
+                'id_usuario' => $this->ion_auth->get_user_id(),
                 'estado' => 0,//En proceso de Pago
+                'precio' => $this->input->post('precio'),
+                'enganche' => $this->input->post('enganche'),
+                'abono' => $this->input->post('abono'),
+                'descuento' => ($this->input->post('precio') * .10),
+                'retrasos_permitidos' =>  $this->input->post('maximo_retrasos_permitidos'),
                 'porcentaje_penalizacion' =>  $this->input->post('porcentaje_penalizacion'),
                 'contrato_html' => html_entity_decode($this->input->post('contrato_html')),
                 'testigo_1' =>  ucwords($this->input->post('testigo_1')),
@@ -322,7 +328,11 @@ class Venta extends CI_Controller
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ];
-
+            if ($this->input->post('tipo_historial') === '1-16') {
+                $venta['version'] = 1;
+            } else if ($this->input->post('tipo_historial') === '15-1') { 
+                $venta['version'] = 1;
+            }
             $id_venta = $this->Venta_model->insert($venta);
             if ($id_venta) {
                 $db_historial = [];
@@ -369,24 +379,20 @@ class Venta extends CI_Controller
                     $huerto_venta->id_huerto = $items['id_huerto'];
                     array_push($huertos_venta, $huerto_venta);
                 }
-                if(count($huertos_venta) <= 0){
-                    $huerto_venta = new stdClass();
-                    $huerto_venta->id_venta = 0;
-                    $huerto_venta->id_huerto = 0;
-                    array_push($huertos_venta, $huerto_venta);
-                }
-                $this->cart->destroy();
+                
                 $this->HuertosVentas_model->insert_batch($huertos_venta);
                 $this->Historial_model->insert_batch($db_historial);
+
+                $this->cart->destroy();
             }
         }
-        if ($transact->trans_status() === FALSE) {
+        /*if ($transact->trans_status() === FALSE) {
             echo "Ocurrio un error";
             $transact->trans_rollback();
         } else {
             echo "All its ok";
             $transact->trans_commit();
-        }
+        }*/
     }
 }
 
@@ -548,9 +554,61 @@ class Historial
             }
         }
         else if($this->tipo_historial === '1-16'){
-            
+            $fecha = $this->fecha;
+            foreach ($this->historial as $key => $row) {
+                if ($key === 0) {
+                    $this->historial[$key]->setFecha($this->fecha_inicial);
+                    $dia = ($this->fecha_inicial->day);                    
+                    if ($dia === 1) {
+                        $next = 'dieciseis_de_mes';
+                    } else if ($dia === 16) {                        
+                        $next = 'inicio_de_mes';
+                    }
+                } else {
+                    if($next === 'inicio_de_mes'){
+                        $fecha = $fecha->endOfMonth()->addDay(1);
+                        $new_date = Carbon::createFromFormat('d-m-Y', $fecha->format('d-m-Y'));
+                        $row->setFecha($new_date);
+                        $this->historial[$key] = $row;                        
+                        $next = 'dieciseis_de_mes';
+                    }
+                    else if($next === 'dieciseis_de_mes'){
+                        $fecha = $fecha->addDay(15);
+                        $new_date = Carbon::createFromFormat('d-m-Y', $fecha->format('d-m-Y'));
+                        $row->setFecha($new_date);
+                        $this->historial[$key] = $row;
+                        $next = 'inicio_de_mes';
+                    }
+                }
+            }
         }else if($this->tipo_historial === '15-1'){ 
-            
+            $fecha = $this->fecha;
+            foreach ($this->historial as $key => $row) {
+                if ($key === 0) {
+                    $this->historial[$key]->setFecha($this->fecha_inicial);
+                    $dia = ($this->fecha_inicial->day);                    
+                    if ($dia === 1) {
+                        $next = 'quince_de_mes';
+                    } else if ($dia === 15) {                        
+                        $next = 'inicio_de_mes';
+                    }
+                } else {
+                    if($next === 'inicio_de_mes'){
+                        $fecha = $fecha->endOfMonth()->addDay(1);
+                        $new_date = Carbon::createFromFormat('d-m-Y', $fecha->format('d-m-Y'));
+                        $row->setFecha($new_date);
+                        $this->historial[$key] = $row;                        
+                        $next = 'quince_de_mes';
+                    }
+                    else if($next === 'quince_de_mes'){
+                        $fecha = $fecha->addDay(14);
+                        $new_date = Carbon::createFromFormat('d-m-Y', $fecha->format('d-m-Y'));
+                        $row->setFecha($new_date);
+                        $this->historial[$key] = $row;
+                        $next = 'inicio_de_mes';
+                    }
+                }
+            }
         }
     }
 

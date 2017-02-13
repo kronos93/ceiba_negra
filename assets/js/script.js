@@ -454,7 +454,7 @@ $(document).ready(function() {
                             }
                         }).done(function(response) {
                             swal("¡Contrato generado exitosamente!");
-                            //window.location.href = base_url + "venta/historial_de_ventas";
+                            window.location.href = base_url + "venta/historial_de_ventas";
 
                         })
                         .fail(function(response) {

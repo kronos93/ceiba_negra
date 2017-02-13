@@ -88,11 +88,9 @@ class Reportes extends CI_Controller
             
             foreach ($historials as $key => $historial) {
                 $fecha = Carbon::createFromFormat('Y-m-d', $historial->fecha);
-                
-
                 if($historial->version == 1){
                     if ($count == 1) {
-                        $words = explode(" ", $historial->nombre_cliente);
+                        $words = explode(" ", trim($historial->nombre_cliente));
                         $acronym = "";                
                         foreach ($words as $w) {
                             $acronym .= $w[0];
