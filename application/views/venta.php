@@ -31,7 +31,7 @@
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6">
                                     <label class="" for="phone">Celular</label>
-                                    <input type="text" class="form-control" name="phone" id="phone" placeholder="1234908978" />
+                                    <input type="text" class="form-control" name="phone" id="phone" placeholder="9983129864" />
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6">
                                     <label class="required" for="lugar_nacimiento">Lugar de nacimiento: </label>
@@ -121,7 +121,8 @@
                                     <label class="required" for="manzana">Forma de pago:</label>
                                     <select name="tipo_historial" id="tipo_historial" class="form-control">
                                         <option selected value="nuevo-quincena">Quincenal (Clientes nuevos, días 15 a finales de mes, 10 días de solapamiento)</option>
-                                        <option value="nuevo-mensual">Mensual (Clientes nuevos, finales de mes, 10 días de solapamiento)</option>
+                                        <option value="nuevo-mensual-f">Mensual (Clientes nuevos, finales de mes, 10 días de solapamiento)</option>
+                                        <option value="nuevo-mensual-q">Mensual (Clientes nuevos, días 15 del mes, 10 días de solapamiento)</option>
                                         <option value="1-16">Quincenal (Clientes previos, días 01 a días 16 del mes)</option>
                                         <option value="15-1">Quincenal (Clientes previos, días 15 de un mes al 01 del siguiente mes) </option>
                                     </select>

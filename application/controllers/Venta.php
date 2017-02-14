@@ -526,7 +526,7 @@ class Historial
                 }
             }
         } 
-        else if ($this->tipo_historial === 'nuevo-mensual') {
+        else if ($this->tipo_historial === 'nuevo-mensual-f') {
             $fecha = $this->fecha;
             foreach ($this->historial as $key => $row) {
                 if ($key === 0) {
@@ -546,9 +546,34 @@ class Historial
                         $new_date = Carbon::createFromFormat('d-m-Y', $fecha->format('d-m-Y'));
                         $row->setFecha($new_date);
                         $this->historial[$key] = $row;
-
                         $fecha = $fecha->endOfMonth()->addDay(1);
                         $next = "fin_de_mes";
+                    }
+                }
+            }
+        }
+        else if ($this->tipo_historial === 'nuevo-mensual-q') {
+            $fecha = $this->fecha;
+            foreach ($this->historial as $key => $row) {
+                if ($key === 0) {
+                    $this->historial[$key]->setFecha($this->fecha_inicial);
+                    $dia = ($this->fecha_inicial->day);
+                    
+                    if ($dia <= 15-10) { //Revisar las demás condiciones
+                        $next = 'quincena';
+                        $fecha->startOfMonth();
+                    } else {
+                        $fecha = $fecha->endOfMonth()->addDay(1);
+                        $next = 'quincena';
+                    }
+                } else {
+                    if ($next == 'quincena') {
+                        $fecha = $fecha->addDay(14);
+                        $new_date = Carbon::createFromFormat('d-m-Y', $fecha->format('d-m-Y'));
+                        $row->setFecha($new_date);
+                        $this->historial[$key] = $row;
+                        $fecha = $fecha->endOfMonth()->addDay(1);
+                        $next = "quincena";
                     }
                 }
             }
@@ -559,9 +584,10 @@ class Historial
                 if ($key === 0) {
                     $this->historial[$key]->setFecha($this->fecha_inicial);
                     $dia = ($this->fecha_inicial->day);                    
-                    if ($dia === 1) {
+                    if ($dia <= 15 ) {
                         $next = 'dieciseis_de_mes';
-                    } else if ($dia === 16) {                        
+                        $fecha->startOfMonth();
+                    } else if ($dia >= 16) {                        
                         $next = 'inicio_de_mes';
                     }
                 } else {
@@ -587,9 +613,10 @@ class Historial
                 if ($key === 0) {
                     $this->historial[$key]->setFecha($this->fecha_inicial);
                     $dia = ($this->fecha_inicial->day);                    
-                    if ($dia === 1) {
+                    if ($dia < 15) {
+                        $fecha->startOfMonth();
                         $next = 'quince_de_mes';
-                    } else if ($dia === 15) {                        
+                    } else if ($dia >= 15) {                        
                         $next = 'inicio_de_mes';
                     }
                 } else {

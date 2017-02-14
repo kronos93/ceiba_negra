@@ -56,11 +56,11 @@ class Reportes extends CI_Controller
         set_time_limit(300);
         $condicion = ['historial.id_venta' => $id];
 
-        $historials = $this->Historial_model ->select("historial.abono,historial.fecha,CONCAT(users.first_name,' ',users.last_name) as nombre_cliente,huertos_ventas.id_venta, historial.porcentaje_penalizacion, ventas.version")
+        $historials = $this->Historial_model ->select("historial.abono,historial.fecha,CONCAT(users.first_name,' ',users.last_name) as nombre_cliente, historial.porcentaje_penalizacion, ventas.version")
                                             ->join('ventas','historial.id_venta = ventas.id_venta','left')
                                             ->join('users','ventas.id_cliente = users.id','left')
-                                            ->join('huertos_ventas','historial.id_venta = huertos_ventas.id_venta','left')
-                                            ->join('huertos','huertos_ventas.id_venta = huertos.id_huerto','left')
+                                            //->join('huertos_ventas','historial.id_venta = huertos_ventas.id_venta','left')
+                                            //->join('huertos','huertos_ventas.id_venta = huertos.id_huerto','left')
                                             ->where($condicion)
                                             ->get();       
         
@@ -99,7 +99,7 @@ class Reportes extends CI_Controller
                                         <td>
                                             <div class='pagare'>                            
                                             <div class='pagare__header'>
-                                                <h3>Recibo de Dinero {$n} de {$n_historial} <strong>de fecha : {$historial->fecha}</strong></h3>
+                                                <h3>Recibo de Dinero {$n} de {$n_historial}<strong>de fecha : {$fecha->format('d-m-Y')}</strong></h3>
                                                 <p><strong>FOLIO:".strtoupper($acronym)."-{$n}-{$historial->fecha}</strong></p>
                                             </div>
                                             <div class='pagare__body'>
@@ -120,7 +120,7 @@ class Reportes extends CI_Controller
                         $pagares.="     <td>
                                             <div class='pagare'>                            
                                             <div class='pagare__header'>
-                                                <h3>Recibo de Dinero {$n} de {$n_historial} <strong>de fecha : {$historial->fecha}</strong></h3>
+                                                <h3>Recibo de Dinero {$n} de {$n_historial} <strong>de fecha : {$fecha->format('d-m-Y')}</strong></h3>
                                                 <p><strong>FOLIO:".strtoupper($acronym)."-{$n}-{$historial->fecha}</strong></p>
                                             </div>
                                             <div class='pagare__body'>
