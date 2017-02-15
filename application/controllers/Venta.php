@@ -33,7 +33,7 @@ class Venta extends CI_Controller
         $data['title'] = "Historial de ventas";
         $data['body'] = "historial_ventas";
 
-        $data['ventas'] = $this->Venta_model->select("ventas.id_venta,
+        $data['ventas'] = $this->Venta_model->select("ventas.id_venta, ventas.version, precio, descuento,
                                                       CONCAT(cliente.first_name,' ',cliente.last_name) AS nombre_cliente,
                                                       CONCAT(lider.first_name,' ',lider.last_name) AS nombre_lider")
                                             ->join('users as cliente', 'ventas.id_cliente = cliente.id', 'left')
@@ -116,7 +116,7 @@ class Venta extends CI_Controller
         
             foreach ($huertos as $key => $huerto) {
                 $superficie_ht = number_format($huerto->superficie, 2);
-                $colindancias .= "el <strong>huerto {$huerto->huerto}</strong> con una superficie de {$superficie_ht} M<sup>2</sup>, con las Medidas y Colindancias Siguientes: ";
+                $colindancias .= "el<strong>&nbsp;huerto {$huerto->huerto}</strong> con una superficie de {$superficie_ht} M<sup>2</sup>, con las Medidas y Colindancias Siguientes: ";
                 if (!empty($huerto->col_norte)) {
                     $colindancias .= "<strong>Al Norte</strong>, {$huerto->col_norte}; ";
                 }

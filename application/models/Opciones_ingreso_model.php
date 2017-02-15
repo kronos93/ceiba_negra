@@ -1,12 +1,14 @@
-<?php 
-
+<?php
 class Opciones_ingreso_model extends CI_Model {
-    private $tabla = "opciones_ingreso";
+    private $table = "opciones_ingreso";
     public function __construct() {
         parent::__construct();
+        $this->load->database();
     }
+
     public function get(){
-        $query = $this->db->get($this->tabla);
+        $this->db->from($this->table);
+        $query = $this->db->get();
         return $query->result();
     }
 }
