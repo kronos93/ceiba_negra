@@ -151,7 +151,7 @@ class Reportes extends CI_Controller
             $dompdf = new Dompdf($options);
             $dompdf->loadHtml($output);
             // (Optional) Setup the paper size and orientation
-            $dompdf->setPaper('office', 'portrait');
+            $dompdf->setPaper('legal', 'portrait');
             // Render the HTML as PDF
             $dompdf->render();
             // Output the generated PDF to Browser
@@ -270,7 +270,7 @@ class Reportes extends CI_Controller
             $dompdf = new Dompdf($options);
             $dompdf->loadHtml($output);
             // (Optional) Setup the paper size and orientation
-            $dompdf->setPaper('office', 'portrait');
+            $dompdf->setPaper('legal', 'portrait');
             // Render the HTML as PDF
             $dompdf->render();
             // Output the generated PDF to Browser

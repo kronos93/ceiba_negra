@@ -724,7 +724,44 @@ $(document).ready(function() {
         var genericFrm = new GenericFrm(config);
         genericFrm[btnType]();
     });
-
+    //OPCIONES DE INGRESO
+    var opciones_de_ingreso_table = $('#opciones-de-ingreso-table').DataTable({
+        "ajax": base_url + 'ajax/get_opciones_de_ingreso',
+        "columns": [ //Atributos para la tabla
+            { "data": "id_opcion_ingreso" },
+            { "data": "nombre" },
+            { 
+                "data": "cuenta",
+                "render": function(data, type, full, meta) {
+                    if(parseInt(data) === 0 ){
+                        return '';
+                    } else {
+                        return data;
+                    }                    
+                }
+            },
+            { 
+                "data": "tarjeta",
+                "render": function(data, type, full, meta) {
+                    if(parseInt(data) === 0 ){
+                        return '';
+                    } else {
+                        return data;
+                    }                    
+                }
+            },   
+            {
+                "data": "",
+                "render": function(data, type, full, meta) {
+                    if(full.id_opcion_ingreso === 1 || full.nombre === 'CAJA'){
+                        return '';
+                    }else{
+                        return '<button data-toggle="modal" data-title="Editar opción de ingreso" data-btn-type="edit" data-target="#opcionDeIngresoModal" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>';
+                    }                   
+                }
+            },        
+        ]
+    });
     //USUARIOS
     var users_table = $('#users-table').DataTable({
         "columns": [ //Atributos para la tabla

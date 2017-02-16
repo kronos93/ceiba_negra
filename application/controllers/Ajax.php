@@ -10,6 +10,7 @@ class Ajax extends CI_Controller
         $this->load->model('Huerto_model');
         $this->load->model('Manzana_model');
         $this->load->model('Cliente_model');
+        $this->load->model('Opciones_ingreso_model');
         $this->load->model('Trans_model');
     }
     public function index()
@@ -450,6 +451,13 @@ class Ajax extends CI_Controller
         } else {
             echo validation_errors();
         }
+    }
+    public function get_opciones_de_ingreso(){
+        header("Content-type: application/json; charset=utf-8"); //Header generico
+        $response = new stdClass(); //Clase generica
+        $opciones_ingreso = $this->Opciones_ingreso_model->get(); //<- Obtener datos
+        $response->data = $opciones_ingreso; // Atributo de la clase generico para el dataTable
+        echo json_encode($response); //Response JSON
     }
     public function autocomplete_clientes()
     {
