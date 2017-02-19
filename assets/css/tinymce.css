@@ -6,23 +6,15 @@
     text-decoration: none;
     color: inherit;
     box-sizing: border-box;
-    /*font-weight: 400; Causa conflicto raro*/ 
     font-family: Helvetica;
 }
 
 html {
-    margin: 30px 40px!important
+    margin: 1cm 0.35cm!important
 }
 
 :focus {
     outline: 0;
-}
-
-strong {
-    /* ¿Por qué hay dos?
-    font-weight: bold;
-    font-weight: 800;
-    */
 }
 
 ol,
@@ -64,10 +56,6 @@ textarea {
     font: inherit;
 }
 
-h1.titulo {
-    font-size: 28px!important;
-}
-
 .mce-container textarea {
     display: initial!important;
 }
@@ -86,19 +74,16 @@ h1.titulo {
 .mce-content-body h5,
 .mce-content-body h6 {
     /*font-weight: 200;*/
-    line-height: 1.3em;
-    /*margin: 25px 0 15px;*/
+    line-height: 0.8em;
 }
 
 .mce-content-body h1 {
-    font-size: 28px;
-    line-height: 1.1em!important;
-    margin: 9px 0px;
+    font-size: 22px;
+    line-height: 0.8em!important;
 }
 
 .mce-content-body h2 {
     font-size: 26px;
-    /*margin: 15px 0px;*/
 }
 
 .mce-content-body h3 {
@@ -118,7 +103,7 @@ h1.titulo {
 }
 
 .mce-content-body p {
-    margin: 15px 0;
+    margin: 8px 0px 15px;
     text-align: justify!important;
     font-size: 13px;
 }
@@ -127,7 +112,7 @@ h1.titulo {
 .mce-content-body ul {
     margin-left: 15px;
     list-style-position: outside;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .mce-content-body ol li,
