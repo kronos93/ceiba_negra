@@ -5,10 +5,20 @@ class Opciones_ingreso_model extends CI_Model {
         parent::__construct();
         $this->load->database();
     }
-
-    public function get(){
+    public function where($where) {
+        $this->db->where($where);
+        return $this;
+    }
+    public function get() {
         $this->db->from($this->table);
         $query = $this->db->get();
         return $query->result();
+    }
+    public function insert($data) {
+        $this->db->insert($this->table, $data);
+        return $this;
+    }
+    public function insert_id() {
+        return $this->db->insert_id();
     }
 }

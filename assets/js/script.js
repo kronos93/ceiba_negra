@@ -762,6 +762,28 @@ $(document).ready(function() {
             },        
         ]
     });
+    $('#opcionDeIngresoModal').on('show.bs.modal', function(e) {
+        //Ocultar mensajes de la caja AJAX
+        ajax_msg.hidden();
+        var button = $(e.relatedTarget); // Boton que despliega el modal (Existe en el datatable)
+        var title = button.data('title'); // Extraer informacipon desde atributos data-* 
+        var btnType = button.data('btnType');
+        var modal = $(this);
+        modal.find('.model-title').html(title);
+
+        var config = {
+            'frm': '#frm-opcion-ingreso',
+            'urls': { 'edit': 'ajax/update_opcion_ingreso', 'add': 'ajax/add_opcion_ingreso' },
+            'msgs': { 'edit': 'Opción de ingreso actualizada correctamente.', 'add': 'Opción de ingreso agregada correctamente.' },
+            'autoNumeric': [], //A que campos quitarle las comas y signos.
+            //'readonly': { 'inputs': '#id_manzana' }, //Que campos son de lectura para agregar y quitar
+            'append': ["id_opcion_ingreso"], //Que campo anexar de dtRow al data a enviar por AJAX
+            'btn': button, //Boton que disparó el evento de abrir modal
+            'dtTable': opciones_de_ingreso_table, //Data table que se parseará
+        };
+        var genericFrm = new GenericFrm(config);
+        genericFrm[btnType]();
+    });
     //USUARIOS
     var users_table = $('#users-table').DataTable({
         "columns": [ //Atributos para la tabla

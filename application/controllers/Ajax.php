@@ -50,7 +50,7 @@ class Ajax extends CI_Controller
         $update = array('x' => $this->input->post("x"), 'y' => $this->input->post("y"));
         $this->Huerto_model->set_coordenadas($where, $update);
     }
-    //Huertos
+    //HUERTOS
     public function get_huertos_pmz()
     {
         header("Content-type: application/json; charset=utf-8");
@@ -452,12 +452,47 @@ class Ajax extends CI_Controller
             echo validation_errors();
         }
     }
+    //OPCIONES DE INGRESO
     public function get_opciones_de_ingreso(){
         header("Content-type: application/json; charset=utf-8"); //Header generico
         $response = new stdClass(); //Clase generica
         $opciones_ingreso = $this->Opciones_ingreso_model->get(); //<- Obtener datos
         $response->data = $opciones_ingreso; // Atributo de la clase generico para el dataTable
         echo json_encode($response); //Response JSON
+    }
+    public function add_opcion_ingreso(){
+        header("Content-type: application/json; charset=utf-8");
+        //Validación de form
+        $config = [
+            [
+                'field' => 'nombre',
+                'label' => 'Nombre de la opción de ingreso',
+                'rules' => 'trim|required',
+            ],
+            [
+                'field' => 'cuenta',
+                'label' => 'Cuenta',
+                'rules' => 'trim|required|numeric|is_unique[opciones_ingreso.cuenta]',
+            ],
+            [
+                'field' => 'tarjeta',
+                'label' => 'Tarjeta',
+                'rules' => 'trim|required|numeric|is_unique[opciones_ingreso.tarjeta]',
+            ],
+        ];
+        $this->form_validation->set_rules($config);
+        if ($this->form_validation->run()) {
+            $data = [
+                        'nombre' => $this->input->post('nombre'),
+                        'cuenta'   => $this->input->post('cuenta'),
+                        'tarjeta' => $this->input->post('tarjeta'),                        
+            ];            
+            $new_id_opcion_ingreso = $this->Opciones_ingreso_model->insert($data)->insert_id();
+            $new_opcion_ingreso = $this->Opciones_ingreso_model->where(['id_opcion_ingreso' => $new_id_opcion_ingreso])->get();
+            echo json_encode($new_opcion_ingreso);
+        } else {
+            echo validation_errors();
+        }
     }
     public function autocomplete_clientes()
     {
