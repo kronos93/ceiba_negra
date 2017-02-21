@@ -459,7 +459,7 @@ class Ajax extends CI_Controller
         $opciones_ingreso = $this->Opciones_ingreso_model->get(); //<- Obtener datos
         $response->data = $opciones_ingreso; // Atributo de la clase generico para el dataTable
         echo json_encode($response); //Response JSON
-    }
+    }    
     public function add_opcion_ingreso(){
         header("Content-type: application/json; charset=utf-8");
         //Validación de form
@@ -490,6 +490,58 @@ class Ajax extends CI_Controller
             $new_id_opcion_ingreso = $this->Opciones_ingreso_model->insert($data)->insert_id();
             $new_opcion_ingreso = $this->Opciones_ingreso_model->where(['id_opcion_ingreso' => $new_id_opcion_ingreso])->get();
             echo json_encode($new_opcion_ingreso);
+        } else {
+            echo validation_errors();
+        }
+    }
+    public function update_opcion_ingreso(){
+        header("Content-type: application/json; charset=utf-8");
+        //Validación de form
+        $config = [
+            [
+                'field' => 'id_opcion_ingreso',
+                'label' => 'Opción de ingreso',
+                'rules' => 'trim|required',
+            ],
+            [
+                'field' => 'nombre',
+                'label' => 'Nombre de la opción de ingreso',
+                'rules' => 'trim|required',
+            ],
+            [
+                'field' => 'cuenta',
+                'label' => 'Cuenta',
+                'rules' => 'trim|required|numeric|is_unique[opciones_ingreso.cuenta]',
+            ],
+            [
+                'field' => 'tarjeta',
+                'label' => 'Tarjeta',
+                'rules' => 'trim|required|numeric|is_unique[opciones_ingreso.tarjeta]',
+            ],
+        ];
+        $this->form_validation->set_rules($config);
+        if ($this->form_validation->run()) {
+            $data = [
+                        'nombre' => $this->input->post('nombre'),
+                        'cuenta'   => $this->input->post('cuenta'),
+                        'tarjeta' => $this->input->post('tarjeta'),                        
+            ];            
+
+            $updated_data = $this->Opciones_ingreso_model
+                                                    ->where(['id_opcion_ingreso' => $this->input->post('id_opcion_ingreso')])
+                                                    ->update($data)
+                                                    ->affected_rows();
+
+            if ($updated_data) {
+                $response = $this->Opciones_ingreso_model
+                                                    ->where(['id_opcion_ingreso' => $this->input->post('id_opcion_ingreso')])
+                                                    ->get();
+                echo json_encode($response);
+            } else {
+                echo "No se detectó ningún cambio en los datos al actualizar.";
+            }
+
+
         } else {
             echo validation_errors();
         }

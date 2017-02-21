@@ -45,7 +45,7 @@
 							</div>
 							<div class="form-group col-xs-12 col-sm-6">
 								<label class="required" for="tarjeta">Tarjeta:</label>
-								<input type="number" class="form-control tarjeta autoNumeric" id="tarjeta" min="1" name="tarjeta" placeholder="5579209088642019" required />
+								<input type="number" class="form-control tarjeta" id="tarjeta" min="1" name="tarjeta" placeholder="5579209088642019" required />
 							</div>													  			
 						</div>						
 					</div>	

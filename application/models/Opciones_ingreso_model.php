@@ -18,7 +18,16 @@ class Opciones_ingreso_model extends CI_Model {
         $this->db->insert($this->table, $data);
         return $this;
     }
+    public function update($data)
+    {
+        $this->db->set($data);        
+        $this->db->update($this->table);      
+        return $this;  
+    }
     public function insert_id() {
         return $this->db->insert_id();
+    }
+    public function affected_rows() {
+        return $this->db->affected_rows();
     }
 }
