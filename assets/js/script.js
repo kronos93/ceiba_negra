@@ -238,6 +238,13 @@ function templateCart(response) {
         $('#precio').autoNumeric('set', response.total);
         $('#enganche').autoNumeric('set', response.enganche);
         $('#abono').autoNumeric('set', response.abono);
+
+        ///////////////////////////////////////////////////////////////////////////
+        var default_porcentaje_comision = 10;
+        $('#porcentaje_comision').val(default_porcentaje_comision);
+        $('#comision').autoNumeric('set', (default_porcentaje_comision / 100) * $('#precio').autoNumeric('get'));
+        ////////////////////////////////////////////////////////////////////////////
+
     }
     //Validar cuando se vacie el carrito
     if (!response.count) {
@@ -267,6 +274,25 @@ function templateCart(response) {
 
 //Al cargar la página
 $(document).ready(function() {
+    //Carro
+    ////////////////////////////////////////////////////////////////////////////
+    $.get(base_url + "ajax/add_cart", function(response) { templateCart(response) });
+    $('#shopCartSale').on('click', function(e) {
+        $(this).find('.my-dropdown').slideToggle('3500');
+    });
+    $('#shopCartSale').find('nav').on('click', function(e) {
+        e.stopPropagation();
+    });
+    $(document).mouseup(function(e) {
+        var container = $(".my-dropdown");
+
+        if (!container.is(e.target) // if the target of the click isn't the container...
+            &&
+            container.has(e.target).length === 0) // ... nor a descendant of the container
+        {
+            container.hide();
+        }
+    });
     //////////////////////////////
     tinymce.init({
         selector: '#contrato_html',
@@ -361,6 +387,15 @@ $(document).ready(function() {
                     console.log("Ha ocurrido un error.");
                 }
             });
+
+            $('#porcentaje_comision').on('keyup', function() {
+                var porcentaje = this.value;
+                $('#comision').autoNumeric('set', (porcentaje / 100) * $('#precio').autoNumeric('get'));
+            });
+            $('#comision').on('keyup', function() {
+                var comision = $(this).autoNumeric('get');
+                $('#porcentaje_comision').val(100 * (comision / $('#precio').autoNumeric('get')));
+            });
         },
         onStepChanging: function(event, currentIndex, newIndex) {
             if (newIndex == 2) {
@@ -417,9 +452,9 @@ $(document).ready(function() {
                         sweetAlert("¡Error!", "Algo salió mal, contactar al administrador.", "error");
                     });
             }
-            
+
             form_venta.validate().settings.ignore = ":disabled,:hidden";
-            return form_venta.valid();
+            return true; //form_venta.valid();
         },
 
         onFinishing: function(event, currentIndex) {
@@ -472,24 +507,6 @@ $(document).ready(function() {
             next: "Siguiente",
             previous: "Anterior",
             loading: "Cargando ..."
-        }
-    });
-    ////////////////////////////////////////////////////////////////////////////
-    $.get(base_url + "ajax/add_cart", function(response) { templateCart(response) });
-    $('#shopCartSale').on('click', function(e) {
-        $(this).find('.my-dropdown').slideToggle('3500');
-    });
-    $('#shopCartSale').find('nav').on('click', function(e) {
-        e.stopPropagation();
-    });
-    $(document).mouseup(function(e) {
-        var container = $(".my-dropdown");
-
-        if (!container.is(e.target) // if the target of the click isn't the container...
-            &&
-            container.has(e.target).length === 0) // ... nor a descendant of the container
-        {
-            container.hide();
         }
     });
     ////////////////////////////////////////////////////////////////////////////
@@ -730,36 +747,36 @@ $(document).ready(function() {
         "columns": [ //Atributos para la tabla
             { "data": "id_opcion_ingreso" },
             { "data": "nombre" },
-            { 
+            {
                 "data": "cuenta",
                 "render": function(data, type, full, meta) {
-                    if(parseInt(data) === 0 ){
+                    if (parseInt(data) === 0) {
                         return '';
                     } else {
                         return data;
-                    }                    
+                    }
                 }
             },
-            { 
+            {
                 "data": "tarjeta",
                 "render": function(data, type, full, meta) {
-                    if(parseInt(data) === 0 ){
+                    if (parseInt(data) === 0) {
                         return '';
                     } else {
                         return data;
-                    }                    
+                    }
                 }
-            },   
+            },
             {
                 "data": "",
                 "render": function(data, type, full, meta) {
-                    if(full.id_opcion_ingreso === 1 || full.nombre === 'CAJA'){
+                    if (full.id_opcion_ingreso === 1 || full.nombre === 'CAJA') {
                         return '';
-                    }else{
+                    } else {
                         return '<button data-toggle="modal" data-title="Editar opción de ingreso" data-btn-type="edit" data-target="#opcionDeIngresoModal" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>';
-                    }                   
+                    }
                 }
-            },        
+            },
         ]
     });
     $('#opcionDeIngresoModal').on('show.bs.modal', function(e) {

@@ -140,7 +140,7 @@
                                         <div class="input-group-addon"><span class="fa fa-search"></span></div>
                                     </div>
                                 </div>
-                                <div class="form-group col-xs-12  col-sm-8 col-sm-4">
+                                <div class="form-group col-xs-12 col-sm-8 col-sm-2">
                                     <label class="required" for="lider">Contemplar comisión</label>
                                     <div class="radiobutton-custom">
                                         <input id="confirmyes" type="radio" name="confirm" value="yes" checked="checked">
@@ -148,6 +148,14 @@
                                         <input id="confirmno" type="radio" name="confirm" value="no">
                                         <label for="confirmno">No:</label>
                                     </div>
+                                </div>
+                                <div class="form-group col-xs-12  col-sm-8 col-sm-3">
+                                    <label class="required" for="porcentaje_comision">Porcentaje comisión:</label>
+                                    <input type="text" class="form-control required" id="porcentaje_comision" name="porcentaje_comision"/>
+                                </div>
+                                <div class="form-group col-xs-12  col-sm-8 col-sm-3">
+                                    <label class="required" for="comision">Comisión:</label>
+                                    <input type="text" class="form-control required currency" id="comision" name="comision" />
                                 </div>
                                 <div class="row">
                                     <div class="col-xs-12">

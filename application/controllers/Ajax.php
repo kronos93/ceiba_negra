@@ -678,8 +678,8 @@ class Ajax extends CI_Controller
             //$this->session->set_flashdata('message', $this->ion_auth->messages());
             //redirect("auth", 'refresh');
             $newUser = $this->ion_auth->user($idNewUser)->row();
-            $newUser->btn_activar_desactivar = '<a href="http://localhost/ceiba_negra/auth/deactivate/'.$newUser->user_id.'" class="btn btn-success" data-target="#userModal" data-toggle="modal">Activo</a>';
-            $newUser->btn_editar = '<a href="http://localhost/ceiba_negra/auth/edit_user/'.$newUser->user_id.'" class="btn btn-info" data-target="#userModal" data-toggle="modal" data-btn-type="edit">Editar Usuario</a>';
+            $newUser->btn_activar_desactivar = '<a href="'.base_url().'auth/deactivate/'.$newUser->user_id.'" class="btn btn-success" data-target="#userModal" data-toggle="modal">Activo</a>';
+            $newUser->btn_editar = '<a href="'.base_url().'auth/edit_user/'.$newUser->user_id.'" class="btn btn-info" data-target="#userModal" data-toggle="modal" data-btn-type="edit">Editar Usuario</a>';
             $grupo = "<ul>";
             foreach($this->ion_auth->get_users_groups($idNewUser)->result() as $group){
                 $grupo.= '<li>'.$group->name.'</li>';
@@ -773,8 +773,8 @@ class Ajax extends CI_Controller
 			    	// redirect them back to the admin page if admin, or to the base url if non admin
 				    //$this->session->set_flashdata('message', $this->ion_auth->messages() );
                     $newUser = $this->ion_auth->user($user->id)->row();
-                    $newUser->btn_activar_desactivar = '<a href="http://localhost/ceiba_negra/auth/deactivate/'.$user->id.'" class="btn btn-success" data-target="#userModal" data-toggle="modal">Activo</a>';
-                    $newUser->btn_editar = '<a href="http://localhost/ceiba_negra/auth/edit_user/'.$user->id.'" class="btn btn-info" data-target="#userModal" data-toggle="modal" data-btn-type="edit">Editar Usuario</a>';
+                    $newUser->btn_activar_desactivar = '<a href="'.base_url().'auth/deactivate/'.$user->id.'" class="btn btn-success" data-target="#userModal" data-toggle="modal">Activo</a>';
+                    $newUser->btn_editar = '<a href="'.base_url().'auth/edit_user/'.$user->id.'" class="btn btn-info" data-target="#userModal" data-toggle="modal" data-btn-type="edit">Editar Usuario</a>';
                     $grupo = "<ul>";
                     foreach($this->ion_auth->get_users_groups($user->id)->result() as $group){
                         $grupo.= '<li>'.$group->name.'</li>';
