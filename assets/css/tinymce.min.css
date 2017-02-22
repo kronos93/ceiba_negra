@@ -28,7 +28,21 @@ ol,
 ul {
     list-style: none;
     text-align: justify;
-    font-size: 13px
+    font-size: 13px;
+}
+
+ol li {
+    position: relative!important;
+    padding-right: 10px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+ol li:after {
+    content: '---------------------------------------------------------------------------------------------------------------------------------------------------------------';
+    position: absolute;
+    /*color: green;*/
+    display: inline-block;
 }
 
 p {
@@ -38,9 +52,9 @@ p {
 }
 
 p:after {
-    content: '*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++';
+    content: '---------------------------------------------------------------------------------------------------------------------------------------------------------------';
     position: absolute;
-    color: green;
+    /*color: green;*/
     display: inline-block;
 }
 
