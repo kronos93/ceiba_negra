@@ -39,7 +39,7 @@ ol li {
 }
 
 ol li:after {
-    content: '---------------------------------------------------------------------------------------------------------------------------------------------------------------';
+    content: '+ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +';
     position: absolute;
     /*color: green;*/
     display: inline-block;
@@ -52,7 +52,7 @@ p {
 }
 
 p:after {
-    content: '---------------------------------------------------------------------------------------------------------------------------------------------------------------';
+    content: '+ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +';
     position: absolute;
     /*color: green;*/
     display: inline-block;
@@ -191,8 +191,8 @@ textarea {
     text-align: center!important
 }
 
-.mce-content-body table.testigos td p span.underline {
-    margin: 0 auto;
+.mce-content-body table.testigos td div span.underline {
+    margin: 5px auto;
     display: block;
     width: 300px;
     border-bottom: 1px solid #000!important;

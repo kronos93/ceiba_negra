@@ -48,20 +48,20 @@
     <tbody>
         <tr>
             <td>
-                <p><span class="underline">&nbsp;</span>FRANCISCO ENRIQUE MARTÍNEZ CORDERO</p>
+                <div><span class="underline">&nbsp;</span>FRANCISCO ENRIQUE MARTÍNEZ CORDERO</div>
             </td>
             <td>
-                <p><span class="underline">&nbsp;</span>[@nombre_cliente]</p>
+                <div><span class="underline">&nbsp;</span>[@nombre_cliente]</div>
             </td>
         </tr>
     </tbody>
     <tfoot>
         <tr>
             <td>
-                <p><span class="underline">&nbsp;</span>[@testigo_1]</p>
+                <div><span class="underline">&nbsp;</span>[@testigo_1]</div>
             </td>
             <td>
-                <p><span class="underline">&nbsp;</span>[@testigo_2]</p>
+                <div><span class="underline">&nbsp;</span>[@testigo_2]</div>
             </td>
         </tr>
     </tfoot>
@@ -92,20 +92,20 @@
     <tbody>
         <tr>
             <td>
-                <p><span class="underline">&nbsp;</span>FRANCISCO ENRIQUE MARTÍNEZ CORDERO</p>
+                <div><span class="underline">&nbsp;</span>FRANCISCO ENRIQUE MARTÍNEZ CORDERO</div>
             </td>
             <td>
-                <p><span class="underline">&nbsp;</span>[@nombre_cliente]</p>
+                <div><span class="underline">&nbsp;</span>[@nombre_cliente]</div>
             </td>
         </tr>
     </tbody>
     <tfoot>
         <tr>
             <td>
-                <p><span class="underline">&nbsp;</span>[@testigo_1]</p>
+                <div><span class="underline">&nbsp;</span>[@testigo_1]</div>
             </td>
             <td>
-                <p><span class="underline">&nbsp;</span>[@testigo_2]</p>
+                <div><span class="underline">&nbsp;</span>[@testigo_2]</div>
             </td>
         </tr>
     </tfoot>

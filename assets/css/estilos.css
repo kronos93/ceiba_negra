@@ -7856,9 +7856,6 @@ g.mapplic-active > * {
   .mapplic-container {
     width: 100%;
   }
-  .mapplic-element {
-    height: auto !important;
-  }
 }
 .icon {
   background-repeat: no-repeat;
