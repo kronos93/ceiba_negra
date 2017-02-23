@@ -495,7 +495,7 @@ $(document).ready(function() {
                             }
                         }).done(function(response) {
                             swal("¡Contrato generado exitosamente!");
-                            //window.location.href = base_url + "venta/historial_de_ventas";
+                            window.location.href = base_url + "venta/historial_de_ventas";
 
                         })
                         .fail(function(response) {
@@ -776,10 +776,12 @@ $(document).ready(function() {
             {
                 "data": "",
                 "render": function(data, type, full, meta) {
+                    var btnEditar = '<button data-toggle="modal" data-title="Editar opción de ingreso" data-btn-type="edit" data-target="#opcionDeIngresoModal" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>';
+                    var btnShowIngresos = '<a href="ingresos" class="btn btn-info btn-sm"><i class="fa fa-fw fa-search"></i>Ver ingresos<a/>';
                     if (full.id_opcion_ingreso === 1 || full.nombre === 'CAJA') {
-                        return '';
+                        return btnShowIngresos;
                     } else {
-                        return '<button data-toggle="modal" data-title="Editar opción de ingreso" data-btn-type="edit" data-target="#opcionDeIngresoModal" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>';
+                        return btnEditar + ' ' + btnShowIngresos;
                     }
                 }
             },

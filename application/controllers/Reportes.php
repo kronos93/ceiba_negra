@@ -42,7 +42,7 @@ class Reportes extends CI_Controller
             $dompdf = new Dompdf();
             $dompdf->loadHtml($output);
             // (Optional) Setup the paper size and orientation
-            $dompdf->setPaper('office', 'portrait');
+            $dompdf->setPaper('legal', 'portrait');
             // Render the HTML as PDF
             $dompdf->render();
             // Output the generated PDF to Browser
@@ -56,7 +56,7 @@ class Reportes extends CI_Controller
         set_time_limit(300);
         $condicion = ['historial.id_venta' => $id];
 
-        $historials = $this->Historial_model ->select("historial.abono,historial.fecha,CONCAT(users.first_name,' ',users.last_name) as nombre_cliente, historial.porcentaje_penalizacion, ventas.version")
+        $historials = $this->Historial_model ->select("historial.abono,historial.fecha,CONCAT(users.first_name,' ',users.last_name) as nombre_cliente,ventas.porcentaje_penalizacion, ventas.version")
                                             ->join('ventas','historial.id_venta = ventas.id_venta','left')
                                             ->join('users','ventas.id_cliente = users.id','left')
                                             //->join('huertos_ventas','historial.id_venta = huertos_ventas.id_venta','left')
@@ -151,7 +151,7 @@ class Reportes extends CI_Controller
             $dompdf = new Dompdf($options);
             $dompdf->loadHtml($output);
             // (Optional) Setup the paper size and orientation
-            $dompdf->setPaper('legal', 'portrait');
+            $dompdf->setPaper('letter', 'portrait');
             // Render the HTML as PDF
             $dompdf->render();
             // Output the generated PDF to Browser
@@ -164,7 +164,7 @@ class Reportes extends CI_Controller
         ini_set('max_execution_time', 300);
         set_time_limit(300);
         $condicion = ['historial.id_venta' => $id];
-        $historials = $this->Historial_model ->select("historial.abono,historial.fecha,CONCAT(users.first_name,' ',users.last_name) as nombre_cliente, historial.porcentaje_penalizacion, ventas.version")
+        $historials = $this->Historial_model ->select("historial.abono,historial.fecha,CONCAT(users.first_name,' ',users.last_name) as nombre_cliente,  ventas.version")
                                             ->join('ventas','historial.id_venta = ventas.id_venta','left')
                                             ->join('users','ventas.id_cliente = users.id','left')
                                             //->join('huertos_ventas','historial.id_venta = huertos_ventas.id_venta','left')
@@ -270,7 +270,7 @@ class Reportes extends CI_Controller
             $dompdf = new Dompdf($options);
             $dompdf->loadHtml($output);
             // (Optional) Setup the paper size and orientation
-            $dompdf->setPaper('legal', 'portrait');
+            $dompdf->setPaper('letter', 'portrait');
             // Render the HTML as PDF
             $dompdf->render();
             // Output the generated PDF to Browser

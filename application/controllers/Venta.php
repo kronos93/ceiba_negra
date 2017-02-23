@@ -32,11 +32,13 @@ class Venta extends CI_Controller
         $data['title'] = "Historial de ventas";
         $data['body'] = "historial_ventas";
 
-        $data['ventas'] = $this->Venta_model->select("ventas.id_venta, ventas.version, precio, 
+        $data['ventas'] = $this->Venta_model->select("ventas.id_venta, ventas.version, ventas.precio, ventas.porcentaje_comision,
                                                       CONCAT(cliente.first_name,' ',cliente.last_name) AS nombre_cliente,
-                                                      CONCAT(lider.first_name,' ',lider.last_name) AS nombre_lider")
+                                                      CONCAT(lider.first_name,' ',lider.last_name) AS nombre_lider,
+                                                      CONCAT(user.first_name,' ',user.last_name) AS nombre_user")
                                             ->join('users as cliente', 'ventas.id_cliente = cliente.id', 'left')
                                             ->join('users as lider', 'ventas.id_lider = lider.id', 'left')
+                                            ->join('users as user', 'ventas.id_usuario = user.id', 'left')
                                             ->get();
 
         $this->load->view('templates/template', $data);
@@ -351,38 +353,36 @@ class Venta extends CI_Controller
                 $historial = new Historial($precio, $enganche, $abono, $fecha_init, $tipo_historial);
                 $now = Carbon::now();
                 foreach ($historial->getHistorial() as $key => $pago) {
-                    $db_pago = [];
-                    $db_pago['fecha'] = $pago->getFecha()->format('Y-m-d');
-                    $db_pago['concepto'] = $pago->getConcepto();
-                    $db_pago['abono'] = $pago->getAbono();
-                    $db_pago['id_venta'] = $id_venta;
-                    $db_pago['created_at'] = $now->toDateTimeString();
-                    $db_pago['updated_at'] = $now->toDateTimeString();
+                    $huerto_venta = new stdClass();
+                    $db_pago->fecha = $pago->getFecha()->format('Y-m-d');
+                    $db_pago->concepto = $pago->getConcepto();
+                    $db_pago->abono = $pago->getAbono();
+                    $db_pago->id_venta = $id_venta;
+                    $db_pago->created_at = $now->toDateTimeString();
+                    $db_pago->updated_at = $now->toDateTimeString();
                     if ($key == 0) {
-                        $db_pago['id_ingreso'] = $this->input->post('id_ingreso');
-                        $db_pago['fecha_pago'] = $pago->getFecha()->format('Y-m-d');    
-                        $db_pago['pago'] = $this->input->post('enganche');                      
-                        $db_pago['estado'] = 1;                         
+                        $db_pago->id_ingreso = $this->input->post('id_ingreso');
+                        $db_pago->fecha_pago = $pago->getFecha()->format('Y-m-d');    
+                        $db_pago->pago = $this->input->post('enganche');                      
+                        $db_pago->estado = 1;                         
                     } else {
-                        $db_pago['id_ingreso'] = 0;
-                        $db_pago['fecha_pago'] = $pago->getFecha()->format('Y-m-d');
-                        $db_pago['estado'] = 0; 
+                        $db_pago->id_ingreso = 0;
+                        $db_pago->fecha_pago = $pago->getFecha()->format('Y-m-d');
+                        $db_pago->pago = 0; 
+                        $db_pago->estado = 0; 
                     }
                     array_push($db_historial, $db_pago);
                 }
                 $huertos_venta = [];
                 foreach ($this->cart->contents() as $items) {
-                    $huerto_venta = [];
-                    $huerto_venta['id_venta'] = $id_venta;
-                    $huerto_venta['id_huerto'] = $items['id_huerto'];
+                    $huerto_venta = new stdClass();
+                    $huerto_venta->id_venta  = $id_venta;
+                    $huerto_venta->id_huerto = $items['id_huerto'];
                     array_push($huertos_venta, $huerto_venta);
                 }
                 
-                $this->HuertosVentas_model->insert_batch($huertos_venta);  
-                            
-                var_dump($db_historial);              
+                $this->HuertosVentas_model->insert_batch($huertos_venta);             
                 $this->HuertosVentas_model->insert_batch_2($db_historial);
-                die();
                 $this->cart->destroy(); 
             }
         }
