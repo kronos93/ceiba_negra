@@ -33,7 +33,7 @@ class Venta extends CI_Controller
         $data['title'] = "Historial de ventas";
         $data['body'] = "historial_ventas";
 
-        $data['ventas'] = $this->Venta_model->select("ventas.id_venta, ventas.version, precio, descuento,
+        $data['ventas'] = $this->Venta_model->select("ventas.id_venta, ventas.version, precio, 
                                                       CONCAT(cliente.first_name,' ',cliente.last_name) AS nombre_cliente,
                                                       CONCAT(lider.first_name,' ',lider.last_name) AS nombre_lider")
                                             ->join('users as cliente', 'ventas.id_cliente = cliente.id', 'left')
@@ -319,7 +319,7 @@ class Venta extends CI_Controller
                 'precio' => $this->input->post('precio'),
                 'enganche' => $this->input->post('enganche'),
                 'abono' => $this->input->post('abono'),
-                'descuento' => ($this->input->post('precio') * .10),
+                
                 'retrasos_permitidos' =>  $this->input->post('maximo_retrasos_permitidos'),
                 'porcentaje_penalizacion' =>  $this->input->post('porcentaje_penalizacion'),
                 'contrato_html' => html_entity_decode($this->input->post('contrato_html')),
@@ -357,16 +357,16 @@ class Venta extends CI_Controller
                         $db_pago->id_ingreso = $this->input->post('id_ingreso');
                         $db_pago->fecha_pago = $pago->getFecha()->format('Y-m-d');
                         if ($this->input->post('confirm') == 'yes') {
-                            $db_pago->descuento = $pago->getAbono() * .05;
+                            //$db_pago->descuento = $pago->getAbono() * .05;
                         } else {
-                            $db_pago->descuento = 0;
+                            //$db_pago->descuento = 0;
                         }
                         $db_pago->estado = 1; //Pagado
                         $db_pago->extra = 0; //Pagado
                     } else {
                         $db_pago->id_ingreso = 0;
                         $db_pago->fecha_pago = null;
-                        $db_pago->descuento = 0;
+                        //$db_pago->descuento = 0;
                         $db_pago->estado = 0; //No Pagado
                         $db_pago->extra = 0; //Pagado
                     }
