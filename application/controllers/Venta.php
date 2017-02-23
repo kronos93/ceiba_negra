@@ -358,6 +358,7 @@ class Venta extends CI_Controller
                     $db_pago->concepto = $pago->getConcepto();
                     $db_pago->abono = $pago->getAbono();
                     $db_pago->id_venta = $id_venta;
+                    $db_pago->id_lider =  $this->input->post('id_lider');
                     $db_pago->created_at = $now->toDateTimeString();
                     $db_pago->updated_at = $now->toDateTimeString();
                     if ($key == 0) {

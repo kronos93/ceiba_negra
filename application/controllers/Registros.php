@@ -25,7 +25,17 @@ class Registros extends CI_Controller {
 	public function pagos($id_venta) {
 		$data['title'] = "Pagos";
 		$data['body'] = "pagos";		
-		$data['pagos'] = $this->Historial_model->select('concepto,abono,fecha,estado,fecha_pago, IF(estado = 0,DATEDIFF(CURRENT_DATE(),fecha),DATEDIFF(fecha_pago,fecha)) as daysAccumulated')
+		$data['pagos'] = $this->Historial_model->select('	id_historial,
+															concepto,
+															abono,
+															fecha,
+															estado,
+															fecha_pago, 
+															IF( estado = 0 , DATEDIFF( CURRENT_DATE() , fecha ) , DATEDIFF( fecha_pago ,fecha ) ) as daysAccumulated,
+															pago,
+															comision,
+															penalizacion,
+															(pago + penalizacion - comision) as total')
 											   ->where( ['id_venta'=>$id_venta])
 											   ->get();		
 		$this->load->view('templates/template',$data);

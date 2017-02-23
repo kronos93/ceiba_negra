@@ -850,6 +850,18 @@ $(document).ready(function() {
         $(this).removeData('bs.modal');
     });
     var historial_ventas_table = $('#historial-ventas-table').DataTable();
+    var pagos_table = $('#pagos-table').DataTable({
+        columnDefs: [ //
+            {
+                //Añadir boton dinamicamente, para esta columna*
+                "targets": 0,
+                "type": "num",
+            }
+        ],
+        "order": [
+            [0, "asc"]
+        ],
+    });
     //MAPA
     //Desplegar mapa
     var mapplic = $('#mapplic').mapplic({

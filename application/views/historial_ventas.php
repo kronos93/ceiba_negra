@@ -5,6 +5,7 @@
                 <table id="historial-ventas-table" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
                     <thead>
                         <tr>
+                            
                             <th class="all">Cliente</th>          
                             <th>Líder</th>     
                             <th>Precio</th>  
@@ -18,6 +19,7 @@
                     <tbody>
                         <?php foreach($ventas as $venta):?>
                         <tr>
+                            
                             <td><?= $venta->nombre_cliente; ?></td>
                             <td><?= $venta->nombre_lider; ?></td>
                             <td>$<?= number_format($venta->precio,2); ?></td>
