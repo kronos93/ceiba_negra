@@ -24,12 +24,12 @@
                             <td><?= $pago->concepto ?></td>
                             <td><?= $pago->abono ?></td>
                             <td><?= $pago->fecha ?></td>
-                            <td><?= ($pago->estado == 0) ? 'Pendiente de pago' : 'Pagado - ' . $pago->fecha_pago ?></td>
+                            <td><?= ($pago->estado == 0) ? 'Pendiente' : 'Pagado'?></td>
                             <td><?php 
                                         $btnPago = false;
                                         if ($pago->estado == 0) { 
                                             if($pago->daysAccumulated > 0) { 
-                                                echo 'Tiene un retraso en pago de: '.$pago->daysAccumulated;
+                                                echo 'Tiene un retraso en pago de: '.$pago->daysAccumulated . ' días';
                                                 $btnPago = true;
                                             } else if($pago->daysAccumulated == 0){
                                                 echo 'Hoy es día de pago';
@@ -40,11 +40,12 @@
                                             }
                                         } else if ($pago->estado == 1){
                                             if($pago->daysAccumulated > 0) { 
-                                                echo 'Realizó el pago con un retrazo de: '.$pago->daysAccumulated;                                            
+                                                echo 'Realizó el pago con un retrazo de: '.$pago->daysAccumulated.' días';                                            
                                             } else if($pago->daysAccumulated == 0) {
                                                 echo 'Pagado en tiempo';
                                             }
                                             echo '<div>Pago: $' . number_format($pago->pago,2) .'</div>';
+                                            echo '<div>Fecha: ' . $pago->fecha_pago .'</div>';
                                             echo '<div>Comisión: $' . number_format($pago->comision,2) .'</div>';
                                             echo '<div>Penalización: $' . number_format($pago->penalizacion,2) .'</div>';
                                             echo '<div>Total: $' . number_format($pago->total,2) .'</div>';
