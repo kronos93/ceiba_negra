@@ -22,7 +22,7 @@
                         <tr>
                             <td><?= $pago->id_historial ?></td>
                             <td><?= $pago->concepto ?></td>
-                            <td><?= $pago->abono ?></td>
+                            <td>$<?= number_format($pago->abono,2) ?></td>
                             <td><?= $pago->fecha ?></td>
                             <td><?= ($pago->estado == 0) ? 'Pendiente' : 'Pagado'?></td>
                             <td><?php 
@@ -52,7 +52,7 @@
                                         }
                                 ?>
                             </td>
-                            <td><?php echo ($btnPago) ? '<button class="btn btn-success" data-toggle="modal" data-target="#pago">Registrar pago</button>' : '' ?> </td>
+                            <td><?php echo ($btnPago) ? '<button class="btn btn-success" data-toggle="modal" data-target="#pagoModal">Registrar pago</button>' : '' ?> </td>
                         </tr>
                     
                 <?php 
@@ -67,20 +67,22 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="pago" tabindex="-1" role="dialog" aria-labelledby="modalPago">
+<div class="modal fade" id="pagoModal" tabindex="-1" role="dialog" aria-labelledby="modalPago">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
+        <form>
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Realizar un pago</h4>
+          </div>
+          <div class="modal-body">
+            
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
     </div>
   </div>
 </div>

@@ -851,6 +851,15 @@ $(document).ready(function() {
     });
     var historial_ventas_table = $('#historial-ventas-table').DataTable();
     var pagos_table = $('#pagos-table').DataTable({
+        "columns": [ //Atributos para la tabla
+            { "data": "id_historial" },
+            { "data": "concepto" },
+            { "data": "abono" },
+            { "data": "fecha" },
+            { "data": "estado" },
+            { "data": "detalles" },
+            { "data": "" },
+        ],
         columnDefs: [ //
             {
                 //Añadir boton dinamicamente, para esta columna*
@@ -861,6 +870,12 @@ $(document).ready(function() {
         "order": [
             [0, "asc"]
         ],
+    });
+    $('#pagoModal').on('shown.bs.modal', function(e) {
+        var button = $(e.relatedTarget); // Boton que despliega el modal (Existe en el datatable
+        var dtRow = $(button).parents('tr');
+        var parseDtRow = pagos_table.row(this.dtRow).data();
+        console.log(parseDtRow);
     });
     //MAPA
     //Desplegar mapa
