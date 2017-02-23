@@ -353,7 +353,7 @@ class Venta extends CI_Controller
                 $historial = new Historial($precio, $enganche, $abono, $fecha_init, $tipo_historial);
                 $now = Carbon::now();
                 foreach ($historial->getHistorial() as $key => $pago) {
-                    $huerto_venta = new stdClass();
+                    $db_pago = new stdClass();
                     $db_pago->fecha = $pago->getFecha()->format('Y-m-d');
                     $db_pago->concepto = $pago->getConcepto();
                     $db_pago->abono = $pago->getAbono();
@@ -381,8 +381,8 @@ class Venta extends CI_Controller
                     array_push($huertos_venta, $huerto_venta);
                 }
                 
-                $this->HuertosVentas_model->insert_batch($huertos_venta);             
-                $this->HuertosVentas_model->insert_batch_2($db_historial);
+                $this->HuertosVentas_model->insert_batch($huertos_venta);                    
+                $this->Historial_model->insert_batch($db_historial);
                 $this->cart->destroy(); 
             }
         }

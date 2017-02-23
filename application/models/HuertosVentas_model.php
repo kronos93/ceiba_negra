@@ -30,8 +30,5 @@ class HuertosVentas_model extends CI_Model {
     }
     public function insert_batch($data) {
         $this->db->insert_batch($this->table, $data);
-    }
-    public function insert_batch_2($data) {
-        $this->db->insert_batch("historial", $data);
-    }
+    }    
 }

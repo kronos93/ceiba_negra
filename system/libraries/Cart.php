@@ -63,7 +63,7 @@ class CI_Cart {
 	 *
 	 * @var string
 	 */
-	public $product_name_rules = '\w \-\.\:';
+	public $product_name_rules = '\w \-\.\:\,';
 
 	/**
 	 * only allow safe product names
@@ -261,12 +261,14 @@ class CI_Cart {
 
 		// Now that we have our unique "row ID", we'll add our cart items to the master array
 		// grab quantity if it's already there and add it on
-		$old_quantity = isset($this->_cart_contents[$rowid]['qty']) ? (int) $this->_cart_contents[$rowid]['qty'] : 0;
+		if(!isset($this->_cart_contents[$rowid]['qty'])){
+			$old_quantity = isset($this->_cart_contents[$rowid]['qty']) ? (int) $this->_cart_contents[$rowid]['qty'] : 0;
 
-		// Re-create the entry, just to make sure our index contains only the data from this submission
-		$items['rowid'] = $rowid;
-		$items['qty'] += $old_quantity;
-		$this->_cart_contents[$rowid] = $items;
+			// Re-create the entry, just to make sure our index contains only the data from this submission
+			$items['rowid'] = $rowid;
+			$items['qty'] += $old_quantity;
+			$this->_cart_contents[$rowid] = $items;
+		}
 
 		return $rowid;
 	}

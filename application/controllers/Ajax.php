@@ -581,6 +581,7 @@ class Ajax extends CI_Controller
                     'vendido' => false
             ];
             $huertos = $this->Huerto_model->getHuertosPM($where, "object");
+            
             if (count($huertos)) {
                 foreach ($huertos as $huerto) {
                     $data = array(

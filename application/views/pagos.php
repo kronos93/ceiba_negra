@@ -17,8 +17,24 @@
                         <td><?=$pago->concepto ?></td>
                         <td><?=$pago->abono ?></td>
                         <td><?=$pago->fecha ?></td>
-                        <td><?= ($pago->estado == 0) ? 'Pendiente de pago' : 'Pagado' ?></td>
-                        <td></td>
+                        <td><?= ($pago->estado == 0) ? 'Pendiente de pago' : 'Pagado - ' . $pago->fecha_pago ?></td>
+                        <td><?php 
+                                    if ($pago->estado == 0) { 
+                                        if($pago->daysAccumulated > 0) { 
+                                            echo 'Tiene un retraso en pago de: '.$pago->daysAccumulated;
+                                        } else if($pago->daysAccumulated == 0){
+                                            echo 'Hoy es día de pago';
+                                        }else{
+                                            echo 'Aun no es fecha de pago';
+                                        }
+                                    } else if ($pago->estado == 1){
+                                        if($pago->daysAccumulated > 0) { 
+                                            echo 'Realizó el pago con un retrazo de: '.$pago->daysAccumulated;
+                                        } else if($pago->daysAccumulated == 0) {
+                                            echo 'Pagado en tiempo';
+                                        }
+                                    }
+                            ?></td>
                     </tr>
                 <?php 
                     endforeach;
