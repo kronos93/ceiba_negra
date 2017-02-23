@@ -387,14 +387,20 @@ $(document).ready(function() {
                     console.log("Ha ocurrido un error.");
                 }
             });
-
+            $("#precio").on('keyup', function() {
+                var porcentaje = $('#porcentaje_comision').val();
+                var precio = $('#precio').autoNumeric('get');
+                $('#comision').autoNumeric('set', (porcentaje / 100) * precio);
+            });
             $('#porcentaje_comision').on('keyup', function() {
                 var porcentaje = this.value;
-                $('#comision').autoNumeric('set', (porcentaje / 100) * $('#precio').autoNumeric('get'));
+                var precio = $('#precio').autoNumeric('get');
+                $('#comision').autoNumeric('set', (porcentaje / 100) * precio);
             });
             $('#comision').on('keyup', function() {
                 var comision = $(this).autoNumeric('get');
-                $('#porcentaje_comision').val(100 * (comision / $('#precio').autoNumeric('get')));
+                var precio = $('#precio').autoNumeric('get');
+                $('#porcentaje_comision').val((100 * (comision / precio)).toFixed(2));
             });
         },
         onStepChanging: function(event, currentIndex, newIndex) {
@@ -489,7 +495,7 @@ $(document).ready(function() {
                             }
                         }).done(function(response) {
                             swal("¡Contrato generado exitosamente!");
-                            window.location.href = base_url + "venta/historial_de_ventas";
+                            //window.location.href = base_url + "venta/historial_de_ventas";
 
                         })
                         .fail(function(response) {

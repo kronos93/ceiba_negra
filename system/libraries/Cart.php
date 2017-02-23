@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2016, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2017, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
@@ -63,7 +63,7 @@ class CI_Cart {
 	 *
 	 * @var string
 	 */
-	public $product_name_rules = '\w \-\.\:\,';
+	public $product_name_rules = '\w \-\.\:';
 
 	/**
 	 * only allow safe product names
@@ -261,15 +261,13 @@ class CI_Cart {
 
 		// Now that we have our unique "row ID", we'll add our cart items to the master array
 		// grab quantity if it's already there and add it on
-		//TRUCO PARA NO REPETIR ID
-		if(!isset($this->_cart_contents[$rowid]['qty'])){
-			$old_quantity = isset($this->_cart_contents[$rowid]['qty']) ? (int) $this->_cart_contents[$rowid]['qty'] : 0;
+		$old_quantity = isset($this->_cart_contents[$rowid]['qty']) ? (int) $this->_cart_contents[$rowid]['qty'] : 0;
 
-			// Re-create the entry, just to make sure our index contains only the data from this submission
-			$items['rowid'] = $rowid;
-			$items['qty'] += $old_quantity;
-			$this->_cart_contents[$rowid] = $items;
-		}
+		// Re-create the entry, just to make sure our index contains only the data from this submission
+		$items['rowid'] = $rowid;
+		$items['qty'] += $old_quantity;
+		$this->_cart_contents[$rowid] = $items;
+
 		return $rowid;
 	}
 
