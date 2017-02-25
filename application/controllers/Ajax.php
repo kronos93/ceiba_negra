@@ -632,7 +632,7 @@ class Ajax extends CI_Controller
         if ($this->ion_auth->in_group('administrador') || $this->ion_auth->in_group('miembro')) {
             $respuesta->link = ($this->cart->total_items()>0) ? '<a href="'.base_url().'venta" class="btn btn-success center-block">Vender</a>' : '';
         } elseif ($this->ion_auth->in_group('lider')) {
-            $respuesta->link = ($this->cart->total_items()>0) ? '<a href="'.base_url().'venta" class="btn btn-warning center-block">Reservar</a>' : '';
+            $respuesta->link = ($this->cart->total_items()>0) ? '<a href="'.base_url().'#" class="btn btn-warning center-block">Reservar</a>' : '';
         }
 
         echo json_encode($respuesta);

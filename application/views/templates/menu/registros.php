@@ -6,9 +6,11 @@
             <!-- Links para nuevos registros -->
             <li><a href="<?= base_url() ?>registros/manzanas">Mazanas</a></li>
             <li><a href="<?= base_url() ?>registros/huertos">Huertos</a></li>
+            <?php if ($this->ion_auth->in_group('administrador')) : ?>
             <li><a href="<?= base_url() ?>registros/opciones_de_ingreso">Opciones de ingreso</a></li>
             <li role="separator" class="divider"></li>
             <li><a href="<?= base_url() ?>venta/historial_de_ventas">Historial de ventas</a></li>
+            <?php endif;?>
         </ul>
     </li>   
 </ul>

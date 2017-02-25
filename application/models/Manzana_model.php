@@ -48,7 +48,7 @@ class Manzana_model extends CI_Model
     public function categories_mz()
     {
         $this->db->select(" CONCAT('mz',manzana) AS id,
-                            CONCAT('Manzana número ',manzana) AS title, 
+                            CONCAT('Manzana ',manzana) AS title, 
                             IF(disponibilidad !=0,'#3fbb9b','#ccc') AS color,
                             manzana
                         ");

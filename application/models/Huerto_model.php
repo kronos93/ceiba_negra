@@ -73,7 +73,7 @@ class Huerto_model extends CI_Model
     public function getLevel($mz)
     {
         $this->db->select(" CONCAT('m',manzanas.manzana,'lote',{$this->tabla}.huerto) as id,         
-                            CONCAT('Huerto número ', {$this->tabla}.huerto) as title, 
+                            CONCAT('Huerto ', {$this->tabla}.huerto) as title, 
                             CONCAT('mz',manzanas.manzana) as category, 
                             IF(manzanas.disponibilidad = 0,'#ccc', IF({$this->tabla}.vendido = 0,IF(huertos_ventas.id_huerto IS NULL,'','#0000ff'),'#ff0000')) as fill,
                             CONCAT('<div>Superficie: <span class=\"superficie\">',{$this->tabla}.superficie,'</div>',
