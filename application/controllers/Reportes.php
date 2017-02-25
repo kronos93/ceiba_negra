@@ -198,7 +198,9 @@ class Reportes extends CI_Controller
                 $words = explode(" ", trim($historial->nombre_cliente));
                 $acronym = "";                
                 foreach ($words as $w) {
-                    $acronym .= $w[0];
+                    if(isset($w[0]) && !empty($w[0]) ) {
+                        $acronym .= $w[0];
+                    }                   
                 }
                 if ($count == 1) {                    
                     $recibos.="<tr>
