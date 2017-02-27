@@ -85,7 +85,7 @@
                     </div>
                     <div class="form-group col-xs-12 col-sm-6">
                          <label>Monto:</label>
-                         <input type="text" id="pago" name="pago" class="form-control"/>
+                         <input type="text" id="pago" name="pago" class="form-control" readonly/>
                     </div>
                     <div class="form-group col-xs-12 col-sm-12">
                         <label class="" for="manzana">Seleccione el ingreso</label>
@@ -161,7 +161,31 @@
             <h4 class="modal-title" id="myModalLabel">Realizar un pago de comision</h4>
           </div>
           <div class="modal-body">
-            
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="form-group col-xs-12 col-sm-6">
+                         <label>Monto:</label>
+                         <input type="text" id="pago" name="pago" class="form-control" readonly/>
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                         <label>Comision:</label>
+                         <input type="text" id="comision" name="comision" class="form-control"/>
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                         <label>% comisión:</label>
+                         <input type="text" id="porcentaje_comision" name="porcentaje_comision" class="form-control"/>
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-6">
+                        <label class="" for="lider" aria-required="true">Contemplar comisión</label>
+                        <div class="radiobutton-custom">
+                            <input id="comisionTrue" type="radio" name="confirm_comision" value="true" checked="checked">
+                            <label for="comisionTrue">Sí:</label>
+                            <input id="comisionFalse" type="radio" name="confirm_comision" value="false">
+                            <label for="comisionFalse">No:</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
