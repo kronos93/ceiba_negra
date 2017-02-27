@@ -151,7 +151,7 @@
                                 </div>
                                 <div class="form-group col-xs-12  col-sm-8 col-sm-3">
                                     <label class="required" for="porcentaje_comision">Porcentaje comisión:</label>
-                                    <input type="text" class="form-control required" id="porcentaje_comision" name="porcentaje_comision"/>
+                                    <input type="number" step="1" min="1" max="100" class="form-control required" id="porcentaje_comision" name="porcentaje_comision"/>
                                 </div>
                                 <div class="form-group col-xs-12  col-sm-8 col-sm-3">
                                     <label class="required" for="comision">Comisión:</label>

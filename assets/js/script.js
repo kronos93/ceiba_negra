@@ -392,7 +392,7 @@ $(document).ready(function() {
                 var precio = $('#precio').autoNumeric('get');
                 $('#comision').autoNumeric('set', (porcentaje / 100) * precio);
             });
-            $('#porcentaje_comision').on('keyup', function() {
+            $('#porcentaje_comision').on('change keyup', function() {
                 var porcentaje = this.value;
                 var precio = $('#precio').autoNumeric('get');
                 $('#comision').autoNumeric('set', (porcentaje / 100) * precio);
@@ -906,10 +906,10 @@ $(document).ready(function() {
                 type: "post",
             })
             .done(function(response) {
-                $('#pago').val(response.abono);
-                $('#comision').val(response.comision);
+                $('#pago').autoNumeric('set', response.abono);
+                $('#comision').autoNumeric('set', response.comision);
                 $('#porcentaje_comision').val(response.porcentaje_comision);
-                $('#penalizacion').val(response.penalizacion);
+                $('#penalizacion').autoNumeric('set', response.penalizacion);
                 $('#porcentaje_penalizacion').val(response.porcentaje_penalizacion);
                 $('#daysAccumulated').val(response.daysAccumulated);
 
@@ -918,10 +918,35 @@ $(document).ready(function() {
 
             });
     });
+    $('#frm-pago #porcentaje_comision').on('change keyup', function() {
+        var porcentaje_comision = $(this).val();
+        var monto = $('#frm-pago #pago').autoNumeric('get');
+        $('#frm-pago #comision').autoNumeric('set', monto * (porcentaje_comision / 100));
+    });
+    $('#frm-pago #comision').on('keyup', function() {
+        var comision = $(this).autoNumeric('get');
+        var monto = $('#frm-pago #pago').autoNumeric('get');
+        $('#frm-pago #porcentaje_comision').val((100 * (comision / monto)).toFixed(2));
+    });
+    $('#frm-pago #porcentaje_penalizacion').on('change keyup', function() {
+        var porcentaje_penalizacion = $(this).val();
+        var monto = $('#frm-pago #pago').autoNumeric('get');
+        var dias = $('#daysAccumulated').val();
+        $('#frm-pago #penalizacion').autoNumeric('set', (monto * (porcentaje_penalizacion / 100)) * dias);
+    });
+    $('#frm-pago #penalizacion').on('change keyup', function() {
+        var penalizacion = $('#penalizacion').autoNumeric('get');
+        var monto = $('#frm-pago #pago').autoNumeric('get');
+        var dias = $('#daysAccumulated').val();
+        $('#frm-pago #porcentaje_penalizacion').val((100 * (penalizacion / (monto * dias))).toFixed(2));;
+    });
     $("#frm-pago").on('submit', function(e) {
         e.preventDefault();
         var data = $(this).serializeObject();
         data.id_historial = id_historial;
+        data.pago = $('#pago').autoNumeric('get');
+        data.penalizacion = $('#penalizacion').autoNumeric('get');
+        data.comision = $('#comision').autoNumeric('get');
         $.ajax({
                 url: base_url + "ajax/pagar/",
                 data: data,
@@ -947,18 +972,26 @@ $(document).ready(function() {
                 type: "post",
             })
             .done(function(response) {
-                $('#pago2').val(response.abono);
-                $('#comision2').val(response.comision);
+                $('#pago2').autoNumeric('set', response.abono);
+                $('#comision2').autoNumeric('set', response.comision);
                 $('#porcentaje_comision2').val(response.porcentaje_comision);
             })
             .fail(function(response) {
 
             });
     });
+
+    $('#porcentaje_comision2').on('change keyup', function() {
+        var porcentaje_comision = $(this).val();
+        var monto = $('#pago2').autoNumeric('get');
+        $('#comision2').autoNumeric('set', monto * (porcentaje_comision / 100));
+    });
     $("#frm-pago-comision").on('submit', function(e) {
         e.preventDefault();
         var data = $(this).serializeObject();
         data.id_historial = id_historial;
+        data.pago = $('#pago2').autoNumeric('get');
+        data.comision = $('#comision2').autoNumeric('get');
         $.ajax({
                 url: base_url + "ajax/pagar_comision/",
                 data: data,

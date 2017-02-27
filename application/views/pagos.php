@@ -81,11 +81,11 @@
                 <div class="row">
                     <div class="form-group col-xs-12 col-sm-6">
                          <label class="" >Fecha:</label>
-                         <input type="text" id="fecha_pago" name="fecha_pago" class="form-control"/>
+                         <input type="text" id="fecha_pago" name="fecha_pago" class="form-control" readonly/>
                     </div>
                     <div class="form-group col-xs-12 col-sm-6">
                          <label>Monto:</label>
-                         <input type="text" id="pago" name="pago" class="form-control" readonly/>
+                         <input type="text" id="pago" name="pago" class="form-control currency" readonly/>
                     </div>
                     <div class="form-group col-xs-12 col-sm-12">
                         <label class="" for="manzana">Seleccione el ingreso</label>
@@ -102,11 +102,11 @@
                     <legend>Comisión</legend>
                     <div class="form-group col-xs-12 col-sm-3">
                          <label>Comision:</label>
-                         <input type="text" id="comision" name="comision" class="form-control"/>
+                         <input type="text" id="comision" name="comision" class="form-control currency"/>
                     </div>
                     <div class="form-group col-xs-12 col-sm-3">
                          <label>% comisión:</label>
-                         <input type="text" id="porcentaje_comision" name="porcentaje_comision" class="form-control"/>
+                         <input type="number" step="1" min="1" max="100" id="porcentaje_comision" name="porcentaje_comision" class="form-control"/>
                     </div>
                     <div class="form-group col-xs-12 col-sm-6">
                         <label class="" for="lider" aria-required="true">Contemplar comisión</label>
@@ -125,11 +125,11 @@
                     </div>
                     <div class="form-group col-xs-12 col-sm-3">
                          <label>Penalización:</label>
-                         <input type="text" id="penalizacion" name="penalizacion" class="form-control"/>
+                         <input type="text" id="penalizacion" name="penalizacion" class="form-control currency"/>
                     </div>
                     <div class="form-group col-xs-12 col-sm-2">
                          <label>%</label>
-                         <input type="text" id="porcentaje_penalizacion" name="porcentaje_penalizacion" class="form-control"/>
+                         <input type="number" step="1" min="1" max="100"  id="porcentaje_penalizacion" name="porcentaje_penalizacion" class="form-control"/>
                     </div>
                     <div class="form-group col-xs-12 col-sm-5">
                         <label class="required" for="lider" aria-required="true">Contemplar Penalización</label>
@@ -167,15 +167,15 @@
                 <div class="row">
                     <div class="form-group col-xs-12 col-sm-6">
                          <label>Monto:</label>
-                         <input type="text" id="pago2" name="pago" class="form-control" readonly/>
+                         <input type="text" id="pago2" name="pago" class="form-control currency" readonly/>
                     </div>
                     <div class="form-group col-xs-12 col-sm-3">
                          <label>Comision:</label>
-                         <input type="text" id="comision2" name="comision" class="form-control"/>
+                         <input type="text" id="comision2" name="comision" class="form-control currency" required/>
                     </div>
                     <div class="form-group col-xs-12 col-sm-3">
                          <label>% comisión:</label>
-                         <input type="text" id="porcentaje_comision2" name="porcentaje_comision" class="form-control"/>
+                         <input type="number" id="porcentaje_comision2" name="porcentaje_comision" min="1" max="100" step="1" class="form-control" required/>
                     </div>                    
                 </div>
             </div>
