@@ -5,6 +5,10 @@ class Opciones_ingreso_model extends CI_Model {
         parent::__construct();
         $this->load->database();
     }
+    public function join($table_join,$condicion,$type='left'){
+        $this->db->join($table_join,$condicion,$type);
+        return $this;
+    }
     public function where($where) {
         $this->db->where($where);
         return $this;

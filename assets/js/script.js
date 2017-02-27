@@ -464,8 +464,8 @@ $(document).ready(function() {
         },
 
         onFinishing: function(event, currentIndex) {
-            form_venta.validate().settings.ignore = ":disabled";
-            return form_venta.valid();
+            //form_venta.validate().settings.ignore = ":disabled";
+            return true;
         },
         onFinished: function(event, currentIndex) {
             var data = $(this).serializeObject();
@@ -777,7 +777,7 @@ $(document).ready(function() {
                 "data": "",
                 "render": function(data, type, full, meta) {
                     var btnEditar = '<button data-toggle="modal" data-title="Editar opción de ingreso" data-btn-type="edit" data-target="#opcionDeIngresoModal" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>';
-                    var btnShowIngresos = '<a href="ingresos" class="btn btn-info btn-sm"><i class="fa fa-fw fa-search"></i>Ver ingresos<a/>';
+                    var btnShowIngresos = '<a href="ingresos/' + full.id_opcion_ingreso + '" class="btn btn-info btn-sm"><i class="fa fa-fw fa-search"></i>Ver ingresos<a/>';
                     if (full.id_opcion_ingreso === 1 || full.nombre === 'CAJA') {
                         return btnShowIngresos;
                     } else {
@@ -912,6 +912,7 @@ $(document).ready(function() {
                 $('#penalizacion').val(response.penalizacion);
                 $('#porcentaje_penalizacion').val(response.porcentaje_penalizacion);
                 $('#daysAccumulated').val(response.daysAccumulated);
+
             })
             .fail(function(response) {
 
@@ -927,6 +928,7 @@ $(document).ready(function() {
                 type: "post",
             })
             .done(function(response) {
+                $('#pagoModal').modal('hide');
                 var newData = pagos_table.row(pagoDtRow).data(response).draw(false).node(); //
                 $(newData).animate({ backgroundColor: 'yellow' }); //Animación para MAX
             })
@@ -936,8 +938,40 @@ $(document).ready(function() {
     });
     $('#pagoComisionModal').on('shown.bs.modal', function(e) {
         var button = $(e.relatedTarget); // Boton que despliega el modal (Existe en el datatable
-        var dtRow = $(button).parents('tr');
-        var parseDtRow = pagos_table.row(this.dtRow).data();
+        pagoDtRow = $(button).parents('tr');
+        var parseDtRow = pagos_table.row(pagoDtRow).data();
+        id_historial = parseDtRow.id_historial;
+        $.ajax({
+                url: base_url + "ajax/get_comision/",
+                data: { id_historial: id_historial },
+                type: "post",
+            })
+            .done(function(response) {
+                $('#pago2').val(response.abono);
+                $('#comision2').val(response.comision);
+                $('#porcentaje_comision2').val(response.porcentaje_comision);
+            })
+            .fail(function(response) {
+
+            });
+    });
+    $("#frm-pago-comision").on('submit', function(e) {
+        e.preventDefault();
+        var data = $(this).serializeObject();
+        data.id_historial = id_historial;
+        $.ajax({
+                url: base_url + "ajax/pagar_comision/",
+                data: data,
+                type: "post",
+            })
+            .done(function(response) {
+                $('#pagoComisionModal').modal('hide');
+                var newData = pagos_table.row(pagoDtRow).data(response).draw(false).node(); //
+                $(newData).animate({ backgroundColor: 'yellow' }); //Animación para MAX
+            })
+            .fail(function(response) {
+
+            });
     });
     //MAPA
     //Desplegar mapa

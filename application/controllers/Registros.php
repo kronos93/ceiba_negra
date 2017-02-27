@@ -20,7 +20,15 @@ class Registros extends CI_Controller {
 	}
 	public function opciones_de_ingreso(){
 		$data['title'] = "Opciones de ingreso";
-		$data['body'] = "opciones_ingreso";				
+		$data['body'] = "opciones_ingreso";					
+		$this->load->view('templates/template',$data);
+	}
+	public function ingresos($id) {
+		$data['title'] = "Opciones de ingreso";
+		$data['body'] = "ingresos";				
+		$data['ingresos'] = $this->Opciones_ingreso_model->join('historial','historial.id_ingreso = opciones_ingreso.id_opcion_ingreso','left')
+														->where(['id_opcion_ingreso' => $id])
+														->get();	
 		$this->load->view('templates/template',$data);
 	}
 	public function pagos($id_venta) {

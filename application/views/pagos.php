@@ -98,6 +98,8 @@
                             <?php endforeach?>
                         </select>
                     </div>
+                    <div class="clearfix"></div>
+                    <legend>Comisión</legend>
                     <div class="form-group col-xs-12 col-sm-3">
                          <label>Comision:</label>
                          <input type="text" id="comision" name="comision" class="form-control"/>
@@ -119,7 +121,7 @@
                     <legend>Penalización</legend>
                     <div class="form-group col-xs-12 col-sm-2">
                          <label>Días:</label>
-                         <input type="text" id="daysAccumulated" name="daysAccumulated" class="form-control"/>
+                         <input type="text" id="daysAccumulated" name="daysAccumulated" class="form-control" readonly/>
                     </div>
                     <div class="form-group col-xs-12 col-sm-3">
                          <label>Penalización:</label>
@@ -155,7 +157,7 @@
 <div class="modal fade" id="pagoComisionModal" tabindex="-1" role="dialog" aria-labelledby="modalPagoComision">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-        <form>
+        <form action="" method="" id="frm-pago-comision">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title" id="myModalLabel">Realizar un pago de comision</h4>
@@ -165,25 +167,16 @@
                 <div class="row">
                     <div class="form-group col-xs-12 col-sm-6">
                          <label>Monto:</label>
-                         <input type="text" id="pago" name="pago" class="form-control" readonly/>
+                         <input type="text" id="pago2" name="pago" class="form-control" readonly/>
                     </div>
                     <div class="form-group col-xs-12 col-sm-3">
                          <label>Comision:</label>
-                         <input type="text" id="comision" name="comision" class="form-control"/>
+                         <input type="text" id="comision2" name="comision" class="form-control"/>
                     </div>
                     <div class="form-group col-xs-12 col-sm-3">
                          <label>% comisión:</label>
-                         <input type="text" id="porcentaje_comision" name="porcentaje_comision" class="form-control"/>
-                    </div>
-                    <div class="form-group col-xs-12 col-sm-6">
-                        <label class="" for="lider" aria-required="true">Contemplar comisión</label>
-                        <div class="radiobutton-custom">
-                            <input id="comisionTrue" type="radio" name="confirm_comision" value="true" checked="checked">
-                            <label for="comisionTrue">Sí:</label>
-                            <input id="comisionFalse" type="radio" name="confirm_comision" value="false">
-                            <label for="comisionFalse">No:</label>
-                        </div>
-                    </div>
+                         <input type="text" id="porcentaje_comision2" name="porcentaje_comision" class="form-control"/>
+                    </div>                    
                 </div>
             </div>
           </div>

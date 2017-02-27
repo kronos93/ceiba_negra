@@ -291,7 +291,12 @@ class Venta extends CI_Controller
         $email    = strtolower($this->input->post('email'));
         $identity =  $email ;
         $password = 'usuario1234';
-        $fecha  =  Carbon::createFromFormat('d-m-Y', $this->input->post('fecha_nacimiento'));
+        if($this->input->post('fecha_nacimiento')){
+            $fecha  =  Carbon::createFromFormat('d-m-Y', $this->input->post('fecha_nacimiento'));
+        }else{
+            $fecha  =  Carbon::createFromFormat('d-m-Y', '01-09-1999');
+        }
+        
         $additional_data = [
             'first_name' => ucwords($this->input->post('first_name')),
             'last_name' =>  ucwords($this->input->post('last_name')),

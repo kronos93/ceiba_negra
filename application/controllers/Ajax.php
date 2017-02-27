@@ -160,10 +160,6 @@ class Ajax extends CI_Controller
     {
         header("Content-type: application/json; charset=utf-8");
          //Validación de form
-        $this->form_validation->set_rules('id_manzana', 'Manzana', 'trim|required');
-        $this->form_validation->set_rules('id_huerto', 'Huerto', 'trim|required|callback_mhu_check[id_huerto]');
-        $this->form_validation->set_rules('superficie', 'Superficie', 'trim|required');
-        $this->form_validation->set_rules('id_precio', 'Precio', 'trim|required');
         $config = [
             [
                 'field' => 'id_manzana',
@@ -503,7 +499,7 @@ class Ajax extends CI_Controller
             [
                 'field' => 'id_opcion_ingreso',
                 'label' => 'Opción de ingreso',
-                'rules' => 'trim|required',
+                'rules' => 'trim|required|callback_opingreso_check[id_opcion_ingreso]',
             ],
             [
                 'field' => 'nombre',
@@ -513,12 +509,12 @@ class Ajax extends CI_Controller
             [
                 'field' => 'cuenta',
                 'label' => 'Cuenta',
-                'rules' => 'trim|required|numeric|is_unique[opciones_ingreso.cuenta]',
+                'rules' => 'trim|required|numeric',
             ],
             [
                 'field' => 'tarjeta',
                 'label' => 'Tarjeta',
-                'rules' => 'trim|required|numeric|is_unique[opciones_ingreso.tarjeta]',
+                'rules' => 'trim|required|numeric',
             ],
         ];
         $this->form_validation->set_rules($config);
@@ -563,6 +559,18 @@ class Ajax extends CI_Controller
             echo json_encode($historial[0]);
         }        
     }
+    public function get_comision() {
+        header("Content-type: application/json; charset=utf-8");
+        if($this->input->post('id_historial')){
+            $historial = $this->Historial_model ->select('  historial.abono, 
+                                                            ventas.porcentaje_comision, 
+                                                            TRUNCATE( (historial.abono * (ventas.porcentaje_comision / 100)), 2) AS comision')
+                                                ->join('ventas','ventas.id_venta = historial.id_venta','left')
+                                                ->where(['id_historial' => $this->input->post('id_historial')])
+                                                ->get();
+            echo json_encode($historial[0]);
+        }        
+    }
     public function pagar(){
         header("Content-type: application/json; charset=utf-8");
         if($this->input->post('id_historial') &&
@@ -585,6 +593,49 @@ class Ajax extends CI_Controller
                                   ->affected_rows();
            if($n_updated_pago == 1){
                 $updated_pago = $this->Historial_model->select('id_historial,
+                                                                concepto,
+                                                                abono,
+                                                                fecha,
+                                                                estado,
+                                                                fecha_pago, 
+                                                                IF( estado = 0 , DATEDIFF( CURRENT_DATE() , fecha ) , DATEDIFF( fecha_pago ,fecha ) ) as daysAccumulated,
+                                                                pago,
+                                                                comision,
+                                                                penalizacion,
+                                                                (pago + penalizacion - comision) as total')
+                                                      ->where(['id_historial' => $this->input->post('id_historial')])
+                                                      ->get();
+                $detalles = "";
+                foreach($updated_pago as $pago){
+                   if($pago->daysAccumulated > 0) { 
+                        $detalles .= 'Realizó el pago con un retrazo de: '.$pago->daysAccumulated.' días';                                            
+                    } else if($pago->daysAccumulated == 0) {
+                        $detalles .= 'Pagado en tiempo';
+                    }
+                    $detalles .= '<div>Pago: $' . number_format($pago->pago,2) .'</div>';
+                    $detalles .= '<div>Fecha: ' . $pago->fecha_pago .'</div>';
+                    $detalles .= '<div>Comisión: $' . number_format($pago->comision,2) .'</div>';
+                    $detalles .= '<div>Penalización: $' . number_format($pago->penalizacion,2) .'</div>';
+                    $detalles .= '<div>Total: $' . number_format($pago->total,2) .'</div>';
+                }
+                $updated_pago[0]->estado = ($updated_pago[0]->estado == 0) ? 'Pendiente' : 'Pagado';
+                $updated_pago[0]->detalles = $detalles;
+
+                echo json_encode($updated_pago[0]);
+           }
+        }
+    }
+    public function pagar_comision(){
+        header("Content-type: application/json; charset=utf-8");
+        if($this->input->post('id_historial')){
+            $set_data = [
+                'comision' => $this->input->post('comision'),                
+            ];
+            $n_updated_pago = $this->Historial_model->where(['id_historial' => $this->input->post('id_historial')])
+                                  ->update($set_data)
+                                  ->affected_rows();
+           if($n_updated_pago == 1){
+               $updated_pago = $this->Historial_model->select('id_historial,
                                                                 concepto,
                                                                 abono,
                                                                 fecha,
@@ -892,7 +943,7 @@ class Ajax extends CI_Controller
 
 		// set the flash data error message if there is one
 		/*$this->data['message'] = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? $this->ion_auth->errors() : $this->session->flashdata('message')));
-*/
+/*
 		// pass the user to the view
 		/*$this->data['user'] = $user;
 		$this->data['groups'] = $groups;
@@ -976,6 +1027,41 @@ class Ajax extends CI_Controller
             }
         } else {
             $this->form_validation->set_message('mhu_check', 'Intenta actualizar un huerto no existente.'); // set your message
+            return false;
+        }
+    }
+    public function opingreso_check($value, $request){
+        $data = explode(",", $request);
+        $where = [];
+        foreach ($data as $input) {
+            $where['opciones_ingreso.' . $input] = $this->input->post($input);
+        }
+        $op_ingreso = $this->Opciones_ingreso_model->where($where)->get();
+        if (count($op_ingreso)) { //Si la opcion de ingreso por alguna razón deja de existir, un delete
+            if ($op_ingreso[0]->cuenta == $this->input->post('cuenta')) { //Si el huerto no ha cambiado
+                return true;
+            } else {
+                $exist_cuenta_op_ingreso = $this->Opciones_ingreso_model->where(['cuenta' => $this->input->post('cuenta') ])->get();
+                if(count($exist_cuenta_op_ingreso)){
+                    $this->form_validation->set_message('opingreso_check', 'Cuenta de ingreso ya existente.'); // set your message
+                    return false;
+                }else{
+                    return true;
+                }
+            }
+            if ($op_ingreso[0]->tarjeta == $this->input->post('tarjeta')) { //Si el huerto no ha cambiado
+                return true;
+            } else {
+                $exist_cuenta_op_ingreso = $this->Opciones_ingreso_model->where(['tarjeta' => $this->input->post('tarjeta') ])->get();
+                if(count($exist_cuenta_op_ingreso)){
+                    $this->form_validation->set_message('opingreso_check', 'Tarjeta de ingreso ya existente.'); // set your message
+                    return false;
+                }else{
+                    return true;
+                }
+            }
+        } else{
+            $this->form_validation->set_message('opingreso_check', 'Intenta actualizar una opcion de ingreso no existente.'); // set your message
             return false;
         }
     }
