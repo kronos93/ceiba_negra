@@ -52,7 +52,10 @@
                                         }
                                 ?>
                             </td>
-                            <td><?php echo ($btnPago) ? '<button class="btn btn-success" data-toggle="modal" data-target="#pagoModal">Registrar pago</button>' : '' ?> </td>
+                            <td>
+                                <?= ($btnPago) ? '<button class="btn btn-success" data-toggle="modal" data-target="#pagoModal">Registrar pago</button>' : '' ?>
+                                <?= ($pago->estado == 1 && $pago->comision == 0 ) ? '<button class="btn btn-warning" data-toggle="modal" data-target="#pagoComisionModal">Registrar comisión</button>' : ''?>
+                            </td>
                         </tr>
                     
                 <?php 
@@ -64,23 +67,102 @@
         </div>
     </div>
 </main>
-
-
 <!-- Modal -->
 <div class="modal fade" id="pagoModal" tabindex="-1" role="dialog" aria-labelledby="modalPago">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <form action="" method="" id="frm-pago">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Realizar un pago</h4>
+          </div>
+          <div class="modal-body">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="form-group col-xs-12 col-sm-6">
+                         <label class="" >Fecha:</label>
+                         <input type="text" id="fecha_pago" name="fecha_pago" class="form-control"/>
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-6">
+                         <label>Monto:</label>
+                         <input type="text" id="pago" name="pago" class="form-control"/>
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-12">
+                        <label class="" for="manzana">Seleccione el ingreso</label>
+                        <select name="id_ingreso" id="id_ingreso" class="form-control">
+                            <?php foreach ($ingresos as $ingreso) : ?>
+                            <option value="<?= $ingreso->id_opcion_ingreso?>">
+                                <?= $ingreso->nombre?>
+                                <?= !empty($ingreso->cuenta) ? ' - '.$ingreso->cuenta : ''; ?>
+                            </option>
+                            <?php endforeach?>
+                        </select>
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-4">
+                         <label>Comision:</label>
+                         <input type="text" id="comision" name="comision" class="form-control"/>
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-4">
+                         <label>% comisión:</label>
+                         <input type="text" id="porcentaje_comision" name="porcentaje_comision" class="form-control"/>
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-4">
+                        <label class="" for="lider" aria-required="true">Contemplar comisión</label>
+                        <div class="">
+                            <input id="" type="radio" name="confirm_comision" value="true" checked="checked">
+                            <label for="">Sí:</label>
+                            <input id="" type="radio" name="confirm_comision" value="false">
+                            <label for="">No:</label>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="form-group col-xs-12 col-sm-2">
+                         <label>Días:</label>
+                         <input type="text" id="daysAccumulated" name="daysAccumulated" class="form-control"/>
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                         <label>Penalización:</label>
+                         <input type="text" id="penalizacion" name="penalizacion" class="form-control"/>
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                         <label>% penalización:</label>
+                         <input type="text" id="porcentaje_penalizacion" name="porcentaje_penalizacion" class="form-control"/>
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-4">
+                        <label class="required" for="lider" aria-required="true">Contemplar penalizacion</label>
+                        <div>
+                            <input id="" type="radio" name="confirm_penalizacion" value="true">
+                            <label for="">Sí:</label>
+                            <input id="" type="radio" name="confirm_penalizacion" value="false" checked="checked">
+                            <label for="">No:</label>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <input type="submit" class="btn btn-primary" value="Guardar">
+          </div>
+        </form>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="pagoComisionModal" tabindex="-1" role="dialog" aria-labelledby="modalPagoComision">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
         <form>
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Realizar un pago</h4>
+            <h4 class="modal-title" id="myModalLabel">Realizar un pago de comision</h4>
           </div>
           <div class="modal-body">
             
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-            <button type="button" class="btn btn-primary">Guardar</button>
+            <input type="submit" class="btn btn-primary" value="Guardar">
           </div>
         </form>
     </div>

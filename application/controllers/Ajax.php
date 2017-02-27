@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-
+use Carbon\Carbon;
 class Ajax extends CI_Controller
 {
    
@@ -11,6 +11,8 @@ class Ajax extends CI_Controller
         $this->load->model('Manzana_model');
         $this->load->model('Cliente_model');
         $this->load->model('Opciones_ingreso_model');
+        $this->load->model('Venta_model');
+        $this->load->model('Historial_model');
         $this->load->model('Trans_model');
     }
     public function index()
@@ -544,6 +546,75 @@ class Ajax extends CI_Controller
 
         } else {
             echo validation_errors();
+        }
+    }
+    public function get_pagos(){
+        header("Content-type: application/json; charset=utf-8");
+        if($this->input->post('id_historial')){
+            $historial = $this->Historial_model ->select('  historial.abono, 
+                                                            ventas.porcentaje_comision, 
+                                                            ventas.porcentaje_penalizacion,
+                                                            IF( historial.estado = 0 , DATEDIFF( CURRENT_DATE() , historial.fecha ), 0 ) AS daysAccumulated,
+                                                            TRUNCATE( (historial.abono * (ventas.porcentaje_comision / 100)), 2) AS comision,
+                                                            TRUNCATE( (historial.abono * (ventas.porcentaje_penalizacion / 100)) * (IF( historial.estado = 0 , DATEDIFF( CURRENT_DATE() , historial.fecha ), 0 )), 2) AS penalizacion')
+                                                ->join('ventas','ventas.id_venta = historial.id_venta','left')
+                                                ->where(['id_historial' => $this->input->post('id_historial')])
+                                                ->get();
+            echo json_encode($historial[0]);
+        }        
+    }
+    public function pagar(){
+        header("Content-type: application/json; charset=utf-8");
+        if($this->input->post('id_historial') &&
+           $this->input->post('id_ingreso')){
+            $fecha = Carbon::createFromFormat('d-m-Y', $this->input->post('fecha_pago'));
+            $set_data = [
+                'fecha_pago' => $fecha->format('Y-m-d'),
+                'pago' => $this->input->post('pago'),
+                'id_ingreso' => $this->input->post('id_ingreso'),
+                'estado' => 1,
+            ];
+            if($this->input->post('confirm_comision') == 'true'){
+                $set_data['comision'] = $this->input->post('comision');
+            }
+            if($this->input->post('confirm_penalizacion') == 'true'){
+                $set_data['penalizacion'] = $this->input->post('penalizacion');
+            }
+            $n_updated_pago = $this->Historial_model->where(['id_historial' => $this->input->post('id_historial')])
+                                  ->update($set_data)
+                                  ->affected_rows();
+           if($n_updated_pago == 1){
+                $updated_pago = $this->Historial_model->select('id_historial,
+                                                                concepto,
+                                                                abono,
+                                                                fecha,
+                                                                estado,
+                                                                fecha_pago, 
+                                                                IF( estado = 0 , DATEDIFF( CURRENT_DATE() , fecha ) , DATEDIFF( fecha_pago ,fecha ) ) as daysAccumulated,
+                                                                pago,
+                                                                comision,
+                                                                penalizacion,
+                                                                (pago + penalizacion - comision) as total')
+                                                      ->where(['id_historial' => $this->input->post('id_historial')])
+                                                      ->get();
+                $detalles = "";
+                foreach($updated_pago as $pago){
+                   if($pago->daysAccumulated > 0) { 
+                        $detalles .= 'Realizó el pago con un retrazo de: '.$pago->daysAccumulated.' días';                                            
+                    } else if($pago->daysAccumulated == 0) {
+                        $detalles .= 'Pagado en tiempo';
+                    }
+                    $detalles .= '<div>Pago: $' . number_format($pago->pago,2) .'</div>';
+                    $detalles .= '<div>Fecha: ' . $pago->fecha_pago .'</div>';
+                    $detalles .= '<div>Comisión: $' . number_format($pago->comision,2) .'</div>';
+                    $detalles .= '<div>Penalización: $' . number_format($pago->penalizacion,2) .'</div>';
+                    $detalles .= '<div>Total: $' . number_format($pago->total,2) .'</div>';
+                }
+                $updated_pago[0]->estado = ($updated_pago[0]->estado == 0) ? 'Pendiente' : 'Pagado';
+                $updated_pago[0]->detalles = $detalles;
+
+                echo json_encode($updated_pago[0]);
+           }
         }
     }
     public function autocomplete_clientes()

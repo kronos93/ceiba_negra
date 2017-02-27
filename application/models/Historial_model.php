@@ -34,6 +34,15 @@ class Historial_model extends CI_Model {
         $id_historial = $this->db->insert_id();
         return $id_historial;
     }
+    public function update($data)
+    {
+        $this->db->set($data);        
+        $this->db->update($this->table);      
+        return $this;  
+    }
+    public function affected_rows() {
+        return $this->db->affected_rows();
+    }
     public function insert_batch($data) {
         $this->db->insert_batch($this->table, $data);
     }

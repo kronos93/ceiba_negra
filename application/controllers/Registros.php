@@ -5,6 +5,7 @@ class Registros extends CI_Controller {
 	function __construct() {
         parent::__construct();
         $this->load->model('Historial_model');
+		$this->load->model('Opciones_ingreso_model');
     }
 	public function manzanas() {	
 		$data['title'] = "Manzanas"; //Titulo de la página -> require
@@ -37,7 +38,8 @@ class Registros extends CI_Controller {
 															penalizacion,
 															(pago + penalizacion - comision) as total')
 											   ->where( ['id_venta'=>$id_venta])
-											   ->get();		
+											   ->get();	
+		$data['ingresos'] = $this->Opciones_ingreso_model->get();
 		$this->load->view('templates/template',$data);
 	}
 }

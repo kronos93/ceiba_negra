@@ -858,9 +858,26 @@ $(document).ready(function() {
             { "data": "fecha" },
             { "data": "estado" },
             { "data": "detalles" },
-            { "data": "" },
+            {
+                "data": "",
+                "render": function(data, type, full, meta) {
+                    console.log(full.comision);
+                    if (full.comision != undefined && !parseFloat(full.comision)) {
+                        return '<button class="btn btn-warning" data-toggle="modal" data-target="#pagoComisionModal">Registrar comisión</button>';
+                    } else {
+                        return data;
+                    }
+                }
+
+            },
         ],
         columnDefs: [ //
+            {
+                //Añadir boton dinamicamente, para esta columna*
+                "targets": -1,
+                "data": null,
+                "defaultContent": "",
+            },
             {
                 //Añadir boton dinamicamente, para esta columna*
                 "targets": 0,
@@ -871,11 +888,56 @@ $(document).ready(function() {
             [0, "asc"]
         ],
     });
+    $('#fecha_pago').mask('00-00-0000');
+    $("#fecha_pago").datepicker({
+        dateFormat: "dd-mm-yy"
+    }).datepicker("setDate", new Date());
+    var id_historial = 0;
+    var pagoDtRow;
     $('#pagoModal').on('shown.bs.modal', function(e) {
+        var button = $(e.relatedTarget); // Boton que despliega el modal (Existe en el datatable
+        pagoDtRow = $(button).parents('tr');
+        console.log(pagoDtRow);
+        var parseDtRow = pagos_table.row(pagoDtRow).data();
+        id_historial = parseDtRow.id_historial;
+        $.ajax({
+                url: base_url + "ajax/get_pagos/",
+                data: { id_historial: id_historial },
+                type: "post",
+            })
+            .done(function(response) {
+                $('#pago').val(response.abono);
+                $('#comision').val(response.comision);
+                $('#porcentaje_comision').val(response.porcentaje_comision);
+                $('#penalizacion').val(response.penalizacion);
+                $('#porcentaje_penalizacion').val(response.porcentaje_penalizacion);
+                $('#daysAccumulated').val(response.daysAccumulated);
+            })
+            .fail(function(response) {
+
+            });
+    });
+    $("#frm-pago").on('submit', function(e) {
+        e.preventDefault();
+        var data = $(this).serializeObject();
+        data.id_historial = id_historial;
+        $.ajax({
+                url: base_url + "ajax/pagar/",
+                data: data,
+                type: "post",
+            })
+            .done(function(response) {
+                var newData = pagos_table.row(pagoDtRow).data(response).draw(false).node(); //
+                $(newData).animate({ backgroundColor: 'yellow' }); //Animación para MAX
+            })
+            .fail(function(response) {
+
+            });
+    });
+    $('#pagoComisionModal').on('shown.bs.modal', function(e) {
         var button = $(e.relatedTarget); // Boton que despliega el modal (Existe en el datatable
         var dtRow = $(button).parents('tr');
         var parseDtRow = pagos_table.row(this.dtRow).data();
-        console.log(parseDtRow);
     });
     //MAPA
     //Desplegar mapa
