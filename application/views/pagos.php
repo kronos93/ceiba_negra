@@ -98,24 +98,25 @@
                             <?php endforeach?>
                         </select>
                     </div>
-                    <div class="form-group col-xs-12 col-sm-4">
+                    <div class="form-group col-xs-12 col-sm-3">
                          <label>Comision:</label>
                          <input type="text" id="comision" name="comision" class="form-control"/>
                     </div>
-                    <div class="form-group col-xs-12 col-sm-4">
+                    <div class="form-group col-xs-12 col-sm-3">
                          <label>% comisión:</label>
                          <input type="text" id="porcentaje_comision" name="porcentaje_comision" class="form-control"/>
                     </div>
-                    <div class="form-group col-xs-12 col-sm-4">
+                    <div class="form-group col-xs-12 col-sm-6">
                         <label class="" for="lider" aria-required="true">Contemplar comisión</label>
-                        <div class="">
-                            <input id="" type="radio" name="confirm_comision" value="true" checked="checked">
-                            <label for="">Sí:</label>
-                            <input id="" type="radio" name="confirm_comision" value="false">
-                            <label for="">No:</label>
+                        <div class="radiobutton-custom">
+                            <input id="comisionTrue" type="radio" name="confirm_comision" value="true" checked="checked">
+                            <label for="comisionTrue">Sí:</label>
+                            <input id="comisionFalse" type="radio" name="confirm_comision" value="false">
+                            <label for="comisionFalse">No:</label>
                         </div>
                     </div>
                     <div class="clearfix"></div>
+                    <legend>Penalización</legend>
                     <div class="form-group col-xs-12 col-sm-2">
                          <label>Días:</label>
                          <input type="text" id="daysAccumulated" name="daysAccumulated" class="form-control"/>
@@ -124,17 +125,19 @@
                          <label>Penalización:</label>
                          <input type="text" id="penalizacion" name="penalizacion" class="form-control"/>
                     </div>
-                    <div class="form-group col-xs-12 col-sm-3">
-                         <label>% penalización:</label>
+                    <div class="form-group col-xs-12 col-sm-2">
+                         <label>%</label>
                          <input type="text" id="porcentaje_penalizacion" name="porcentaje_penalizacion" class="form-control"/>
                     </div>
-                    <div class="form-group col-xs-12 col-sm-4">
-                        <label class="required" for="lider" aria-required="true">Contemplar penalizacion</label>
+                    <div class="form-group col-xs-12 col-sm-5">
+                        <label class="required" for="lider" aria-required="true">Contemplar Penalización</label>
                         <div>
-                            <input id="" type="radio" name="confirm_penalizacion" value="true">
-                            <label for="">Sí:</label>
-                            <input id="" type="radio" name="confirm_penalizacion" value="false" checked="checked">
-                            <label for="">No:</label>
+                        <div class="radiobutton-custom">
+                            <input id="penalizacionTrue" type="radio" name="confirm_penalizacion" value="true">
+                            <label for="penalizacionTrue">Sí:</label>
+                            <input id="penalizacionFalse" type="radio" name="confirm_penalizacion" value="false" checked="checked">
+                            <label for="penalizacionFalse">No:</label>
+                        </div>
                         </div>
                     </div>
                 </div>

@@ -7215,6 +7215,14 @@ td {
 p {
   margin: 0;
 }
+span.mz:before {
+  content: 'Mz. ';
+  display: inline-block;
+}
+span.ht:before {
+  content: 'Ht. ';
+  display: inline-block;
+}
 .form-group label {
   position: relative;
 }
@@ -7578,7 +7586,10 @@ input[type="search"]:focus {
 .wizard > .content > .body label.error {
   color: #8a1f11;
   display: inline-block;
-  margin-left: 1.5em;
+  margin-left: 1em;
+  position: absolute;
+  bottom: -23px;
+  left: 0px;
 }
 .wizard > .actions {
   position: relative;
