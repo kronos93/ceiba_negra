@@ -159,7 +159,12 @@ class Venta extends CI_Controller
         $enganche = $this->input->post('enganche');
         $abono = $this->input->post('abono');
         $tipo_historial = $this->input->post('tipo_historial');
-        $historial = new Historial($precio, $enganche, $abono, $fecha_init, $tipo_historial);
+        if($this->input->post('n_pago')){            
+            $historial = new Historial($precio, $enganche, $abono, $fecha_init, $tipo_historial,$this->input->post('n_pago')-1);
+        }else{
+            $historial = new Historial($precio, $enganche, $abono, $fecha_init, $tipo_historial);
+        }
+        
         $historial_pagos = "";
         $historial_pagos .= "<table class='pagares-tabla'>";
         $historial_pagos .=    "<thead>";
@@ -339,6 +344,10 @@ class Venta extends CI_Controller
                 $venta['version'] = 1;
             } else if ($this->input->post('tipo_historial') === '15-1') { 
                 $venta['version'] = 1;
+            } else if ($this->input->post('tipo_historial') === 'fin-mes') { 
+                $venta['version'] = 1;
+            } else if ($this->input->post('tipo_historial') === 'quincena-mes') { 
+                $venta['version'] = 1;
             }
              if ($this->input->post('confirm') == 'yes') {
                 $venta['porcentaje_comision'] =  $this->input->post('porcentaje_comision');
@@ -355,7 +364,11 @@ class Venta extends CI_Controller
                 $abono = $this->input->post('abono');
                 $fecha_init = $this->input->post('fecha_init');
                 $tipo_historial = $this->input->post('tipo_historial');
-                $historial = new Historial($precio, $enganche, $abono, $fecha_init, $tipo_historial);
+                if($this->input->post('n_pago')){            
+                    $historial = new Historial($precio, $enganche, $abono, $fecha_init, $tipo_historial,$this->input->post('n_pago')-1);
+                }else{
+                    $historial = new Historial($precio, $enganche, $abono, $fecha_init, $tipo_historial);
+                }
                 $now = Carbon::now();
                 foreach ($historial->getHistorial() as $key => $pago) {
                     $db_pago = new stdClass();
@@ -441,24 +454,26 @@ class Historial
     private $fecha_primer_pago;
     private $fecha_ultimo_pago;
     private $tipo_historial;
-    public function __construct($total, $enganche, $abono, $fecha_inicial, $tipo_historial)
+    public function __construct($total, $enganche, $abono, $fecha_inicial, $tipo_historial, $n_pago = 0)
     {
         $this->total = $total;
         $this->enganche = $enganche;
         $this->abono = $abono;
         
+        $this->n_pago = $n_pago;
+
         $this->tipo_historial = $tipo_historial;
         $this->fecha_inicial = Carbon::createFromFormat('d-m-Y', $fecha_inicial);
         $this->fecha = Carbon::createFromFormat('d-m-Y', $fecha_inicial);
         $this->generarHistorial();
         $this->setDates();
     }
-
+    
     public function generarHistorial()
     {
         $abono = $this->enganche;
         
-        if ($this->n_pago == 0) {
+        if ($this->n_pago == 0 || $this->n_pago == $this->n_pago) {
             $fecha = $this->fecha_inicial;
             $concepto = "ENGANCHE";
             $this->pagado += $this->enganche;
@@ -606,7 +621,7 @@ class Historial
                     }
                 }
             }
-        }else if($this->tipo_historial === '15-1'){ 
+        } else if($this->tipo_historial === '15-1'){ 
             $fecha = $this->fecha;
             foreach ($this->historial as $key => $row) {
                 if ($key === 0) {
@@ -635,7 +650,58 @@ class Historial
                     }
                 }
             }
-        }
+         } else if($this->tipo_historial === 'fin-mes'){ 
+            $fecha = $this->fecha;
+            foreach ($this->historial as $key => $row) {
+                if ($key === 0) {
+                    $this->historial[$key]->setFecha($this->fecha_inicial);
+                    $dia = ($this->fecha_inicial->day);
+                    $new_date_end = Carbon::createFromFormat('d-m-Y', $fecha->format('d-m-Y'));
+                    $endDay = $new_date_end->endOfMonth()->day;
+                    if ($dia < $endDay) {
+                        $next = 'fin_de_mes';
+                    } else {
+                        $fecha = $fecha->endOfMonth()->addDay(1);
+                        $next = 'fin_de_mes';
+                    }
+                } else {
+                    if ($next == 'fin_de_mes') {
+                        $fecha = $fecha->endOfMonth();
+                        $new_date = Carbon::createFromFormat('d-m-Y', $fecha->format('d-m-Y'));
+                        $row->setFecha($new_date);
+                        $this->historial[$key] = $row;
+                        $fecha = $fecha->endOfMonth()->addDay(1);
+                        $next = "fin_de_mes";
+                    }
+                }
+            }
+
+         } else if($this->tipo_historial === 'quincena-mes'){ 
+            $fecha = $this->fecha;
+            foreach ($this->historial as $key => $row) {
+                if ($key === 0) {
+                    $this->historial[$key]->setFecha($this->fecha_inicial);
+                    $dia = ($this->fecha_inicial->day);
+                    
+                    if ($dia <= 15) { //Revisar las demás condiciones
+                        $next = 'quincena';
+                        $fecha->startOfMonth();
+                    } else {
+                        $fecha = $fecha->endOfMonth()->addDay(1);
+                        $next = 'quincena';
+                    }
+                } else {
+                    if ($next == 'quincena') {
+                        $fecha = $fecha->addDay(14);
+                        $new_date = Carbon::createFromFormat('d-m-Y', $fecha->format('d-m-Y'));
+                        $row->setFecha($new_date);
+                        $this->historial[$key] = $row;
+                        $fecha = $fecha->endOfMonth()->addDay(1);
+                        $next = "quincena";
+                    }
+                }
+            }
+         }
     }
 
     public function getHistorial()

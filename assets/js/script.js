@@ -402,10 +402,19 @@ $(document).ready(function() {
                 var precio = $('#precio').autoNumeric('get');
                 $('#porcentaje_comision').val((100 * (comision / precio)).toFixed(2));
             });
+            $("#tipo_historial").on('change', function() {
+                var op = $(this).val();
+                if (op == 'fin-mes' || op == 'quincena-mes' || op == '1-16' || op == '15-1') {
+                    $('#empezar_pago').show();
+                } else {
+                    $('#empezar_pago').hide();
+                }
+            });
         },
         onStepChanging: function(event, currentIndex, newIndex) {
             if (newIndex == 2) {
                 tinymce.activeEditor.setContent("");
+
                 var data = {
                     'first_name': '',
                     'last_name': '',
@@ -435,6 +444,12 @@ $(document).ready(function() {
                     'porcentaje_penalizacion': 0,
                     'maximo_retrasos_permitidos': 0
                 };
+                var op = $('#tipo_historial').val();
+                if (op == 'fin-mes' || op == 'quincena-mes' || op == '1-16' || op == '15-1') {
+                    var n_pago = $('#n_pago').val();
+                    data.n_pago = n_pago;
+                }
+
                 for (var campo in data) {
                     var input = $('#' + campo + '');
                     if (!input.hasClass('currency')) {
@@ -460,12 +475,12 @@ $(document).ready(function() {
             }
 
             form_venta.validate().settings.ignore = ":disabled,:hidden";
-            return true; //form_venta.valid();
+            return form_venta.valid();
         },
 
         onFinishing: function(event, currentIndex) {
-            //form_venta.validate().settings.ignore = ":disabled";
-            return true;
+            form_venta.validate().settings.ignore = ":disabled";
+            return form_venta.valid();
         },
         onFinished: function(event, currentIndex) {
             var data = $(this).serializeObject();

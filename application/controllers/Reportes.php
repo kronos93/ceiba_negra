@@ -164,7 +164,7 @@ class Reportes extends CI_Controller
         ini_set('max_execution_time', 300);
         set_time_limit(300);
         $condicion = ['historial.id_venta' => $id];
-        $historials = $this->Historial_model ->select("historial.abono,historial.fecha,CONCAT(users.first_name,' ',users.last_name) as nombre_cliente,  ventas.version")
+        $historials = $this->Historial_model ->select("historial.abono,historial.concepto,historial.fecha,CONCAT(users.first_name,' ',users.last_name) as nombre_cliente,  ventas.version")
                                             ->join('ventas','historial.id_venta = ventas.id_venta','left')
                                             ->join('users','ventas.id_cliente = users.id','left')
                                             //->join('huertos_ventas','historial.id_venta = huertos_ventas.id_venta','left')
@@ -190,13 +190,22 @@ class Reportes extends CI_Controller
                                      
             $recibos = "";
             $count = 1;
-            $n = 1;
+            $n = "";
             $n_historial = count($historials);
             
             foreach ($historials as $key => $historial) {
                 $fecha = Carbon::createFromFormat('Y-m-d', $historial->fecha);
                 $words = explode(" ", trim($historial->nombre_cliente));
-                $acronym = "";                
+                $acronym = "";         
+                if($historial->concepto == "ENGANCHE"){
+                    $n = "";
+                }else{
+                    $n = str_replace("PAGO","",$historial->concepto);
+                    if($key == 1){
+                        $n_historial-=2;
+                        $n_historial += $n;
+                    }
+                }
                 foreach ($words as $w) {
                     if(isset($w[0]) && !empty($w[0]) ) {
                         $acronym .= $w[0];
@@ -207,7 +216,7 @@ class Reportes extends CI_Controller
                                     <td>
                                         <div class='pagare'>                            
                                         <div class='pagare__header'>
-                                            <h3>Recibo de Dinero {$n} de {$n_historial}<strong>de fecha : {$fecha->format('d-m-Y')}</strong></h3>
+                                            <h3>Recibo de Dinero {$n} de {$n_historial} <strong>&nbsp;de fecha : {$fecha->format('d-m-Y')}</strong></h3>
                                             <p><strong>FOLIO:".strtoupper($acronym)."-{$n}-{$historial->fecha}</strong></p>
                                         </div>
                                         <div class='pagare__body'>
@@ -228,7 +237,7 @@ class Reportes extends CI_Controller
                     $recibos.="     <td>
                                         <div class='pagare'>                            
                                         <div class='pagare__header'>
-                                            <h3>Recibo de Dinero {$n} de {$n_historial} <strong>de fecha : {$fecha->format('d-m-Y')}</strong></h3>
+                                            <h3>Recibo de Dinero {$n} de {$n_historial} <strong>&nbsp;de fecha : {$fecha->format('d-m-Y')}</strong></h3>
                                             <p><strong>FOLIO:".strtoupper($acronym)."-{$n}-{$historial->fecha}</strong></p>
                                         </div>
                                         <div class='pagare__body'>
@@ -248,7 +257,7 @@ class Reportes extends CI_Controller
                     $count = 1;
                         
                 }                
-                $n++;          
+                         
             }
             if($count==2){
                 $recibos.="<td></td></tr>";
