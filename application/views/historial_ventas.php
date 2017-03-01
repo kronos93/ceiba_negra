@@ -11,7 +11,7 @@
                             <th>Precio</th>  
                             <th>Comisión</th>                            
                             <th>Generado por:</th>
-                            <th>Contrato</th>
+                            <th class="all">Contrato</th>
                             <th class="all">Pagarés/Recibos</th>
                             <th class="all">Pagos</th>
                         </tr>

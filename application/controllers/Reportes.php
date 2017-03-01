@@ -191,19 +191,21 @@ class Reportes extends CI_Controller
             $recibos = "";
             $count = 1;
             $n = "";
-            $n_historial = count($historials);
-            
+            $n_historial = "";
+            $n_h = count($historials);
             foreach ($historials as $key => $historial) {
                 $fecha = Carbon::createFromFormat('Y-m-d', $historial->fecha);
                 $words = explode(" ", trim($historial->nombre_cliente));
                 $acronym = "";         
                 if($historial->concepto == "ENGANCHE"){
                     $n = "";
+                    $de = "";
                 }else{
                     $n = str_replace("PAGO","",$historial->concepto);
                     if($key == 1){
-                        $n_historial-=2;
+                        $n_historial = $n_h - 2;
                         $n_historial += $n;
+                        $de = "de";
                     }
                 }
                 foreach ($words as $w) {
@@ -216,7 +218,7 @@ class Reportes extends CI_Controller
                                     <td>
                                         <div class='pagare'>                            
                                         <div class='pagare__header'>
-                                            <h3>Recibo de Dinero {$n} de {$n_historial} <strong>&nbsp;de fecha : {$fecha->format('d-m-Y')}</strong></h3>
+                                            <h3>Recibo de Dinero {$n} {$de} {$n_historial} <strong>&nbsp;de fecha : {$fecha->format('d-m-Y')}</strong></h3>
                                             <p><strong>FOLIO:".strtoupper($acronym)."-{$n}-{$historial->fecha}</strong></p>
                                         </div>
                                         <div class='pagare__body'>
@@ -237,7 +239,7 @@ class Reportes extends CI_Controller
                     $recibos.="     <td>
                                         <div class='pagare'>                            
                                         <div class='pagare__header'>
-                                            <h3>Recibo de Dinero {$n} de {$n_historial} <strong>&nbsp;de fecha : {$fecha->format('d-m-Y')}</strong></h3>
+                                            <h3>Recibo de Dinero {$n} {$de} {$n_historial} <strong>&nbsp;de fecha : {$fecha->format('d-m-Y')}</strong></h3>
                                             <p><strong>FOLIO:".strtoupper($acronym)."-{$n}-{$historial->fecha}</strong></p>
                                         </div>
                                         <div class='pagare__body'>

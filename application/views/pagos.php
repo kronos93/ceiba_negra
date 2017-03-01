@@ -11,7 +11,7 @@
                             <th>Fecha de pago</th>
                             <th>Estado</th>
                             <th>Detalles</th>
-                            <th>Opciones</th>
+                            <th class="all">Opciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -36,7 +36,7 @@
                                                 $btnPago = true;
                                             }else{
                                                 echo 'Aun no es fecha de pago';
-
+                                                $btnPago = true;                
                                             }
                                         } else if ($pago->estado == 1){
                                             if($pago->daysAccumulated > 0) { 
