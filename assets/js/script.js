@@ -370,6 +370,29 @@ $(document).ready(function() {
                 autoSelectFirst: true,
                 onSelect: function(suggestion) {
                     console.log(suggestion);
+                    var base = {
+                        "first_name": "Default",
+                        "last_name": "Default Default",
+                        "email": "default@huertoslaceiba.com",
+                        "phone": "99821234567",
+                        "calle": "Default",
+                        "no_ext": "100",
+                        "no_int": "100",
+                        "colonia": "Default",
+                        "municipio": "Default",
+                        "estado": "Default",
+                        "ciudad": "Default",
+                        "cp": "77777s",
+                        "lugar_nacimiento": "Default",
+                        "fecha_nacimiento": "01-01-1999"
+                    }
+                    for (var data in suggestion) {
+                        if (suggestion[data] == "" || suggestion[data] == null) {
+                            suggestion[data] = base[data];
+                        }
+                        $('#' + data).val(suggestion[data]);
+                    }
+
                 },
                 onSearchError: function(query, jqXHR, textStatus, errorThrown) {
                     console.log("Ha ocurrido un error.");
@@ -380,7 +403,6 @@ $(document).ready(function() {
                 noCache: true,
                 autoSelectFirst: true,
                 onSelect: function(suggestion) {
-                    console.log(suggestion);
                     $("#id_lider").val(suggestion.id);
                 },
                 onSearchError: function(query, jqXHR, textStatus, errorThrown) {

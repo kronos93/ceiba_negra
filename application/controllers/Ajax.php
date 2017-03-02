@@ -674,7 +674,21 @@ class Ajax extends CI_Controller
         if ($this->input->get('query')) {
             $like = $this->input->get('query');
             $full_name = "CONCAT(users.first_name,' ',users.last_name)";
-            $select = 'users.first_name, users.last_name, users.email, users.phone, users.calle, users.no_ext, users.no_int, users.phone, users.colonia, users.municipio, users.estado,users.ciudad,users.cp';
+            $select = ' users.first_name, 
+                        users.last_name, 
+                        users.email, 
+                        users.phone, 
+                        users.calle, 
+                        users.no_ext, 
+                        users.no_int, 
+                        users.phone, 
+                        users.colonia, 
+                        users.municipio, 
+                        users.estado,
+                        users.ciudad,
+                        users.cp,
+                        users.lugar_nacimiento,
+                        DATE_FORMAT(users.fecha_nacimiento,"%d-%m-%Y") as fecha_nacimiento';
             $clientes = $this->ion_auth->select("{$select},{$full_name} AS data, {$full_name} AS value")->where(["{$full_name} LIKE" => "%{$like}%"])->users('cliente')->result();
             $response = new stdClass();
             $response->suggestions = $clientes;
