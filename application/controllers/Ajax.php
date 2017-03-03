@@ -547,12 +547,21 @@ class Ajax extends CI_Controller
     public function get_pagos(){
         header("Content-type: application/json; charset=utf-8");
         if($this->input->post('id_historial')){
-            $historial = $this->Historial_model ->select('  historial.abono, 
+            $historial = $this->Historial_model ->select('  historial.abono,
+                                                            historial.id_lider, 
                                                             ventas.porcentaje_comision, 
                                                             ventas.porcentaje_penalizacion,
-                                                            IF( historial.estado = 0 , DATEDIFF( CURRENT_DATE() , historial.fecha ), 0 ) AS daysAccumulated,
+                                                            IF( DATEDIFF( CURRENT_DATE() , historial.fecha ) > 0,  
+                                                                IF( historial.estado = 0 , 
+                                                                    DATEDIFF( CURRENT_DATE() , historial.fecha ), 
+                                                                    0 ) , 
+                                                                0) AS daysAccumulated,
                                                             TRUNCATE( (historial.abono * (ventas.porcentaje_comision / 100)), 2) AS comision,
-                                                            TRUNCATE( (historial.abono * (ventas.porcentaje_penalizacion / 100)) * (IF( historial.estado = 0 , DATEDIFF( CURRENT_DATE() , historial.fecha ), 0 )), 2) AS penalizacion')
+                                                            TRUNCATE( (historial.abono * (ventas.porcentaje_penalizacion / 100)) * ( IF( DATEDIFF( CURRENT_DATE() , historial.fecha ) > 0,  
+                                                                                                                                         IF( historial.estado = 0 , 
+                                                                                                                                             DATEDIFF( CURRENT_DATE() , historial.fecha ), 
+                                                                                                                                             0 ) , 
+                                                                                                                                         0)), 2) AS penalizacion')
                                                 ->join('ventas','ventas.id_venta = historial.id_venta','left')
                                                 ->where(['id_historial' => $this->input->post('id_historial')])
                                                 ->get();
@@ -563,6 +572,7 @@ class Ajax extends CI_Controller
         header("Content-type: application/json; charset=utf-8");
         if($this->input->post('id_historial')){
             $historial = $this->Historial_model ->select('  historial.abono, 
+                                                            historial.id_lider, 
                                                             ventas.porcentaje_comision, 
                                                             TRUNCATE( (historial.abono * (ventas.porcentaje_comision / 100)), 2) AS comision')
                                                 ->join('ventas','ventas.id_venta = historial.id_venta','left')
@@ -584,6 +594,7 @@ class Ajax extends CI_Controller
             ];
             if($this->input->post('confirm_comision') == 'true'){
                 $set_data['comision'] = $this->input->post('comision');
+                $set_data['id_lider'] = $this->input->post('id_lider');
             }
             if($this->input->post('confirm_penalizacion') == 'true'){
                 $set_data['penalizacion'] = $this->input->post('penalizacion');
@@ -592,25 +603,32 @@ class Ajax extends CI_Controller
                                   ->update($set_data)
                                   ->affected_rows();
            if($n_updated_pago == 1){
-                $updated_pago = $this->Historial_model->select('id_historial,
-                                                                concepto,
-                                                                abono,
-                                                                fecha,
-                                                                estado,
-                                                                fecha_pago, 
-                                                                IF( estado = 0 , DATEDIFF( CURRENT_DATE() , fecha ) , DATEDIFF( fecha_pago ,fecha ) ) as daysAccumulated,
-                                                                pago,
-                                                                comision,
-                                                                penalizacion,
-                                                                (pago + penalizacion - comision) as total')
+                $updated_pago = $this->Historial_model->select('historial.id_historial,
+                                                                CONCAT(cliente.first_name," ",cliente.last_name) AS nombre_cliente,
+														        CONCAT(lider.first_name," ",lider.last_name) AS nombre_lider,
+                                                                historial.concepto,
+                                                                historial.abono,
+                                                                historial.fecha,
+                                                                historial.estado,
+                                                                historial.fecha_pago, 
+                                                                IF( historial.estado = 0 , DATEDIFF( CURRENT_DATE() , historial.fecha ) , DATEDIFF( historial.fecha_pago ,historial.fecha ) ) as daysAccumulated,
+                                                                historial.pago,
+                                                                historial.comision,
+                                                                historial.penalizacion,
+                                                                (historial.pago + historial.penalizacion - historial.comision) as total')
+                                                      ->join('ventas','historial.id_venta = ventas.id_venta','left')
+                                                      ->join('users AS cliente','ventas.id_usuario = cliente.id','left')
+                                                      ->join('users AS lider','historial.id_lider = lider.id','left')
                                                       ->where(['id_historial' => $this->input->post('id_historial')])
                                                       ->get();
                 $detalles = "";
                 foreach($updated_pago as $pago){
                    if($pago->daysAccumulated > 0) { 
-                        $detalles .= 'Realizó el pago con un retrazo de: '.$pago->daysAccumulated.' días';                                            
+                        $detalles .= 'Realizó el pago con un retrazo de: '.$pago->daysAccumulated.' días.';                                            
                     } else if($pago->daysAccumulated == 0) {
-                        $detalles .= 'Pagado en tiempo';
+                        $detalles .= 'Pagado en tiempo.';
+                    } else if($pago->daysAccumulated < 0) {
+                        $detalles .= 'Pagado por adelantado.';
                     }
                     $detalles .= '<div>Pago: $' . number_format($pago->pago,2) .'</div>';
                     $detalles .= '<div>Fecha: ' . $pago->fecha_pago .'</div>';
@@ -620,7 +638,7 @@ class Ajax extends CI_Controller
                 }
                 $updated_pago[0]->estado = ($updated_pago[0]->estado == 0) ? 'Pendiente' : 'Pagado';
                 $updated_pago[0]->detalles = $detalles;
-
+                $updated_pago[0]->abono = '$' . number_format($updated_pago[0]->abono,2);
                 echo json_encode($updated_pago[0]);
            }
         }
@@ -629,23 +647,29 @@ class Ajax extends CI_Controller
         header("Content-type: application/json; charset=utf-8");
         if($this->input->post('id_historial')){
             $set_data = [
-                'comision' => $this->input->post('comision'),                
+                'comision' => $this->input->post('comision'),     
+                'id_lider' => $this->input->post('id_lider'),                
             ];
             $n_updated_pago = $this->Historial_model->where(['id_historial' => $this->input->post('id_historial')])
                                   ->update($set_data)
                                   ->affected_rows();
            if($n_updated_pago == 1){
-               $updated_pago = $this->Historial_model->select('id_historial,
-                                                                concepto,
-                                                                abono,
-                                                                fecha,
-                                                                estado,
-                                                                fecha_pago, 
-                                                                IF( estado = 0 , DATEDIFF( CURRENT_DATE() , fecha ) , DATEDIFF( fecha_pago ,fecha ) ) as daysAccumulated,
-                                                                pago,
-                                                                comision,
-                                                                penalizacion,
-                                                                (pago + penalizacion - comision) as total')
+               $updated_pago = $this->Historial_model->select(' historial.id_historial,
+                                                                CONCAT(cliente.first_name," ",cliente.last_name) AS nombre_cliente,
+														        CONCAT(lider.first_name," ",lider.last_name) AS nombre_lider,
+                                                                historial.concepto,
+                                                                historial.abono,
+                                                                historial.fecha,
+                                                                historial.estado,
+                                                                historial.fecha_pago, 
+                                                                IF( historial.estado = 0 , DATEDIFF( CURRENT_DATE() , historial.fecha ) , DATEDIFF( historial.fecha_pago ,historial.fecha ) ) as daysAccumulated,
+                                                                historial.pago,
+                                                                historial.comision,
+                                                                historial.penalizacion,
+                                                                (historial.pago + historial.penalizacion - historial.comision) as total')
+                                                      ->join('ventas','historial.id_venta = ventas.id_venta','left')
+                                                      ->join('users AS cliente','ventas.id_usuario = cliente.id','left')
+                                                      ->join('users AS lider','historial.id_lider = lider.id','left')
                                                       ->where(['id_historial' => $this->input->post('id_historial')])
                                                       ->get();
                 $detalles = "";
@@ -654,6 +678,8 @@ class Ajax extends CI_Controller
                         $detalles .= 'Realizó el pago con un retrazo de: '.$pago->daysAccumulated.' días';                                            
                     } else if($pago->daysAccumulated == 0) {
                         $detalles .= 'Pagado en tiempo';
+                    } else if($pago->daysAccumulated < 0) {
+                        $detalles .= 'Pagado por adelantado.';
                     }
                     $detalles .= '<div>Pago: $' . number_format($pago->pago,2) .'</div>';
                     $detalles .= '<div>Fecha: ' . $pago->fecha_pago .'</div>';
@@ -663,7 +689,7 @@ class Ajax extends CI_Controller
                 }
                 $updated_pago[0]->estado = ($updated_pago[0]->estado == 0) ? 'Pendiente' : 'Pagado';
                 $updated_pago[0]->detalles = $detalles;
-
+                $updated_pago[0]->abono = '$' . number_format($updated_pago[0]->abono,2);
                 echo json_encode($updated_pago[0]);
            }
         }

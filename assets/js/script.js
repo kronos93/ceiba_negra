@@ -890,6 +890,8 @@ $(document).ready(function() {
     var pagos_table = $('#pagos-table').DataTable({
         "columns": [ //Atributos para la tabla
             { "data": "id_historial" },
+            { "data": "nombre_cliente" },
+            { "data": "nombre_lider" },
             { "data": "concepto" },
             { "data": "abono" },
             { "data": "fecha" },
@@ -944,6 +946,7 @@ $(document).ready(function() {
             })
             .done(function(response) {
                 $('#pago').autoNumeric('set', response.abono);
+                $('#id_lider').val(response.id_lider);
                 $('#comision').autoNumeric('set', response.comision);
                 $('#porcentaje_comision').val(response.porcentaje_comision);
                 $('#penalizacion').autoNumeric('set', response.penalizacion);
@@ -1010,6 +1013,7 @@ $(document).ready(function() {
             })
             .done(function(response) {
                 $('#pago2').autoNumeric('set', response.abono);
+                $('#id_lider2').val(response.id_lider);
                 $('#comision2').autoNumeric('set', response.comision);
                 $('#porcentaje_comision2').val(response.porcentaje_comision);
             })

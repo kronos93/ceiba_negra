@@ -34,19 +34,25 @@ class Registros extends CI_Controller {
 	public function pagos($id_venta) {
 		$data['title'] = "Pagos";
 		$data['body'] = "pagos";		
-		$data['pagos'] = $this->Historial_model->select('	id_historial,
-															concepto,
-															abono,
-															fecha,
-															estado,
-															fecha_pago, 
-															IF( estado = 0 , DATEDIFF( CURRENT_DATE() , fecha ) , DATEDIFF( fecha_pago ,fecha ) ) as daysAccumulated,
-															pago,
-															comision,
-															penalizacion,
-															(pago + penalizacion - comision) as total')
-											   ->where( ['id_venta'=>$id_venta])
-											   ->get();	
+		$data['pagos'] = $this->Historial_model->select('historial.id_historial,
+														 CONCAT(cliente.first_name," ",cliente.last_name) AS nombre_cliente,
+														 CONCAT(lider.first_name," ",lider.last_name) AS nombre_lider,
+														 historial.concepto,
+														 historial.abono,
+														 historial.fecha,
+														 historial.estado,
+														 historial.fecha_pago, 
+														 IF( historial.estado = 0 , DATEDIFF( CURRENT_DATE() , historial.fecha ) , DATEDIFF( historial.fecha_pago ,historial.fecha ) ) as daysAccumulated,
+														 historial.pago,
+														 historial.comision,
+														 historial.penalizacion,
+														 (historial.pago + historial.penalizacion - historial.comision) as total')
+												->join('ventas','historial.id_venta = ventas.id_venta','left')
+												->join('users AS cliente','ventas.id_usuario = cliente.id','left')
+												->join('users AS lider','historial.id_lider = lider.id','left')
+												->where(['historial.id_venta' => $id_venta])
+												->get();
+		$data['lideres'] = $this->ion_auth->users(3)->result();							
 		$data['ingresos'] = $this->Opciones_ingreso_model->get();
 		$this->load->view('templates/template',$data);
 	}

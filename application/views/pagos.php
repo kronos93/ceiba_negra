@@ -6,6 +6,8 @@
                     <thead>
                         <tr>
                             <th data-visible="false">Id. Historial</th>
+                            <th>Cliente</th>
+                            <th>Lider</th>
                             <th>Concepto</th>
                             <th>Adeudo</th>
                             <th>Fecha de pago</th>
@@ -19,8 +21,10 @@
                     foreach($pagos as $pago):
                 ?>
                     
-                        <tr>
+                        <tr>                            
                             <td><?= $pago->id_historial ?></td>
+                            <td><?= $pago->nombre_cliente ?></td>
+                            <td><?= $pago->nombre_lider ?></td>
                             <td><?= $pago->concepto ?></td>
                             <td>$<?= number_format($pago->abono,2) ?></td>
                             <td><?= $pago->fecha ?></td>
@@ -29,20 +33,22 @@
                                         $btnPago = false;
                                         if ($pago->estado == 0) { 
                                             if($pago->daysAccumulated > 0) { 
-                                                echo 'Tiene un retraso en pago de: '.$pago->daysAccumulated . ' días';
+                                                echo 'Tiene un retraso en pago de: '.$pago->daysAccumulated . ' días.';
                                                 $btnPago = true;
                                             } else if($pago->daysAccumulated == 0){
-                                                echo 'Hoy es día de pago';
+                                                echo 'Hoy es día de pago.';
                                                 $btnPago = true;
                                             }else{
-                                                echo 'Aun no es fecha de pago';
+                                                echo 'Aun no es fecha de pago.';
                                                 $btnPago = true;                
                                             }
                                         } else if ($pago->estado == 1){
                                             if($pago->daysAccumulated > 0) { 
-                                                echo 'Realizó el pago con un retrazo de: '.$pago->daysAccumulated.' días';                                            
+                                                echo 'Realizó el pago con un retrazo de: '.$pago->daysAccumulated.' días.';                                            
                                             } else if($pago->daysAccumulated == 0) {
-                                                echo 'Pagado en tiempo';
+                                                echo 'Pagado en tiempo.';
+                                            } else if($pago->daysAccumulated < 0) {
+                                                echo 'Pagado por adelantado.';
                                             }
                                             echo '<div>Pago: $' . number_format($pago->pago,2) .'</div>';
                                             echo '<div>Fecha: ' . $pago->fecha_pago .'</div>';
@@ -100,6 +106,14 @@
                     </div>
                     <div class="clearfix"></div>
                     <legend>Comisión</legend>
+                    <div class="form-group col-xs-12 col-sm-12">
+                         <label>Lider:</label>
+                         <select name="id_lider" id="id_lider" class="form-control">
+                            <?php foreach($lideres as $lider): ?>
+                            <option value="<?= $lider->id ?>"><?= $lider->first_name . ' ' . $lider->last_name ?></option>
+                            <?php endforeach; ?>
+                         </select>
+                    </div>
                     <div class="form-group col-xs-12 col-sm-3">
                          <label>Comision:</label>
                          <input type="text" id="comision" name="comision" class="form-control currency"/>
@@ -165,6 +179,14 @@
           <div class="modal-body">
             <div class="container-fluid">
                 <div class="row">
+                    <div class="form-group col-xs-12 col-sm-12">
+                         <label>Lider:</label>
+                         <select name="id_lider" id="id_lider2" class="form-control">
+                            <?php foreach($lideres as $lider): ?>
+                            <option value="<?= $lider->id ?>"><?= $lider->first_name . ' ' . $lider->last_name ?></option>
+                            <?php endforeach; ?>
+                         </select>
+                    </div>
                     <div class="form-group col-xs-12 col-sm-6">
                          <label>Monto:</label>
                          <input type="text" id="pago2" name="pago" class="form-control currency" readonly/>
