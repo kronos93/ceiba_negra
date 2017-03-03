@@ -60,6 +60,14 @@
 		</div>
 	</div>
 	<div class="modal-footer">
-		<?php echo form_submit('submit', lang('create_user_submit_btn'),['class'=>'btn btn-success pull-right']);?>
+		<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+		<div class="ajax-button">
+			<?php echo form_submit('submit', lang('create_user_submit_btn'),['class'=>'btn btn-success confirm']);?>
+			<div class="loader-gif">
+				<div class="loader-gif-item"></div>
+				<div class="loader-gif-item"></div>
+				<div class="loader-gif-item"></div>
+			</div>
+		</div>
 	</div>
 <?php echo form_close();?>

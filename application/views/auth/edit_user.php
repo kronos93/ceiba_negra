@@ -78,7 +78,15 @@
 	<?php echo form_hidden('id', $user->id);?>
 	<?php echo form_hidden($csrf); ?>
 	<div class="modal-footer">
-		<p><?php echo form_submit('submit', lang('edit_user_submit_btn'),['class'=>'btn btn-success']);?></p>
+		<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+		<div class="ajax-button">
+			<?php echo form_submit('submit', lang('edit_user_submit_btn'),['class'=>'btn btn-success confirm']);?>
+			<div class="loader-gif">
+				<div class="loader-gif-item"></div>
+				<div class="loader-gif-item"></div>
+				<div class="loader-gif-item"></div>
+			</div>
+		</div>
 	</div>
 	
 

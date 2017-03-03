@@ -37,6 +37,9 @@ class Registros extends CI_Controller {
 		$data['pagos'] = $this->Historial_model->select('historial.id_historial,
 														 CONCAT(cliente.first_name," ",cliente.last_name) AS nombre_cliente,
 														 CONCAT(lider.first_name," ",lider.last_name) AS nombre_lider,
+														 IF( opciones_ingreso.id_opcion_ingreso != 1, 
+															 CONCAT(opciones_ingreso.nombre, " - " ,opciones_ingreso.cuenta),
+															 opciones_ingreso.nombre) as nombre,
 														 historial.concepto,
 														 historial.abono,
 														 historial.fecha,
@@ -48,8 +51,9 @@ class Registros extends CI_Controller {
 														 historial.penalizacion,
 														 (historial.pago + historial.penalizacion - historial.comision) as total')
 												->join('ventas','historial.id_venta = ventas.id_venta','left')
-												->join('users AS cliente','ventas.id_usuario = cliente.id','left')
+												->join('users AS cliente','ventas.id_cliente = cliente.id','left')
 												->join('users AS lider','historial.id_lider = lider.id','left')
+												->join('opciones_ingreso','historial.id_ingreso = opciones_ingreso.id_opcion_ingreso','left')
 												->where(['historial.id_venta' => $id_venta])
 												->get();
 		$data['lideres'] = $this->ion_auth->users(3)->result();							

@@ -1,3 +1,10 @@
+ol,
+ol li,
+ul,
+ul li {
+    color: #000!important;
+}
+
 * {
     border: 0;
     padding: 0;
@@ -10,7 +17,7 @@
 }
 
 html {
-    margin: 1cm 0.35cm!important
+    margin: 1cm .35cm!important;
 }
 
 :focus {
@@ -20,40 +27,64 @@ html {
 ol,
 ul {
     list-style: none;
-    color: #000!important;
     text-align: justify;
     font-size: 13px;
 }
 
-ol li,
-ul li {
-    color: #000!important;
+ol li {
+    position: relative!important;
+    padding-right: 10px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+ol li:after {
+    content: '+ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +';
+    position: absolute;
+    display: inline-block;
+}
+
+p {
+    position: relative!important;
+    overflow: hidden;
+    padding: 3px!important;
+}
+
+p:after {
+    content: '+ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +';
+    position: absolute;
+    display: inline-block;
 }
 
 button,
 input,
 input:not([type]),
-input[type=color],
-input[type=text],
-input[type=time],
-input[type=url],
-input[type=week],
 input[type=button],
-input[type=reset],
-input[type=submit],
+input[type=color],
 input[type=date],
-input[type=datetime],
 input[type=datetime-local],
+input[type=datetime],
 input[type=email],
 input[type=month],
 input[type=number],
 input[type=password],
+input[type=reset],
 input[type=search],
+input[type=submit],
 input[type=tel],
+input[type=text],
+input[type=time],
+input[type=url],
+input[type=week],
 pre,
 select,
 textarea {
     font: inherit;
+}
+
+.mce-content-body,
+.mce-content-body table.pagares-tabla tbody tr td {
+    font-family: Helvetica;
 }
 
 .mce-container textarea {
@@ -61,7 +92,6 @@ textarea {
 }
 
 .mce-content-body {
-    font-family: Helvetica;
     font-size: 14px;
     color: #000;
     padding: 0 25px 25px;
@@ -73,13 +103,12 @@ textarea {
 .mce-content-body h4,
 .mce-content-body h5,
 .mce-content-body h6 {
-    /*font-weight: 200;*/
-    line-height: 0.8em;
+    line-height: .8em;
 }
 
 .mce-content-body h1 {
     font-size: 22px;
-    line-height: 0.8em!important;
+    line-height: .8em!important;
 }
 
 .mce-content-body h2 {
@@ -103,9 +132,11 @@ textarea {
 }
 
 .mce-content-body p {
-    margin: 8px 0px 15px;
+    margin: 8px 0 15px;
     text-align: justify!important;
     font-size: 13px;
+    position: relative;
+    display: block;
 }
 
 .mce-content-body ol,
@@ -119,7 +150,7 @@ textarea {
 .mce-content-body ul li {
     margin-left: 10px;
     margin-bottom: 10px;
-    color: #626262
+    color: #626262;
 }
 
 .mce-content-body ul {
@@ -141,32 +172,27 @@ textarea {
     border: 1px solid #aaa;
 }
 
-.mce-content-body table.testigos {
+.mce-content-body table.testigos,
+.mce-content-body table.testigos th {
     border: none;
 }
 
 .mce-content-body table.testigos td {
     border: none;
     text-align: center;
-}
-
-.mce-content-body table.testigos th {
-    border: none;
+    text-transform: uppercase;
+    font-size: 13px!important;
 }
 
 .mce-content-body table.testigos td p {
     font-family: Helvetica;
     display: inline-block;
-    padding: 0px 20px;
-    text-align: center;
-}
-
-.mce-content-body table.testigos td p {
+    padding: 0 20px;
     text-align: center!important;
 }
 
-.mce-content-body table.testigos td p span.underline {
-    margin: 0 auto;
+.mce-content-body table.testigos td div span.underline {
+    margin: 5px auto;
     display: block;
     width: 300px;
     border-bottom: 1px solid #000!important;
@@ -176,10 +202,6 @@ textarea {
 .mce-content-body table.pagares-tabla {
     width: 700px;
     margin: 0 auto;
-}
-
-.mce-content-body table.pagares-tabla tbody tr td {
-    font-family: Helvetica;
 }
 
 .mce-content-body table.pagares-tabla th {

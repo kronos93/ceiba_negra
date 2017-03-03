@@ -606,6 +606,9 @@ class Ajax extends CI_Controller
                 $updated_pago = $this->Historial_model->select('historial.id_historial,
                                                                 CONCAT(cliente.first_name," ",cliente.last_name) AS nombre_cliente,
 														        CONCAT(lider.first_name," ",lider.last_name) AS nombre_lider,
+                                                                IF( opciones_ingreso.id_opcion_ingreso != 1, 
+                                                                    CONCAT(opciones_ingreso.nombre, " - " ,opciones_ingreso.cuenta),
+                                                                    opciones_ingreso.nombre) as nombre,
                                                                 historial.concepto,
                                                                 historial.abono,
                                                                 historial.fecha,
@@ -617,20 +620,22 @@ class Ajax extends CI_Controller
                                                                 historial.penalizacion,
                                                                 (historial.pago + historial.penalizacion - historial.comision) as total')
                                                       ->join('ventas','historial.id_venta = ventas.id_venta','left')
-                                                      ->join('users AS cliente','ventas.id_usuario = cliente.id','left')
+                                                      ->join('users AS cliente','ventas.id_cliente = cliente.id','left')
                                                       ->join('users AS lider','historial.id_lider = lider.id','left')
+                                                      ->join('opciones_ingreso','historial.id_ingreso = opciones_ingreso.id_opcion_ingreso','left')
                                                       ->where(['id_historial' => $this->input->post('id_historial')])
                                                       ->get();
                 $detalles = "";
                 foreach($updated_pago as $pago){
                    if($pago->daysAccumulated > 0) { 
-                        $detalles .= 'Realizó el pago con un retrazo de: '.$pago->daysAccumulated.' días.';                                            
+                        $detalles .= 'Realizó el pago con un retraso de: '.$pago->daysAccumulated.' días.';                                            
                     } else if($pago->daysAccumulated == 0) {
                         $detalles .= 'Pagado en tiempo.';
                     } else if($pago->daysAccumulated < 0) {
                         $detalles .= 'Pagado por adelantado.';
                     }
                     $detalles .= '<div>Pago: $' . number_format($pago->pago,2) .'</div>';
+                    $detalles .= '<div>Deposito en: ' . $pago->nombre .'</div>';
                     $detalles .= '<div>Fecha: ' . $pago->fecha_pago .'</div>';
                     $detalles .= '<div>Comisión: $' . number_format($pago->comision,2) .'</div>';
                     $detalles .= '<div>Penalización: $' . number_format($pago->penalizacion,2) .'</div>';
@@ -657,6 +662,9 @@ class Ajax extends CI_Controller
                $updated_pago = $this->Historial_model->select(' historial.id_historial,
                                                                 CONCAT(cliente.first_name," ",cliente.last_name) AS nombre_cliente,
 														        CONCAT(lider.first_name," ",lider.last_name) AS nombre_lider,
+                                                                IF( opciones_ingreso.id_opcion_ingreso != 1, 
+                                                                    CONCAT(opciones_ingreso.nombre, " - " ,opciones_ingreso.cuenta),
+                                                                    opciones_ingreso.nombre) as nombre,
                                                                 historial.concepto,
                                                                 historial.abono,
                                                                 historial.fecha,
@@ -668,20 +676,22 @@ class Ajax extends CI_Controller
                                                                 historial.penalizacion,
                                                                 (historial.pago + historial.penalizacion - historial.comision) as total')
                                                       ->join('ventas','historial.id_venta = ventas.id_venta','left')
-                                                      ->join('users AS cliente','ventas.id_usuario = cliente.id','left')
+                                                      ->join('users AS cliente','ventas.id_cliente = cliente.id','left')
                                                       ->join('users AS lider','historial.id_lider = lider.id','left')
+                                                      ->join('opciones_ingreso','historial.id_ingreso = opciones_ingreso.id_opcion_ingreso','left')
                                                       ->where(['id_historial' => $this->input->post('id_historial')])
                                                       ->get();
                 $detalles = "";
                 foreach($updated_pago as $pago){
                    if($pago->daysAccumulated > 0) { 
-                        $detalles .= 'Realizó el pago con un retrazo de: '.$pago->daysAccumulated.' días';                                            
+                        $detalles .= 'Realizó el pago con un retraso de: '.$pago->daysAccumulated.' días.';                                            
                     } else if($pago->daysAccumulated == 0) {
-                        $detalles .= 'Pagado en tiempo';
+                        $detalles .= 'Pagado en tiempo.';
                     } else if($pago->daysAccumulated < 0) {
                         $detalles .= 'Pagado por adelantado.';
                     }
                     $detalles .= '<div>Pago: $' . number_format($pago->pago,2) .'</div>';
+                    $detalles .= '<div>Deposito en: ' . $pago->nombre .'</div>';
                     $detalles .= '<div>Fecha: ' . $pago->fecha_pago .'</div>';
                     $detalles .= '<div>Comisión: $' . number_format($pago->comision,2) .'</div>';
                     $detalles .= '<div>Penalización: $' . number_format($pago->penalizacion,2) .'</div>';

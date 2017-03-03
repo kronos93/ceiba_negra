@@ -44,13 +44,14 @@
                                             }
                                         } else if ($pago->estado == 1){
                                             if($pago->daysAccumulated > 0) { 
-                                                echo 'Realizó el pago con un retrazo de: '.$pago->daysAccumulated.' días.';                                            
+                                                echo 'Realizó el pago con un retraso de: '.$pago->daysAccumulated.' días.';                                            
                                             } else if($pago->daysAccumulated == 0) {
                                                 echo 'Pagado en tiempo.';
                                             } else if($pago->daysAccumulated < 0) {
                                                 echo 'Pagado por adelantado.';
                                             }
                                             echo '<div>Pago: $' . number_format($pago->pago,2) .'</div>';
+                                            echo '<div>Deposito en: ' . $pago->nombre .'</div>';
                                             echo '<div>Fecha: ' . $pago->fecha_pago .'</div>';
                                             echo '<div>Comisión: $' . number_format($pago->comision,2) .'</div>';
                                             echo '<div>Penalización: $' . number_format($pago->penalizacion,2) .'</div>';
