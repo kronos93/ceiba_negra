@@ -382,7 +382,7 @@ $(document).ready(function() {
                         "municipio": "Default",
                         "estado": "Default",
                         "ciudad": "Default",
-                        "cp": "77777s",
+                        "cp": "77777",
                         "lugar_nacimiento": "Default",
                         "fecha_nacimiento": "01-01-1999",
 
@@ -393,7 +393,7 @@ $(document).ready(function() {
                         "testigo_2": "XXXX XXXX XXXX",
                     };
                     for (var data in suggestion) {
-                        if (suggestion[data] == "" || suggestion[data] == null) {
+                        if (suggestion[data] == "" || suggestion[data] == null || suggestion[data] == 0) {
                             suggestion[data] = base[data];
                         }
                         $('#' + data).val(suggestion[data]);
