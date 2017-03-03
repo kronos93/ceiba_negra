@@ -126,14 +126,14 @@ viewBox="0 0 800 600"
  </g>
  <g id="landmarks-mz5">
   <metadata id="CorelCorpID_1Corel-Layer"/>
-  <polygon id="m5lote2" fill="#35AD0E" points="518,377 575,390 548,508 490,494 "/>
-  <polygon id="m5lote2A" fill="#35AD0E" points="458,363 515,377 487,494 430,481 "/>
-  <polygon id="m5lote3" fill="#35AD0E" points="454,363 397,349 369,466 427,480 "/>
-  <polygon id="m5lote3A" fill="#35AD0E" points="336,336 394,349 367,465 310,453 "/>
-  <polygon id="m5lote4" fill="#35AD0E" points="334,335 276,321 249,438 306,451 "/>
-  <polygon id="m5lote4A" fill="#35AD0E" points="273,321 216,307 189,424 246,437 "/>
-  <polygon id="m5lote5" fill="#35AD0E" points="213,306 156,293 128,410 186,424 "/>
-  <polygon id="m5lote5A" fill="#35AD0E" points="153,293 95,279 68,396 125,410 "/>
+  <polygon id="m5lote2A" fill="#35AD0E" points="518,377 575,390 548,508 490,494 "/>
+  <polygon id="m5lote2" fill="#35AD0E" points="458,363 515,377 487,494 430,481 "/>
+  <polygon id="m5lote3A" fill="#35AD0E" points="454,363 397,349 369,466 427,480 "/>
+  <polygon id="m5lote3" fill="#35AD0E" points="336,336 394,349 367,465 310,453 "/>
+  <polygon id="m5lote4A" fill="#35AD0E" points="334,335 276,321 249,438 306,451 "/>
+  <polygon id="m5lote4" fill="#35AD0E" points="273,321 216,307 189,424 246,437 "/>
+  <polygon id="m5lote5A" fill="#35AD0E" points="213,306 156,293 128,410 186,424 "/>
+  <polygon id="m5lote5" fill="#35AD0E" points="153,293 95,279 68,396 125,410 "/>
   <polygon id="m5lote6" fill="#35AD0E" points="203,75 146,62 119,179 176,192 "/>
   <polygon id="m5lote6A" fill="#35AD0E" points="263,89 206,76 179,193 237,206 "/>
   <path id="m5lote7" fill="#35AD0E" d="M324 103l-58 -13 -27 117 57 13c0,0 27,-117 28,-117z"/>
@@ -142,9 +142,9 @@ viewBox="0 0 800 600"
   <polygon id="m5lote8A" fill="#35AD0E" points="504,145 447,131 420,249 477,263 "/>
   <polygon id="m5lote9" fill="#35AD0E" points="565,159 507,146 480,263 537,277 "/>
   <polygon id="m5lote9A" fill="#35AD0E" points="625,173 568,160 540,278 597,291 "/>
-  <polygon id="m5lote10" fill="#35AD0E" points="685,188 628,174 600,292 657,305 "/>
-  <polygon id="m5lote10A" fill="#35AD0E" points="688,188 745,201 718,319 661,306 "/>
-  <polygon id="m5lote1" fill="#35AD0E" points="638,405 696,419 668,536 611,522 "/>
-  <polygon id="m5lote1A" fill="#35AD0E" points="636,405 577,392 551,508 608,522 "/>
+  <polygon id="m5lote10A" fill="#35AD0E" points="685,188 628,174 600,292 657,305 "/>
+  <polygon id="m5lote10" fill="#35AD0E" points="688,188 745,201 718,319 661,306 "/>
+  <polygon id="m5lote1A" fill="#35AD0E" points="638,405 696,419 668,536 611,522 "/>
+  <polygon id="m5lote1" fill="#35AD0E" points="636,405 577,392 551,508 608,522 "/>
  </g>
 </svg>

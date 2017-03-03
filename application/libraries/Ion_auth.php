@@ -159,20 +159,21 @@ class Ion_auth
 					$config['protocol'] = 'sendmail';
 					$config['mailtype'] = 'html';
 					$config['mailpath'] = '/usr/sbin/sendmail';
-					$config['charset'] = 'iso-8859-1';
+					$config['charset'] = 'utf-8';
 					$config['wordwrap'] = TRUE;
 					$this->email->initialize($config);
 					$this->email->set_newline("\r\n");
 					$message = $this->load->view($this->config->item('email_templates', 'ion_auth').$this->config->item('email_forgot_password', 'ion_auth'), $data, true);
 					$this->email->clear();
-					/*$mime_boundary = '_x'.sha1(time()).'x';
-					$this->email->set_header('From', "<huertosl@huertoslaceiba.com>");
-					$this->email->set_header('MIME-Version', '1.0');
-					$this->email->set_header('Content-type', 'multipart/alternative; boundary="PHP-alt'.$mime_boundary.'"');
-					$this->email->set_header('X-Priority', '3');
-					$this->email->set_header('X-MSMail-Priority', 'normal');
-					$this->email->set_header('X-Mailer', 'php');*/
+					$mime_boundary = '_x'.sha1(time()).'x';
 					
+					$this->email->set_header("MIME-Version", "1.0");
+					
+					$this->email->set_header("X-Priority", "3");
+					$this->email->set_header("X-MSMail-Priority", "normal");
+					$this->email->set_header("X-Mailer", "PHP/" . phpversion());
+				
+
 					
 					$this->email->from($this->config->item('admin_email', 'ion_auth'), $this->config->item('site_title', 'ion_auth'));
 					$this->email->to($user->email);

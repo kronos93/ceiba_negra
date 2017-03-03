@@ -121,6 +121,10 @@ $config['identity_cookie_name'] = 'identity';
 $config['use_ci_email'] = TRUE; // Send Email using the builtin CI email class, if false it will return the code and the identity
 $config['email_config'] = array(
 	'mailtype' => 'html',
+	'protocol' => 'smtp',
+    'smtp_host' => 'mail.huertoslaceiba.com',
+    'smtp_user' => 'huertosl@huertoslaceiba.com', // actual values different
+    'charset' => 'utf-8',
 );
 
 /*
