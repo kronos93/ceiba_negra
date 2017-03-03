@@ -206,6 +206,7 @@
                         </div>
                     </div>
                     <input type="hidden" id="id_lider" name="id_lider" value=""/>
+                    <input type="hidden" id="id_cliente" name="id_cliente" value=""/>
                 </form>
             </div>
         </div>

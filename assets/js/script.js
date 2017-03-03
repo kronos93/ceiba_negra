@@ -384,19 +384,60 @@ $(document).ready(function() {
                         "ciudad": "Default",
                         "cp": "77777s",
                         "lugar_nacimiento": "Default",
-                        "fecha_nacimiento": "01-01-1999"
+                        "fecha_nacimiento": "01-01-1999",
+
                     }
+                    var extra = {
+                        "ciudad_expedicion": "Cancún",
+                        "testigo_1": "XXXX XXXX XXXX",
+                        "testigo_2": "XXXX XXXX XXXX",
+                    };
                     for (var data in suggestion) {
                         if (suggestion[data] == "" || suggestion[data] == null) {
                             suggestion[data] = base[data];
                         }
                         $('#' + data).val(suggestion[data]);
                     }
-
+                    for (var data in extra) {
+                        $('#' + data).val(extra[data]);
+                    }
+                    $('#id_cliente').val(suggestion.id_cliente);
                 },
                 onSearchError: function(query, jqXHR, textStatus, errorThrown) {
-                    console.log("Ha ocurrido un error.");
-                }
+                    console.log("Ha ocurrido un error xhr.");
+                },
+                onInvalidateSelection: function() {
+                    console.log("Ha ocurrido un error en la selección.");
+                    var base = {
+                        "first_name": "Default",
+                        "last_name": "Default Default",
+                        "email": "default@huertoslaceiba.com",
+                        "phone": "99821234567",
+                        "calle": "Default",
+                        "no_ext": "100",
+                        "no_int": "100",
+                        "colonia": "Default",
+                        "municipio": "Default",
+                        "estado": "Default",
+                        "ciudad": "Default",
+                        "cp": "77777s",
+                        "lugar_nacimiento": "Default",
+                        "fecha_nacimiento": "01-01-1999",
+
+                    }
+                    var extra = {
+                        "ciudad_expedicion": "Cancún",
+                        "testigo_1": "XXXX XXXX XXXX",
+                        "testigo_2": "XXXX XXXX XXXX",
+                    };
+                    for (var data in base) {
+                        $('#' + data).val("");
+                    }
+                    for (var data in extra) {
+                        $('#' + data).val("");
+                    }
+                    $('#id_cliente').val("");
+                },
             });
             $('#lideres_autocomplete').autocomplete({
                 serviceUrl: base_url + 'ajax/autocomplete_lideres',

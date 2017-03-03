@@ -31,4 +31,8 @@ class Venta_model extends CI_Model {
         $id_venta = $this->db->insert_id();
         return $id_venta;
     }
+    public function group_by($group){
+        $this->db->group_by($group);
+        return $this;
+    }
 }

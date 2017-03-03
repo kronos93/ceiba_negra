@@ -32,13 +32,20 @@ class Venta extends CI_Controller
         $data['title'] = "Historial de ventas";
         $data['body'] = "historial_ventas";
 
-        $data['ventas'] = $this->Venta_model->select("ventas.id_venta, ventas.version, ventas.precio, ventas.porcentaje_comision,
+        $data['ventas'] = $this->Venta_model->select("ventas.id_venta, 
+                                                      ventas.version, 
+                                                      ventas.precio, 
+                                                      ventas.porcentaje_comision,
+                                                      SUM(historial.pago) AS pagado, 
+                                                      SUM(historial.comision) AS comisionado,
                                                       CONCAT(cliente.first_name,' ',cliente.last_name) AS nombre_cliente,
                                                       CONCAT(lider.first_name,' ',lider.last_name) AS nombre_lider,
                                                       CONCAT(user.first_name,' ',user.last_name) AS nombre_user")
+                                            ->join('historial', 'ventas.id_venta = historial.id_venta', 'left')          
                                             ->join('users as cliente', 'ventas.id_cliente = cliente.id', 'left')
                                             ->join('users as lider', 'ventas.id_lider = lider.id', 'left')
                                             ->join('users as user', 'ventas.id_usuario = user.id', 'left')
+                                            ->group_by('id_venta')
                                             ->get();
 
         $this->load->view('templates/template', $data);
@@ -319,7 +326,96 @@ class Venta extends CI_Controller
             'company' => 'Huertos la ceiba',
         ];
         $group = array('4');
-        if ($idNewUser = $this->ion_auth->register($identity, $password, $email, $additional_data, $group)) {
+        if($this->input->post('id_cliente')){
+            $user_id = $this->input->post('id_cliente');
+            $this->ion_auth->update($user_id, $additional_data);            
+            
+            $venta = [
+                'id_usuario' => $this->ion_auth->get_user_id(),
+                'id_cliente' => $user_id,
+                'id_lider' =>  $this->input->post('id_lider'),
+                'contrato_html' => html_entity_decode($this->input->post('contrato_html')),
+                'version' => 2, //Para nuevos contratos
+                'estado' => 0,//En proceso de Pago
+                'testigo_1' =>  ucwords($this->input->post('testigo_1')),
+                'testigo_2' =>  ucwords($this->input->post('testigo_1')),
+
+                'precio' => $this->input->post('precio'),
+                'enganche' => $this->input->post('enganche'),
+                'abono' => $this->input->post('abono'),         
+
+                'porcentaje_penalizacion' =>  $this->input->post('porcentaje_penalizacion'),
+                'retrasos_permitidos' =>  $this->input->post('maximo_retrasos_permitidos'),
+                
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ];
+            if ($this->input->post('tipo_historial') === '1-16') {
+                $venta['version'] = 1;
+            } else if ($this->input->post('tipo_historial') === '15-1') { 
+                $venta['version'] = 1;
+            } else if ($this->input->post('tipo_historial') === 'fin-mes') { 
+                $venta['version'] = 1;
+            } else if ($this->input->post('tipo_historial') === 'quincena-mes') { 
+                $venta['version'] = 1;
+            }
+             if ($this->input->post('confirm') == 'yes') {
+                $venta['porcentaje_comision'] =  $this->input->post('porcentaje_comision');
+                $venta['comision'] =  ($this->input->post('porcentaje_comision')/100)*$this->input->post('precio');
+            } else {
+                $venta['porcentaje_comision'] =  0;
+                $venta['comision'] =  0;
+            }
+            $id_venta = $this->Venta_model->insert($venta);
+            if ($id_venta) {
+                $db_historial = [];
+                $precio = $this->input->post('precio');
+                $enganche = $this->input->post('enganche');
+                $abono = $this->input->post('abono');
+                $fecha_init = $this->input->post('fecha_init');
+                $tipo_historial = $this->input->post('tipo_historial');
+                if($this->input->post('n_pago')){            
+                    $historial = new Historial($precio, $enganche, $abono, $fecha_init, $tipo_historial,$this->input->post('n_pago')-1);
+                }else{
+                    $historial = new Historial($precio, $enganche, $abono, $fecha_init, $tipo_historial);
+                }
+                $now = Carbon::now();
+                foreach ($historial->getHistorial() as $key => $pago) {
+                    $db_pago = new stdClass();
+                    $db_pago->fecha = $pago->getFecha()->format('Y-m-d');
+                    $db_pago->concepto = $pago->getConcepto();
+                    $db_pago->abono = $pago->getAbono();
+                    $db_pago->id_venta = $id_venta;
+                    $db_pago->id_lider =  $this->input->post('id_lider');
+                    $db_pago->created_at = $now->toDateTimeString();
+                    $db_pago->updated_at = $now->toDateTimeString();
+                    if ($key == 0) {
+                        $db_pago->id_ingreso = $this->input->post('id_ingreso');
+                        $db_pago->fecha_pago = $pago->getFecha()->format('Y-m-d');    
+                        $db_pago->pago = $this->input->post('enganche');                      
+                        $db_pago->estado = 1;                         
+                    } else {
+                        $db_pago->id_ingreso = 0;
+                        $db_pago->fecha_pago = $pago->getFecha()->format('Y-m-d');
+                        $db_pago->pago = 0; 
+                        $db_pago->estado = 0; 
+                    }
+                    array_push($db_historial, $db_pago);
+                }
+                $huertos_venta = [];
+                foreach ($this->cart->contents() as $items) {
+                    $huerto_venta = new stdClass();
+                    $huerto_venta->id_venta  = $id_venta;
+                    $huerto_venta->id_huerto = $items['id_huerto'];
+                    array_push($huertos_venta, $huerto_venta);
+                }
+                
+                $this->HuertosVentas_model->insert_batch($huertos_venta);                    
+                $this->Historial_model->insert_batch($db_historial);
+                $this->cart->destroy(); 
+            }
+        }
+        else if ($idNewUser = $this->ion_auth->register($identity, $password, $email, $additional_data, $group)) {
             $venta = [
                 'id_usuario' => $this->ion_auth->get_user_id(),
                 'id_cliente' => $idNewUser,

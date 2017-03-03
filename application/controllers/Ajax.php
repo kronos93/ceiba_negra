@@ -700,7 +700,8 @@ class Ajax extends CI_Controller
         if ($this->input->get('query')) {
             $like = $this->input->get('query');
             $full_name = "CONCAT(users.first_name,' ',users.last_name)";
-            $select = ' users.first_name, 
+            $select = ' users.id AS id_cliente,
+                        users.first_name, 
                         users.last_name, 
                         users.email, 
                         users.phone, 
