@@ -602,22 +602,19 @@ $(document).ready(function() {
             {
                 "data": "id_manzana",
                 "type": "num",
-            },
-            {
+            }, {
                 "data": "manzana",
                 "render": function(data, type, full, meta) {
                     return "<span class='mz'>" + data + "</span>";
                 },
                 "type": "html-num",
             },
-            { "data": "calle" },
-            {
+            { "data": "calle" }, {
                 "data": "superficie",
                 "render": function(data, type, full, meta) {
                     return '<span class="superficie">' + data + '</span>';
                 }
-            },
-            {
+            }, {
                 "data": "disponibilidad",
                 //Supa kawaiesko funcion para el render
                 "render": function(data, type, full, meta) {
@@ -645,8 +642,7 @@ $(document).ready(function() {
                 "targets": -1,
                 "data": null,
                 "defaultContent": '<button data-toggle="modal" data-target="#manzanaModal" data-title="Editar manzana" data-btn-type="edit" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>',
-            },
-            {
+            }, {
                 //Quitar ordenamiento para estas columnas
                 "sortable": false,
                 "targets": [-1, -2, -3, -4, -5, -6, -7, -8, -9, -12]
@@ -710,52 +706,44 @@ $(document).ready(function() {
             {
                 "data": "id_huerto",
                 "type": "num",
-            },
-            {
+            }, {
                 "data": "manzana",
                 "render": function(data, type, full, meta) {
                     return '<span class="mz">' + data + '</span>';
                 },
                 "type": "html-num",
-            },
-            {
+            }, {
                 "data": "huerto",
                 "render": function(data, type, full, meta) {
                     return '<span class="ht">' + data + '</span>';
                 },
                 "type": "html-num",
-            },
-            {
+            }, {
                 "data": "superficie",
                 "render": function(data, type, full, meta) {
                     return '<span class="superficie">' + data + '</span>';
                 }
-            },
-            {
+            }, {
                 "data": "precio_x_m2",
                 "render": function(data, type, full, meta) {
                     return '<span class="currency">' + data + '</span>';
                 }
-            },
-            {
+            }, {
                 "data": "precio",
                 "render": function(data, type, full, meta) {
                     return '<span class="currency">' + data + '</span>';
                 }
-            },
-            {
+            }, {
                 "data": "enganche",
                 "render": function(data, type, full, meta) {
                     return '<span class="currency">' + data + '</span>';
                 }
-            },
-            {
+            }, {
                 "data": "abono",
                 "render": function(data, type, full, meta) {
                     return '<span class="currency">' + data + '</span>';
                 }
-            },
-            {
+            }, {
                 "data": "vendido", //Supa kawaiesko funcion para el render
                 "render": function(data, type, full, meta) {
                     if (!parseInt(data)) {
@@ -782,8 +770,7 @@ $(document).ready(function() {
                 "targets": -1,
                 "data": null,
                 "defaultContent": '<button data-toggle="modal" data-title="Editar huerto" data-btn-type="edit" data-target="#huertoModal" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>',
-            },
-            {
+            }, {
                 //Quitar ordenamiento para estas columnas
                 "sortable": false,
                 "targets": [-1, -2, -3, -4, -5, -6, -7, -8, -9]
@@ -830,8 +817,7 @@ $(document).ready(function() {
         "ajax": base_url + 'ajax/get_opciones_de_ingreso',
         "columns": [ //Atributos para la tabla
             { "data": "id_opcion_ingreso" },
-            { "data": "nombre" },
-            {
+            { "data": "nombre" }, {
                 "data": "cuenta",
                 "render": function(data, type, full, meta) {
                     if (parseInt(data) === 0) {
@@ -840,8 +826,7 @@ $(document).ready(function() {
                         return data;
                     }
                 }
-            },
-            {
+            }, {
                 "data": "tarjeta",
                 "render": function(data, type, full, meta) {
                     if (parseInt(data) === 0) {
@@ -850,8 +835,7 @@ $(document).ready(function() {
                         return data;
                     }
                 }
-            },
-            {
+            }, {
                 "data": "",
                 "render": function(data, type, full, meta) {
                     var btnEditar = '<button data-toggle="modal" data-title="Editar opción de ingreso" data-btn-type="edit" data-target="#opcionDeIngresoModal" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>';
@@ -937,8 +921,7 @@ $(document).ready(function() {
             { "data": "abono" },
             { "data": "fecha" },
             { "data": "estado" },
-            { "data": "detalles" },
-            {
+            { "data": "detalles" }, {
                 "data": "",
                 "render": function(data, type, full, meta) {
                     console.log(full.comision);
@@ -957,8 +940,7 @@ $(document).ready(function() {
                 "targets": -1,
                 "data": null,
                 "defaultContent": "",
-            },
-            {
+            }, {
                 //Añadir boton dinamicamente, para esta columna*
                 "targets": 0,
                 "type": "num",
@@ -1098,10 +1080,10 @@ $(document).ready(function() {
         // hovertip: false, //Activa o desactiba tooltip en hover
         mapfill: true,
         fillcolor: '',
-        fullscreen: false, // Enable fullscreen
+        fullscreen: true, // Enable fullscreen
         developer: true,
         zoom: false,
-        maxscale: 0.65, // Setting maxscale to 3
+        maxscale: 2, // Setting maxscale to 3
         smartip: false,
         deeplinking: false, //inhabilita nombres en uri,
 
@@ -1110,7 +1092,7 @@ $(document).ready(function() {
     mapplic.on('locationopened', function(e, self) {
         format_numeric('init');
     });
-    /*//Herramienta para capturar las coordenadas del mapa
+    //Herramienta para capturar las coordenadas del mapa
     mapplic.on('locationopened', function(e, location) {
         var manzana = (location.category.replace("mz", ""));
         var lote = (location.title.replace("Huerto número ", ""));
@@ -1127,6 +1109,6 @@ $(document).ready(function() {
             asyn: true,
             data: data
         });
-    });*/
+    });
 
 });

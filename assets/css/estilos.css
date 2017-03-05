@@ -7590,6 +7590,7 @@ input[type="search"]:focus {
   position: absolute;
   bottom: -23px;
   left: 0px;
+  white-space: nowrap;
 }
 .wizard > .actions {
   position: relative;
