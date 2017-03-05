@@ -648,6 +648,62 @@ class Ajax extends CI_Controller
            }
         }
     }
+    public function remover_pago () {
+        header("Content-type: application/json; charset=utf-8");
+        if($this->input->post('id_historial')){
+            $row = $this->Historial_model->where(['id_historial' => $this->input->post('id_historial')])
+                                         ->get();
+            $set_data = [
+                'fecha' => $row[0]->fecha,
+                'id_ingreso' => 0,
+                'pago' => 0,
+                'comision' => 0,
+                'penalizacion' => 0,
+                'estado' => 0,
+            ];
+            $n_updated_pago = $this->Historial_model->where(['id_historial' => $this->input->post('id_historial')])
+                                  ->update($set_data)
+                                  ->affected_rows();
+            if($n_updated_pago == 1){
+                $updated_pago = $this->Historial_model->select('historial.id_historial,
+                                                                CONCAT(cliente.first_name," ",cliente.last_name) AS nombre_cliente,
+														        CONCAT(lider.first_name," ",lider.last_name) AS nombre_lider,
+                                                                IF( opciones_ingreso.id_opcion_ingreso != 1, 
+                                                                    CONCAT(opciones_ingreso.nombre, " - " ,opciones_ingreso.cuenta),
+                                                                    opciones_ingreso.nombre) as nombre,
+                                                                historial.concepto,
+                                                                historial.abono,
+                                                                historial.fecha,
+                                                                historial.estado,
+                                                                historial.fecha_pago, 
+                                                                IF( historial.estado = 0 , DATEDIFF( CURRENT_DATE() , historial.fecha ) , DATEDIFF( historial.fecha_pago ,historial.fecha ) ) as daysAccumulated,
+                                                                historial.pago,
+                                                                historial.comision,
+                                                                historial.penalizacion,
+                                                                (historial.pago + historial.penalizacion - historial.comision) as total')
+                                                      ->join('ventas','historial.id_venta = ventas.id_venta','left')
+                                                      ->join('users AS cliente','ventas.id_cliente = cliente.id','left')
+                                                      ->join('users AS lider','historial.id_lider = lider.id','left')
+                                                      ->join('opciones_ingreso','historial.id_ingreso = opciones_ingreso.id_opcion_ingreso','left')
+                                                      ->where(['id_historial' => $this->input->post('id_historial')])
+                                                      ->get();
+                $detalles = "";
+                foreach($updated_pago as $pago){
+                   if($pago->daysAccumulated > 0) { 
+                        $detalles.= 'Tiene un retraso en pago de: '.$pago->daysAccumulated . ' días.';                        
+                    } else if($pago->daysAccumulated == 0){
+                        $detalles.= 'Hoy es día de pago.';                        
+                    }else{
+                        $detalles.= 'Aun no es fecha de pago.';                                    
+                    }
+                }
+                $updated_pago[0]->estado = ($updated_pago[0]->estado == 0) ? 'Pendiente' : 'Pagado';
+                $updated_pago[0]->detalles = $detalles;
+                $updated_pago[0]->abono = '$' . number_format($updated_pago[0]->abono,2);
+                echo json_encode($updated_pago[0]);
+           }
+        }
+    }
     public function pagar_comision(){
         header("Content-type: application/json; charset=utf-8");
         if($this->input->post('id_historial')){
@@ -726,7 +782,7 @@ class Ajax extends CI_Controller
                         users.cp,
                         users.lugar_nacimiento,
                         DATE_FORMAT(users.fecha_nacimiento,"%d-%m-%Y") as fecha_nacimiento';
-            $clientes = $this->ion_auth->select("{$select},{$full_name} AS data, {$full_name} AS value")->where(["{$full_name} LIKE" => "%{$like}%"])->users('cliente')->result();
+            $clientes = $this->ion_auth->select("{$select},{$full_name} AS data, {$full_name} AS value")->where(["{$full_name} LIKE" => "%{$like}%",'active' => 1])->users('cliente')->result();
             $response = new stdClass();
             $response->suggestions = $clientes;
             echo json_encode($response);
@@ -738,7 +794,7 @@ class Ajax extends CI_Controller
         if ($this->input->get('query')) {
             $like = $this->input->get('query');
             $full_name = "CONCAT(users.first_name,' ',users.last_name)";
-            $lideres = $this->ion_auth->select("users.id, {$full_name} AS data, {$full_name} AS value")->where(["{$full_name} LIKE" => "%{$like}%"])->users('lider')->result();
+            $lideres = $this->ion_auth->select("users.id, {$full_name} AS data, {$full_name} AS value")->where(["{$full_name} LIKE" => "%{$like}%",'active' => 1])->users('lider')->result();
             $response = new stdClass();
             $response->query = $this->input->get('query');
             $response->suggestions = $lideres;

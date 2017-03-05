@@ -36,6 +36,7 @@ class Venta extends CI_Controller
                                                       ventas.version, 
                                                       ventas.precio, 
                                                       ventas.porcentaje_comision,
+                                                      GROUP_CONCAT( DISTINCT CONCAT('Mz. ',manzanas.manzana, ' Ht. ', huertos.huerto)) as description,
                                                       SUM(historial.pago) AS pagado, 
                                                       SUM(historial.comision) AS comisionado,
                                                       CONCAT(cliente.first_name,' ',cliente.last_name) AS nombre_cliente,
@@ -45,6 +46,9 @@ class Venta extends CI_Controller
                                             ->join('users as cliente', 'ventas.id_cliente = cliente.id', 'left')
                                             ->join('users as lider', 'ventas.id_lider = lider.id', 'left')
                                             ->join('users as user', 'ventas.id_usuario = user.id', 'left')
+                                            ->join('huertos_ventas', 'ventas.id_venta = huertos_ventas.id_venta', 'left')
+                                            ->join('huertos', 'huertos_ventas.id_huerto = huertos.id_huerto', 'left')
+                                            ->join('manzanas', 'huertos.id_manzana = manzanas.id_manzana', 'left')
                                             ->group_by('id_venta')
                                             ->get();
 

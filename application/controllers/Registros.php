@@ -60,4 +60,9 @@ class Registros extends CI_Controller {
 		$data['ingresos'] = $this->Opciones_ingreso_model->get();
 		$this->load->view('templates/template',$data);
 	}
+	public function comisiones () {
+		$data['title'] = "Comisiones";
+		$data['body'] = "comisiones";				
+		$this->load->view('templates/template',$data);
+	}
 }

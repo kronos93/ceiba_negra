@@ -911,7 +911,22 @@ $(document).ready(function() {
     }).on('hidden.bs.modal', function() {
         $(this).removeData('bs.modal');
     });
-    var historial_ventas_table = $('#historial-ventas-table').DataTable();
+    var historial_ventas_table = $('#historial-ventas-table').DataTable({
+        columnDefs: [ //
+            {
+                //Quitar ordenamiento para estas columnas
+                "sortable": false,
+                "targets": [1, 2, 3, 4],
+            }, {
+                //Quitar busqueda para esta columna
+                "targets": [],
+                "searchable": false,
+            }
+        ],
+        "order": [
+            [0, "asc"]
+        ],
+    });
     var pagos_table = $('#pagos-table').DataTable({
         "columns": [ //Atributos para la tabla
             { "data": "id_historial" },
@@ -924,9 +939,16 @@ $(document).ready(function() {
             { "data": "detalles" }, {
                 "data": "",
                 "render": function(data, type, full, meta) {
-                    console.log(full.comision);
-                    if (full.comision != undefined && !parseFloat(full.comision)) {
-                        return '<button class="btn btn-warning" data-toggle="modal" data-target="#pagoComisionModal">Registrar comisión</button>';
+
+                    if (full.pago != undefined && !parseFloat(full.pago)) {
+                        return '<button class="btn btn-success" data-toggle="modal" data-target="#pagoModal">Registrar pago</button> ';
+                    } else if (full.pago != undefined && parseFloat(full.pago) > 0) {
+                        if (full.comision != undefined && !parseFloat(full.comision)) {
+                            return '<button class="btn btn-danger removerPago">Remover pago</button> <button class="btn btn-warning" data-toggle="modal" data-target="#pagoComisionModal">Registrar comisión</button>';
+                        } else {
+                            return '<button class="btn btn-danger removerPago">Remover pago</button> ';
+                        }
+
                     } else {
                         return data;
                     }
@@ -959,7 +981,6 @@ $(document).ready(function() {
     $('#pagoModal').on('shown.bs.modal', function(e) {
         var button = $(e.relatedTarget); // Boton que despliega el modal (Existe en el datatable
         pagoDtRow = $(button).parents('tr');
-        console.log(pagoDtRow);
         var parseDtRow = pagos_table.row(pagoDtRow).data();
         id_historial = parseDtRow.id_historial;
         $.ajax({
@@ -1044,7 +1065,6 @@ $(document).ready(function() {
 
             });
     });
-
     $('#porcentaje_comision2').on('change keyup', function() {
         var porcentaje_comision = $(this).val();
         var monto = $('#pago2').autoNumeric('get');
@@ -1068,6 +1088,37 @@ $(document).ready(function() {
             })
             .fail(function(response) {
 
+            });
+    });
+    $('#pagos-table').on('click', '.removerPago', function() {
+        pagoDtRow = $(this).parents('tr');
+        var parseDtRow = pagos_table.row(pagoDtRow).data();
+        var data = {
+            id_historial: parseDtRow.id_historial
+        };
+        swal({
+                title: "Remover pago",
+                text: "Esta a punto de remover un pago, ¿Desea continuar?",
+                type: "info",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true,
+                cancelButtonText: 'CANCELAR',
+            },
+            function() {
+                $.ajax({
+                        url: base_url + "ajax/remover_pago/",
+                        data: data,
+                        type: "post",
+                    })
+                    .done(function(response) {
+                        var newData = pagos_table.row(pagoDtRow).data(response).draw(false).node(); //
+                        $(newData).animate({ backgroundColor: 'yellow' }); //Animación para MAX
+                        swal("¡Pago removido!");
+                    })
+                    .fail(function(response) {
+
+                    });
             });
     });
     //MAPA
@@ -1095,7 +1146,7 @@ $(document).ready(function() {
     //Herramienta para capturar las coordenadas del mapa
     mapplic.on('locationopened', function(e, location) {
         var manzana = (location.category.replace("mz", ""));
-        var lote = (location.title.replace("Huerto número ", ""));
+        var lote = (location.title.replace("Huerto ", ""));
         var data = {
             manzana: manzana,
             lote: lote,
