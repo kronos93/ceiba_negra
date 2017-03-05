@@ -726,7 +726,7 @@ class Ajax extends CI_Controller
                         users.cp,
                         users.lugar_nacimiento,
                         DATE_FORMAT(users.fecha_nacimiento,"%d-%m-%Y") as fecha_nacimiento';
-            $clientes = $this->ion_auth->select("{$select},{$full_name} AS data, {$full_name} AS value")->where(["{$full_name} LIKE" => "%{$like}%"])->users('cliente')->result();
+            $clientes = $this->ion_auth->select("{$select},{$full_name} AS data, {$full_name} AS value")->where(["{$full_name} LIKE" => "%{$like}%",'active' => 1])->users('cliente')->result();
             $response = new stdClass();
             $response->suggestions = $clientes;
             echo json_encode($response);
@@ -738,7 +738,7 @@ class Ajax extends CI_Controller
         if ($this->input->get('query')) {
             $like = $this->input->get('query');
             $full_name = "CONCAT(users.first_name,' ',users.last_name)";
-            $lideres = $this->ion_auth->select("users.id, {$full_name} AS data, {$full_name} AS value")->where(["{$full_name} LIKE" => "%{$like}%"])->users('lider')->result();
+            $lideres = $this->ion_auth->select("users.id, {$full_name} AS data, {$full_name} AS value")->where(["{$full_name} LIKE" => "%{$like}%",'active' => 1])->users('lider')->result();
             $response = new stdClass();
             $response->query = $this->input->get('query');
             $response->suggestions = $lideres;

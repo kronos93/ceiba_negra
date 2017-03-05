@@ -6,7 +6,8 @@
                     <thead>
                         <tr>
                             
-                            <th class="all">Cliente</th>          
+                            <th class="all">Cliente</th> 
+                            <th>Descripción</th>         
                             <th>Líder</th>     
                             <th>Precio</th>  
                             <th>Comisión</th> 
@@ -21,6 +22,7 @@
                         <tr>
                             
                             <td><?= $venta->nombre_cliente; ?></td>
+                            <td><?= $venta->description; ?></td>
                             <td><?= $venta->nombre_lider; ?></td>
                             <td>$<?= number_format($venta->precio,2); ?></td>
                             <td>$<?= number_format($venta->precio * ($venta->porcentaje_comision/100),2); ?></td>

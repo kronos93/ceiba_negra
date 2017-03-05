@@ -927,7 +927,22 @@ $(document).ready(function() {
     }).on('hidden.bs.modal', function() {
         $(this).removeData('bs.modal');
     });
-    var historial_ventas_table = $('#historial-ventas-table').DataTable();
+    var historial_ventas_table = $('#historial-ventas-table').DataTable({
+        columnDefs: [ //
+            {
+                //Quitar ordenamiento para estas columnas
+                "sortable": false,
+                "targets": [1, 2, 3, 4],
+            }, {
+                //Quitar busqueda para esta columna
+                "targets": [],
+                "searchable": false,
+            }
+        ],
+        "order": [
+            [0, "asc"]
+        ],
+    });
     var pagos_table = $('#pagos-table').DataTable({
         "columns": [ //Atributos para la tabla
             { "data": "id_historial" },
