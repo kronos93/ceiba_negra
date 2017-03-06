@@ -961,9 +961,17 @@ $(document).ready(function() {
                         return '<button class="btn btn-success" data-toggle="modal" data-target="#pagoModal">Registrar pago</button> ';
                     } else if (full.pago != undefined && parseFloat(full.pago) > 0) {
                         if (full.comision != undefined && !parseFloat(full.comision)) {
-                            return '<button class="btn btn-danger removerPago">Remover pago</button> <button class="btn btn-warning" data-toggle="modal" data-target="#pagoComisionModal">Registrar comisión</button>';
+                            if (full.is_admin) {
+                                return '<button class="btn btn-danger removerPago">Remover pago</button> <button class="btn btn-warning" data-toggle="modal" data-target="#pagoComisionModal">Registrar comisión</button>';
+                            } else {
+                                return '<button class="btn btn-warning" data-toggle="modal" data-target="#pagoComisionModal">Registrar comisión</button>';
+                            }
                         } else {
-                            return '<button class="btn btn-danger removerPago">Remover pago</button> ';
+                            if (full.is_admin) {
+                                return '<button class="btn btn-danger removerPago">Remover pago</button> ';
+                            } else {
+                                return '';
+                            }
                         }
 
                     } else {
@@ -1161,7 +1169,7 @@ $(document).ready(function() {
     mapplic.on('locationopened', function(e, self) {
         format_numeric('init');
     });
-    //Herramienta para capturar las coordenadas del mapa
+    /* //Herramienta para capturar las coordenadas del mapa
     mapplic.on('locationopened', function(e, location) {
         var manzana = (location.category.replace("mz", ""));
         var lote = (location.title.replace("Huerto ", ""));
@@ -1178,6 +1186,6 @@ $(document).ready(function() {
             asyn: true,
             data: data
         });
-    });
+    });*/
 
 });

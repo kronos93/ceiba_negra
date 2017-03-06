@@ -644,6 +644,7 @@ class Ajax extends CI_Controller
                 $updated_pago[0]->estado = ($updated_pago[0]->estado == 0) ? 'Pendiente' : 'Pagado';
                 $updated_pago[0]->detalles = $detalles;
                 $updated_pago[0]->abono = '$' . number_format($updated_pago[0]->abono,2);
+                $updated_pago[0]->is_admin = $this->ion_auth->in_group('administrador');
                 echo json_encode($updated_pago[0]);
            }
         }
