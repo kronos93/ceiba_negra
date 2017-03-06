@@ -30,17 +30,17 @@
                             <td><?= $pago->fecha ?></td>
                             <td><?= ($pago->estado == 0) ? 'Pendiente' : 'Pagado'?></td>
                             <td><?php 
-                                        $btnPago = false;
+                                       
                                         if ($pago->estado == 0) { 
                                             if($pago->daysAccumulated > 0) { 
                                                 echo 'Tiene un retraso en pago de: '.$pago->daysAccumulated . ' días.';
-                                                $btnPago = true;
+                                               
                                             } else if($pago->daysAccumulated == 0){
                                                 echo 'Hoy es día de pago.';
-                                                $btnPago = true;
+                                                
                                             }else{
                                                 echo 'Aun no es fecha de pago.';
-                                                $btnPago = true;                
+                                                            
                                             }
                                         } else if ($pago->estado == 1){
                                             if($pago->daysAccumulated > 0) { 
@@ -60,8 +60,16 @@
                                 ?>
                             </td>
                             <td>
-                                <?= ($btnPago) ? '<button class="btn btn-success" data-toggle="modal" data-target="#pagoModal">Registrar pago</button>' : '' ?>
-                                <?= ($pago->estado == 1 && $pago->comision == 0 ) ? '<button class="btn btn-warning" data-toggle="modal" data-target="#pagoComisionModal">Registrar comisión</button>' : ''?>
+                                <?php 
+                                if ($pago->estado == 0) {
+                                    echo '<button class="btn btn-success" data-toggle="modal" data-target="#pagoModal">Registrar pago</button> ' ;
+                                }else{
+                                    echo '<button class="btn btn-danger removerPago">Remover pago</button> ';
+                                    if($pago->comision == 0 ) {
+                                        echo '<button class="btn btn-warning" data-toggle="modal" data-target="#pagoComisionModal">Registrar comisión</button> ';
+                                    }                                            
+                                }
+                                ?>                                    
                             </td>
                         </tr>
                     
@@ -126,9 +134,9 @@
                     <div class="form-group col-xs-12 col-sm-6">
                         <label class="" for="lider" aria-required="true">Contemplar comisión</label>
                         <div class="radiobutton-custom">
-                            <input id="comisionTrue" type="radio" name="confirm_comision" value="true" checked="checked">
+                            <input id="comisionTrue" type="radio" name="confirm_comision" value="true">
                             <label for="comisionTrue">Sí:</label>
-                            <input id="comisionFalse" type="radio" name="confirm_comision" value="false">
+                            <input id="comisionFalse" type="radio" name="confirm_comision" value="false" checked="checked">
                             <label for="comisionFalse">No:</label>
                         </div>
                     </div>
