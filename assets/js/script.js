@@ -1144,22 +1144,22 @@ $(document).ready(function() {
         format_numeric('init');
     });
     //Herramienta para capturar las coordenadas del mapa
-    mapplic.on('locationopened', function(e, location) {
-        var manzana = (location.category.replace("mz", ""));
-        var lote = (location.title.replace("Huerto ", ""));
-        var data = {
-            manzana: manzana,
-            lote: lote,
-            x: ($(".mapplic-coordinates-x")[0].innerHTML),
-            y: $(".mapplic-coordinates-y")[0].innerHTML
-        };
-        console.log(data);
-        $.ajax({
-            url: base_url + "ajax/guardar_coordenadas/",
-            type: 'post',
-            asyn: true,
-            data: data
-        });
-    });
+    // mapplic.on('locationopened', function(e, location) {
+    //     var manzana = (location.category.replace("mz", ""));
+    //     var lote = (location.title.replace("Huerto ", ""));
+    //     var data = {
+    //         manzana: manzana,
+    //         lote: lote,
+    //         x: ($(".mapplic-coordinates-x")[0].innerHTML),
+    //         y: $(".mapplic-coordinates-y")[0].innerHTML
+    //     };
+    //     console.log(data);
+    //     $.ajax({
+    //         url: base_url + "ajax/guardar_coordenadas/",
+    //         type: 'post',
+    //         asyn: true,
+    //         data: data
+    //     });
+    // });
 
 });
