@@ -40,6 +40,14 @@ class Historial_model extends CI_Model {
         $this->db->update($this->table);      
         return $this;  
     }
+    public function order_by($order) {
+        $this->db->order_by($order);
+        return $this;
+    }
+    public function limit($limit){
+        $this->db->limit($limit);
+        return $this;
+    }
     public function affected_rows() {
         return $this->db->affected_rows();
     }

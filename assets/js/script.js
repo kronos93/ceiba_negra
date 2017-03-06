@@ -935,7 +935,7 @@ $(document).ready(function() {
             {
                 //Quitar ordenamiento para estas columnas
                 "sortable": false,
-                "targets": [1, 2, 3, 4],
+                "targets": [1, 2, 3, 4, 5],
             },
             {
                 //Quitar busqueda para esta columna
@@ -1160,6 +1160,14 @@ $(document).ready(function() {
 
                     });
             });
+    });
+    $('#init_date').mask('00-00-0000');
+    $("#init_date").datepicker({
+        dateFormat: "dd-mm-yy"
+    });
+    $('#end_date').mask('00-00-0000');
+    $("#end_date").datepicker({
+        dateFormat: "dd-mm-yy"
     });
     //MAPA
     //Desplegar mapa

@@ -5,6 +5,11 @@
 				<legend>
 					Ingresos
 				</legend>
+                <form action="<?= base_url(); ?>registros/ingresos/<?= $id ?>" method="get">
+                    <input type="text" name="init_date" id="init_date" value="<?= $init_date->format('d-m-Y'); ?>" required/>
+                    <input type="text" name="end_date" id="end_date" value="<?= isset($end_date) ? $end_date->format('d-m-Y') : '' ?>" required/>
+                    <input type="submit" value="Buscar"/>
+                </form>
                 
 				<table id="" class="table">
 					<thead>
