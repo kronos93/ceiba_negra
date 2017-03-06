@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+use Carbon\Carbon;
 class Registros extends CI_Controller {
 	function __construct() {
         parent::__construct();
@@ -56,6 +56,19 @@ class Registros extends CI_Controller {
 												->join('opciones_ingreso','historial.id_ingreso = opciones_ingreso.id_opcion_ingreso','left')
 												->where(['historial.id_venta' => $id_venta])
 												->get();
+		foreach($data['pagos'] as $key => $ingreso){
+			if($ingreso->estado == 0) {				
+				$fecha = Carbon::createFromFormat('Y-m-d',$ingreso->fecha);
+				$today = Carbon::createFromFormat('Y-m-d', Carbon::today()->format('Y-m-d'));
+				$data['pagos'][$key]->diff = $fecha->diff($today);
+				
+			}else{
+				$fecha = Carbon::createFromFormat('Y-m-d',$ingreso->fecha);
+				$fecha_pago = Carbon::createFromFormat('Y-m-d',$ingreso->fecha_pago);
+				$data['pagos'][$key]->diff = $fecha->diff($fecha_pago);
+			}
+			
+		}										
 		$data['lideres'] = $this->ion_auth->users(3)->result();							
 		$data['ingresos'] = $this->Opciones_ingreso_model->get();
 		$this->load->view('templates/template',$data);

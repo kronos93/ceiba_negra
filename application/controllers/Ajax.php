@@ -626,13 +626,26 @@ class Ajax extends CI_Controller
                                                       ->where(['id_historial' => $this->input->post('id_historial')])
                                                       ->get();
                 $detalles = "";
+                foreach($updated_pago as $key => $ingreso){
+                    if($ingreso->estado == 0) {				
+                        $fecha = Carbon::createFromFormat('Y-m-d',$ingreso->fecha);
+                        $today = Carbon::createFromFormat('Y-m-d', Carbon::today()->format('Y-m-d'));
+                        $updated_pago[$key]->diff = $fecha->diff($today);
+                        
+                    }else{
+                        $fecha = Carbon::createFromFormat('Y-m-d',$ingreso->fecha);
+                        $fecha_pago = Carbon::createFromFormat('Y-m-d',$ingreso->fecha_pago);
+                        $updated_pago[$key]->diff = $fecha->diff($fecha_pago);
+                    }
+                    
+                }	
                 foreach($updated_pago as $pago){
                    if($pago->daysAccumulated > 0) { 
-                        $detalles .= 'Realizó el pago con un retraso de: '.$pago->daysAccumulated.' días.';                                            
+                        $detalles .= 'Realizó el pago con un retraso de: ' . $pago->diff->format('%y año(s) %m mes(es) y %d día(s)');                                
                     } else if($pago->daysAccumulated == 0) {
                         $detalles .= 'Pagado en tiempo.';
                     } else if($pago->daysAccumulated < 0) {
-                        $detalles .= 'Pagado por adelantado.';
+                        $detalles .= 'Pagado por adelantado. Con: ' . $pago->diff->format('%y año(s) %m mes(es) y %d día(s)');
                     }
                     $detalles .= '<div>Pago: $' . number_format($pago->pago,2) .'</div>';
                     $detalles .= '<div>Deposito en: ' . $pago->nombre .'</div>';
@@ -689,13 +702,26 @@ class Ajax extends CI_Controller
                                                       ->where(['id_historial' => $this->input->post('id_historial')])
                                                       ->get();
                 $detalles = "";
+                foreach($updated_pago as $key => $ingreso){
+                    if($ingreso->estado == 0) {				
+                        $fecha = Carbon::createFromFormat('Y-m-d',$ingreso->fecha);
+                        $today = Carbon::createFromFormat('Y-m-d', Carbon::today()->format('Y-m-d'));
+                        $updated_pago[$key]->diff = $fecha->diff($today);
+                        
+                    }else{
+                        $fecha = Carbon::createFromFormat('Y-m-d',$ingreso->fecha);
+                        $fecha_pago = Carbon::createFromFormat('Y-m-d',$ingreso->fecha_pago);
+                        $updated_pago[$key]->diff = $fecha->diff($fecha_pago);
+                    }
+                    
+                }
                 foreach($updated_pago as $pago){
                    if($pago->daysAccumulated > 0) { 
-                        $detalles.= 'Tiene un retraso en pago de: '.$pago->daysAccumulated . ' días.';                        
+                        $detalles.= 'Tiene un retraso en pago de: ' . $pago->diff->format('%y año(s) %m mes(es) y %d día(s)');                        
                     } else if($pago->daysAccumulated == 0){
                         $detalles.= 'Hoy es día de pago.';                        
                     }else{
-                        $detalles.= 'Aun no es fecha de pago.';                                    
+                        $detalles.= 'Aun no es fecha de pago. Faltan: '. $pago->diff->format('%y año(s) %m mes(es) y %d día(s)');                                    
                     }
                 }
                 $updated_pago[0]->estado = ($updated_pago[0]->estado == 0) ? 'Pendiente' : 'Pagado';
@@ -739,13 +765,26 @@ class Ajax extends CI_Controller
                                                       ->where(['id_historial' => $this->input->post('id_historial')])
                                                       ->get();
                 $detalles = "";
+                foreach($updated_pago as $key => $ingreso){
+                    if($ingreso->estado == 0) {				
+                        $fecha = Carbon::createFromFormat('Y-m-d',$ingreso->fecha);
+                        $today = Carbon::createFromFormat('Y-m-d', Carbon::today()->format('Y-m-d'));
+                        $updated_pago[$key]->diff = $fecha->diff($today);
+                        
+                    }else{
+                        $fecha = Carbon::createFromFormat('Y-m-d',$ingreso->fecha);
+                        $fecha_pago = Carbon::createFromFormat('Y-m-d',$ingreso->fecha_pago);
+                        $updated_pago[$key]->diff = $fecha->diff($fecha_pago);
+                    }
+                    
+                }
                 foreach($updated_pago as $pago){
                    if($pago->daysAccumulated > 0) { 
-                        $detalles .= 'Realizó el pago con un retraso de: '.$pago->daysAccumulated.' días.';                                            
+                        $detalles .= 'Realizó el pago con un retraso de: ' . $pago->diff->format('%y año(s) %m mes(es) y %d día(s)');                               
                     } else if($pago->daysAccumulated == 0) {
                         $detalles .= 'Pagado en tiempo.';
                     } else if($pago->daysAccumulated < 0) {
-                        $detalles .= 'Pagado por adelantado.';
+                        $detalles .= 'Pagado por adelantado. Con: ' . $pago->diff->format('%y año(s) %m mes(es) y %d día(s)');
                     }
                     $detalles .= '<div>Pago: $' . number_format($pago->pago,2) .'</div>';
                     $detalles .= '<div>Deposito en: ' . $pago->nombre .'</div>';
@@ -757,6 +796,7 @@ class Ajax extends CI_Controller
                 $updated_pago[0]->estado = ($updated_pago[0]->estado == 0) ? 'Pendiente' : 'Pagado';
                 $updated_pago[0]->detalles = $detalles;
                 $updated_pago[0]->abono = '$' . number_format($updated_pago[0]->abono,2);
+                $updated_pago[0]->is_admin = $this->ion_auth->in_group('administrador');
                 echo json_encode($updated_pago[0]);
            }
         }

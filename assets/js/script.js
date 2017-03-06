@@ -880,7 +880,21 @@ $(document).ready(function() {
             { "data": "groups" },
             { "data": "btn_activar_desactivar" },
             { "data": "btn_editar" },
-        ]
+        ],
+        columnDefs: [ //
+            {
+                //Quitar ordenamiento para estas columnas
+                "sortable": false,
+                "targets": [1, 2, 3, 4, 5],
+            }, {
+                //Quitar busqueda para esta columna
+                "targets": [],
+                "searchable": false,
+            }
+        ],
+        "order": [
+            [0, "asc"]
+        ],
     });
     $('#userModal').on('shown.bs.modal', function(e) {
         console.log($("#frm-ion-user"));
@@ -912,12 +926,18 @@ $(document).ready(function() {
         $(this).removeData('bs.modal');
     });
     var historial_ventas_table = $('#historial-ventas-table').DataTable({
+        responsive: {
+            details: {
+                display: $.fn.dataTable.Responsive.display.childRowImmediate,
+            }
+        },
         columnDefs: [ //
             {
                 //Quitar ordenamiento para estas columnas
                 "sortable": false,
                 "targets": [1, 2, 3, 4],
-            }, {
+            },
+            {
                 //Quitar busqueda para esta columna
                 "targets": [],
                 "searchable": false,
@@ -928,6 +948,11 @@ $(document).ready(function() {
         ],
     });
     var pagos_table = $('#pagos-table').DataTable({
+        responsive: {
+            details: {
+                display: $.fn.dataTable.Responsive.display.childRowImmediate,
+            }
+        },
         "columns": [ //Atributos para la tabla
             { "data": "id_historial" },
             { "data": "nombre_cliente" },
@@ -970,7 +995,13 @@ $(document).ready(function() {
                 "targets": -1,
                 "data": null,
                 "defaultContent": "",
-            }, {
+            },
+            {
+                //Quitar ordenamiento para estas columnas
+                "sortable": false,
+                "targets": [1, 2, 3, 4, 5, 6, 7],
+            },
+            {
                 //Añadir boton dinamicamente, para esta columna*
                 "targets": 0,
                 "type": "num",
@@ -979,6 +1010,7 @@ $(document).ready(function() {
         "order": [
             [0, "asc"]
         ],
+
     });
     $('#fecha_pago').mask('00-00-0000');
     $("#fecha_pago").datepicker({

@@ -130,8 +130,8 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-5" id="empezar_pago" style="display:none;">
-                                    <label class="required" for="n_pago">Empezar pago en:</label>
-                                    <input type="number" class="form-control required" name="n_pago" id="n_pago" step="1" min="1" max="1000" value="1"/>
+                                    <label class="required" for="n_pago">Pagos realizados:</label>
+                                    <input type="number" class="form-control required" name="n_pago" id="n_pago" step="1" min="0" max="1000" value="1"/>
                                 </div>
                                 <div class="row">
                                     <div class="col-xs-12">

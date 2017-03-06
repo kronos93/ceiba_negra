@@ -49,9 +49,14 @@ class Venta extends CI_Controller
                                             ->join('huertos_ventas', 'ventas.id_venta = huertos_ventas.id_venta', 'left')
                                             ->join('huertos', 'huertos_ventas.id_huerto = huertos.id_huerto', 'left')
                                             ->join('manzanas', 'huertos.id_manzana = manzanas.id_manzana', 'left')
-                                            ->group_by('id_venta')
+                                            ->group_by('ventas.id_venta')
                                             ->get();
-
+        foreach($data['ventas'] as $key => $venta ){
+            $retrasos = $this->Historial_model->select('SUM(IF(historial.estado = 0 && DATE(historial.fecha) <= NOW(),1,0)) AS retraso')
+                                              ->where(['id_venta' => $venta->id_venta])
+                                              ->get();
+            $data['ventas'][$key]->retrasos = $retrasos[0]->retraso;
+        }                                        
         $this->load->view('templates/template', $data);
     }
     public function generar_contrato()
@@ -330,6 +335,7 @@ class Venta extends CI_Controller
             'company' => 'Huertos la ceiba',
         ];
         $group = array('4');
+        //Si hay datos de un cliente
         if($this->input->post('id_cliente')){
             $user_id = $this->input->post('id_cliente');
             $this->ion_auth->update($user_id, $additional_data);            
@@ -378,8 +384,12 @@ class Venta extends CI_Controller
                 $abono = $this->input->post('abono');
                 $fecha_init = $this->input->post('fecha_init');
                 $tipo_historial = $this->input->post('tipo_historial');
+                $pagar = 0;
+                $pagado = 0;
                 if($this->input->post('n_pago')){            
-                    $historial = new Historial($precio, $enganche, $abono, $fecha_init, $tipo_historial,$this->input->post('n_pago')-1);
+                    //$historial = new Historial($precio, $enganche, $abono, $fecha_init, $tipo_historial,$this->input->post('n_pago')-1);
+                    $historial = new Historial($precio, $enganche, $abono, $fecha_init, $tipo_historial);
+                    $pagar = $this->input->post('n_pago');
                 }else{
                     $historial = new Historial($precio, $enganche, $abono, $fecha_init, $tipo_historial);
                 }
@@ -397,12 +407,21 @@ class Venta extends CI_Controller
                         $db_pago->id_ingreso = $this->input->post('id_ingreso');
                         $db_pago->fecha_pago = $pago->getFecha()->format('Y-m-d');    
                         $db_pago->pago = $this->input->post('enganche');                      
-                        $db_pago->estado = 1;                         
+                        $db_pago->estado = 1;  
+                        $db_pago->comision = 0;                       
                     } else {
                         $db_pago->id_ingreso = 0;
                         $db_pago->fecha_pago = $pago->getFecha()->format('Y-m-d');
                         $db_pago->pago = 0; 
                         $db_pago->estado = 0; 
+                        $db_pago->comision = 0;        
+                        if($pagado <= $pagar && $pagar != 0){
+                            $db_pago->id_ingreso = $this->input->post('id_ingreso');
+                            $db_pago->pago = $db_pago->abono;
+                            $db_pago->estado = 1;
+                            $db_pago->comision = $db_pago->abono * ($venta['porcentaje_comision']/100);        
+                            $pagado++;
+                        }
                     }
                     array_push($db_historial, $db_pago);
                 }
@@ -419,6 +438,7 @@ class Venta extends CI_Controller
                 $this->cart->destroy(); 
             }
         }
+        //Si es un cliente nuevo
         else if ($idNewUser = $this->ion_auth->register($identity, $password, $email, $additional_data, $group)) {
             $venta = [
                 'id_usuario' => $this->ion_auth->get_user_id(),
@@ -465,7 +485,8 @@ class Venta extends CI_Controller
                 $fecha_init = $this->input->post('fecha_init');
                 $tipo_historial = $this->input->post('tipo_historial');
                 if($this->input->post('n_pago')){            
-                    $historial = new Historial($precio, $enganche, $abono, $fecha_init, $tipo_historial,$this->input->post('n_pago')-1);
+                    //$historial = new Historial($precio, $enganche, $abono, $fecha_init, $tipo_historial,$this->input->post('n_pago')-1);
+                    $historial = new Historial($precio, $enganche, $abono, $fecha_init, $tipo_historial);
                 }else{
                     $historial = new Historial($precio, $enganche, $abono, $fecha_init, $tipo_historial);
                 }

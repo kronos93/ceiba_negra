@@ -8,26 +8,27 @@
                             
                             <th class="all">Cliente</th> 
                             <th>Descripción</th>         
-                            <th>Líder</th>     
+                            <th>Retrasos</th>      
                             <th>Precio</th>  
                             <th>Comisión</th> 
                             <th>Total abonado</th>  
-                            <th>Pagado en comisiones</th>                            
+                            <th>Pagado en comisiones</th>  
+                            <th>Líder</th>                          
                             <th>Generado por:</th>
                             <th class="all">Opciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach($ventas as $venta):?>
-                        <tr>
-                            
+                        <tr>                            
                             <td><?= $venta->nombre_cliente; ?></td>
                             <td><?= $venta->description; ?></td>
-                            <td><?= $venta->nombre_lider; ?></td>
+                            <td><?= $venta->retrasos; ?></td>
                             <td>$<?= number_format($venta->precio,2); ?></td>
                             <td>$<?= number_format($venta->precio * ($venta->porcentaje_comision/100),2); ?></td>
-                            <td>$<?= number_format($venta->pagado,2); ?></td>
+                            <td>$<?= number_format($venta->pagado,2); ?></td>                            
                             <td>$<?= number_format($venta->comisionado,2); ?></td>
+                            <td><?= $venta->nombre_lider; ?></td>
                             <td><?= $venta->nombre_user?></td>
                             <td>
                                 <a href="<?= base_url(); ?>reportes/contrato/<?= $venta->id_venta; ?>" class="btn btn-success" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Ver contrato</a>
