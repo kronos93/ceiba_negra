@@ -24,7 +24,7 @@ class Registros extends CI_Controller {
 		$this->load->view('templates/template',$data);
 	}
 	public function ingresos($id) {
-		$data['title'] = "Opciones de ingreso";
+		$data['title'] = "Ingresos";
 		$data['body'] = "ingresos";				
 		
 		if ($this->input->get('init_date') && $this->input->get('end_date')) {

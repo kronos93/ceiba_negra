@@ -847,6 +847,13 @@ $(document).ready(function() {
                     }
                 }
             },
+        ],
+        columnDefs: [ //
+            {
+                //Quitar ordenamiento para estas columnas
+                "sortable": false,
+                "targets": [1, 4]
+            }
         ]
     });
     $('#opcionDeIngresoModal').on('show.bs.modal', function(e) {
@@ -935,7 +942,7 @@ $(document).ready(function() {
             {
                 //Quitar ordenamiento para estas columnas
                 "sortable": false,
-                "targets": [1, 2, 3, 4, 5],
+                "targets": [4, 5, 6, 7, 8, 9, 10, 11],
             },
             {
                 //Quitar busqueda para esta columna

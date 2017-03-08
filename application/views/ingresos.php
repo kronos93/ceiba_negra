@@ -6,9 +6,15 @@
 					Ingresos
 				</legend>
                 <form action="<?= base_url(); ?>registros/ingresos/<?= $id ?>" method="get">
-                    <input type="text" name="init_date" id="init_date" value="<?= $init_date->format('d-m-Y'); ?>" required/>
-                    <input type="text" name="end_date" id="end_date" value="<?= isset($end_date) ? $end_date->format('d-m-Y') : '' ?>" required/>
-                    <input type="submit" value="Buscar"/>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        <label class="" >Fecha inical:</label>
+                        <input type="text" name="init_date" id="init_date" class="form-control" value="<?= $init_date->format('d-m-Y'); ?>" required/>
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        <label class="" >Fecha final:</label>
+                        <input type="text" name="end_date" id="end_date" class="form-control" value="<?= isset($end_date) ? $end_date->format('d-m-Y') : '' ?>" required/>
+                   </div>
+                   <input type="submit" value="Filtrar" class="btn btn-primary"/>
                 </form>
                 
 				<table id="" class="table">

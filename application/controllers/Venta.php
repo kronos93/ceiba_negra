@@ -36,7 +36,9 @@ class Venta extends CI_Controller
                                                       ventas.version, 
                                                       ventas.precio, 
                                                       ventas.porcentaje_comision,
-                                                      GROUP_CONCAT( DISTINCT CONCAT('Mz. ',manzanas.manzana, ' Ht. ', huertos.huerto)) as description,
+                                                      SUM(IF(historial.estado = 0 && DATE(historial.fecha) <= NOW(),1,0)) AS retraso,
+                                                      SUM(IF(DATEDIFF( historial.fecha_pago ,historial.fecha) > 0 ,1,0)) AS retrasados,
+                                                      SUM(IF(DATEDIFF( historial.fecha_pago ,historial.fecha) < 0 ,1,0)) AS adelantados,
                                                       SUM(historial.pago) AS pagado, 
                                                       SUM(historial.comision) AS comisionado,
                                                       CONCAT(cliente.first_name,' ',cliente.last_name) AS nombre_cliente,
@@ -45,17 +47,17 @@ class Venta extends CI_Controller
                                             ->join('historial', 'ventas.id_venta = historial.id_venta', 'left')          
                                             ->join('users as cliente', 'ventas.id_cliente = cliente.id', 'left')
                                             ->join('users as lider', 'ventas.id_lider = lider.id', 'left')
-                                            ->join('users as user', 'ventas.id_usuario = user.id', 'left')
-                                            ->join('huertos_ventas', 'ventas.id_venta = huertos_ventas.id_venta', 'left')
-                                            ->join('huertos', 'huertos_ventas.id_huerto = huertos.id_huerto', 'left')
-                                            ->join('manzanas', 'huertos.id_manzana = manzanas.id_manzana', 'left')
-                                            ->group_by('ventas.id_venta')
+                                            ->join('users as user', 'ventas.id_usuario = user.id', 'left')   
+                                            ->group_by('ventas.id_venta')                                         
                                             ->get();
         foreach($data['ventas'] as $key => $venta ){
-            $retrasos = $this->Historial_model->select('SUM(IF(historial.estado = 0 && DATE(historial.fecha) <= NOW(),1,0)) AS retraso')
-                                              ->where(['id_venta' => $venta->id_venta])
+            $descripcion = $this->Venta_model->select('GROUP_CONCAT("Mz. ",manzanas.manzana, " Ht. ", huertos.huerto) as descripcion')
+                                              ->join('huertos_ventas', 'ventas.id_venta = huertos_ventas.id_venta', 'inner') 
+                                              ->join('huertos', 'huertos_ventas.id_huerto = huertos.id_huerto', 'inner')
+                                              ->join('manzanas', 'huertos.id_manzana = manzanas.id_manzana', 'inner')        
+                                              ->where(['ventas.id_venta' => $venta->id_venta])
                                               ->get();
-            $data['ventas'][$key]->retrasos = $retrasos[0]->retraso;
+            $data['ventas'][$key]->descripcion = $descripcion[0]->descripcion;
         }                                        
         $this->load->view('templates/template', $data);
     }

@@ -454,7 +454,9 @@ class Ajax extends CI_Controller
     public function get_opciones_de_ingreso(){
         header("Content-type: application/json; charset=utf-8"); //Header generico
         $response = new stdClass(); //Clase generica
-        $opciones_ingreso = $this->Opciones_ingreso_model->get(); //<- Obtener datos
+        $opciones_ingreso = $this->Opciones_ingreso_model->select('opciones_ingreso.id_opcion_ingreso, opciones_ingreso.nombre, opciones_ingreso.cuenta, opciones_ingreso.tarjeta')
+                                                         ->join('historial','opciones_ingreso.id_opcion_ingreso = historial.id_ingreso','left')
+                                                         ->get(); //<- Obtener datos
         $response->data = $opciones_ingreso; // Atributo de la clase generico para el dataTable
         echo json_encode($response); //Response JSON
     }    

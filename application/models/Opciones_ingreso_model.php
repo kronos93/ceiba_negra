@@ -9,6 +9,10 @@ class Opciones_ingreso_model extends CI_Model {
         $this->db->join($table_join,$condicion,$type);
         return $this;
     }
+    public function select($select){
+        $this->db->select($select);
+        return $this;
+    }
     public function where($where) {
         $this->db->where($where);
         return $this;

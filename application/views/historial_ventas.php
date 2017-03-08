@@ -6,9 +6,11 @@
                     <thead>
                         <tr>
                             
-                            <th class="all">Cliente</th> 
-                            <th>Descripción</th>         
-                            <th>Retrasos</th>      
+                            <th class="all">Cliente</th>                                    
+                            <th>Retrasos</th>
+                            <th>Retrasados</th> 
+                            <th>Adelantados</th>  
+                            <th>Descripción</th>      
                             <th>Precio</th>  
                             <th>Comisión</th> 
                             <th>Total abonado</th>  
@@ -21,9 +23,11 @@
                     <tbody>
                         <?php foreach($ventas as $venta):?>
                         <tr>                            
-                            <td><?= $venta->nombre_cliente; ?></td>
-                            <td><?= $venta->description; ?></td>
-                            <td><?= $venta->retrasos; ?></td>
+                            <td><?= $venta->nombre_cliente; ?></td>                            
+                            <td><?= $venta->retraso; ?></td>
+                            <td><?= $venta->retrasados; ?></td>
+                            <td><?= $venta->adelantados; ?></td>
+                            <td><?= $venta->descripcion; ?></td>
                             <td>$<?= number_format($venta->precio,2); ?></td>
                             <td>$<?= number_format($venta->precio * ($venta->porcentaje_comision/100),2); ?></td>
                             <td>$<?= number_format($venta->pagado,2); ?></td>                            
