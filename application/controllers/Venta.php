@@ -43,7 +43,7 @@ class Venta extends CI_Controller
                                                       SUM(IF(historial.estado = 1 && DATE(historial.fecha) = DATE(historial.fecha_pago),1,0)) AS en_tiempo,
                                                       SUM(IF(historial.estado = 1,1,0)) AS realizados,
                                                       SUM(historial.pago) AS pagado, 
-                                                      SUM(historial.comision) AS comisionado,
+                                                      SUM(IF(historial.estado = 1,historial.comision,0)) AS comisionado,
                                                       CONCAT(cliente.first_name,' ',cliente.last_name) AS nombre_cliente,
                                                       CONCAT(lider.first_name,' ',lider.last_name) AS nombre_lider,
                                                       CONCAT(user.first_name,' ',user.last_name) AS nombre_user")
@@ -420,7 +420,7 @@ class Venta extends CI_Controller
                         $db_pago->pago = 0; 
                         $db_pago->estado = 0; 
                         $db_pago->comision = 0;        
-                        if($pagado <= $pagar && $pagar != 0){
+                        if($pagado <= $pagar && $pagar != 0 && ($tipo_historial == '1-15' || $tipo_historial == 'quincena-mes' || $tipo_historial == 'fin-mes') ){
                             $db_pago->id_ingreso = $this->input->post('id_ingreso');
                             $db_pago->pago = $db_pago->abono;
                             $db_pago->estado = 1;
@@ -749,6 +749,36 @@ class Historial
                     }
                     else if($next === 'dieciseis_de_mes'){
                         $fecha = $fecha->addDay(15);
+                        $new_date = Carbon::createFromFormat('d-m-Y', $fecha->format('d-m-Y'));
+                        $row->setFecha($new_date);
+                        $this->historial[$key] = $row;
+                        $next = 'inicio_de_mes';
+                    }
+                }
+            }
+        }
+        else if($this->tipo_historial === '1-15'){
+            $fecha = $this->fecha;
+            foreach ($this->historial as $key => $row) {
+                if ($key === 0) {
+                    $this->historial[$key]->setFecha($this->fecha_inicial);
+                    $dia = ($this->fecha_inicial->day);                    
+                    if ($dia <= 15 ) {
+                        $next = 'dieciseis_de_mes';
+                        $fecha->startOfMonth();
+                    } else if ($dia >= 16) {                        
+                        $next = 'inicio_de_mes';
+                    }
+                } else {
+                    if($next === 'inicio_de_mes'){
+                        $fecha = $fecha->endOfMonth()->addDay(1);
+                        $new_date = Carbon::createFromFormat('d-m-Y', $fecha->format('d-m-Y'));
+                        $row->setFecha($new_date);
+                        $this->historial[$key] = $row;                        
+                        $next = 'dieciseis_de_mes';
+                    }
+                    else if($next === 'dieciseis_de_mes'){
+                        $fecha = $fecha->addDay(14);
                         $new_date = Carbon::createFromFormat('d-m-Y', $fecha->format('d-m-Y'));
                         $row->setFecha($new_date);
                         $this->historial[$key] = $row;

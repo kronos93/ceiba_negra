@@ -388,7 +388,7 @@ $(document).ready(function() {
 
                     }
                     var extra = {
-                        "ciudad_expedicion": "Cancún",
+                        "ciudad_expedicion": "Playa del Carmen",
                         "testigo_1": "XXXX XXXX XXXX",
                         "testigo_2": "XXXX XXXX XXXX",
                     };
@@ -426,7 +426,7 @@ $(document).ready(function() {
 
                     }
                     var extra = {
-                        "ciudad_expedicion": "Cancún",
+                        "ciudad_expedicion": "Playa del Carmen",
                         "testigo_1": "XXXX XXXX XXXX",
                         "testigo_2": "XXXX XXXX XXXX",
                     };
@@ -537,7 +537,9 @@ $(document).ready(function() {
                     'maximo_retrasos_permitidos': 0
                 };
                 var op = $('#tipo_historial').val();
-                if (op == 'fin-mes' || op == 'quincena-mes' || op == '1-16' || op == '15-1') {
+                console.log(op);
+                if (op == '1-15' || op == 'quincena-mes' || op == 'fin-mes') {
+                    console.log(op);
                     var n_pago = $('#n_pago').val();
                     data.n_pago = n_pago;
                 }

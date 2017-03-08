@@ -120,13 +120,14 @@
                                 <div class="form-group col-xs-12 col-sm-7 select-periodos">
                                     <label class="required" for="manzana">Selecciona periodo de pago:</label>
                                     <select name="tipo_historial" id="tipo_historial" class="form-control">
-                                        <option selected value="nuevo-quincena">Quincenal (Clientes nuevos, días 1ros a 15 de mes, 10 días de solapamiento)</option>
+                                        <option selected value="nuevo-quincena">Quincenal (Clientes nuevos, días 01 a 15 de mes, 10 días de solapamiento)</option>
                                         <option value="nuevo-mensual-f">Mensual (Clientes nuevos, finales de mes, 10 días de solapamiento)</option>
                                         <option value="nuevo-mensual-q">Mensual (Clientes nuevos, días 15 del mes, 10 días de solapamiento)</option>
-                                        <option value="fin-mes">Mensual (Clientes previos, días 15 del mes)</option>
-                                        <option value="quincena-mes">Mensual (Clientes previos, finales de mes)</option>
-                                        <option value="1-16">Quincenal (Clientes previos, días 01 a días 16 del mes)</option>
-                                        <option value="15-1">Quincenal (Clientes previos, días 15 de un mes al 01 del siguiente mes) </option>                                        
+                                        <option value="1-15">Quincenal (Clientes previos, días 01 a 15 de mes)</option>
+                                        <option value="quincena-mes">Mensual (Clientes previos, días 15 del mes)</option>
+                                        <option value="fin-mes">Mensual (Clientes previos, finales de mes)</option>    
+                                        <!--<option value="1-16">Quincenal (Clientes previos, días 01 a días 16 del mes)</option>-->                                                                          
+                                        <!--<option value="15-1">Quincenal (Clientes previos, días 15 de un mes al 01 del siguiente mes)</option>-->                                    
                                     </select>
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-5" id="empezar_pago" style="display:none;">
