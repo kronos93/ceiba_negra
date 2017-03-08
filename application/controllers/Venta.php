@@ -369,7 +369,7 @@ class Venta extends CI_Controller
                 $venta['version'] = 1;
             } else if ($this->input->post('tipo_historial') === 'quincena-mes') { 
                 $venta['version'] = 1;
-            } else if ($this->input->post('tipo_historial') === 'fin-mes') { 
+            } else if ($this->input->post('tipo_historial') === 'ini-mes') { 
                 $venta['version'] = 1;
             }
             if ($this->input->post('confirm') == 'yes') {
@@ -421,7 +421,7 @@ class Venta extends CI_Controller
                         $db_pago->pago = 0; 
                         $db_pago->estado = 0; 
                         $db_pago->comision = 0;        
-                        if($pagado <= $pagar && $pagar != 0 && ($tipo_historial == '1-15' || $tipo_historial == 'quincena-mes' || $tipo_historial == 'fin-mes') ){
+                        if($pagado <= $pagar && $pagar != 0 && ($tipo_historial == '1-15' || $tipo_historial == 'quincena-mes' || $tipo_historial == 'ini-mes') ){
                             $db_pago->id_ingreso = $this->input->post('id_ingreso');
                             $db_pago->pago = $db_pago->abono;
                             $db_pago->estado = 1;
@@ -479,7 +479,7 @@ class Venta extends CI_Controller
                 $venta['version'] = 1;
             } else if ($this->input->post('tipo_historial') === '15-1') { 
                 $venta['version'] = 1;
-            } else if ($this->input->post('tipo_historial') === 'fin-mes') { 
+            } else if ($this->input->post('tipo_historial') === 'ini-mes') { 
                 $venta['version'] = 1;
             } else if ($this->input->post('tipo_historial') === 'quincena-mes') { 
                 $venta['version'] = 1;
@@ -635,6 +635,7 @@ class Historial
 
     public function setDates()
     {
+        //Nuevos
         if ($this->tipo_historial === 'nuevo-quincena') {
             $next = "fin_de_mes";
             $fecha = $this->fecha;
@@ -727,8 +728,38 @@ class Historial
                     }
                 }
             }
+        } 
+        else if ($this->tipo_historial === 'nuevo-mensual-i') {
+            $fecha = $this->fecha;
+            foreach ($this->historial as $key => $row) {
+                if ($key === 0) {
+                    $this->historial[$key]->setFecha($this->fecha_inicial);
+                    $dia = ($this->fecha_inicial->day);
+                    $new_date_end = Carbon::createFromFormat('d-m-Y', $fecha->format('d-m-Y'));
+                    $endDay = $new_date_end->endOfMonth()->day;
+
+                    if($dia + 10 <= $endDay){
+                       $fecha = $fecha->endOfMonth();   
+                       $next = 'ini_mes';  
+                    }else{
+                       $fecha = $fecha->endOfMonth()->addDay(1);  
+                       $fecha = $fecha->endOfMonth();   
+                       $next = 'ini_mes';  
+                    }
+                } else {
+                    if ($next == 'ini_mes') {
+                        $fecha = $fecha->addDay(1);
+                        $new_date = Carbon::createFromFormat('d-m-Y', $fecha->format('d-m-Y'));
+                        $row->setFecha($new_date);
+                        $this->historial[$key] = $row;
+                        $fecha = $fecha->endOfMonth();
+                        $next = "ini_mes";
+                    }
+                }
+            }
         }
-        else if($this->tipo_historial === '1-16'){
+        //Antiguos
+        else if($this->tipo_historial === '1-16') {
             $fecha = $this->fecha;
             foreach ($this->historial as $key => $row) {
                 if ($key === 0) {
@@ -758,7 +789,7 @@ class Historial
                 }
             }
         }
-        else if($this->tipo_historial === '1-15'){
+        else if($this->tipo_historial === '1-15') {
             $fecha = $this->fecha;
             foreach ($this->historial as $key => $row) {
                 if ($key === 0) {
@@ -787,7 +818,8 @@ class Historial
                     }
                 }
             }
-        } else if($this->tipo_historial === '15-1'){ 
+        } 
+        else if($this->tipo_historial === '15-1') { 
             $fecha = $this->fecha;
             foreach ($this->historial as $key => $row) {
                 if ($key === 0) {
@@ -816,7 +848,8 @@ class Historial
                     }
                 }
             }
-         } else if($this->tipo_historial === 'fin-mes'){ 
+        } 
+        else if($this->tipo_historial === 'fin-mes') { 
             $fecha = $this->fecha;
             foreach ($this->historial as $key => $row) {
                 if ($key === 0) {
@@ -841,8 +874,8 @@ class Historial
                     }
                 }
             }
-
-         } else if($this->tipo_historial === 'quincena-mes'){ 
+        } 
+        else if($this->tipo_historial === 'quincena-mes'){ 
             $fecha = $this->fecha;
             foreach ($this->historial as $key => $row) {
                 if ($key === 0) {
@@ -867,7 +900,32 @@ class Historial
                     }
                 }
             }
-         }
+        }
+        else if($this->tipo_historial === 'ini-mes'){ 
+            $fecha = $this->fecha;
+            foreach ($this->historial as $key => $row) {
+                if ($key === 0) {
+                    $this->historial[$key]->setFecha($this->fecha_inicial);
+                    $dia = ($this->fecha_inicial->day);
+                    $new_date_end = Carbon::createFromFormat('d-m-Y', $fecha->format('d-m-Y'));
+                    $endDay = $new_date_end->endOfMonth()->day;
+
+                    
+                    $fecha = $fecha->endOfMonth();   
+                    $next = 'ini_mes';  
+                    
+                } else {
+                    if ($next == 'ini_mes') {
+                        $fecha = $fecha->addDay(1);
+                        $new_date = Carbon::createFromFormat('d-m-Y', $fecha->format('d-m-Y'));
+                        $row->setFecha($new_date);
+                        $this->historial[$key] = $row;
+                        $fecha = $fecha->endOfMonth();
+                        $next = "ini_mes";
+                    }
+                }
+            }
+        }
     }
 
     public function getHistorial()
