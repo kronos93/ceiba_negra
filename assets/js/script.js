@@ -496,7 +496,7 @@ $(document).ready(function() {
             });
             $("#tipo_historial").on('change', function() {
                 var op = $(this).val();
-                if (op == 'fin-mes' || op == 'quincena-mes' || op == '1-16' || op == '15-1') {
+                if (op == 'fin-mes' || op == 'quincena-mes' || op == '1-15') {
                     $('#empezar_pago').show();
                 } else {
                     $('#empezar_pago').hide();

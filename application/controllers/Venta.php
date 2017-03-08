@@ -181,7 +181,7 @@ class Venta extends CI_Controller
         $abono = $this->input->post('abono');
         $tipo_historial = $this->input->post('tipo_historial');
         if($this->input->post('n_pago')){            
-            $historial = new Historial($precio, $enganche, $abono, $fecha_init, $tipo_historial,$this->input->post('n_pago')-1);
+            $historial = new Historial($precio, $enganche, $abono, $fecha_init, $tipo_historial);
         }else{
             $historial = new Historial($precio, $enganche, $abono, $fecha_init, $tipo_historial);
         }
@@ -365,21 +365,22 @@ class Venta extends CI_Controller
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ];
-            if ($this->input->post('tipo_historial') === '1-16') {
-                $venta['version'] = 1;
-            } else if ($this->input->post('tipo_historial') === '15-1') { 
-                $venta['version'] = 1;
-            } else if ($this->input->post('tipo_historial') === 'fin-mes') { 
+            if ($this->input->post('tipo_historial') === '1-15') {
                 $venta['version'] = 1;
             } else if ($this->input->post('tipo_historial') === 'quincena-mes') { 
                 $venta['version'] = 1;
+            } else if ($this->input->post('tipo_historial') === 'fin-mes') { 
+                $venta['version'] = 1;
             }
-             if ($this->input->post('confirm') == 'yes') {
+            if ($this->input->post('confirm') == 'yes') {
                 $venta['porcentaje_comision'] =  $this->input->post('porcentaje_comision');
                 $venta['comision'] =  ($this->input->post('porcentaje_comision')/100)*$this->input->post('precio');
             } else {
                 $venta['porcentaje_comision'] =  0;
                 $venta['comision'] =  0;
+            }
+            if($this->input->post('enganche') == $this->input->post('precio')){
+                $venta['estado'] =  1;
             }
             $id_venta = $this->Venta_model->insert($venta);
             if ($id_venta) {
