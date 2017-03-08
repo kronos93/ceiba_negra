@@ -5,9 +5,9 @@
         	<?php if ($this->ion_auth->in_group('administrador')):  ?>
             <li><a href="<?= base_url()?>auth/">Usuarios</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="#">Respaldo</a></li>
+            <li><a href="<?= base_url()?>backup/">Respaldo</a></li>
             <?php endif; ?>            
-            <li><a href="<?= base_url()?>auth/logout">Cerrar sesión</a></li>            
+            <li><a href="<?= base_url()?>auth/logout/">Cerrar sesión</a></li>            
         </ul>
     </li>
 </ul>

@@ -909,6 +909,69 @@ class Ajax extends CI_Controller
 
         echo json_encode($respuesta);
     }
+    public function cancelar_venta()
+    {
+        header("Content-type: application/json; charset=utf-8");
+        if ($this->input->post("id_venta")) {
+            $id_venta = $this->input->post("id_venta");
+            $huertos = $this->Venta_model->select('huertos.id_huerto')
+                              ->join('huertos_ventas','ventas.id_venta = huertos_ventas.id_venta','left')
+                              ->join('huertos','huertos_ventas.id_huerto = huertos.id_huerto','left')
+                              ->where(['ventas.id_venta' => $id_venta])
+                              ->get();
+            $this->Venta_model->where(['ventas.id_venta' => $id_venta])
+                              ->update(['estado' => 2]);
+            foreach($huertos as $key => $huerto){
+                $huertos[$key]->vendido = 0;
+            }                  
+            $this->Huerto_model->update_batch($huertos,'id_huerto');
+        }
+    }
+    public function activar_venta()
+    {
+        header("Content-type: application/json; charset=utf-8");
+        if ($this->input->post("id_venta")) {
+            $id_venta = $this->input->post("id_venta");
+            $huertos = $this->Venta_model->select('huertos.id_huerto')
+                              ->join('huertos_ventas','ventas.id_venta = huertos_ventas.id_venta','left')
+                              ->join('huertos','huertos_ventas.id_huerto = huertos.id_huerto','left')
+                              ->where(['ventas.id_venta' => $id_venta])
+                              ->get();
+            $this->Venta_model->where(['ventas.id_venta' => $id_venta])
+                              ->update(['estado' => 0]);
+            foreach($huertos as $key => $huerto){
+                $huertos[$key]->vendido = 1;
+            }                  
+            $this->Huerto_model->update_batch($huertos,'id_huerto');
+        }
+    }
+    public function eliminar_venta()
+    {
+        header("Content-type: application/json; charset=utf-8");
+        if ($this->input->post("id_venta")) {
+            $id_venta = $this->input->post("id_venta");
+            $huertos = $this->Venta_model->select('huertos.id_huerto')
+                              ->join('huertos_ventas','ventas.id_venta = huertos_ventas.id_venta','left')
+                              ->join('huertos','huertos_ventas.id_huerto = huertos.id_huerto','left')
+                              ->where(['ventas.id_venta' => $id_venta])
+                              ->get();
+            $this->Venta_model->where(['ventas.id_venta' => $id_venta])
+                              ->update(['estado' => 3]);
+            foreach($huertos as $key => $huerto){
+                $huertos[$key]->vendido = 0;
+            }                  
+            $this->Huerto_model->update_batch($huertos,'id_huerto');
+        }
+    }
+    public function recuperar_venta()
+    {
+        header("Content-type: application/json; charset=utf-8");
+        if ($this->input->post("id_venta")) {
+            $id_venta = $this->input->post("id_venta");
+            $this->Venta_model->where(['ventas.id_venta' => $id_venta])
+                              ->update(['estado' => 2]);      
+        }
+    }
     public function add_ion_user()
     {
         header("Content-type: application/json; charset=utf-8");

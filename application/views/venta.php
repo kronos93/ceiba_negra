@@ -116,11 +116,11 @@
                                     <label class="required" for="manzana">Abono</label>
                                     <input type="text" class="form-control required currency" name="abono" id="abono" placeholder="" required />
                                 </div>
-                                <legend>Periodos de abono</legend>
-                                <div class="form-group col-xs-12 col-sm-7">
-                                    <label class="required" for="manzana">Forma de pago:</label>
+                                <legend class="select-periodos">Periodos de abonos</legend>
+                                <div class="form-group col-xs-12 col-sm-7 select-periodos">
+                                    <label class="required" for="manzana">Selecciona periodo de pago:</label>
                                     <select name="tipo_historial" id="tipo_historial" class="form-control">
-                                        <option selected value="nuevo-quincena">Quincenal (Clientes nuevos, días 15 a finales de mes, 10 días de solapamiento)</option>
+                                        <option selected value="nuevo-quincena">Quincenal (Clientes nuevos, días 1ros a 15 de mes, 10 días de solapamiento)</option>
                                         <option value="nuevo-mensual-f">Mensual (Clientes nuevos, finales de mes, 10 días de solapamiento)</option>
                                         <option value="nuevo-mensual-q">Mensual (Clientes nuevos, días 15 del mes, 10 días de solapamiento)</option>
                                         <option value="fin-mes">Mensual (Clientes previos, días 15 del mes)</option>

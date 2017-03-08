@@ -75,14 +75,28 @@ class Huerto_model extends CI_Model
         $this->db->select(" CONCAT('m',manzanas.manzana,'lote',{$this->tabla}.huerto) as id,         
                             CONCAT('Huerto ', {$this->tabla}.huerto) as title, 
                             CONCAT('mz',manzanas.manzana) as category, 
-                            IF(manzanas.disponibilidad = 0,'#ccc', IF({$this->tabla}.vendido = 0,IF(huertos_ventas.id_huerto IS NULL,'','#0000ff'),'#ff0000')) as fill,
+                            IF( manzanas.disponibilidad = 0,
+                                '#7f8c8d', 
+                                IF( {$this->tabla}.vendido = 0,
+                                    '',
+                                    IF( {$this->tabla}.vendido = 1,
+                                        '#2980b9',
+                                        '#d35400'
+                                    )
+                                )
+                            ) as fill,
                             CONCAT('<div>Superficie: <span class=\"superficie\">',{$this->tabla}.superficie,'</div>',
                                    '<div class=\"currency\">Precio: <span class=\"currency\">',({$this->tabla}.precio_x_m2 * {$this->tabla}.superficie),'</span></div>') as description,
-                            IF(manzanas.disponibilidad = 0,'',IF( {$this->tabla}.vendido = 0 AND huertos_ventas.id_huerto IS NULL,{$this->tabla}.id_huerto,'')) AS link, 
+                            IF( manzanas.disponibilidad = 0,
+                                '',
+                                IF( {$this->tabla}.vendido = 0 ,
+                                    {$this->tabla}.id_huerto,
+                                    ''
+                                )
+                            ) AS link, 
                             {$this->tabla}.x,
                             {$this->tabla}.y ");
         $this->db->join("manzanas", "{$this->tabla}.id_manzana = manzanas.id_manzana", 'left');
-        $this->db->join("huertos_ventas", "{$this->tabla}.id_huerto = huertos_ventas.id_huerto", 'left');
         $this->db->from("{$this->tabla}");
         $this->db->where( ["manzanas.manzana" => "{$mz}"] );
         $this->db->order_by("CONVERT( {$this->tabla}.huerto ".','."decimal ) ASC");
@@ -99,5 +113,9 @@ class Huerto_model extends CI_Model
     public function run_sql($sql){
         $query = $this->db->query($sql);    
         return $this->db->affected_rows();
+    }
+
+    public function update_batch($data,$ref){
+        $this->db->update_batch($this->tabla, $data, $ref);
     }
 }

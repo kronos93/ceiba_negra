@@ -1,0 +1,14 @@
+// Coloque su configuración en este archivo para sobrescribir la configuración predeterminada y de usuario.
+{
+    "files.exclude": {
+        "**/.gitignore": true,
+        "**/.vscode/": true,
+        "vendor/": true,
+        "**/contrato/": true,
+        "**/Crud/": true,
+        "**/styles/": true,
+        "**/gulpfile.js": true,
+        "docs/": true,
+        "manual/": true
+    },
+}

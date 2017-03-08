@@ -450,17 +450,46 @@ $(document).ready(function() {
                     console.log("Ha ocurrido un error.");
                 }
             });
-            $("#precio").on('keyup', function() {
-                var porcentaje = $('#porcentaje_comision').val();
-                var precio = $('#precio').autoNumeric('get');
+            $("#precio").on('change keyup', function() {
+                var precio = parseFloat($(this).autoNumeric('get'));
+                var porcentaje = parseFloat($('#porcentaje_comision').val());
+                var enganche = parseFloat($('#enganche').autoNumeric('get'));
                 $('#comision').autoNumeric('set', (porcentaje / 100) * precio);
+
+                if (precio == enganche) {
+                    console.log('iguales');
+                    $('.select-periodos').slideUp(300);
+                    $('#abono').autoNumeric('set', 0);
+                } else if (precio < enganche) {
+                    console.log('menor');
+                    $('#enganche').autoNumeric('set', precio);
+                    $('#abono').autoNumeric('set', 0);
+                    $('.select-periodos').slideUp(300);
+                } else {
+                    console.log('default');
+                    $('.select-periodos').slideDown(300);
+                }
+            });
+            $("#enganche").on('change keyup', function() {
+                var precio = parseFloat($('#precio').autoNumeric('get'));
+                var enganche = parseFloat($(this).autoNumeric('get'));
+                if (enganche === precio) {
+                    $('.select-periodos').slideUp(300);
+                    $('#abono').autoNumeric('set', 0);
+                } else if (enganche > precio) {
+                    $(this).autoNumeric('set', precio);
+                    $('.select-periodos').slideUp(300);
+                    $('#abono').autoNumeric('set', 0);
+                } else {
+                    $('.select-periodos').slideDown(300);
+                }
             });
             $('#porcentaje_comision').on('change keyup', function() {
                 var porcentaje = this.value;
                 var precio = $('#precio').autoNumeric('get');
                 $('#comision').autoNumeric('set', (porcentaje / 100) * precio);
             });
-            $('#comision').on('keyup', function() {
+            $('#comision').on('change keyup', function() {
                 var comision = $(this).autoNumeric('get');
                 var precio = $('#precio').autoNumeric('get');
                 $('#porcentaje_comision').val((100 * (comision / precio)).toFixed(2));
@@ -938,11 +967,28 @@ $(document).ready(function() {
                 display: $.fn.dataTable.Responsive.display.childRowImmediate,
             }
         },
+        "columns": [ //Atributos para la tabla
+            { "data": "id_venta" },
+            { "data": "nombre_cliente" },
+            { "data": "retraso" },
+            { "data": "retrasados" },
+            { "data": "adelantados" },
+            { "data": "en_tiempo" },
+            { "data": "realizados" },
+            { "data": "descripcion" },
+            { "data": "precio" },
+            { "data": "comision" },
+            { "data": "abonado" },
+            { "data": "comisiones" },
+            { "data": "nombre_lider" },
+            { "data": "nombre_user" },
+            { "data": "" },
+        ],
         columnDefs: [ //
             {
                 //Quitar ordenamiento para estas columnas
                 "sortable": false,
-                "targets": [4, 5, 6, 7, 8, 9, 10, 11],
+                "targets": [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
             },
             {
                 //Quitar busqueda para esta columna
@@ -951,8 +997,132 @@ $(document).ready(function() {
             }
         ],
         "order": [
-            [0, "asc"]
+            [1, "asc"]
         ],
+    });
+    $('#historial-ventas-table').on('click', '.cancelar-venta', function() {
+        pagoDtRow = $(this).parents('tr');
+        var parseDtRow = historial_ventas_table.row(pagoDtRow).data();
+        var data = {
+            id_venta: parseDtRow.id_venta
+        };
+        swal({
+                title: "Cancelar venta",
+                text: "Esta a punto de cancelar una venta, ¿Desea continuar?",
+                type: "info",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true,
+                cancelButtonText: 'CANCELAR',
+            },
+            function() {
+                $.ajax({
+                        url: base_url + "ajax/cancelar_venta/",
+                        data: data,
+                        type: "post",
+                    })
+                    .done(function(response) {
+                        /*var newData = pagos_table.row(pagoDtRow).data(response).draw(false).node(); //
+                        $(newData).animate({ backgroundColor: 'yellow' }); //Animación para MAX*/
+                        swal("¡Pago removido!");
+                    })
+                    .fail(function(response) {
+
+                    });
+            });
+    });
+    $('#historial-ventas-table').on('click', '.activar-venta', function() {
+        pagoDtRow = $(this).parents('tr');
+        var parseDtRow = historial_ventas_table.row(pagoDtRow).data();
+        var data = {
+            id_venta: parseDtRow.id_venta
+        };
+        swal({
+                title: "Cancelar venta",
+                text: "Esta a punto de cancelar una venta, ¿Desea continuar?",
+                type: "info",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true,
+                cancelButtonText: 'CANCELAR',
+            },
+            function() {
+                $.ajax({
+                        url: base_url + "ajax/activar_venta/",
+                        data: data,
+                        type: "post",
+                    })
+                    .done(function(response) {
+                        /*var newData = pagos_table.row(pagoDtRow).data(response).draw(false).node(); //
+                        $(newData).animate({ backgroundColor: 'yellow' }); //Animación para MAX*/
+                        swal("¡Pago removido!");
+                    })
+                    .fail(function(response) {
+
+                    });
+            });
+    });
+    $('#historial-ventas-table').on('click', '.eliminar-venta', function() {
+        pagoDtRow = $(this).parents('tr');
+        var parseDtRow = historial_ventas_table.row(pagoDtRow).data();
+        var data = {
+            id_venta: parseDtRow.id_venta
+        };
+        swal({
+                title: "Cancelar venta",
+                text: "Esta a punto de cancelar una venta, ¿Desea continuar?",
+                type: "info",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true,
+                cancelButtonText: 'CANCELAR',
+            },
+            function() {
+                $.ajax({
+                        url: base_url + "ajax/eliminar_venta/",
+                        data: data,
+                        type: "post",
+                    })
+                    .done(function(response) {
+                        /*var newData = pagos_table.row(pagoDtRow).data(response).draw(false).node(); //
+                        $(newData).animate({ backgroundColor: 'yellow' }); //Animación para MAX*/
+                        swal("¡Pago removido!");
+                    })
+                    .fail(function(response) {
+
+                    });
+            });
+    });
+    $('#historial-ventas-table').on('click', '.recuperar-venta', function() {
+        pagoDtRow = $(this).parents('tr');
+        var parseDtRow = historial_ventas_table.row(pagoDtRow).data();
+        var data = {
+            id_venta: parseDtRow.id_venta
+        };
+        swal({
+                title: "Cancelar venta",
+                text: "Esta a punto de cancelar una venta, ¿Desea continuar?",
+                type: "info",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true,
+                cancelButtonText: 'CANCELAR',
+            },
+            function() {
+                $.ajax({
+                        url: base_url + "ajax/recuperar_venta/",
+                        data: data,
+                        type: "post",
+                    })
+                    .done(function(response) {
+                        /*var newData = pagos_table.row(pagoDtRow).data(response).draw(false).node(); //
+                        $(newData).animate({ backgroundColor: 'yellow' }); //Animación para MAX*/
+                        swal("¡Pago removido!");
+                    })
+                    .fail(function(response) {
+
+                    });
+            });
     });
     var pagos_table = $('#pagos-table').DataTable({
         responsive: {
