@@ -43,9 +43,9 @@
                                 <?php 
                                 if($venta->estado == 0 || $venta->estado == 1 || $venta->estado == 2): 
                                 ?>
-                                <a href="<?= base_url(); ?>reportes/contrato/<?= $venta->id_venta; ?>" class="btn btn-success" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Ver contrato</a>
-                                <a href="<?= base_url(); ?>reportes/<?= ($venta->version == 2) ? 'pagares' : 'recibos'?>/<?= $venta->id_venta; ?>" class="btn btn-info" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> <?= ($venta->version == 2) ? 'Ver pagarés' : 'Ver recibos'?></a>
-                                <a href="<?= base_url() ?>registros/pagos/<?= $venta->id_venta; ?>" target="_blank" class="btn btn-success" ><i class="fa fa-fw fa-search"></i>Ver pagos</a>
+                                <a href="<?= base_url(); ?>reportes/contrato/<?= $venta->id_venta; ?>" class="btn btn-default" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> contrato</a>
+                                <a href="<?= base_url(); ?>reportes/<?= ($venta->version == 2) ? 'pagares' : 'recibos'?>/<?= $venta->id_venta; ?>" class="btn btn-primary" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> <?= ($venta->version == 2) ? 'pagarés' : ' recibos'?></a>
+                                <a href="<?= base_url() ?>registros/pagos/<?= $venta->id_venta; ?>" target="_blank" class="btn btn-success" ><i class="fa fa-fw fa-search"></i>pagos</a>
                                     <?php 
                                     if($venta->estado == 2): 
                                     ?>
@@ -53,11 +53,11 @@
                                     <?php 
                                     else: 
                                     ?>
-                                    <button class="btn btn-warning cancelar-venta">Cancelar</button>
+                                    <button class="btn btn-warning cancelar-venta"><span class="fa fa-ban fa-lg"></span> </button>
                                     <?php 
                                     endif; 
                                     ?> 
-                                <button class="btn btn-danger eliminar-venta">Eliminar</button>    
+                                <button title="Eliminar Contrato" class="btn btn-danger eliminar-venta"><span class="fa fa-trash fa-lg"></span></button>    
                                 <?php 
                                 else: 
                                 ?>

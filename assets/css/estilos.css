@@ -1703,7 +1703,7 @@ pre code {
 }
 @media (min-width: 1200px) {
   .container {
-    width: 1170px;
+    width: 90%;
   }
 }
 .container-fluid {
@@ -7233,6 +7233,22 @@ span.ht:before {
   right: -9px;
   color: #3fbb9b;
   font-size: 18px;
+}
+@media only screen and (min-width: 768px) {
+  .row-equal {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: box;
+    display: flex;
+    -webkit-box-align: end;
+    -moz-box-align: end;
+    -o-box-align: end;
+    -ms-flex-align: end;
+    -webkit-align-items: flex-end;
+    align-items: flex-end;
+  }
 }
 main.wrap-main {
   padding: 70px 0px 30px;

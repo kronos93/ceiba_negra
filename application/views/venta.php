@@ -120,13 +120,19 @@
                                 <div class="form-group col-xs-12 col-sm-7 select-periodos">
                                     <label class="required" for="manzana">Selecciona periodo de pago:</label>
                                     <select name="tipo_historial" id="tipo_historial" class="form-control">
-                                        <option selected value="nuevo-quincena">Quincenal (Clientes nuevos, días 01 a 15 de mes, 10 días de solapamiento)</option>
-                                        <option value="nuevo-mensual-i">Mensual (Clientes nuevos, 01 de mes, 10 días de solapamiento)</option>
-                                        <option value="nuevo-mensual-q">Mensual (Clientes nuevos, días 15 del mes, 10 días de solapamiento)</option>
+                                        <optgroup label="Clientes Nuevos">
+                                            <option selected value="nuevo-quincena">Quincenal (días 01 a 15 de mes, 10 días de solapamiento)</option>
+                                            <option value="nuevo-mensual-i">Mensual (01 de mes, 10 días de solapamiento)</option>
+                                            <option value="nuevo-mensual-q">Mensual (días 15 del mes, 10 días de solapamiento)</option>
+                                        </optgroup>
+                                        <optgroup label="Clientes Previos">
+                                            <option value="1-15">Quincenal (días 01 a 15 de mes)</option>
+                                            <option value="ini-mes">Mensual (01 de mes)</option>   
+                                            <option value="quincena-mes">Mensual (días 15 del mes)</option>   
+                                        </optgroup>
+                                        
                                         <!--<option value="nuevo-mensual-f">Mensual (Clientes nuevos, finales de mes, 10 días de solapamiento)</option>   -->                                     
-                                        <option value="1-15">Quincenal (Clientes previos, días 01 a 15 de mes)</option>
-                                        <option value="ini-mes">Mensual (Clientes previos, 01 de mes)</option>   
-                                        <option value="quincena-mes">Mensual (Clientes previos, días 15 del mes)</option>                                         
+                                                                              
                                         <!--<option value="1-16">Quincenal (Clientes previos, días 01 a días 16 del mes)</option>-->                                                                          
                                         <!--<option value="15-1">Quincenal (Clientes previos, días 15 de un mes al 01 del siguiente mes)</option>-->                                    
                                     </select>
@@ -148,7 +154,7 @@
                                         <div class="input-group-addon"><span class="fa fa-search"></span></div>
                                     </div>
                                 </div>
-                                <div class="form-group col-xs-12 col-sm-8 col-sm-2">
+                                <div class="form-group col-xs-12 col-sm-8 col-sm-3">
                                     <label class="required" for="lider">Contemplar comisión</label>
                                     <div class="radiobutton-custom">
                                         <input id="confirmyes" type="radio" name="confirm" value="yes" checked="checked">
@@ -157,7 +163,7 @@
                                         <label for="confirmno">No:</label>
                                     </div>
                                 </div>
-                                <div class="form-group col-xs-12  col-sm-8 col-sm-3">
+                                <div class="form-group col-xs-12  col-sm-8 col-sm-2">
                                     <label class="required" for="porcentaje_comision">Porcentaje comisión:</label>
                                     <input type="number" step="1" min="1" max="100" class="form-control required" id="porcentaje_comision" name="porcentaje_comision"/>
                                 </div>
