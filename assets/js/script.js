@@ -1017,11 +1017,9 @@ $(document).ready(function() {
         ],
     });
     $('#historial-ventas-table').on('click', '.cancelar-venta', function() {
-        if ($(this).parents('tr').hasClass('parent') || $(this).parents('tr').hasClass('child')) {
-            pagoDtRow = $(this).parents('tr').prev('tr.parent');
-        } else {
-            pagoDtRow = $(this).parents('tr');
-        }
+        pagoDtRow = (this.btn.closest('tr').hasClass('parent') || this.btn.closest('tr').hasClass('child')) ?
+            this.btn.closest('tr').prev('tr.parent') :
+            this.btn.parents('tr')
         var parseDtRow = historial_ventas_table.row(pagoDtRow).data();
         var data = {
             id_venta: parseDtRow.id_venta
@@ -1052,11 +1050,9 @@ $(document).ready(function() {
             });
     });
     $('#historial-ventas-table').on('click', '.activar-venta', function() {
-        if ($(this).parents('tr').hasClass('parent') || $(this).parents('tr').hasClass('child')) {
-            pagoDtRow = $(this).parents('tr').prev('tr.parent');
-        } else {
-            pagoDtRow = $(this).parents('tr');
-        }
+        pagoDtRow = (this.btn.closest('tr').hasClass('parent') || this.btn.closest('tr').hasClass('child')) ?
+            this.btn.closest('tr').prev('tr.parent') :
+            this.btn.parents('tr')
         var parseDtRow = historial_ventas_table.row(pagoDtRow).data();
         var data = {
             id_venta: parseDtRow.id_venta
@@ -1087,11 +1083,9 @@ $(document).ready(function() {
             });
     });
     $('#historial-ventas-table').on('click', '.eliminar-venta', function() {
-        if ($(this).parents('tr').hasClass('parent') || $(this).parents('tr').hasClass('child')) {
-            pagoDtRow = $(this).parents('tr').prev('tr.parent');
-        } else {
-            pagoDtRow = $(this).parents('tr');
-        }
+        pagoDtRow = (this.btn.closest('tr').hasClass('parent') || this.btn.closest('tr').hasClass('child')) ?
+            this.btn.closest('tr').prev('tr.parent') :
+            this.btn.parents('tr')
         var parseDtRow = historial_ventas_table.row(pagoDtRow).data();
         var data = {
             id_venta: parseDtRow.id_venta
@@ -1122,11 +1116,9 @@ $(document).ready(function() {
             });
     });
     $('#historial-ventas-table').on('click', '.recuperar-venta', function() {
-        if ($(this).parents('tr').hasClass('parent') || $(this).parents('tr').hasClass('child')) {
-            pagoDtRow = $(this).parents('tr').prev('tr.parent');
-        } else {
-            pagoDtRow = $(this).parents('tr');
-        }
+        pagoDtRow = (this.btn.closest('tr').hasClass('parent') || this.btn.closest('tr').hasClass('child')) ?
+            this.btn.closest('tr').prev('tr.parent') :
+            this.btn.parents('tr')
         var parseDtRow = historial_ventas_table.row(pagoDtRow).data();
         var data = {
             id_venta: parseDtRow.id_venta
