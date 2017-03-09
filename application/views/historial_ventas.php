@@ -6,8 +6,10 @@
                     <thead>
                         <tr>
                             <th data-visible="false">Id. venta</th>
-                            <th class="all">Cliente</th>                                    
-                            <th>Pagos retrasados</th>
+                            <th class="all">Cliente</th>     
+                            <th>Detalles</th>        
+                            <!--                       
+                            <th>Pagos retrasados</th>                            
                             <th>Pagos realizados con retraso</th> 
                             <th>Pagos realizados adelantados</th> 
                             <th>Pagos realizados en tiempo</th>  
@@ -18,7 +20,7 @@
                             <th>Total abonado</th>  
                             <th>Pagado en comisiones</th>  
                             <th>Líder</th>                          
-                            <th>Generado por:</th>
+                            <th>Generado por:</th>-->
                             <th class="all">Opciones</th>
                         </tr>
                     </thead>
@@ -34,19 +36,9 @@
                                     title="Detalles:"
                                     data-placement="top" 
                                     data-content="<p>Correo: <?= $venta->email ?></p><p>Telefono: <?=$venta->phone?></p>">...</a>
-                            </td>                            
-                            <td><?= $venta->retraso; ?></td>
-                            <td><?= $venta->retrasados; ?></td>
-                            <td><?= $venta->adelantados; ?></td>
-                            <td><?= $venta->en_tiempo; ?></td>
-                            <th><?= $venta->realizados; ?></th>
-                            <td><?= $venta->descripcion; ?></td>
-                            <td>$<?= number_format($venta->precio,2); ?></td>
-                            <td>$<?= number_format($venta->precio * ($venta->porcentaje_comision/100),2); ?></td>
-                            <td>$<?= number_format($venta->pagado,2); ?></td>                            
-                            <td>$<?= number_format($venta->comisionado,2); ?></td>
-                            <td><?= $venta->nombre_lider; ?></td>
-                            <td><?= $venta->nombre_user?></td>
+                            </td>        
+                            <td></td>                    
+                            
                             <td>     
                                 <?php 
                                 if($venta->estado == 0 || $venta->estado == 1 || $venta->estado == 2): 

@@ -981,7 +981,8 @@ $(document).ready(function() {
         "columns": [ //Atributos para la tabla
             { "data": "id_venta" },
             { "data": "nombre_cliente" },
-            { "data": "retraso" },
+            { "data": "detalles" },
+            /*{ "data": "retraso" },
             { "data": "retrasados" },
             { "data": "adelantados" },
             { "data": "en_tiempo" },
@@ -992,15 +993,15 @@ $(document).ready(function() {
             { "data": "abonado" },
             { "data": "comisiones" },
             { "data": "nombre_lider" },
-            { "data": "nombre_user" },
+            { "data": "nombre_user" },*/
             { "data": "" },
         ],
         columnDefs: [ //
-            {
+            /*{
                 //Quitar ordenamiento para estas columnas
                 "sortable": false,
                 "targets": [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-            },
+            },*/
             {
                 //Quitar busqueda para esta columna
                 "targets": [],
