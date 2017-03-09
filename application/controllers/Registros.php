@@ -4,18 +4,26 @@ use Carbon\Carbon;
 class Registros extends CI_Controller {
 	function __construct() {
         parent::__construct();
+		$this->load->model('Manzana_model');
+		$this->load->model('Precio_model');
         $this->load->model('Historial_model');
 		$this->load->model('Opciones_ingreso_model');
     }
 	public function manzanas() {	
 		$data['title'] = "Manzanas"; //Titulo de la página -> require
 		$data['body'] = "manzanas";	 //Nombre de la vista de cuerpo -> require
+		
 		$this->load->view('templates/template',$data);	//Combina header y footer con body
 	}
 	public function huertos()
 	{		
 		$data['title'] = "Huertos";
 		$data['body'] = "huertos";
+
+		$data['manzanas'] = $this->Manzana_model->select('id_manzana,manzana')
+									    		->get_();
+		$data['precios'] = $this->Precio_model->select('id_precio,enganche,abono')
+									    		->get();
 		$this->load->view('templates/template',$data);
 	}
 	public function opciones_de_ingreso(){

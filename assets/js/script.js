@@ -128,9 +128,13 @@ var GenericFrm = function(config) {
 
     this.dtTable = config.dtTable;
     this.autoNumeric = config.autoNumeric;
+    this.dtRow =
+        (this.btn.closest('tr').hasClass('parent') || this.btn.closest('tr').hasClass('child')) ?
+        this.btn.closest('tr').prev('tr.parent') :
+        this.btn.parents('tr');
 
-    this.dtRow = this.btn.parents('tr');
     this.parseDtRow = this.dtTable.row(this.dtRow).data();
+    console.log(this.parseDtRow);
     this.response;
     this.fnOnDone;
 

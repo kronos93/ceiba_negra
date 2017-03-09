@@ -28,7 +28,7 @@
 							<th>Col. Suroeste</th>
 							<th>Col. Oeste</th>
                             <th>Col. Noroeste</th>
-							<th <?= ($this->ion_auth->in_group('administrador')) ? 'data-visible="true" class="all"' : 'data-visible="false"' ?>>Opciones</th>            
+							<th <?= ($this->ion_auth->in_group('administrador')) ? 'data-visible="true"' : 'data-visible="false"' ?>>Opciones</th>            
 						</tr>
 					</thead>
 				</table>
