@@ -1013,7 +1013,11 @@ $(document).ready(function() {
         ],
     });
     $('#historial-ventas-table').on('click', '.cancelar-venta', function() {
-        pagoDtRow = $(this).parents('tr');
+        if ($(this).parents('tr').hasClass('parent') || $(this).parents('tr').hasClass('child')) {
+            pagoDtRow = $(this).parents('tr').prev('tr.parent');
+        } else {
+            pagoDtRow = $(this).parents('tr');
+        }
         var parseDtRow = historial_ventas_table.row(pagoDtRow).data();
         var data = {
             id_venta: parseDtRow.id_venta

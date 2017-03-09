@@ -21,7 +21,7 @@
                             <th>Pagado en comisiones</th>  
                             <th>Líder</th>                          
                             <th>Generado por:</th>-->
-                            <th class="all">Opciones</th>
+                            <th>Opciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -43,25 +43,25 @@
                                 <?php 
                                 if($venta->estado == 0 || $venta->estado == 1 || $venta->estado == 2): 
                                 ?>
-                                <a href="<?= base_url(); ?>reportes/contrato/<?= $venta->id_venta; ?>" class="btn btn-default" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> contrato</a>
-                                <a href="<?= base_url(); ?>reportes/<?= ($venta->version == 2) ? 'pagares' : 'recibos'?>/<?= $venta->id_venta; ?>" class="btn btn-primary" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> <?= ($venta->version == 2) ? 'pagarés' : ' recibos'?></a>
-                                <a href="<?= base_url() ?>registros/pagos/<?= $venta->id_venta; ?>" target="_blank" class="btn btn-success" ><i class="fa fa-fw fa-search"></i>pagos</a>
+                                <br/><a href="<?= base_url(); ?>reportes/contrato/<?= $venta->id_venta; ?>" class="btn btn-default" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> contrato</a>
+                                <br/><a href="<?= base_url(); ?>reportes/<?= ($venta->version == 2) ? 'pagares' : 'recibos'?>/<?= $venta->id_venta; ?>" class="btn btn-primary" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> <?= ($venta->version == 2) ? 'pagarés' : ' recibos'?></a>
+                                <br/><a href="<?= base_url() ?>registros/pagos/<?= $venta->id_venta; ?>" target="_blank" class="btn btn-success" ><i class="fa fa-fw fa-search"></i>pagos</a>
                                     <?php 
                                     if($venta->estado == 2): 
                                     ?>
-                                    <button class="btn btn-warning activar-venta">Activar</button>
+                                    <br/><button class="btn btn-warning activar-venta">Activar</button>
                                     <?php 
                                     else: 
                                     ?>
-                                    <button class="btn btn-warning cancelar-venta"><span class="fa fa-ban fa-lg"></span> </button>
+                                    <br/><button class="btn btn-warning cancelar-venta"><span class="fa fa-ban fa-lg"></span> </button>
                                     <?php 
                                     endif; 
                                     ?> 
-                                <button title="Eliminar Contrato" class="btn btn-danger eliminar-venta"><span class="fa fa-trash fa-lg"></span></button>    
+                                <br/><button title="Eliminar Contrato" class="btn btn-danger eliminar-venta"><span class="fa fa-trash fa-lg"></span></button>    
                                 <?php 
                                 else: 
                                 ?>
-                                <button class="btn btn-danger recuperar-venta">Recuperar</button>
+                                <br/><button class="btn btn-danger recuperar-venta">Recuperar</button>
                                 <?php 
                                 endif; 
                                 ?>                                                              
