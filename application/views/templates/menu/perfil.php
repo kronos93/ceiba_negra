@@ -1,3 +1,4 @@
+<?php if ($this->ion_auth->logged_in()) : ?>
 <ul class="nav navbar-nav navbar-right">
     <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Bienvenido: <?= $this->session->userdata('first_name') ?> <span class="caret"></span></a>
@@ -11,3 +12,4 @@
         </ul>
     </li>
 </ul>
+<?php endif; ?>

@@ -31,12 +31,14 @@
 				  			<figcaption>La Ceiba</figcaption>
 				  		</figure>
 				  	</a>
+					<?php if ($this->ion_auth->logged_in()) : ?>
 				  	<div class="shopCart" id="shopCartSale">
 						<span class="fa fa-shopping-cart fa-2x" id="shopCartSaleCount" data-venta="<?= $this->cart->total_items() ?>"></span>
 						<nav class="my-dropdown">
 							<ul id="listaVenta"></ul>							
 						</nav>							
 					</div>
+					<?php endif; ?>
 				</div>
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<?php $this->load->view('./templates/menu/registros'); ?>

@@ -1017,9 +1017,9 @@ $(document).ready(function() {
         ],
     });
     $('#historial-ventas-table').on('click', '.cancelar-venta', function() {
-        pagoDtRow = (this.btn.closest('tr').hasClass('parent') || this.btn.closest('tr').hasClass('child')) ?
-            this.btn.closest('tr').prev('tr.parent') :
-            this.btn.parents('tr')
+        pagoDtRow = ($(this).closest('tr').hasClass('parent') || $(this).closest('tr').hasClass('child')) ?
+            $(this).closest('tr').prev('tr.parent') :
+            $(this).parents('tr');
         var parseDtRow = historial_ventas_table.row(pagoDtRow).data();
         var data = {
             id_venta: parseDtRow.id_venta
@@ -1050,9 +1050,9 @@ $(document).ready(function() {
             });
     });
     $('#historial-ventas-table').on('click', '.activar-venta', function() {
-        pagoDtRow = (this.btn.closest('tr').hasClass('parent') || this.btn.closest('tr').hasClass('child')) ?
-            this.btn.closest('tr').prev('tr.parent') :
-            this.btn.parents('tr')
+        pagoDtRow = ($(this).closest('tr').hasClass('parent') || $(this).closest('tr').hasClass('child')) ?
+            $(this).closest('tr').prev('tr.parent') :
+            $(this).parents('tr');
         var parseDtRow = historial_ventas_table.row(pagoDtRow).data();
         var data = {
             id_venta: parseDtRow.id_venta
@@ -1083,9 +1083,9 @@ $(document).ready(function() {
             });
     });
     $('#historial-ventas-table').on('click', '.eliminar-venta', function() {
-        pagoDtRow = (this.btn.closest('tr').hasClass('parent') || this.btn.closest('tr').hasClass('child')) ?
-            this.btn.closest('tr').prev('tr.parent') :
-            this.btn.parents('tr')
+        pagoDtRow = ($(this).closest('tr').hasClass('parent') || $(this).closest('tr').hasClass('child')) ?
+            $(this).closest('tr').prev('tr.parent') :
+            $(this).parents('tr');
         var parseDtRow = historial_ventas_table.row(pagoDtRow).data();
         var data = {
             id_venta: parseDtRow.id_venta
