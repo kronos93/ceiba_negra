@@ -16,7 +16,8 @@
                             <th class="all"><?= lang('index_fname_th'); ?></th>
                             <th><?= lang('index_lname_th');?></th>
                             <th><?= lang('index_email_th');?></th>
-                            <th><?= lang('index_groups_th');?></th>
+                            <th>Telefono:</th>
+                            <th><?= lang('index_groups_th');?></th>                            
                             <th class="all"><?= lang('index_status_th');?></th>
                             <th class="all"><?= lang('index_action_th');?></th>
                         </tr>
@@ -26,14 +27,15 @@
                         <tr>
                             <td><?= htmlspecialchars($user->first_name, ENT_QUOTES, 'UTF-8');?></td>
                             <td><?= htmlspecialchars($user->last_name, ENT_QUOTES, 'UTF-8');?></td>
-                            <td><?= htmlspecialchars($user->email, ENT_QUOTES, 'UTF-8');?></td>
+                            <td><?= htmlspecialchars($user->email, ENT_QUOTES, 'UTF-8');?></td>     
+                            <td><?= $user->phone ?></td>                       
                             <td>
                                 <ul>
                                 <?php foreach ($user->groups as $group) :?>
                                     <li><?= htmlspecialchars($group->name, ENT_QUOTES, 'UTF-8') ?></li>
                                 <?php endforeach?>
                                 </ul>
-                            </td>
+                            </td>                            
                             <td><?php echo ($user->active) ? anchor("auth/deactivate/".$user->id, lang('index_active_link'), ["class"=>"btn btn-success", "data-target"=>'#userModal', 'data-toggle'=>"modal"]) : anchor("auth/activate/". $user->id, lang('index_inactive_link'), ["class"=>"btn btn-danger"]);?>
                             </td>
                             <td><?php echo anchor("auth/edit_user/".$user->id, lang('edit_user_heading'), ["class"=>"btn btn-info","data-target"=>'#userModal','data-toggle'=>'modal','data-btn-type'=>"edit"]) ;?>

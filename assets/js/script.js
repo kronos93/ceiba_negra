@@ -16,7 +16,7 @@ function format_numeric(action) {
         }); //Averiguar más del plugin para evitar menores a 0
     }
     $(".currency").autoNumeric(action, {
-        aSign: "$ "
+        aSign: "$"
     });
 }
 ////////////////////////////////////////////////
@@ -848,7 +848,8 @@ $(document).ready(function() {
         "ajax": base_url + 'ajax/get_opciones_de_ingreso',
         "columns": [ //Atributos para la tabla
             { "data": "id_opcion_ingreso" },
-            { "data": "nombre" }, {
+            { "data": "nombre" },
+            {
                 "data": "cuenta",
                 "render": function(data, type, full, meta) {
                     if (parseInt(data) === 0) {
@@ -857,7 +858,8 @@ $(document).ready(function() {
                         return data;
                     }
                 }
-            }, {
+            },
+            {
                 "data": "tarjeta",
                 "render": function(data, type, full, meta) {
                     if (parseInt(data) === 0) {
@@ -866,7 +868,13 @@ $(document).ready(function() {
                         return data;
                     }
                 }
-            }, {
+            },
+            {
+                "data": "ingreso",
+                render: $.fn.dataTable.render.number(',', '.', 2, '$'),
+                "type": "num-fmt",
+            },
+            {
                 "data": "",
                 "render": function(data, type, full, meta) {
                     var btnEditar = '<button data-toggle="modal" data-title="Editar opción de ingreso" data-btn-type="edit" data-target="#opcionDeIngresoModal" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>';
@@ -883,10 +891,11 @@ $(document).ready(function() {
             {
                 //Quitar ordenamiento para estas columnas
                 "sortable": false,
-                "targets": [1, 4]
-            }
-        ]
+                "targets": [1, 5]
+            },
+        ],
     });
+
     $('#opcionDeIngresoModal').on('show.bs.modal', function(e) {
         //Ocultar mensajes de la caja AJAX
         ajax_msg.hidden();
@@ -1371,6 +1380,17 @@ $(document).ready(function() {
         format_numeric('init');
     });
 
+    $(document).popover({
+        'selector': '[data-toggle=popover]',
+        'trigger': 'hover',
+        'placement': 'top',
+        'container': 'body',
+        'html': true,
+
+    });
+    $('[data-toggle=popover]').on('click', function(e) {
+        e.stopPropagation();
+    });
     /* //Herramienta para capturar las coordenadas del mapa
     mapplic.on('locationopened', function(e, location) {
         var manzana = (location.category.replace("mz", ""));

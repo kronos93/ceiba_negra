@@ -19,33 +19,43 @@ class Registros extends CI_Controller {
 		$this->load->view('templates/template',$data);
 	}
 	public function opciones_de_ingreso(){
-		$data['title'] = "Opciones de ingreso";
-		$data['body'] = "opciones_ingreso";					
-		$this->load->view('templates/template',$data);
+		if (!$this->ion_auth->logged_in()) {
+        // redirect them to the login page
+            redirect('auth/login', 'refresh');
+        } else {
+			$data['title'] = "Opciones de ingreso";
+			$data['body'] = "opciones_ingreso";					
+			$this->load->view('templates/template',$data);
+		}
 	}
 	public function ingresos($id) {
-		$data['title'] = "Ingresos";
-		$data['body'] = "ingresos";				
-		
-		if ($this->input->get('init_date') && $this->input->get('end_date')) {
-			$data['init_date'] = Carbon::createFromFormat('d-m-Y',$this->input->get('init_date'));
-			$data['end_date'] = Carbon::createFromFormat('d-m-Y',$this->input->get('end_date'));
-			$data['ingresos'] = $this->Opciones_ingreso_model->join('historial','historial.id_ingreso = opciones_ingreso.id_opcion_ingreso','left')
-															 ->where("id_opcion_ingreso = {$id} AND fecha BETWEEN '{$data['init_date']->format('Y-m-d')}' AND '{$data['end_date']->format('Y-m-d')}'")
-															 ->get();
-		} else {
-			$data['ingresos'] = $this->Opciones_ingreso_model->join('historial','historial.id_ingreso = opciones_ingreso.id_opcion_ingreso','left')
-															 ->where(['id_opcion_ingreso' => $id])
-															 ->get();
-			$data['init_date'] = $this->Historial_model->select('fecha')
-													   ->order_by('fecha ASC')
-													   ->limit(1)
-													   ->get(); 		
-			$data['init_date'] = Carbon::createFromFormat('Y-m-d',$data['init_date'][0]->fecha);
-			$data['end_date'] = Carbon::today();
-		}												
-		$data['id'] = $id;	
-		$this->load->view('templates/template',$data);
+		if (!$this->ion_auth->logged_in()) {
+        // redirect them to the login page
+            redirect('auth/login', 'refresh');
+        } else {
+			$data['title'] = "Ingresos";
+			$data['body'] = "ingresos";				
+			
+			if ($this->input->get('init_date') && $this->input->get('end_date')) {
+				$data['init_date'] = Carbon::createFromFormat('d-m-Y',$this->input->get('init_date'));
+				$data['end_date'] = Carbon::createFromFormat('d-m-Y',$this->input->get('end_date'));
+				$data['ingresos'] = $this->Opciones_ingreso_model->join('historial','historial.id_ingreso = opciones_ingreso.id_opcion_ingreso','left')
+																->where("id_opcion_ingreso = {$id} AND fecha BETWEEN '{$data['init_date']->format('Y-m-d')}' AND '{$data['end_date']->format('Y-m-d')}'")
+																->get();
+			} else {
+				$data['ingresos'] = $this->Opciones_ingreso_model->join('historial','historial.id_ingreso = opciones_ingreso.id_opcion_ingreso','left')
+																->where(['id_opcion_ingreso' => $id])
+																->get();
+				$data['init_date'] = $this->Historial_model->select('fecha')
+														->order_by('fecha ASC')
+														->limit(1)
+														->get(); 		
+				$data['init_date'] = Carbon::createFromFormat('Y-m-d',$data['init_date'][0]->fecha);
+				$data['end_date'] = Carbon::today();
+			}												
+			$data['id'] = $id;	
+			$this->load->view('templates/template',$data);
+		}
 	}
 	public function pagos($id_venta) {
 		$data['title'] = "Pagos";

@@ -45,6 +45,8 @@ class Venta extends CI_Controller
                                                       SUM(historial.pago) AS pagado, 
                                                       SUM(IF(historial.estado = 1,historial.comision,0)) AS comisionado,
                                                       CONCAT(cliente.first_name,' ',cliente.last_name) AS nombre_cliente,
+                                                      cliente.phone,
+                                                      cliente.email,
                                                       CONCAT(lider.first_name,' ',lider.last_name) AS nombre_lider,
                                                       CONCAT(user.first_name,' ',user.last_name) AS nombre_user")
                                             ->join('historial', 'ventas.id_venta = historial.id_venta', 'left')          

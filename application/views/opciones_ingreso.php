@@ -12,9 +12,10 @@
 					<thead>
 						<tr>
 							<th data-visible="false">Id. opción de ingreso</th>					
-							<th>Nombre</th>
+							<th class="all">Nombre</th>
 							<th>Cuenta</th>
-							<th>Tarjeta</th>							
+							<th>Tarjeta</th>		
+							<th>Ingreso</th>					
 							<th <?= ($this->ion_auth->in_group('administrador')) ? 'class="all"' : 'data-visible="false"' ?>>Opciones</th>	                
 						</tr>
 					</thead>

@@ -26,7 +26,14 @@
                         <?php foreach($ventas as $venta):?>
                         <tr>                 
                             <td><?= $venta->id_venta; ?></td>               
-                            <td><?= $venta->nombre_cliente; ?></td>                            
+                            <td>
+                                <?= $venta->nombre_cliente; ?>
+                                <a  data-toggle="popover" 
+                                    tabindex="1" 
+                                    title="Detalles:"
+                                    data-placement="top" 
+                                    data-content="Correo: <?= $venta->email ?> , Telefono: <?=$venta->phone?>">...</a>
+                            </td>                            
                             <td><?= $venta->retraso; ?></td>
                             <td><?= $venta->retrasados; ?></td>
                             <td><?= $venta->adelantados; ?></td>

@@ -32,6 +32,10 @@ class Opciones_ingreso_model extends CI_Model {
         $this->db->update($this->table);      
         return $this;  
     }
+    public function group_by($group){
+        $this->db->group_by($group);
+        return $this;
+    }
     public function insert_id() {
         return $this->db->insert_id();
     }
