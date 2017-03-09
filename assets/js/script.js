@@ -1380,17 +1380,25 @@ $(document).ready(function() {
         format_numeric('init');
     });
 
-    $(document).popover({
-        'selector': '[data-toggle=popover]',
-        'trigger': 'focus',
-        'placement': 'top',
-        'container': 'body',
-        'html': true,
 
-    });
     $('[data-toggle=popover]').on('click', function(e) {
-        e.stopPropagation();
+        console.log(e);
+        var event = e;
+        $('[data-toggle=popover]').popover('hide');
+        $(this).popover({
+                'html': true,
+            }).popover('show')
+            .on('shown.bs.popover', function() {
+                event.stopPropagation();
+                $('.popover').attr('tabindex', "10").on('click', function(e) {
+                    e.stopPropagation();
+                });
+            }).on('hidden.bs.popover', function() {
+                event.stopPropagation();
+            });
+        event.stopPropagation();
     });
+
     /* //Herramienta para capturar las coordenadas del mapa
     mapplic.on('locationopened', function(e, location) {
         var manzana = (location.category.replace("mz", ""));

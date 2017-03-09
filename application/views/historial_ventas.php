@@ -28,8 +28,9 @@
                             <td><?= $venta->id_venta; ?></td>               
                             <td>
                                 <?= $venta->nombre_cliente; ?>
-                                <a  data-toggle="popover" 
-                                    tabindex="1" 
+                                <a  
+                                    data-toggle="popover" 
+                                    tabindex="10" 
                                     title="Detalles:"
                                     data-placement="top" 
                                     data-content="<p>Correo: <?= $venta->email ?></p><p>Telefono: <?=$venta->phone?></p>">...</a>
