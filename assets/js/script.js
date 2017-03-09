@@ -1382,7 +1382,7 @@ $(document).ready(function() {
 
     $(document).popover({
         'selector': '[data-toggle=popover]',
-        'trigger': 'hover',
+        'trigger': 'focus',
         'placement': 'top',
         'container': 'body',
         'html': true,

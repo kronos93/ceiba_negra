@@ -32,7 +32,7 @@
                                     tabindex="1" 
                                     title="Detalles:"
                                     data-placement="top" 
-                                    data-content="Correo: <?= $venta->email ?> , Telefono: <?=$venta->phone?>">...</a>
+                                    data-content="<p>Correo: <?= $venta->email ?></p><p>Telefono: <?=$venta->phone?></p>">...</a>
                             </td>                            
                             <td><?= $venta->retraso; ?></td>
                             <td><?= $venta->retrasados; ?></td>
