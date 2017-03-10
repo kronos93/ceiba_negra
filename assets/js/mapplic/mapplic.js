@@ -3,10 +3,12 @@
  * Version 4.0
  * http://www.mapplic.com/
  */
+import { base_url } from '../src/utils/util';
+import Cart from '../src/Cart';
 import './dependencies/hammer.min';
 import './dependencies/jquery.mousewheel';
 import './dependencies/script';
-import { base_url } from '../src/utils/util';
+
 (function($) {
     "use strict";
 
@@ -120,7 +122,8 @@ import { base_url } from '../src/utils/util';
                                 type: "post",
                             })
                             .done(function(response) {
-                                templateCart(response);
+                                var cart = new Cart();
+                                cart.templateCart(response);
                             })
                             .fail(function(response) {
                                 alert("Algún error, contacte al administrador");

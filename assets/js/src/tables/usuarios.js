@@ -1,5 +1,5 @@
-import { base_url, ajax_msg } from './utils/util';
-import GenericFrm from './GenericFrm';
+import { base_url, ajax_msg } from '../utils/util';
+import GenericFrm from '../GenericFrm';
 //USUARIOS
 var users_table = $('#users-table').DataTable({
     "columns": [ //Atributos para la tabla

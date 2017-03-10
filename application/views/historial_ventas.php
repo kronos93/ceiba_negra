@@ -46,9 +46,9 @@
                             <td>
                                 <?= $venta->en_tiempo; ?>
                             </td>
-                            <th>
+                            <td>
                                 <?= $venta->realizados; ?>
-                            </th>
+                            </td>
                             <td>
                                 <?= $venta->descripcion; ?>
                             </td>

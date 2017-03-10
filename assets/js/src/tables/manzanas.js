@@ -1,5 +1,5 @@
-import { base_url, ajax_msg } from './utils/util';
-import GenericFrm from './GenericFrm';
+import { base_url, ajax_msg } from '../utils/util';
+import GenericFrm from '../GenericFrm';
 //MANZANAS
 //Estructura de Datatable para las Manzanas (La tabla de vista)
 var manzanas_table = $('#manzanas-table').DataTable({

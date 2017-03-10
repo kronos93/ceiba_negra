@@ -1,5 +1,5 @@
-import { base_url, ajax_msg, multiplicar } from './utils/util';
-import GenericFrm from './GenericFrm';
+import { base_url, ajax_msg, multiplicar } from '../utils/util';
+import GenericFrm from '../GenericFrm';
 var huertos_table = $('#huertos-table').DataTable({
     "ajax": base_url() + 'ajax/get_huertos_pmz',
     "columns": [ //Atributos para la tabla

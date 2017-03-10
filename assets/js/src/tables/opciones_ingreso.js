@@ -1,5 +1,5 @@
-import { base_url, ajax_msg } from './utils/util';
-import GenericFrm from './GenericFrm';
+import { base_url, ajax_msg } from '../utils/util';
+import GenericFrm from '../GenericFrm';
 //OPCIONES DE INGRESO
 var opciones_de_ingreso_table = $('#opciones-de-ingreso-table').DataTable({
     "ajax": base_url() + 'ajax/get_opciones_de_ingreso',

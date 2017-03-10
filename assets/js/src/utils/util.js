@@ -15,6 +15,21 @@ module.exports = {
         }
         return resultado;
     },
+    format_numeric: function(action) {
+        console.log('monedas');
+        if ($('.superficie').length) {
+            $('.superficie').autoNumeric(action, {
+                aSign: ' m\u00B2',
+                pSign: 's'
+            }); //Averiguar más del plugin para evitar menores a 0
+        }
+        if ($(".currency").length) {
+            $(".currency").autoNumeric(action, {
+                aSign: "$"
+            });
+        }
+
+    },
     ajax_msg: {
 
         hidden: function() {

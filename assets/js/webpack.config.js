@@ -15,7 +15,7 @@ var entry = PRODUCTION ? [
 
 var plugins =
     PRODUCTION ? [
-        new webpack.optimize.UglifyJsPlugin()
+        new webpack.optimize.UglifyJsPlugin(),
     ] : [
         new webpack.HotModuleReplacementPlugin(),
         // enable HMR globally
