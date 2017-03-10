@@ -212,7 +212,9 @@ class Auth extends CI_Controller {
 
 			// set any errors and display the form
 			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-			$this->_render_page('auth/forgot_password', $this->data);
+			/*$this->_render_page('auth/forgot_password', $this->data);*/
+			$data = array_merge($this->data,array('title'=>'Usuarios','body' => 'auth/forgot_password'));
+			$this->load->view('templates/template',$data);
 		}
 		else
 		{

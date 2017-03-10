@@ -1,3 +1,4 @@
+<?php if ($this->ion_auth->logged_in()) : ?>
 <ul class="nav navbar-nav">
     <li><a href="<?= base_url() ?>"><span class="fa fa-map"></span> Plano</a></li>
     <li class="dropdown">
@@ -17,3 +18,4 @@
         </ul>
     </li>   
 </ul>
+<?php endif; ?>
