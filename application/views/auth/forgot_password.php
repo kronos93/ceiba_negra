@@ -2,7 +2,7 @@
     <div class="forgotPassword--wrap">
         <section class="forgotPassword__container">
             <article class="forgotPassword__header">
-                <h3>Recuperacion de Contraseña</h3>
+                <h3>Recuperacion de Cuenta</h3>
             </article>
             <article class="forgotPassword__body">
                 <div class="container-fluid">
