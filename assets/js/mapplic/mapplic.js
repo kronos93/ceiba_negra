@@ -3,8 +3,10 @@
  * Version 4.0
  * http://www.mapplic.com/
  */
-
-;
+import './dependencies/hammer.min';
+import './dependencies/jquery.mousewheel';
+import './dependencies/script';
+import { base_url } from '../src/utils/util';
 (function($) {
     "use strict";
 
@@ -113,7 +115,7 @@
                         e.preventDefault;
                         var id_huerto = this.getAttribute("href");
                         $.ajax({
-                                url: base_url + "ajax/add_cart",
+                                url: base_url() + "ajax/add_cart",
                                 data: { id_huerto: id_huerto },
                                 type: "post",
                             })

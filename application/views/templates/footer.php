@@ -14,10 +14,6 @@
 	<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.1.0/js/dataTables.responsive.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.3/jquery.mask.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
-	<script type="text/javascript" src="<?= base_url() ?>assets/js/mapplic/dependencies/hammer.min.js"></script>
-	<script type="text/javascript" src="<?= base_url() ?>assets/js/mapplic/dependencies/jquery.mousewheel.js"></script>
-	<script type="text/javascript" src="<?= base_url() ?>assets/js/mapplic/dependencies/script.js"></script>
-	<script type="text/javascript" src="<?= base_url() ?>assets/js/mapplic/mapplic.js"></script>
 	<script type="text/javascript" src="http://cdn.jsdelivr.net/jquery.validation/1.15.0/jquery.validate.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-steps/1.1.0/jquery.steps.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.js"></script>
@@ -40,7 +36,7 @@
 		</li>
 		{{{link}}}
 	</script>
-	<script type="text/javascript" src="<?= base_url() ?>assets/js/numToWord.js?v=<?= date("Y-m-dH:i:s") ?>"></script>
-	<script type="text/javascript" src="<?= base_url() ?>assets/js/script.js?v=<?= date("Y-m-dH:i:s") ?>"></script>
+	<!--<script type="text/javascript" src="<?= base_url() ?>assets/js/dist/bundle.js"></script>-->
+	<script type="text/javascript" src="http://localhost:3030/dist/bundle.js"></script>
 	</body>
 </html>
