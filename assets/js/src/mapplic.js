@@ -1,12 +1,10 @@
-"use strict";
 import { base_url } from './utils/util.js';
 import { format_numeric } from './components/components';
-
 (function() {
     if ($('#mapplic').length) {
         require.ensure([], function(require) {
             require("../mapplic/mapplic.js");
-
+            console.log('dev');
             var mapplic = $('#mapplic').mapplic({
                 source: base_url() + 'ajax/get_mapa', // Using mall.json file as map data
                 sidebar: true, // hahilita Panel izquierdo
