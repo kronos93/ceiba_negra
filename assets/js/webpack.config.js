@@ -46,7 +46,8 @@ const config = {
     },
     "output": {
         "path": resolve(__dirname, './dist'),
-        "publicPath": "http://localhost:3030/dist/",
+        //"publicPath": "http://localhost:3030/dist/",
+        "publicPath": "http://localhost/ceiba_negra/assets/js/dist/",
         "filename": "bundle.js"
     }
 };

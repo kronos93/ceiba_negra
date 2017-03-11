@@ -31,7 +31,7 @@
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6">
                                     <label class="" for="phone">Celular</label>
-                                    <input type="text" class="form-control" name="phone" id="phone" placeholder="9983129864" />
+                                    <input type="text" class="form-control phone" name="phone" id="phone" placeholder="9983129864" />
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6">
                                     <label class="required" for="lugar_nacimiento">Lugar de nacimiento: </label>
@@ -39,7 +39,7 @@
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6">
                                     <label class="" for="fecha_nacimiento">Fecha de nacimiento</label>
-                                    <input type="text" class="form-control required" name="fecha_nacimiento" id="fecha_nacimiento" placeholder="dd-mm-yyyy" />
+                                    <input type="text" class="form-control required datepicker" name="fecha_nacimiento" id="fecha_nacimiento" placeholder="dd-mm-yyyy" />
                                 </div>
                                 <legend>Domicilio</legend>
                                 <div class="form-group col-xs-12 col-sm-6">
@@ -52,7 +52,7 @@
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-3 col-lg-2">
                                     <label class="" for="no_int">No. Interior:</label>
-                                    <input type="text" class="form-control" name="no_int" id="no_int" placeholder="S/N" />
+                                    <input type="text" class="form-control" name="no_int" id="no_int" value="S/N" placeholder="S/N" />
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-lg-2">
                                     <label class="required" for="colonia">Colonia:</label>
@@ -72,7 +72,7 @@
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-3">
                                     <label class="required" for="cp">C.P</label>
-                                    <input type="text" class="form-control required" name="cp" id="cp" placeholder="77510" />
+                                    <input type="text" class="form-control required number" name="cp" id="cp" placeholder="77510" />
                                 </div>
                             </div>
                         </div>
@@ -85,7 +85,7 @@
                                 <div class="form-group col-xs-12 col-sm-3">
                                     <label class="required" for="fecha_init">Fecha del contrato:</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control required" id="fecha_init" placeholder="dd-mm-yyyy" value="<?= $fecha ?>" name="fecha_init" />
+                                        <input type="text" class="form-control required datepicker" id="fecha_init" placeholder="dd-mm-yyyy" value="<?= $fecha ?>" name="fecha_init" />
                                         <span class="input-group-addon" id="sizing-addon1">
 											<i class="fa fa-calendar"></i>
 										</span>

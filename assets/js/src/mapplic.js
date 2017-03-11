@@ -1,4 +1,7 @@
-import { base_url, format_numeric } from './utils/util.js';
+"use strict";
+import { base_url } from './utils/util.js';
+import { format_numeric } from './components/components';
+
 (function() {
     if ($('#mapplic').length) {
         require.ensure([], function(require) {

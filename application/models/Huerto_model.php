@@ -86,7 +86,7 @@ class Huerto_model extends CI_Model
                                 )
                             ) as fill,
                             CONCAT('<div>Superficie: <span class=\"superficie\">',{$this->tabla}.superficie,'</div>',
-                                   '<div class=\"currency\">Precio: <span class=\"currency\">',({$this->tabla}.precio_x_m2 * {$this->tabla}.superficie),'</span></div>') as description,
+                                   '<div>Precio: <span class=\"currency\">',({$this->tabla}.precio_x_m2 * {$this->tabla}.superficie),'</span></div>') as description,
                             IF( manzanas.disponibilidad = 0,
                                 '',
                                 IF( {$this->tabla}.vendido = 0 ,

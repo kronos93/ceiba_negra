@@ -1,17 +1,18 @@
-import { base_url, format_numeric } from './utils/util';
+import { base_url } from './utils/util';
+import { format_numeric } from './components/components';
 class Cart {
     constructor() {
         var that = this;
         $('#shopCartSale').off('click').on('click', function(e) {
             $(this).find('.my-dropdown').slideToggle('3500');
-
         });
-
-
     }
     get() {
         var that = this;
-        $.get(base_url() + "ajax/add_cart", function(response) { that.templateCart(response) });
+        $.get(base_url() + "ajax/add_cart", function(response) {
+            that.templateCart(response);
+        });
+
     }
     delete(rowid) {
         var that = this;
@@ -35,7 +36,7 @@ class Cart {
         var template = document.getElementById('template-venta').innerHTML;
         var output = Mustache.render(template, response);
         document.getElementById("listaVenta").innerHTML = output;
-
+        format_numeric('init');
         //Validar cuando se vacie el carrito
         if (!response.count) {
             var uri = window.location.pathname;
@@ -46,7 +47,6 @@ class Cart {
             }
         };
         $('.itemCartDelete').off('click').on('click', function(e) {
-
             var rowid = $(this).val();
             that.delete(rowid)
             e.stopPropagation();
