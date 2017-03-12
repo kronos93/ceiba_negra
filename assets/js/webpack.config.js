@@ -36,10 +36,19 @@ const config = {
     "plugins": plugins,
     "module": {
         "loaders": [{
-            test: /\.js$/,
-            loaders: ['babel-loader'],
-            exclude: /node_modules/
-        }]
+                test: /\.js$/,
+                loaders: ['babel-loader'],
+                exclude: /node_modules/
+            },
+            {
+                test: /\.css$/,
+                loaders: ['style-loader', 'css-loader']
+            },
+            {
+                test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
+                loaders: ['url-loader'],
+            }
+        ]
     },
     "externals": {
         "jquery": 'jQuery'
@@ -47,7 +56,7 @@ const config = {
     "output": {
         "path": resolve(__dirname, './dist'),
         "publicPath": "http://localhost:3030/dist/",
-        //"publicPath": "http://localhost/ceiba_negra/assets/js/dist/",
+        /*"publicPath": "http://localhost/ceiba_negra/assets/js/dist/",*/
         "filename": "bundle.js"
     }
 };

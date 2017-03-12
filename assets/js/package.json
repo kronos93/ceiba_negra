@@ -1,33 +1,36 @@
 {
-    "name": "huertoslaceiba",
-    "version": "1.0.0",
-    "description": "",
-    "main": "script.js",
-    "scripts": {
-        "dev": "set NODE_ENV=development&&node ./webpack-dev-server.js",
-        "build": "set NODE_ENV=production&&webpack"
-    },
-    "author": "coox tu web",
-    "license": "ISC",
-    "devDependencies": {
-        "babel-core": "^6.23.1",
-        "babel-loader": "^6.4.0",
-        "babel-plugin-transform-async-to-generator": "^6.22.0",
-        "babel-plugin-transform-regenerator": "^6.22.0",
-        "babel-plugin-transform-runtime": "^6.23.0",
-        "babel-preset-env": "^1.2.1",
-        "babel-preset-es2015": "^6.22.0",
-        "babel-preset-stage-0": "^6.22.0",
-        "jquery": "^3.1.1",
-        "jquery-mask-plugin": "^1.14.10",
-        "jquery-steps": "^1.1.0",
-        "jquery-ui": "^1.12.1",
-        "jquery-validation": "^1.16.0",
-        "moment": "^2.17.1",
-        "sweetalert": "^1.1.3",
-        "tinymce": "^4.5.5",
-        "webpack": "^2.2.1",
-        "webpack-dev-server": "^2.4.1",
-        "webpack-validator": "^2.3.0"
-    }
+  "name": "huertoslaceiba",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "dev": "set NODE_ENV=development&&node ./webpack-dev-server.js",
+    "build": "set NODE_ENV=production&&webpack"
+  },
+  "author": "coox tu web",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.23.1",
+    "babel-loader": "^6.4.0",
+    "babel-plugin-transform-async-to-generator": "^6.22.0",
+    "babel-plugin-transform-regenerator": "^6.22.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.2.1",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-stage-0": "^6.22.0",
+    "css-loader": "^0.27.1",
+    "jquery": "^3.1.1",
+    "jquery-mask-plugin": "^1.14.10",
+    "jquery-steps": "^1.1.0",
+    "jquery-ui": "^1.12.1",
+    "jquery-validation": "^1.16.0",
+    "moment": "^2.17.1",
+    "style-loader": "^0.13.2",
+    "sweetalert": "^1.1.3",
+    "tinymce": "^4.5.5",
+    "url-loader": "^0.5.8",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.4.1",
+    "webpack-validator": "^2.3.0"
+  }
 }

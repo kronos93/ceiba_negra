@@ -256,7 +256,7 @@ class Auth extends CI_Controller {
 	// reset password - final step for forgotten password
 	public function reset_password($code = NULL)
 	{
-		if (!$code)
+		/*if (!$code)
 		{
 			show_404();
 		}
@@ -340,7 +340,12 @@ class Auth extends CI_Controller {
 			// if the code is invalid then send them back to the forgot password page
 			$this->session->set_flashdata('message', $this->ion_auth->errors());
 			redirect("auth/forgot_password", 'refresh');
-		}
+		}*/
+		ini_set("display_errors", "1");
+		error_reporting(0);
+		$this->data = [];
+		$data = array_merge($this->data,array('title'=>'Reiniciar contraseña','body' => 'auth/reset_password'));
+		$this->load->view('templates/template',$data);
 	}
 
 

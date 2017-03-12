@@ -1,7 +1,5 @@
 module.exports = {
     autocompleteClientes: function(base_url) {
-        var that = this;
-        console.log(this);
         $('#clientes_autocomplete').autocomplete({
             serviceUrl: base_url() + 'ajax/autocomplete_clientes',
             noCache: true,
