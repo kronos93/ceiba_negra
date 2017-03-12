@@ -1,8 +1,12 @@
 import $ from 'jquery';
 import { base_url } from './utils/util';
-import { autocompleteClientes, autocompleteLideres, datepicker, phone, number } from './components/components.js';
+import { autocompleteClientes, autocompleteLideres, datepicker, phone, number, format_numeric } from './components/components.js';
 import moment from 'moment';
-import { Unidades, Decenas, DecenasY, Centenas, Seccion, Miles, Millones, NumeroALetras } from './utils/numToWord';
+import swal from 'sweetalert';
+import NumeroALetras from './utils/NumeroALetras.js';
+
+
+console.log(new NumeroALetras(999999).data.txt);
 import 'jquery-steps/build/jquery.steps';
 import 'jquery-validation/dist/jquery.validate'
 import 'jquery-mask-plugin/dist/jquery.mask';
@@ -36,8 +40,6 @@ import 'tinymce/plugins/paste/plugin.js';
 import 'tinymce/plugins/textcolor/plugin.js';
 import 'tinymce/plugins/colorpicker/plugin.js';
 import 'tinymce/plugins/textpattern/plugin.js';
-
-import swal from 'sweetalert';
 
 tinymce.init({
     selector: '#contrato_html',
@@ -88,6 +90,15 @@ tinymce.init({
     }
 });
 
+$.get(base_url() + "ajax/add_cart", function(response) {
+    format_numeric('init');
+    $('#frm-venta #precio').autoNumeric('set', response.total);
+    $('#frm-venta #enganche').autoNumeric('set', response.enganche);
+    $('#frm-venta #abono').autoNumeric('set', response.abono);
+    ///////////////////////////////////////////////////////////////////////////
+    var porcentaje_comision = $('#porcentaje_comision').val();
+    $('#comision').autoNumeric('set', (porcentaje_comision / 100) * $('#precio').autoNumeric('get'));
+});
 var form_venta = $("#frm-venta");
 form_venta.validate({
     errorPlacement: function errorPlacement(error, element) { element.before(error); },

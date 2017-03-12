@@ -150,5 +150,6 @@ module.exports = {
             reverse: false
         };
         $('.number').mask('0#', options);
-    }
+    },
+
 };

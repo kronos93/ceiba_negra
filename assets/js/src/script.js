@@ -14,15 +14,15 @@ import './tables/historial_ventas';
 import './tables/pagos';
 import './tables/usuarios';
 
-
+var cart = new Cart();
+cart.get();
 if ($('#frm-venta').length) {
     require.ensure([], function(require) {
         require("./venta.js");
     });
 }
 
-var cart = new Cart();
-cart.get();
+
 
 
 
