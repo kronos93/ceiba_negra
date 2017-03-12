@@ -1631,7 +1631,7 @@ table tbody tr td {
 }
 @media only screen and (min-width: 768px) {
   .page {
-    padding: 80px;
+    padding: 50px;
     padding-top: 90px;
     min-height: 27cm;
   }

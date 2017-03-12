@@ -133,7 +133,8 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td><img src="dist/images/logos/logo-small.png" alt=""></td>
+                                        <td><img src="dist/images/logos/logo-small.png
+" alt=""></td>
                                         <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestiae dolore facere cupiditate, unde quaerat eos esse possimus, beatae consequatur doloremque id eius laborum recusandae nesciunt, quae qui itaque incidunt ab.</td>
                                     </tr>
                                     <tr>
@@ -151,7 +152,7 @@
             </div>
         </div>
     </section> -->
-    <section class="page-container venta">
+    <section class="page-container venta" id="venta">
         <div class="container-fluid container">
             <div class="row">
                 <article class="page col-xs-12">
@@ -166,7 +167,7 @@
                         <h2>Manejo de Herramienta de mapa</h2>
                         <p>Pose el cursor del mouse sobre cada signo de interrogación para ver la descrpción de cada elemento.</p>
                         <div class="mapplicManual col-xs-12">
-                            <img class="lazy img-responsive" src="" data-original="dist/images/venta/mapplic-controls.png" alt="algo">
+                            <img class="lazy img-responsive" data-original="dist/images/venta/mapplic-controls.png" alt="algo">
                             <div class="toolTip search" data-text="Barra de Busqueda, con esta opcion puedes filtrar cada uno de los huertos por el Numero de Manzana">
                                 <span class="fa fa-question"></span>
                             </div>
@@ -220,7 +221,7 @@
                             <p>Una vez haciendo click sobre el huerto deseado se desplegara el siguiente menu contextual, el cual tiene la siguiente información.</p>
                         </div>
                         <div class="col-xs-12 col-sm-5">
-                            <img class="lazy img-responsive" src="dist/images/venta/menu-contextual.png" alt="">
+                            <img class="lazy img-responsive" data-original="dist/images/venta/menu-contextual.png" alt="">
                         </div>
                         <div class="col-xs-12 col-sm-7">
                             <ul>
@@ -238,10 +239,10 @@
                             <p>Para agregar uno o mas huertos al carrito de compras, basta con presionar el botón "Agregar" del menu contextual del huerto que deseé, <strong><i>vea la imagen.</i></strong></p>
                         </div>
                         <div class="col-xs-12 col-sm-4">
-                            <img class="lazy img-responsive" src="dist/images/venta/agregar-carrito-2.png" alt="">
+                            <img class="lazy img-responsive" data-original="dist/images/venta/agregar-carrito-2.png" alt="">
                         </div>
                         <div class="col-xs-12 col-sm-4">
-                            <img class="lazy img-responsive" src="dist/images/venta/agregar-carrito-3.png" alt="">
+                            <img class="lazy img-responsive" data-original="dist/images/venta/agregar-carrito-3.png" alt="">
                             <p>Una vez agregado el Huerto, el estado del carrito cambiara.</p>
                             <br>
                             <br>
@@ -273,7 +274,7 @@
                         </div>
                         <div class="col-xs-12 col-sm-offset-1 col-sm-10">
                             <div class="toolTipContainer">
-                                <img class="lazy img-responsive" src="dist/images/venta/formulario-datos-del-cliente.png" alt="">
+                                <img class="lazy img-responsive" data-original="dist/images/venta/form_venta_step1.jpg" alt="">
                                 <div class="toolTip steps" data-text="indicadores, su funcion principal es indicar en que paso del formulario se encuentra. cambiara de color a rojo si es que hubo algun error.">
                                     <span class="fa fa-question"></span>
                                 </div>
@@ -318,35 +319,47 @@
                             </p>
                         </div>
                         <div class="col-xs-12 col-sm-offset-1 col-sm-10">
-                            <img class="lazy img-responsive" src="dist/images/venta/formulario-datos-de-venta-pt1.png" alt="">
+                            <img class="lazy img-responsive" data-original="dist/images/venta/form_venta_step2.jpg" alt="">
                         </div>
                         <div class="col-xs-12">
                             <hr>
+                            <h3>Contrato</h3>
                             <ul>
-                                <li><strong>Fecha de Contrato:</strong> Esta es la fecha de expedicion del contrato generado.</li>
+                                <li><strong>Fecha de Contrato:</strong> Esta es la fecha de expedicion del contrato y la fecha del primer pago.</li>
                                 <li><strong>Ciudad de expedición:</strong>Lugar de expedicion del contrato, este puede ser diferente a la direccion del cliente.</li>
                                 <li><strong>Nombre de Testigo 1:</strong>Nombre del testigo numero 1.</li>
                                 <li><strong>Nombre de Testigo 2:</strong>Nombre del testigo numero 2.</li>
                             </ul>
                             <br>
+                            <h3>Precios</h3>
                             <ul>
-                                <li><strong>Precio del Huerto:</strong> Esta es la fecha de expedicion del contrato generado.</li>
-                                <li><strong>Enganche:</strong>Lugar de expedicion del contrato, este puede ser diferente a la direccion del cliente.</li>
-                                <li><strong>Abono:</strong>Nombre de los dos testgos que firmaran dentro del contrato.</li>
+                                <li><strong>Precio del Huerto:</strong>El precio total del Huerto a vender.</li>
+                                <li><strong>Enganche:</strong>Monto total del engance del huerto a vender.</li>
+                                <li><strong>Abono:</strong>Monto en pesos de los abonos a realizar.</li>
                             </ul>
                             <br>
+                            <h3>Periodos de Abono</h3>
+                            <ul>
+                                <li><strong>Forma de Pago:</strong>selección de plazos para los abonos(quincenal,mensual)</li>
+                            </ul>
+                            <br>
+                            <h3>Lider de Manzana</h3>
+                            <ul>
+                                <li><strong>Nombre:</strong> Esta es la fecha de expedicion del contrato generado.</li>
+                                <li><strong>Contemplar comisión</strong>Indicar si el lider generá una comision sobre la venta del huerto a vender.</li>
+                                <li><strong>%  de comision:</strong> Porcentaje de la comision del Lider.</li>
+                                <li><strong>Comision total:</strong> Monto total en pesos de la comision para el Lider.</li>
+                            </ul>
                         </div>
                         <div class="col-xs-12 col-sm-offset-1 col-sm-10">
-                            <img class="lazy img-responsive" src="dist/images/venta/formulario-datos-de-venta-pt2.png" alt="">
+                            <img class="lazy img-responsive" data-original="dist/images/venta/form_venta_step2_5.jpg" alt="">
                         </div>
                         <div class="col-xs-12">
                             <hr>
+                            <h3>Penalizaciones</h3>
                             <ul>
-                                <li><strong>Forma de pago:</strong> Forma de pago (quincenal o mensual)</li>
-                                <li><strong>Nombre de Lider:</strong> Nombre del Lider de la manzana del huerto que se vende.</li>
-                                <li><strong>Contemplar Comision:</strong> Opción para verificar si el lider de la manzana, obtiene o no la comisión.</li>
-                                <li><strong>Porcentaje de penalizacion:</strong>Porcentaje de penalizacion al acumular el numero maximo de retrasos. ( 1% por defecto)</li>
-                                <li><strong>Maximo de retrasos permitidos:</strong>Numero de retrasos permitidos. (tres por defecto)</li>
+                                <li><strong>% de Penalizacion:</strong> Porcentaje de la penalizacion que tendra el cliente en caso de morosidad.</li>
+                                <li><strong>Máximo de Retrasos Permitidos:</strong> Numero de retrasos permitidos en los abonos.</li>
                             </ul>
                             <br>
                             <br>
@@ -361,7 +374,7 @@
     </section>
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
     <script src="dist/scripts/jquery.lazyload.js"></script>
-    <script src="dist/scripts/main.min.js"></script>7
+    <script src="dist/scripts/main.min.js"></script>
 </body>
 
 </html>
