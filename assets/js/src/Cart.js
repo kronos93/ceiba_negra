@@ -37,6 +37,21 @@ class Cart {
         var output = Mustache.render(template, response);
         document.getElementById("listaVenta").innerHTML = output;
         format_numeric('init');
+        //Asignar contenido cuando
+        if ($('#precio').length && $('#enganche').length && $('#abono').length) {
+
+            console.log($('#precio'));
+            console.log(response.total);
+            $('#precio').autoNumeric('set', response.total);
+            $('#enganche').autoNumeric('set', response.enganche);
+            $('#abono').autoNumeric('set', response.abono);
+
+            ///////////////////////////////////////////////////////////////////////////
+            var porcentaje_comision = $('#porcentaje_comision').val();
+            $('#comision').autoNumeric('set', (porcentaje_comision / 100) * $('#precio').autoNumeric('get'));
+            ////////////////////////////////////////////////////////////////////////////
+
+        }
         //Validar cuando se vacie el carrito
         if (!response.count) {
             var uri = window.location.pathname;

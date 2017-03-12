@@ -1,11 +1,92 @@
 import $ from 'jquery';
 import { base_url } from './utils/util';
 import { autocompleteClientes, autocompleteLideres, datepicker, phone, number } from './components/components.js';
+import moment from 'moment';
+import { Unidades, Decenas, DecenasY, Centenas, Seccion, Miles, Millones, NumeroALetras } from './utils/numToWord';
 import 'jquery-steps/build/jquery.steps';
 import 'jquery-validation/dist/jquery.validate'
 import 'jquery-mask-plugin/dist/jquery.mask';
 import 'jquery-ui/ui/widgets/datepicker';
 import './configs/validator';
+
+
+import 'tinymce';
+import 'tinymce/themes/modern/theme.js';
+import 'tinymce/plugins/advlist/plugin.js';
+import 'tinymce/plugins/autolink/plugin.js';
+import 'tinymce/plugins/lists/plugin.js';
+import 'tinymce/plugins/charmap/plugin.js';
+import 'tinymce/plugins/print/plugin.js';
+import 'tinymce/plugins/preview/plugin.js';
+import 'tinymce/plugins/hr/plugin.js';
+import 'tinymce/plugins/anchor/plugin.js';
+import 'tinymce/plugins/pagebreak/plugin.js';
+import 'tinymce/plugins/searchreplace/plugin.js';
+import 'tinymce/plugins/wordcount/plugin.js';
+import 'tinymce/plugins/visualblocks/plugin.js';
+import 'tinymce/plugins/visualchars/plugin.js';
+import 'tinymce/plugins/code/plugin.js';
+import 'tinymce/plugins/fullscreen/plugin.js';
+import 'tinymce/plugins/nonbreaking/plugin.js';
+import 'tinymce/plugins/save/plugin.js';
+import 'tinymce/plugins/table/plugin.js';
+import 'tinymce/plugins/directionality/plugin.js';
+import 'tinymce/plugins/template/plugin.js';
+import 'tinymce/plugins/paste/plugin.js';
+import 'tinymce/plugins/textcolor/plugin.js';
+import 'tinymce/plugins/colorpicker/plugin.js';
+import 'tinymce/plugins/textpattern/plugin.js';
+
+import swal from 'sweetalert';
+
+tinymce.init({
+    selector: '#contrato_html',
+    mode: 'specifics_textareas',
+    editor_selector: 'mceEditor',
+    height: '600px',
+    plugins: [
+        'advlist autolink lists charmap print preview hr anchor pagebreak',
+        'searchreplace wordcount visualblocks visualchars code fullscreen',
+        'nonbreaking save table directionality',
+        'template paste textcolor colorpicker textpattern'
+    ],
+    toolbar1: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+    content_css: base_url() + '/assets/css/tinymce.css',
+    setup: function(ed) {
+        ed.on('init', function(args) {
+            //console.log(this);
+            // this ==  tinymce.activeEditor;
+            //tinyMCE.activeEditor.dom.select('.fecha_init'); Trae datos por clase probar después
+
+        });
+    },
+    init_instance_callback: function(editor) {
+        editor.on('SetContent', function(e) {
+            console.log("Asignando contenido dinamico");
+            /*console.log(this.dom.select('.fecha_init'));
+            console.log(tinymce.activeEditor.dom.select('.fecha_init'));*/
+            var fechas = ['fecha_primer_pago', 'fecha_ultimo_pago', 'fecha_init_1', 'fecha_init_2', 'fecha_init_3', 'fecha_init_4', 'fecha_init_5'];
+            for (var fecha in fechas) {
+                var fecha_tiny = tinymce.activeEditor.dom.get(fechas[fecha]);
+                var fecha_val = $(fecha_tiny).html();
+                var fecha_moment = moment(fecha_val, 'DD-MM-YYYY');
+                tinymce.activeEditor.dom.setHTML(fecha_tiny, fecha_moment.format("[el día ] dddd, DD [de] MMMM [del] [año] YYYY"));
+            }
+
+            var currencies = ['precio_1', 'precio_2', 'enganche', 'abono_1', 'abono_2', 'porcentaje'];
+            for (var currency in currencies) {
+                var currency_tiny = tinymce.activeEditor.dom.get(currencies[currency]);
+                var currency_val = $(currency_tiny).html();
+                if (currencies[currency] == 'porcentaje') {
+                    //var currency_format = NumeroALetras(currency_val).replace(/\b00\/100 MN\b/, '').replace(/\bPeso\b/, '').replace(/\bCON\b/g, 'PUNTO').replace(/\bPESOS\b/g, '').replace(/\bCENTAVOS\b/g, '').replace(/\s{2,}/g, " ");
+                } else {
+                    //var currency_format = NumeroALetras(currency_val).replace(/\s{2,}/g, " ");
+                }
+                //tinymce.activeEditor.dom.setHTML(currency_tiny, currency_format);
+            }
+        });
+    }
+});
 
 var form_venta = $("#frm-venta");
 form_venta.validate({
