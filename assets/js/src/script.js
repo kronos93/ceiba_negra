@@ -2,7 +2,7 @@ import $ from 'jquery';
 import { base_url } from './utils/util';
 import './config';
 
-import Cart from './Cart';
+
 
 
 import './mapplic';
@@ -27,8 +27,14 @@ if ($('#frm-venta').length) {
         require("./venta.js");
     });
 }
-var cart = new Cart();
-cart.get();
+if ($('#shopCartSale').length) {
+    require.ensure([], function(require) {
+        var Cart = require('./Cart');
+        var cart = new Cart.default();
+        cart.get();
+    });
+}
+
 
 if (module.hot) {
     module.hot.accept();

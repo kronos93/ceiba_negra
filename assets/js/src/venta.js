@@ -164,6 +164,7 @@ form_venta.steps({
         });
     },
     onStepChanging: function(event, currentIndex, newIndex) {
+        var xhr_response = true;
         if (newIndex == 2) {
             tinymce.activeEditor.setContent("");
             var data = {
@@ -212,26 +213,42 @@ form_venta.steps({
             $.ajax({
                     data: data,
                     url: base_url() + "venta/generar_contrato/",
-                    async: true,
+                    async: false,
                     type: 'post',
                     beforeSend: function() {
                         tinymce.activeEditor.setContent("");
                     },
+                    success: function(response) {
+
+                    },
                 }).done(function(response) {
+                    console.log('done');
                     tinymce.activeEditor.selection.setContent(response.html);
-                    localStorage.removeItem("precio");
-                    localStorage.removeItem("enganche");
-                    localStorage.removeItem("abono");
+                    xhr_response = true;
                 })
                 .fail(function(response) {
-                    sweetAlert("¡Error!", "Algo salió mal, contactar al administrador.", "error");
+                    console.log('fail');
+                    sweetAlert("¡Error!", "Algo salió mal, contactar al administrador sí el problema persiste.", "error");
+                    xhr_response = false;
                 });
+
+        }
+        form_venta.validate().settings.ignore = ":disabled,:hidden";
+        if (form_venta.valid()) {
+            if (xhr_response) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
         }
 
-        form_venta.validate().settings.ignore = ":disabled,:hidden";
-        return form_venta.valid();
-    },
 
+
+
+    },
+    saveState: true,
     onFinishing: function(event, currentIndex) {
         form_venta.validate().settings.ignore = ":disabled";
         return form_venta.valid();
@@ -264,6 +281,9 @@ form_venta.steps({
 
                         }
                     }).done(function(response) {
+                        localStorage.removeItem("precio");
+                        localStorage.removeItem("enganche");
+                        localStorage.removeItem("abono");
                         swal("¡Contrato generado exitosamente!");
                         window.location.href = base_url() + "venta/historial_de_ventas";
 
@@ -272,7 +292,7 @@ form_venta.steps({
                         sweetAlert("¡Error!", "Algo salió mal, contactar al administrador.", "error");
                     });
             });
-        console.log(data);
+
 
     },
     labels: {
