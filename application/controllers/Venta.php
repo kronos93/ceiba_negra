@@ -17,6 +17,7 @@ class Venta extends CI_Controller
         $this->load->model('Venta_model');
         $this->load->model('Historial_model');
         $this->load->model('HuertosVentas_model');
+        $this->load->model('Trans_model');
     }
     public function index()
     {
@@ -316,6 +317,7 @@ class Venta extends CI_Controller
     }
     public function guardar_contrato()
     {
+        header("Content-type: application/json; charset=utf-8");
         $email    = strtolower($this->input->post('email'));
         $identity =  $email ;
         $password = 'usuario1234';
@@ -342,6 +344,7 @@ class Venta extends CI_Controller
             'company' => 'Huertos la ceiba',
         ];
         $group = array('4');
+        $this->Trans_model->begin();
         //Si hay datos de un cliente
         if($this->input->post('id_cliente')){
             $user_id = $this->input->post('id_cliente');
@@ -543,6 +546,14 @@ class Venta extends CI_Controller
                 $this->cart->destroy(); 
             }
         }
+        if ($this->Trans_model->status() === FALSE) {
+            $this->Trans_model->rollback();
+            echo "Error fatal";
+        } else {
+            $this->Trans_model->commit();
+            echo json_encode(['status' => 200 ,'msg' => 'ok']);
+        }
+       
     }
 }
 
@@ -649,7 +660,7 @@ class Historial
                         $next = "quincena";
                         $fecha->startOfMonth();
                     } elseif ($dia > 5 && $dia <= 15) {
-                        $next = "fin_de_mes";
+                        $next = "ini_mes";
                     } else {
                         $new_date_end = Carbon::createFromFormat('d-m-Y', $fecha->format('d-m-Y'));
                         $endDay = $new_date_end->endOfMonth()->day;
@@ -658,12 +669,12 @@ class Historial
                             $fecha = $new_date_end->addDay(1);
                             $next = 'quincena';
                         } else {
-                            $next = 'fin_de_mes';
+                            $next = 'ini_mes';
                         }
                     }
                 } else {
-                    if ($next == 'fin_de_mes') {
-                        $fecha = $fecha->endOfMonth();
+                    if ($next == 'ini_mes') {
+                        $fecha = $fecha->endOfMonth()->addDay(1);
                         $new_date = Carbon::createFromFormat('d-m-Y', $fecha->format('d-m-Y'));
                         $row->setFecha($new_date);
                         $this->historial[$key] = $row;
@@ -674,7 +685,7 @@ class Historial
                         $new_date = Carbon::createFromFormat('d-m-Y', $fecha->format('d-m-Y'));
                         $row->setFecha($new_date);
                         $this->historial[$key] = $row;
-                        $next = "fin_de_mes";
+                        $next = "ini_mes";
                     }
                 }
             }
@@ -791,16 +802,21 @@ class Historial
                 }
             }
         }
+        //En uso
         else if($this->tipo_historial === '1-15') {
             $fecha = $this->fecha;
             foreach ($this->historial as $key => $row) {
                 if ($key === 0) {
                     $this->historial[$key]->setFecha($this->fecha_inicial);
                     $dia = ($this->fecha_inicial->day);                    
-                    if ($dia <= 15 ) {
+                    if ($dia < 15 ) {
                         $next = 'dieciseis_de_mes';
                         $fecha->startOfMonth();
-                    } else if ($dia >= 16) {                        
+                    } 
+                    else if ($dia == 15 ){
+                        $next = 'inicio_de_mes';
+                    }
+                    else if ($dia >= 16) {                        
                         $next = 'inicio_de_mes';
                     }
                 } else {
@@ -877,6 +893,7 @@ class Historial
                 }
             }
         } 
+        //En uso
         else if($this->tipo_historial === 'quincena-mes'){ 
             $fecha = $this->fecha;
             foreach ($this->historial as $key => $row) {
@@ -884,9 +901,12 @@ class Historial
                     $this->historial[$key]->setFecha($this->fecha_inicial);
                     $dia = ($this->fecha_inicial->day);
                     
-                    if ($dia <= 15) { //Revisar las demás condiciones
+                    if ($dia < 15) { //Revisar las demás condiciones
                         $next = 'quincena';
                         $fecha->startOfMonth();
+                    } else if($dia == 15){
+                        $next = 'quincena';
+                        $fecha = $fecha->endOfMonth()->addDay(1);
                     } else {
                         $fecha = $fecha->endOfMonth()->addDay(1);
                         $next = 'quincena';
@@ -903,6 +923,7 @@ class Historial
                 }
             }
         }
+        //En uso
         else if($this->tipo_historial === 'ini-mes'){ 
             $fecha = $this->fecha;
             foreach ($this->historial as $key => $row) {

@@ -265,6 +265,7 @@ form_venta.steps({
                 text: "Generar contrato",
                 type: "info",
                 showCancelButton: true,
+                cancelButtonText: "CANCELAR",
                 closeOnConfirm: false,
                 showLoaderOnConfirm: true,
             },
@@ -274,18 +275,29 @@ form_venta.steps({
                         url: base_url() + "venta/guardar_contrato/",
                         async: true,
                         type: 'post',
-                        beforeSend: function() {
-                            //$('a[href="#finish"]').attr("disabled", true);
-                        },
-                        success: function(xhr) {
-
-                        }
+                        beforeSend: function() {}
                     }).done(function(response) {
                         localStorage.removeItem("precio");
                         localStorage.removeItem("enganche");
                         localStorage.removeItem("abono");
-                        swal("¡Contrato generado exitosamente!");
-                        window.location.href = base_url() + "venta/historial_de_ventas";
+                        if (response.status != null && response.status != undefined != "" && response.status == 200) {
+                            swal("¡Contrato generado exitosamente! Será redigirdo al historial de ventas al pulsar aceptar");
+
+                            swal({
+                                    title: "¡Contrato realizado!",
+                                    text: "Pulsar el boton continuar para ver el historial.",
+                                    type: "success",
+                                    confirmButtonColor: "#DD6B55",
+                                    confirmButtonText: "¡CONTINUAR!",
+                                    closeOnConfirm: false
+                                },
+                                function() {
+                                    window.location.href = base_url() + "venta/historial_de_ventas";
+                                });
+
+                        } else {
+                            sweetAlert("¡Error!", "Algo salió mal, contactar al administrador.", "error");
+                        }
 
                     })
                     .fail(function(response) {
