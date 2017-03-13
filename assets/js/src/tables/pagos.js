@@ -1,5 +1,10 @@
 import { base_url, ajax_msg } from '../utils/util';
 import GenericFrm from '../GenericFrm';
+import moment from 'moment';
+import swa from 'sweetalert';
+moment.locale('es');
+
+
 var pagos_table = $('#pagos-table').DataTable({
     responsive: {
         details: {
@@ -14,7 +19,8 @@ var pagos_table = $('#pagos-table').DataTable({
         { "data": "abono" },
         { "data": "fecha" },
         { "data": "estado" },
-        { "data": "detalles" }, {
+        { "data": "detalles" },
+        {
             "data": "",
             "render": function(data, type, full, meta) {
 
@@ -52,7 +58,7 @@ var pagos_table = $('#pagos-table').DataTable({
         {
             //Quitar ordenamiento para estas columnas
             "sortable": false,
-            "targets": [1, 2, 3, 4, 5, 6, 7],
+            "targets": [1, 2, 3, 4, 5, 6, 7, 8, ],
         },
         {
             //Añadir boton dinamicamente, para esta columna*
@@ -72,6 +78,8 @@ $('#pagoModal').on('shown.bs.modal', function(e) {
     pagoDtRow = $(button).parents('tr');
     var parseDtRow = pagos_table.row(pagoDtRow).data();
     id_historial = parseDtRow.id_historial;
+    let today = moment().format('DD-MM-YYYY');
+    $('#fecha_pago').val(today);
     $.ajax({
             url: base_url() + "ajax/get_pagos/",
             data: { id_historial: id_historial },
@@ -85,41 +93,20 @@ $('#pagoModal').on('shown.bs.modal', function(e) {
             $('#penalizacion').autoNumeric('set', response.penalizacion);
             $('#porcentaje_penalizacion').val(response.porcentaje_penalizacion);
             $('#daysAccumulated').val(response.daysAccumulated);
-
         })
         .fail(function(response) {
-
+            swal("¡Error!", "La operación que intentó realizar ha fallado, contactar al administador sí el error persiste", "error");
         });
-});
-$('#frm-pago #porcentaje_comision').on('change keyup', function() {
-    var porcentaje_comision = $(this).val();
-    var monto = $('#frm-pago #pago').autoNumeric('get');
-    $('#frm-pago #comision').autoNumeric('set', monto * (porcentaje_comision / 100));
-});
-$('#frm-pago #comision').on('keyup', function() {
-    var comision = $(this).autoNumeric('get');
-    var monto = $('#frm-pago #pago').autoNumeric('get');
-    $('#frm-pago #porcentaje_comision').val((100 * (comision / monto)).toFixed(2));
-});
-$('#frm-pago #porcentaje_penalizacion').on('change keyup', function() {
-    var porcentaje_penalizacion = $(this).val();
-    var monto = $('#frm-pago #pago').autoNumeric('get');
-    var dias = $('#daysAccumulated').val();
-    $('#frm-pago #penalizacion').autoNumeric('set', (monto * (porcentaje_penalizacion / 100)) * dias);
-});
-$('#frm-pago #penalizacion').on('change keyup', function() {
-    var penalizacion = $('#penalizacion').autoNumeric('get');
-    var monto = $('#frm-pago #pago').autoNumeric('get');
-    var dias = $('#daysAccumulated').val();
-    $('#frm-pago #porcentaje_penalizacion').val((100 * (penalizacion / (monto * dias))).toFixed(2));;
 });
 $("#frm-pago").on('submit', function(e) {
     e.preventDefault();
+    var that = this;
     var data = $(this).serializeObject();
     data.id_historial = id_historial;
     data.pago = $('#pago').autoNumeric('get');
     data.penalizacion = $('#penalizacion').autoNumeric('get');
     data.comision = $('#comision').autoNumeric('get');
+
     $.ajax({
             url: base_url() + "ajax/pagar/",
             data: data,
@@ -127,56 +114,13 @@ $("#frm-pago").on('submit', function(e) {
         })
         .done(function(response) {
             $('#pagoModal').modal('hide');
+            that.reset();
             var newData = pagos_table.row(pagoDtRow).data(response).draw(false).node(); //
-            $(newData).animate({ backgroundColor: 'yellow' }); //Animación para MAX
+            $(newData).css({ backgroundColor: 'yellow' }); //Animación para MAX
+            swal("Hechó", "¡Pago realizado!", "success");
         })
         .fail(function(response) {
-
-        });
-});
-$('#pagoComisionModal').on('shown.bs.modal', function(e) {
-    var button = $(e.relatedTarget); // Boton que despliega el modal (Existe en el datatable
-    pagoDtRow = $(button).parents('tr');
-    var parseDtRow = pagos_table.row(pagoDtRow).data();
-    id_historial = parseDtRow.id_historial;
-    $.ajax({
-            url: base_url() + "ajax/get_comision/",
-            data: { id_historial: id_historial },
-            type: "post",
-        })
-        .done(function(response) {
-            $('#pago2').autoNumeric('set', response.abono);
-            $('#id_lider2').val(response.id_lider);
-            $('#comision2').autoNumeric('set', response.comision);
-            $('#porcentaje_comision2').val(response.porcentaje_comision);
-        })
-        .fail(function(response) {
-
-        });
-});
-$('#porcentaje_comision2').on('change keyup', function() {
-    var porcentaje_comision = $(this).val();
-    var monto = $('#pago2').autoNumeric('get');
-    $('#comision2').autoNumeric('set', monto * (porcentaje_comision / 100));
-});
-$("#frm-pago-comision").on('submit', function(e) {
-    e.preventDefault();
-    var data = $(this).serializeObject();
-    data.id_historial = id_historial;
-    data.pago = $('#pago2').autoNumeric('get');
-    data.comision = $('#comision2').autoNumeric('get');
-    $.ajax({
-            url: base_url() + "ajax/pagar_comision/",
-            data: data,
-            type: "post",
-        })
-        .done(function(response) {
-            $('#pagoComisionModal').modal('hide');
-            var newData = pagos_table.row(pagoDtRow).data(response).draw(false).node(); //
-            $(newData).animate({ backgroundColor: 'yellow' }); //Animación para MAX
-        })
-        .fail(function(response) {
-
+            swal("¡Error!", "La operación que intentó realizar ha fallado, contactar al administador sí el error persiste", "error");
         });
 });
 $('#pagos-table').on('click', '.removerPago', function() {
@@ -202,11 +146,79 @@ $('#pagos-table').on('click', '.removerPago', function() {
                 })
                 .done(function(response) {
                     var newData = pagos_table.row(pagoDtRow).data(response).draw(false).node(); //
-                    $(newData).animate({ backgroundColor: 'yellow' }); //Animación para MAX
-                    swal("¡Pago removido!");
+                    $(newData).css({ backgroundColor: 'yellow' }); //Animación para MAX
+                    swal("Hechó", "¡Pago removido!", "success");
                 })
                 .fail(function(response) {
-
+                    swal("¡Error!", "La operación que intentó realizar ha fallado, contactar al administador sí el error persiste", "error");
                 });
+        });
+});
+$('#frm-pago #porcentaje_comision').on('change keyup', function() {
+    var porcentaje_comision = $(this).val();
+    var monto = $('#frm-pago #pago').autoNumeric('get');
+    $('#frm-pago #comision').autoNumeric('set', monto * (porcentaje_comision / 100));
+});
+$('#frm-pago #comision').on('change keyup', function() {
+    var comision = $(this).autoNumeric('get');
+    var monto = $('#frm-pago #pago').autoNumeric('get');
+    $('#frm-pago #porcentaje_comision').val((100 * (comision / monto)).toFixed(2));
+});
+$('#frm-pago #porcentaje_penalizacion').on('change keyup', function() {
+    var porcentaje_penalizacion = $(this).val();
+    var monto = $('#frm-pago #pago').autoNumeric('get');
+    var dias = $('#daysAccumulated').val();
+    $('#frm-pago #penalizacion').autoNumeric('set', (monto * (porcentaje_penalizacion / 100)) * dias);
+});
+$('#frm-pago #penalizacion').on('change keyup', function() {
+    var penalizacion = $('#penalizacion').autoNumeric('get');
+    var monto = $('#frm-pago #pago').autoNumeric('get');
+    var dias = $('#daysAccumulated').val();
+    $('#frm-pago #porcentaje_penalizacion').val((100 * (penalizacion / (monto * dias))).toFixed(2));;
+});
+$('#pagoComisionModal').on('shown.bs.modal', function(e) {
+    var button = $(e.relatedTarget); // Boton que despliega el modal (Existe en el datatable
+    pagoDtRow = $(button).parents('tr');
+    var parseDtRow = pagos_table.row(pagoDtRow).data();
+    id_historial = parseDtRow.id_historial;
+    $.ajax({
+            url: base_url() + "ajax/get_comision/",
+            data: { id_historial: id_historial },
+            type: "post",
+        })
+        .done(function(response) {
+            $('#pago2').autoNumeric('set', response.abono);
+            $('#id_lider2').val(response.id_lider);
+            $('#comision2').autoNumeric('set', response.comision);
+            $('#porcentaje_comision2').val(response.porcentaje_comision);
+        })
+        .fail(function(response) {
+            swal("¡Error!", "La operación que intentó realizar ha fallado, contactar al administador sí el error persiste", "error");
+        });
+});
+$('#porcentaje_comision2').on('change keyup', function() {
+    var porcentaje_comision = $(this).val();
+    var monto = $('#pago2').autoNumeric('get');
+    $('#comision2').autoNumeric('set', monto * (porcentaje_comision / 100));
+});
+$("#frm-pago-comision").on('submit', function(e) {
+    e.preventDefault();
+    var data = $(this).serializeObject();
+    data.id_historial = id_historial;
+    data.pago = $('#pago2').autoNumeric('get');
+    data.comision = $('#comision2').autoNumeric('get');
+    $.ajax({
+            url: base_url() + "ajax/pagar_comision/",
+            data: data,
+            type: "post",
+        })
+        .done(function(response) {
+            $('#pagoComisionModal').modal('hide');
+            var newData = pagos_table.row(pagoDtRow).data(response).draw(false).node(); //
+            $(newData).css({ backgroundColor: 'yellow' }); //Animación para MAX
+            swal("Hechó", "¡Pago realizado!", "success");
+        })
+        .fail(function(response) {
+            swal("¡Error!", "La operación que intentó hacer ha fallado, contactar al administador", "error");
         });
 });

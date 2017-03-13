@@ -31,7 +31,12 @@
                             </td>
                             <td>
                                 <?= $venta->nombre_cliente; ?>
-                                    <a data-toggle="popover" tabindex="10" title="Detalles:" data-placement="top" data-content="<p>Correo: <?= $venta->email ?></p><p>Telefono: <?=$venta->phone?></p>"><span class="fa fa-info-circle fa-lg fa-fw"></span></a>
+                                <a 
+                                    data-toggle="popover" 
+                                    tabindex="10" 
+                                    title="Detalles:" 
+                                    data-placement="top" 
+                                    data-content="<p>Correo: <a href='mailto:<?= $venta->email ?>'> <?= $venta->email ?></a></p><p>Telefono: <a href='tel:<?=$venta->phone?>'><span class='phone'><?=$venta->phone?></span></a></p>"><span class="fa fa-info-circle fa-lg fa-fw"></span></a>
                             </td>
                             <!--<td></td>-->
                             <td>

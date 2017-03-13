@@ -86,6 +86,9 @@ module.exports = {
             },
             onSearchError: function(query, jqXHR, textStatus, errorThrown) {
                 console.log("Ha ocurrido un error.");
+            },
+            onInvalidateSelection: function() {
+                console.log("Ha ocurrido un error en la selección.");
             }
         });
     },
@@ -150,5 +153,6 @@ module.exports = {
             reverse: false
         };
         $('.number').mask('0#', options);
-    }
+    },
+
 };

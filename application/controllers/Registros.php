@@ -76,9 +76,9 @@ class Registros extends CI_Controller {
 															 opciones_ingreso.nombre) as nombre,
 														 historial.concepto,
 														 historial.abono,
-														 historial.fecha,
+														 DATE_FORMAT(historial.fecha,"%d-%m-%Y") AS fecha,
 														 historial.estado,
-														 historial.fecha_pago, 
+														 DATE_FORMAT(historial.fecha_pago,"%d-%m-%Y") AS fecha_pago, 
 														 IF( historial.estado = 0 , DATEDIFF( CURRENT_DATE() , historial.fecha ) , DATEDIFF( historial.fecha_pago ,historial.fecha ) ) as daysAccumulated,
 														 historial.pago,
 														 historial.comision,
@@ -92,13 +92,13 @@ class Registros extends CI_Controller {
 												->get();
 		foreach($data['pagos'] as $key => $ingreso){
 			if($ingreso->estado == 0) {				
-				$fecha = Carbon::createFromFormat('Y-m-d',$ingreso->fecha);
+				$fecha = Carbon::createFromFormat('d-m-Y',$ingreso->fecha);
 				$today = Carbon::createFromFormat('Y-m-d', Carbon::today()->format('Y-m-d'));
 				$data['pagos'][$key]->diff = $fecha->diff($today);
 				
 			}else{
-				$fecha = Carbon::createFromFormat('Y-m-d',$ingreso->fecha);
-				$fecha_pago = Carbon::createFromFormat('Y-m-d',$ingreso->fecha_pago);
+				$fecha = Carbon::createFromFormat('d-m-Y',$ingreso->fecha);
+				$fecha_pago = Carbon::createFromFormat('d-m-Y',$ingreso->fecha_pago);
 				$data['pagos'][$key]->diff = $fecha->diff($fecha_pago);
 			}
 			

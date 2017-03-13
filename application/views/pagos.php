@@ -33,22 +33,22 @@
                                        
                                         if ($pago->estado == 0) { 
                                             if($pago->daysAccumulated > 0) { 
-                                                echo 'Tiene un retraso en pago de: ' . $pago->diff->format('%y año(s) %m mes(es) y %d día(s)');
+                                                echo '<span class="label label-danger">Tiene un retraso en pago de:</span>' . $pago->diff->format('%y año(s) %m mes(es) y %d día(s).');
                                                
                                             } else if($pago->daysAccumulated == 0){
-                                                echo 'Hoy es día de pago.';
+                                                echo '<span class="label label-warning">Hoy es día de pago.</span>';
                                                 
                                             }else{
-                                                echo 'Aun no es fecha de pago. Faltan: '. $pago->diff->format('%y año(s) %m mes(es) y %d día(s)');
+                                                echo '<span class="label label-success">Aun no es fecha de pago</span>. Faltan: '. $pago->diff->format('%y año(s) %m mes(es) y %d día(s).');
                                                             
                                             }
                                         } else if ($pago->estado == 1){
                                             if($pago->daysAccumulated > 0) { 
-                                                echo 'Realizó el pago con un retraso de: ' . $pago->diff->format('%y año(s) %m mes(es) y %d día(s)');                             
+                                                echo 'Realizó el pago con un retraso de: ' . $pago->diff->format('%y año(s) %m mes(es) y %d día(s).');                             
                                             } else if($pago->daysAccumulated == 0) {
                                                 echo 'Pagado en tiempo.';
                                             } else if($pago->daysAccumulated < 0) {
-                                                echo 'Pagado por adelantado. Con: ' . $pago->diff->format('%y año(s) %m mes(es) y %d día(s)');
+                                                echo 'Pagado por adelantado. Con: ' . $pago->diff->format('%y año(s) %m mes(es) y %d día(s).');
                                             }
                                             echo '<div>Pago: $' . number_format($pago->pago,2) .'</div>';
                                             echo '<div>Deposito en: ' . $pago->nombre .'</div>';

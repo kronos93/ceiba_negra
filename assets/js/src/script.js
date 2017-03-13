@@ -2,7 +2,7 @@ import $ from 'jquery';
 import { base_url } from './utils/util';
 import './config';
 
-import Cart from './Cart';
+
 
 
 import './mapplic';
@@ -10,9 +10,16 @@ import './mapplic';
 import './tables/manzanas';
 import './tables/huertos';
 import './tables/opciones_ingreso';
+
 import './tables/historial_ventas';
+//Reacomodar
+import 'jquery-mask-plugin/dist/jquery.mask';
+import { phone } from './components/components.js';
+phone();
+
 import './tables/pagos';
 import './tables/usuarios';
+
 
 
 if ($('#frm-venta').length) {
@@ -20,11 +27,13 @@ if ($('#frm-venta').length) {
         require("./venta.js");
     });
 }
-
-var cart = new Cart();
-cart.get();
-
-
+if ($('#shopCartSale').length) {
+    require.ensure([], function(require) {
+        var Cart = require('./Cart');
+        var cart = new Cart.default();
+        cart.get();
+    });
+}
 
 
 if (module.hot) {

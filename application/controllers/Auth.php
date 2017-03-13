@@ -256,7 +256,7 @@ class Auth extends CI_Controller {
 	// reset password - final step for forgotten password
 	public function reset_password($code = NULL)
 	{
-		/*if (!$code)
+		if (!$code)
 		{
 			show_404();
 		}
@@ -300,14 +300,22 @@ class Auth extends CI_Controller {
 				$this->data['code'] = $code;
 
 				// render
+				$data['title'] = 'Reiniciar contraseña';
+				$data['body'] = '';
+				//$this->_render_page('templates/header', $data);
 				$this->_render_page('auth/reset_password', $this->data);
+				//$this->_render_page('templates/footer', $data);
+				
 			}
 			else
 			{
-				// do we have a valid request?
+				
 				if ($this->_valid_csrf_nonce() === FALSE || $user->id != $this->input->post('user_id'))
 				{
-
+					/*var_dump( $this->input->post($this->session->flashdata('csrfkey')));
+					var_dump( $this->session->flashdata('csrfvalue'));
+					echo "fallo 1";
+					die();*/
 					// something fishy might be up
 					$this->ion_auth->clear_forgotten_password_code($code);
 
@@ -316,6 +324,7 @@ class Auth extends CI_Controller {
 				}
 				else
 				{
+					
 					// finally change the password
 					$identity = $user->{$this->config->item('identity', 'ion_auth')};
 
@@ -340,12 +349,7 @@ class Auth extends CI_Controller {
 			// if the code is invalid then send them back to the forgot password page
 			$this->session->set_flashdata('message', $this->ion_auth->errors());
 			redirect("auth/forgot_password", 'refresh');
-		}*/
-		ini_set("display_errors", "1");
-		error_reporting(0);
-		$this->data = [];
-		$data = array_merge($this->data,array('title'=>'Reiniciar contraseña','body' => 'auth/reset_password'));
-		$this->load->view('templates/template',$data);
+		}
 	}
 
 

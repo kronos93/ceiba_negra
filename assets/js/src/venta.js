@@ -1,14 +1,15 @@
 import $ from 'jquery';
 import { base_url } from './utils/util';
-import { autocompleteClientes, autocompleteLideres, datepicker, phone, number } from './components/components.js';
+import { autocompleteClientes, autocompleteLideres, datepicker, phone, number, format_numeric } from './components/components.js';
 import moment from 'moment';
-import { Unidades, Decenas, DecenasY, Centenas, Seccion, Miles, Millones, NumeroALetras } from './utils/numToWord';
+import swal from 'sweetalert';
+import NumeroALetras from './utils/NumeroALetras.js';
+
 import 'jquery-steps/build/jquery.steps';
 import 'jquery-validation/dist/jquery.validate'
 import 'jquery-mask-plugin/dist/jquery.mask';
 import 'jquery-ui/ui/widgets/datepicker';
 import './configs/validator';
-
 
 import 'tinymce';
 import 'tinymce/themes/modern/theme.js';
@@ -36,9 +37,8 @@ import 'tinymce/plugins/paste/plugin.js';
 import 'tinymce/plugins/textcolor/plugin.js';
 import 'tinymce/plugins/colorpicker/plugin.js';
 import 'tinymce/plugins/textpattern/plugin.js';
-
-import swal from 'sweetalert';
-
+console.log($('#frm-venta #precio').val());
+moment.locale('es');
 tinymce.init({
     selector: '#contrato_html',
     mode: 'specifics_textareas',
@@ -53,52 +53,57 @@ tinymce.init({
     toolbar1: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
     content_css: base_url() + '/assets/css/tinymce.css',
     setup: function(ed) {
-        ed.on('init', function(args) {
-            //console.log(this);
-            // this ==  tinymce.activeEditor;
-            //tinyMCE.activeEditor.dom.select('.fecha_init'); Trae datos por clase probar después
-
-        });
+        ed.on('init', function(args) {});
     },
     init_instance_callback: function(editor) {
         editor.on('SetContent', function(e) {
-            console.log("Asignando contenido dinamico");
-            /*console.log(this.dom.select('.fecha_init'));
-            console.log(tinymce.activeEditor.dom.select('.fecha_init'));*/
-            var fechas = ['fecha_primer_pago', 'fecha_ultimo_pago', 'fecha_init_1', 'fecha_init_2', 'fecha_init_3', 'fecha_init_4', 'fecha_init_5'];
-            for (var fecha in fechas) {
-                var fecha_tiny = tinymce.activeEditor.dom.get(fechas[fecha]);
-                var fecha_val = $(fecha_tiny).html();
-                var fecha_moment = moment(fecha_val, 'DD-MM-YYYY');
+            var fechas = tinymce.activeEditor.dom.select('.fecha_txt');
+            //var fechas = ['fecha_primer_pago', 'fecha_ultimo_pago', 'fecha_init_1', 'fecha_init_2', 'fecha_init_3', 'fecha_init_4', 'fecha_init_5'];
+            fechas.map((fecha) => {
+                let fecha_tiny = tinymce.activeEditor.dom.get(fecha);
+                let fecha_val = $(fecha_tiny).html();
+                let fecha_moment = moment(fecha_val, 'DD-MM-YYYY');
                 tinymce.activeEditor.dom.setHTML(fecha_tiny, fecha_moment.format("[el día ] dddd, DD [de] MMMM [del] [año] YYYY"));
-            }
-
-            var currencies = ['precio_1', 'precio_2', 'enganche', 'abono_1', 'abono_2', 'porcentaje'];
-            for (var currency in currencies) {
-                var currency_tiny = tinymce.activeEditor.dom.get(currencies[currency]);
-                var currency_val = $(currency_tiny).html();
-                if (currencies[currency] == 'porcentaje') {
-                    //var currency_format = NumeroALetras(currency_val).replace(/\b00\/100 MN\b/, '').replace(/\bPeso\b/, '').replace(/\bCON\b/g, 'PUNTO').replace(/\bPESOS\b/g, '').replace(/\bCENTAVOS\b/g, '').replace(/\s{2,}/g, " ");
+            });
+            //var currencies = ['precio_1', 'precio_2', 'enganche', 'abono_1', 'abono_2', 'porcentaje'];
+            var currencies = tinymce.activeEditor.dom.select('.currency_txt');
+            currencies.map((currency) => {
+                let currency_tiny = tinymce.activeEditor.dom.get(currency);
+                let currency_val = $(currency_tiny).html();
+                let currency_format = "";
+                if (currency_tiny.id != 'porcentaje') {
+                    currency_format = new NumeroALetras(currency_val).data.txt.replace(/\s{2,}/g, " ");
                 } else {
-                    //var currency_format = NumeroALetras(currency_val).replace(/\s{2,}/g, " ");
+                    currency_format = new NumeroALetras(currency_val).data.txt.replace(/\b00\/100 MN\b/, '').replace(/\bPeso\b/, '').replace(/\bCON\b/g, 'PUNTO').replace(/\bPESOS\b/g, '').replace(/\bCENTAVOS\b/g, '').replace(/\s{2,}/g, " ");
                 }
-                //tinymce.activeEditor.dom.setHTML(currency_tiny, currency_format);
-            }
+                tinymce.activeEditor.dom.setHTML(currency_tiny, currency_format);
+            });
         });
     }
 });
+
 
 var form_venta = $("#frm-venta");
 form_venta.validate({
     errorPlacement: function errorPlacement(error, element) { element.before(error); },
     lang: 'es'
 });
+
 form_venta.steps({
     headerTag: "h3",
     bodyTag: "div",
     transitionEffect: "slide",
     autoFocus: true,
     onInit: function() {
+        ///////////////////////////////////////////////////////////////////////////
+        format_numeric('init');
+        $('#frm-venta #precio').autoNumeric('set', localStorage.getItem("precio"));
+        $('#frm-venta #enganche').autoNumeric('set', localStorage.getItem("enganche"));
+        $('#frm-venta #abono').autoNumeric('set', localStorage.getItem("abono"));
+        ///////////////////////////////////////////////////////////////////////////
+        var porcentaje_comision = $('#porcentaje_comision').val();
+        $('#comision').autoNumeric('set', (porcentaje_comision / 100) * $('#precio').autoNumeric('get'));
+        ///////////////////////////////////////////////////////////////////////////
         phone();
         number();
         datepicker();
@@ -159,9 +164,9 @@ form_venta.steps({
         });
     },
     onStepChanging: function(event, currentIndex, newIndex) {
+        var xhr_response = true;
         if (newIndex == 2) {
             tinymce.activeEditor.setContent("");
-
             var data = {
                 'first_name': '',
                 'last_name': '',
@@ -208,29 +213,49 @@ form_venta.steps({
             $.ajax({
                     data: data,
                     url: base_url() + "venta/generar_contrato/",
-                    async: true,
+                    async: false,
                     type: 'post',
                     beforeSend: function() {
                         tinymce.activeEditor.setContent("");
                     },
+                    success: function(response) {
+
+                    },
                 }).done(function(response) {
+                    console.log('done');
                     tinymce.activeEditor.selection.setContent(response.html);
+                    xhr_response = true;
                 })
                 .fail(function(response) {
-                    sweetAlert("¡Error!", "Algo salió mal, contactar al administrador.", "error");
+                    console.log('fail');
+                    sweetAlert("¡Error!", "Algo salió mal, contactar al administrador sí el problema persiste.", "error");
+                    xhr_response = false;
                 });
+
+        }
+        form_venta.validate().settings.ignore = ":disabled,:hidden";
+        if (form_venta.valid()) {
+            if (xhr_response) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
         }
 
-        form_venta.validate().settings.ignore = ":disabled,:hidden";
-        return form_venta.valid();
-    },
 
+
+
+    },
+    saveState: true,
     onFinishing: function(event, currentIndex) {
         form_venta.validate().settings.ignore = ":disabled";
         return form_venta.valid();
     },
     onFinished: function(event, currentIndex) {
         var data = $(this).serializeObject();
+        data.phone = $('#phone').cleanVal();
         data.contrato_html = tinymce.activeEditor.getContent();
         data.precio = $('#precio').autoNumeric('get');
         data.enganche = $('#enganche').autoNumeric('get');
@@ -240,6 +265,7 @@ form_venta.steps({
                 text: "Generar contrato",
                 type: "info",
                 showCancelButton: true,
+                cancelButtonText: "CANCELAR",
                 closeOnConfirm: false,
                 showLoaderOnConfirm: true,
             },
@@ -249,27 +275,41 @@ form_venta.steps({
                         url: base_url() + "venta/guardar_contrato/",
                         async: true,
                         type: 'post',
-                        beforeSend: function() {
-                            //$('a[href="#finish"]').attr("disabled", true);
-                        },
-                        success: function(xhr) {
-
-                        }
+                        beforeSend: function() {}
                     }).done(function(response) {
-                        swal("¡Contrato generado exitosamente!");
-                        window.location.href = base_url() + "venta/historial_de_ventas";
+                        localStorage.removeItem("precio");
+                        localStorage.removeItem("enganche");
+                        localStorage.removeItem("abono");
+                        if (response.status != null && response.status != undefined != "" && response.status == 200) {
+                            swal("¡Contrato generado exitosamente! Será redigirdo al historial de ventas al pulsar aceptar");
+
+                            swal({
+                                    title: "¡Contrato realizado!",
+                                    text: "Pulsar el boton continuar para ver el historial.",
+                                    type: "success",
+                                    confirmButtonColor: "#DD6B55",
+                                    confirmButtonText: "¡CONTINUAR!",
+                                    closeOnConfirm: false
+                                },
+                                function() {
+                                    window.location.href = base_url() + "venta/historial_de_ventas";
+                                });
+
+                        } else {
+                            sweetAlert("¡Error!", "Algo salió mal, contactar al administrador.", "error");
+                        }
 
                     })
                     .fail(function(response) {
                         sweetAlert("¡Error!", "Algo salió mal, contactar al administrador.", "error");
                     });
             });
-        console.log(data);
+
 
     },
     labels: {
         cancel: "Cancelar",
-        current: "Paso Actual:",
+        current: "Paso actual:",
         pagination: "Pagination",
         finish: "Finalizar",
         next: "Siguiente",
