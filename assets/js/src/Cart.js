@@ -6,6 +6,17 @@ class Cart {
         $('#shopCartSale').off('click').on('click', function(e) {
             $(this).find('.my-dropdown').slideToggle('3500');
         });
+        $(document).mouseup(function(e) {
+            var container = $(".my-dropdown");
+            console.log(e.target);
+
+            if (!container.is(e.target) // if the target of the click isn't the container...
+                &&
+                container.has(e.target).length === 0) // ... nor a descendant of the container
+            {
+                container.hide();
+            }
+        });
     }
     get() {
         var that = this;
@@ -37,6 +48,24 @@ class Cart {
         var output = Mustache.render(template, response);
         document.getElementById("listaVenta").innerHTML = output;
         format_numeric('init');
+        localStorage.setItem("precio", response.total);
+        localStorage.setItem("enganche", response.enganche);
+        localStorage.setItem("abono", response.abono);
+
+
+        if ($('#frm-venta #precio').length && $('#frm-venta #enganche').length && $('#frm-venta #abono').length && $('#comision').length) {
+
+            $('#frm-venta #precio').autoNumeric('set', localStorage.getItem("precio"));
+            $('#frm-venta #enganche').autoNumeric('set', localStorage.getItem("enganche"));
+            $('#frm-venta #abono').autoNumeric('set', localStorage.getItem("abono"));
+            ///////////////////////////////////////////////////////////////////////////
+            var porcentaje_comision = $('#porcentaje_comision').val();
+            $('#comision').autoNumeric('set', (porcentaje_comision / 100) * $('#precio').autoNumeric('get'));
+
+        }
+
+
+
         //Validar cuando se vacie el carrito
         if (!response.count) {
             var uri = window.location.pathname;
@@ -47,6 +76,7 @@ class Cart {
             }
         };
         $('.itemCartDelete').off('click').on('click', function(e) {
+
             var rowid = $(this).val();
             that.delete(rowid)
             e.stopPropagation();

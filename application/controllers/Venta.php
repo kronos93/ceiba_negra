@@ -268,7 +268,7 @@ class Venta extends CI_Controller
         $domicilio_cliente .= ($this->input->post('ciudad')) ? " Ciudad: ".ucwords($this->input->post('ciudad')) : "";
         $domicilio_cliente .= ($this->input->post('cp')) ? " Codigo postal: ".$this->input->post('cp') : "";
         $ciudad = $this->input->post('ciudad_expedicion');
-        $nacimiento_cliente = ucwords($this->input->post('lugar_nacimiento'))." el <span id='fecha_init_5' class='fecha_init'>".$this->input->post('fecha_nacimiento')."</span>";
+        $nacimiento_cliente = ucwords($this->input->post('lugar_nacimiento'))." el <span id='fecha_init_5' class='fecha_txt'>".$this->input->post('fecha_nacimiento')."</span>";
         $testigo_1 = ucwords($this->input->post('testigo_1'));
         $testigo_2 = ucwords($this->input->post('testigo_2'));
         $vars =

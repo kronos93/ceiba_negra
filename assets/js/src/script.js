@@ -10,22 +10,25 @@ import './mapplic';
 import './tables/manzanas';
 import './tables/huertos';
 import './tables/opciones_ingreso';
+
 import './tables/historial_ventas';
+//Reacomodar
+import 'jquery-mask-plugin/dist/jquery.mask';
+import { phone } from './components/components.js';
+phone();
+
 import './tables/pagos';
 import './tables/usuarios';
 
-var cart = new Cart();
-cart.get();
+
+
 if ($('#frm-venta').length) {
     require.ensure([], function(require) {
         require("./venta.js");
     });
 }
-
-
-
-
-
+var cart = new Cart();
+cart.get();
 
 if (module.hot) {
     module.hot.accept();

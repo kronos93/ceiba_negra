@@ -81,7 +81,13 @@ class Huerto_model extends CI_Model
                                     '',
                                     IF( {$this->tabla}.vendido = 1,
                                         '#2980b9',
-                                        '#d35400'
+                                        IF( {$this->tabla}.vendido = 2,
+                                            '#d35400',
+                                            IF( {$this->tabla}.vendido = 3,
+                                                '#f1c40f',
+                                                '#8e44ad'
+                                              )
+                                          )
                                     )
                                 )
                             ) as fill,
