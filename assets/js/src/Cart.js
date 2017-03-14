@@ -6,10 +6,11 @@ class Cart {
         $('#shopCartSale').off('click').on('click', function(e) {
             $(this).find('.my-dropdown').slideToggle('3500');
         });
+        $('#shopCartSale').find('nav').on('click', function(e) {
+            e.stopPropagation();
+        });
         $(document).mouseup(function(e) {
             var container = $(".my-dropdown");
-            console.log(e.target);
-
             if (!container.is(e.target) // if the target of the click isn't the container...
                 &&
                 container.has(e.target).length === 0) // ... nor a descendant of the container
@@ -23,7 +24,6 @@ class Cart {
         $.get(base_url() + "ajax/add_cart", function(response) {
             that.templateCart(response);
         });
-
     }
     delete(rowid) {
         var that = this;
@@ -76,7 +76,6 @@ class Cart {
             }
         };
         $('.itemCartDelete').off('click').on('click', function(e) {
-
             var rowid = $(this).val();
             that.delete(rowid)
             e.stopPropagation();
