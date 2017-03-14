@@ -44,7 +44,7 @@ var manzanas_table = $('#manzanas-table').DataTable({
             //Añadir boton dinamicamente, para esta columna*
             "targets": -1,
             "data": null,
-            "defaultContent": '<button data-toggle="modal" data-target="#manzanaModal" data-title="Editar manzana" data-btn-type="edit" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>',
+            "defaultContent": '<button data-toggle="modal" data-target="#manzanaModal" data-title="Editar manzana" data-btn-type="edit" class="btn btn-info btn-sm pull-right"><i class="fa fa-fw fa-pencil"></i></button>',
         }, {
             //Quitar ordenamiento para estas columnas
             "sortable": false,

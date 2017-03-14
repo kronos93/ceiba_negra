@@ -26,8 +26,7 @@ var huertos_table = $('#huertos-table').DataTable({
             "data": "precio",
             "render": $.fn.dataTable.render.number(',', '.', 2, '$'),
             "type": "num-fmt",
-        },
-        {
+        }, {
             "data": "enganche",
             "render": $.fn.dataTable.render.number(',', '.', 2, '$'),
             "type": "num-fmt",
@@ -61,7 +60,7 @@ var huertos_table = $('#huertos-table').DataTable({
             //Añadir boton dinamicamente, para esta columna*
             "targets": -1,
             "data": null,
-            "defaultContent": '<button data-toggle="modal" data-title="Editar huerto" data-btn-type="edit" data-target="#huertoModal" class="btn btn-info btn-sm"><i class="fa fa-fw fa-pencil"></i></button>',
+            "defaultContent": '<button data-toggle="modal" data-title="Editar huerto" data-btn-type="edit" data-target="#huertoModal" class="btn btn-info btn-sm pull-right"><i class="fa fa-fw fa-pencil"></i></button>',
         }, {
             //Quitar ordenamiento para estas columnas
             "sortable": false,
