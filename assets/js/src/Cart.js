@@ -8,7 +8,7 @@ class Cart {
         });
         $(document).mouseup(function(e) {
             var container = $(".my-dropdown");
-            console.log(e.target);
+            // console.log(e.target);
 
             if (!container.is(e.target) // if the target of the click isn't the container...
                 &&
