@@ -414,7 +414,7 @@ class Venta extends CI_Controller
                     $db_pago->id_lider =  $this->input->post('id_lider');
                     $db_pago->created_at = $now->toDateTimeString();
                     $db_pago->updated_at = $now->toDateTimeString();
-                    if ($key == 0) {
+                    if ($key == 0 && $pago->getConcepto() == "ENGANCHE") {
                         $db_pago->id_ingreso = $this->input->post('id_ingreso');
                         $db_pago->fecha_pago = $pago->getFecha()->format('Y-m-d');    
                         $db_pago->pago = $this->input->post('enganche');                      
@@ -426,7 +426,7 @@ class Venta extends CI_Controller
                         $db_pago->pago = 0; 
                         $db_pago->estado = 0; 
                         $db_pago->comision = 0;        
-                        if($pagado <= $pagar && $pagar != 0 && ($tipo_historial == '1-15' || $tipo_historial == 'quincena-mes' || $tipo_historial == 'ini-mes') ){
+                        if($pagado < $pagar && $pagar != 0 && ($tipo_historial == '1-15' || $tipo_historial == 'quincena-mes' || $tipo_historial == 'ini-mes') ){
                             $db_pago->id_ingreso = $this->input->post('id_ingreso');
                             $db_pago->pago = $db_pago->abono;
                             $db_pago->estado = 1;
@@ -453,7 +453,7 @@ class Venta extends CI_Controller
                 }
                 
                 $this->HuertosVentas_model->insert_batch($huertos_venta);      
-                $this->Huerto_model->update_batch($huertos,'id_huerto');              
+                $this->Huerto_model->update_batch($huertos,'id_huerto');            
                 $this->Historial_model->insert_batch($db_historial);
                 $this->cart->destroy(); 
             }
@@ -643,6 +643,24 @@ class Historial
                 }
                 array_push($this->historial, new Pago($concepto, $abono, $this->pagado, 'Fecha calculada'));
             }
+        } else {
+            unset($this->historial[0]);
+            $this->historial = array_values($this->historial);
+            while ($this->pagado < $this->total) {
+                $this->n_pago++;
+                $concepto = "PAGO ".$this->n_pago;
+                $abono = $this->abono;
+                $this->pagado+= $abono;
+                if ($this->pagado > $this->total) {
+                    $this->pagado-= $abono;
+                    $abono = $this->total - $this->pagado;
+                    $this->pagado+= $abono;
+                    array_push($this->historial, new Pago($concepto, $abono, $this->pagado, 'Fecha calculada'));
+                    break;
+                }
+                array_push($this->historial, new Pago($concepto, $abono, $this->pagado, 'Fecha calculada'));
+            }
+            
         }
     }
 

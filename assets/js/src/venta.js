@@ -296,12 +296,12 @@ form_venta.steps({
                                 });
 
                         } else {
-                            sweetAlert("¡Error!", "Algo salió mal, contactar al administrador.", "error");
+                            sweetAlert("¡Error!", "Algo salió mal, contactar al administrador sí el problema persiste.", "error");
                         }
 
                     })
                     .fail(function(response) {
-                        sweetAlert("¡Error!", "Algo salió mal, contactar al administrador.", "error");
+                        sweetAlert("¡Error!", "Algo salió mal, contactar al administrador sí el problema persiste.", "error");
                     });
             });
 

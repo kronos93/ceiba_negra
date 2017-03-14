@@ -191,6 +191,7 @@ class Reportes extends CI_Controller
             $n = "";
             $n_historial = "";
             $n_h = count($historials);
+            $de = "";
             foreach ($historials as $key => $historial) {
                 $fecha = Carbon::createFromFormat('Y-m-d', $historial->fecha);
                 $words = explode(" ", trim($historial->nombre_cliente));
@@ -200,6 +201,11 @@ class Reportes extends CI_Controller
                     $de = "";
                 }else{
                     $n = str_replace("PAGO","",$historial->concepto);
+                    if($key == 0){
+                        $n_historial = $n_h - 1;
+                        $n_historial += $n;
+                        $de = "de";
+                    }
                     if($key == 1){
                         $n_historial = $n_h - 2;
                         $n_historial += $n;
