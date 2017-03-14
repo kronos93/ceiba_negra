@@ -1,7 +1,10 @@
 import { base_url, ajax_msg } from '../utils/util';
+
 import GenericFrm from '../GenericFrm';
 import moment from 'moment';
 import swa from 'sweetalert';
+import 'jquery-mask-plugin/dist/jquery.mask';
+import 'jquery-ui/ui/widgets/datepicker';
 moment.locale('es');
 
 
@@ -86,6 +89,24 @@ $('#pagoModal').on('shown.bs.modal', function(e) {
             type: "post",
         })
         .done(function(response) {
+            /*EXTRA */
+            var datepicker = $('#fecha_pago');
+            datepicker.mask('00-00-0000');
+            datepicker.datepicker({
+                dateFormat: "dd-mm-yy"
+            });
+            if (response.fecha) {
+                let today = moment();
+                let minDay = moment(response.fecha, "DD-MM-YYYY");
+                let isBefore = minDay.isBefore(today);
+                if (isBefore) {
+                    $('#fecha_pago').datepicker("option", "minDate", response.fecha);
+                } else {
+                    $('#fecha_pago').datepicker("option", "minDate", today.format('DD-MM-YYYY'));
+                }
+
+            }
+            /*EXTRA */
             $('#pago').autoNumeric('set', response.abono);
             $('#id_lider').val(response.id_lider);
             $('#comision').autoNumeric('set', response.comision);
@@ -93,6 +114,7 @@ $('#pagoModal').on('shown.bs.modal', function(e) {
             $('#penalizacion').autoNumeric('set', response.penalizacion);
             $('#porcentaje_penalizacion').val(response.porcentaje_penalizacion);
             $('#daysAccumulated').val(response.daysAccumulated);
+
         })
         .fail(function(response) {
             swal("¡Error!", "La operación que intentó realizar ha fallado, contactar al administador sí el error persiste", "error");

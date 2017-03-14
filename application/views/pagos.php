@@ -98,7 +98,7 @@
                 <div class="row">
                     <div class="form-group col-xs-12 col-sm-6">
                          <label class="" >Fecha:</label>
-                         <input type="text" id="fecha_pago" name="fecha_pago" class="form-control" readonly/>
+                         <input type="text" id="fecha_pago" name="fecha_pago" data-min-date="" class="form-control datepicker" readonly/>
                     </div>
                     <div class="form-group col-xs-12 col-sm-6">
                          <label>Monto:</label>

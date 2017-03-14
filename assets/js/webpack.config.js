@@ -58,6 +58,7 @@ const config = {
         "publicPath": "http://localhost:3030/dist/",
         /*"publicPath": "http://localhost/ceiba_negra/assets/js/dist/",*/
         /*"publicPath": "http://dev.huertoslaceiba.com/assets/js/dist/",*/
+        /*"publicPath": "http://huertoslaceiba.com/assets/js/dist/",*/
         "filename": "bundle.js"
     }
 };

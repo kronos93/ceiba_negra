@@ -92,16 +92,16 @@ module.exports = {
             }
         });
     },
-    datepicker: function() {
+    datepicker: function(moment) {
         var datepicker = $('.datepicker');
         datepicker.mask('00-00-0000');
         datepicker.datepicker({
             dateFormat: "dd-mm-yy"
         });
+
         if (datepicker.val() == "") {
             datepicker.datepicker("setDate", new Date());
         }
-
     },
     format_numeric: function(action) {
         if ($('.superficie').length) {

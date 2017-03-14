@@ -560,6 +560,7 @@ class Ajax extends CI_Controller
 															historial.id_lider, 
 															ventas.porcentaje_comision, 
 															ventas.porcentaje_penalizacion,
+															DATE_FORMAT(historial.fecha,"%d-%m-%Y") as fecha,
 															IF( DATEDIFF( CURRENT_DATE() , historial.fecha ) > 0,  
 																IF( historial.estado = 0 , 
 																	DATEDIFF( CURRENT_DATE() , historial.fecha ), 
