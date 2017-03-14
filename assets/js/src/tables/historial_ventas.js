@@ -1,3 +1,4 @@
+import { base_url } from '../utils/util';
 var historial_ventas_table = $('#historial-ventas-table').DataTable({
     responsive: {
         details: {
@@ -7,27 +8,58 @@ var historial_ventas_table = $('#historial-ventas-table').DataTable({
     "columns": [ //Atributos para la tabla
         { "data": "id_venta" },
         { "data": "nombre_cliente" },
-        /*{ "data": "detalles" },*/
-        { "data": "retraso" },
-        { "data": "retrasados" },
-        { "data": "adelantados" },
-        { "data": "en_tiempo" },
-        { "data": "realizados" },
         { "data": "descripcion" },
-        { "data": "precio" },
-        { "data": "comision" },
-        { "data": "abonado" },
-        { "data": "comisiones" },
+        { "data": "retraso" },
+        { "data": "detalles" },
+        {
+            "data": "precio",
+            "render": $.fn.dataTable.render.number(',', '.', 2, '$'),
+            "type": "num-fmt",
+        },
+        {
+            "data": "comision",
+            "render": $.fn.dataTable.render.number(',', '.', 2, '$'),
+            "type": "num-fmt",
+        },
+        {
+            "data": "pagado",
+            "render": $.fn.dataTable.render.number(',', '.', 2, '$'),
+            "type": "num-fmt",
+        },
+        {
+            "data": "comisionado",
+            "render": $.fn.dataTable.render.number(',', '.', 2, '$'),
+            "type": "num-fmt",
+        },
         { "data": "nombre_lider" },
         { "data": "nombre_user" },
-        { "data": "" },
+        {
+            "data": "",
+            "render": function(data, type, full, meta) {
+                if (full.estado != null && full.estado != undefined && full.estado != "") {
+                    var contrato = '<a href="' + base_url() + 'reportes/contrato/' + full.id_venta + '" class="btn btn-default" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> contrato</a>';
+                    var pagare_recibo = '<a href="' + base_url() + 'reportes/' + ((full.version == 2) ? 'pagares' : 'recibos') + '/' + full.id_venta + '" class="btn btn-primary" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> ' + ((full.version == 2) ? 'pagares' : 'recibos') + '</a>';
+                    var pagos = '<a href="' + base_url() + 'registros/pagos/' + full.id_venta + '" target="_blank" class="btn btn-info"><i class="fa fa-fw fa-eye"></i>pagos</a>';
+                    var restablecer = '';
+                    var eliminar = '<button title="Eliminar Contrato" class="btn btn-danger eliminar-venta"><span class="fa fa-trash fa-lg"></span> Eliminar</button>';
+                    var recuperar = '<button class="btn recuperar-venta"> <span class="fa fa-undo"></span> Recuperar</button>';
+                    if (full.estado == 2) {
+                        restablecer = '<button class="btn btn-success activar-venta"> <span class="fa fa-check"></span>Restablecer</button>';
+                    }
+                    return contrato + ' ' + pagare_recibo + ' ' + pagos + ' ' + restablecer;
+                } else {
+                    return data;
+                }
+            }
+        },
     ],
     columnDefs: [ //
-        /*{
-            //Quitar ordenamiento para estas columnas
-            "sortable": false,
-            "targets": [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-        },*/
+        {
+            //Añadir boton dinamicamente, para esta columna*
+            "targets": -1,
+            "data": null,
+            "defaultContent": "",
+        },
         {
             //Quitar busqueda para esta columna
             "targets": [],
@@ -38,11 +70,12 @@ var historial_ventas_table = $('#historial-ventas-table').DataTable({
         [1, "asc"]
     ],
 });
+var ventaDtRow;
 $('#historial-ventas-table').on('click', '.cancelar-venta', function() {
-    pagoDtRow = ($(this).closest('tr').hasClass('parent') || $(this).closest('tr').hasClass('child')) ?
+    ventaDtRow = ($(this).closest('tr').hasClass('parent') || $(this).closest('tr').hasClass('child')) ?
         $(this).closest('tr').prev('tr.parent') :
         $(this).parents('tr');
-    var parseDtRow = historial_ventas_table.row(pagoDtRow).data();
+    var parseDtRow = historial_ventas_table.row(ventaDtRow).data();
     var data = {
         id_venta: parseDtRow.id_venta
     };
@@ -62,20 +95,20 @@ $('#historial-ventas-table').on('click', '.cancelar-venta', function() {
                     type: "post",
                 })
                 .done(function(response) {
-                    /*var newData = pagos_table.row(pagoDtRow).data(response).draw(false).node(); //
-                    $(newData).animate({ backgroundColor: 'yellow' }); //Animación para MAX*/
-                    swal("¡Pago removido!");
+                    var newData = historial_ventas_table.row(ventaDtRow).data(response).draw(false).node(); //
+                    $(newData).css({ backgroundColor: 'yellow' }); //Animación para MAX
+                    swal("¡Venta cancelada!");
                 })
                 .fail(function(response) {
-
+                    swal("Error:", "¡Ha ocurrido un error, contactar al administrador sí el problema persiste!", "error");
                 });
         });
 });
 $('#historial-ventas-table').on('click', '.activar-venta', function() {
-    pagoDtRow = ($(this).closest('tr').hasClass('parent') || $(this).closest('tr').hasClass('child')) ?
+    ventaDtRow = ($(this).closest('tr').hasClass('parent') || $(this).closest('tr').hasClass('child')) ?
         $(this).closest('tr').prev('tr.parent') :
         $(this).parents('tr');
-    var parseDtRow = historial_ventas_table.row(pagoDtRow).data();
+    var parseDtRow = historial_ventas_table.row(ventaDtRow).data();
     var data = {
         id_venta: parseDtRow.id_venta
     };
@@ -171,7 +204,6 @@ $('#historial-ventas-table').on('click', '.recuperar-venta', function() {
         });
 });
 $('[data-toggle=popover]').on('click', function(e) {
-    console.log(e);
     var event = e;
     $('[data-toggle=popover]').popover('hide');
     $(this).popover({

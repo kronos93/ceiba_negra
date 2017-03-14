@@ -33,29 +33,34 @@ class Venta extends CI_Controller
         $data['title'] = "Historial de ventas";
         $data['body'] = "historial_ventas";
 
-        $data['ventas'] = $this->Venta_model->select("ventas.id_venta, 
-                                                      ventas.version, 
-                                                      ventas.precio, 
-                                                      ventas.porcentaje_comision,
-                                                      ventas.estado,
-                                                      SUM(IF(historial.estado = 0 && DATE(historial.fecha) <= NOW(),1,0)) AS retraso,
-                                                      SUM(IF(DATEDIFF( historial.fecha_pago ,historial.fecha) > 0 ,1,0)) AS retrasados,
-                                                      SUM(IF(DATEDIFF( historial.fecha_pago ,historial.fecha) < 0 ,1,0)) AS adelantados,
-                                                      SUM(IF(historial.estado = 1 && DATE(historial.fecha) = DATE(historial.fecha_pago),1,0)) AS en_tiempo,
-                                                      SUM(IF(historial.estado = 1,1,0)) AS realizados,
-                                                      SUM(historial.pago) AS pagado, 
-                                                      SUM(IF(historial.estado = 1,historial.comision,0)) AS comisionado,
-                                                      CONCAT(cliente.first_name,' ',cliente.last_name) AS nombre_cliente,
-                                                      cliente.phone,
-                                                      cliente.email,
-                                                      CONCAT(lider.first_name,' ',lider.last_name) AS nombre_lider,
-                                                      CONCAT(user.first_name,' ',user.last_name) AS nombre_user")
-                                            ->join('historial', 'ventas.id_venta = historial.id_venta', 'left')          
-                                            ->join('users as cliente', 'ventas.id_cliente = cliente.id', 'left')
-                                            ->join('users as lider', 'ventas.id_lider = lider.id', 'left')
-                                            ->join('users as user', 'ventas.id_usuario = user.id', 'left')   
-                                            ->group_by('ventas.id_venta')                                         
-                                            ->get();
+        $venta = new $this->Venta_model();
+        if($this->session->flashdata('id_venta')){
+            $venta->where(['ventas.id_venta' => $this->session->flashdata('id_venta')]);
+        }
+        $data['ventas'] = $venta->select("ventas.id_venta, 
+                                          ventas.version, 
+                                          ventas.precio, 
+                                          ventas.comision, 
+                                          ventas.porcentaje_comision,
+                                          ventas.estado,
+                                          SUM(IF(historial.estado = 0 && DATE(historial.fecha) <= NOW(),1,0)) AS retraso,
+                                          SUM(IF(DATEDIFF( historial.fecha_pago ,historial.fecha) > 0 ,1,0)) AS retrasados,
+                                          SUM(IF(DATEDIFF( historial.fecha_pago ,historial.fecha) < 0 ,1,0)) AS adelantados,
+                                          SUM(IF(historial.estado = 1 && DATE(historial.fecha) = DATE(historial.fecha_pago),1,0)) AS en_tiempo,
+                                          SUM(IF(historial.estado = 1,1,0)) AS realizados,
+                                          SUM(historial.pago) AS pagado, 
+                                          SUM(IF(historial.estado = 1,historial.comision,0)) AS comisionado,
+                                          CONCAT(cliente.first_name,' ',cliente.last_name) AS nombre_cliente,
+                                          cliente.phone,
+                                          cliente.email,
+                                          CONCAT(lider.first_name,' ',lider.last_name) AS nombre_lider,
+                                          CONCAT(user.first_name,' ',user.last_name) AS nombre_user")
+                                ->join('historial', 'ventas.id_venta = historial.id_venta', 'left')          
+                                ->join('users as cliente', 'ventas.id_cliente = cliente.id', 'left')
+                                ->join('users as lider', 'ventas.id_lider = lider.id', 'left')
+                                ->join('users as user', 'ventas.id_usuario = user.id', 'left')   
+                                ->group_by('ventas.id_venta')                                         
+                                ->get();
         foreach($data['ventas'] as $key => $venta ){
             $descripcion = $this->Venta_model->select('GROUP_CONCAT("Mz. ",manzanas.manzana, " Ht. ", huertos.huerto) as descripcion')
                                               ->join('huertos_ventas', 'ventas.id_venta = huertos_ventas.id_venta', 'inner') 
@@ -64,7 +69,7 @@ class Venta extends CI_Controller
                                               ->where(['ventas.id_venta' => $venta->id_venta])
                                               ->get();
             $data['ventas'][$key]->descripcion = $descripcion[0]->descripcion;
-        }                                        
+        }                               
         $this->load->view('templates/template', $data);
     }
     public function generar_contrato()
@@ -348,8 +353,7 @@ class Venta extends CI_Controller
         //Si hay datos de un cliente
         if($this->input->post('id_cliente')){
             $user_id = $this->input->post('id_cliente');
-            $this->ion_auth->update($user_id, $additional_data);            
-            
+            $this->ion_auth->update($user_id, $additional_data);
             $venta = [
                 'id_usuario' => $this->ion_auth->get_user_id(),
                 'id_cliente' => $user_id,
@@ -552,6 +556,10 @@ class Venta extends CI_Controller
         } else {
             $this->Trans_model->commit();
             echo json_encode(['status' => 200 ,'msg' => 'ok']);
+            if(isset($id_venta) && !empty($id_venta)){
+                $this->session->set_flashdata('id_venta', $id_venta);
+            }
+            
         }
        
     }

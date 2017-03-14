@@ -972,6 +972,42 @@ class Ajax extends CI_Controller
 				$huertos[$key]->vendido = 0;
 			}                  
 			$this->Huerto_model->update_batch($huertos,'id_huerto');
+
+			$venta = $this->Venta_model->select("ventas.id_venta, 
+                                          ventas.version, 
+                                          ventas.precio, 
+										  ventas.comision, 
+                                          ventas.porcentaje_comision,
+                                          ventas.estado,
+                                          SUM(IF(historial.estado = 0 && DATE(historial.fecha) <= NOW(),1,0)) AS retraso,
+                                          SUM(IF(DATEDIFF( historial.fecha_pago ,historial.fecha) > 0 ,1,0)) AS retrasados,
+                                          SUM(IF(DATEDIFF( historial.fecha_pago ,historial.fecha) < 0 ,1,0)) AS adelantados,
+                                          SUM(IF(historial.estado = 1 && DATE(historial.fecha) = DATE(historial.fecha_pago),1,0)) AS en_tiempo,
+                                          SUM(IF(historial.estado = 1,1,0)) AS realizados,
+                                          SUM(historial.pago) AS pagado, 
+                                          SUM(IF(historial.estado = 1,historial.comision,0)) AS comisionado,
+                                          CONCAT(cliente.first_name,' ',cliente.last_name) AS nombre_cliente,
+                                          cliente.phone,
+                                          cliente.email,
+                                          CONCAT(lider.first_name,' ',lider.last_name) AS nombre_lider,
+                                          CONCAT(user.first_name,' ',user.last_name) AS nombre_user")
+                                ->join('historial', 'ventas.id_venta = historial.id_venta', 'left')          
+                                ->join('users as cliente', 'ventas.id_cliente = cliente.id', 'left')
+                                ->join('users as lider', 'ventas.id_lider = lider.id', 'left')
+                                ->join('users as user', 'ventas.id_usuario = user.id', 'left')   
+								->where(['ventas.id_venta' => $id_venta])                                     
+                                ->get();
+		    foreach($venta as $key => $v ){
+				$descripcion = $this->Venta_model->select('GROUP_CONCAT("Mz. ",manzanas.manzana, " Ht. ", huertos.huerto) as descripcion')
+												 ->join('huertos_ventas', 'ventas.id_venta = huertos_ventas.id_venta', 'inner') 
+												 ->join('huertos', 'huertos_ventas.id_huerto = huertos.id_huerto', 'inner')
+												 ->join('manzanas', 'huertos.id_manzana = manzanas.id_manzana', 'inner')        
+												 ->where(['ventas.id_venta' => $v->id_venta])
+												 ->get();
+				$venta[$key]->descripcion = $descripcion[0]->descripcion;
+				$venta[$key]->detalles = "Pagado en tiempo: {$v->en_tiempo} Pagado con retraso: {$v->retrasados} delantado: {$v->adelantados} Realizados: {$v->realizados}";
+			}
+			echo json_encode($venta[0]);
 		}
 	}
 	public function activar_venta()

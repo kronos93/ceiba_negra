@@ -7,13 +7,9 @@
                         <tr>
                             <th data-visible="false">Id. venta</th>
                             <th class="all">Cliente</th>
-                            <!--<th>Detalles</th> -->
-                            <th>Pagos retrasados</th>
-                            <th>Pagos realizados con retraso</th>
-                            <th>Pagos realizados adelantados</th>
-                            <th>Pagos realizados en tiempo</th>
-                            <th>Pagos realizados</th>
                             <th>Descripción</th>
+                            <th>Pagos retrasados</th>
+                            <th>Detalles</th> 
                             <th>Precio</th>
                             <th>Comisión</th>
                             <th>Total abonado</th>
@@ -26,73 +22,41 @@
                     <tbody>
                         <?php foreach($ventas as $venta):?>
                         <tr>
+                            <td><?= $venta->id_venta; ?></td>
+                            <td><?= $venta->nombre_cliente; ?><a data-toggle="popover" tabindex="10" title="Detalles:" data-placement="top" data-content="<p>Correo: <a href='mailto:<?= $venta->email ?>'> <?= $venta->email ?></a></p><p>Telefono: <a href='tel:<?=$venta->phone?>'><span class='phone'><?=$venta->phone?></span></a></p>"><span class="fa fa-info-circle fa-lg fa-fw"></span></a></td>
+                            <td><?= $venta->descripcion; ?></td>
+                            <td><?= $venta->retraso; ?></td>
                             <td>
-                                <?= $venta->id_venta; ?>
+                                Pagado en tiempo: <?= $venta->en_tiempo; ?>
+                                Pagado con retraso: <?= $venta->retrasados; ?>
+                                Adelantado: <?= $venta->adelantados; ?>
+                                Realizados: <?= $venta->realizados; ?>
                             </td>
-                            <td>
-                                <?= $venta->nombre_cliente; ?>
-                                    <a data-toggle="popover" tabindex="10" title="Detalles:" data-placement="top" data-content="<p>Correo: <a href='mailto:<?= $venta->email ?>'> <?= $venta->email ?></a></p><p>Telefono: <a href='tel:<?=$venta->phone?>'><span class='phone'><?=$venta->phone?></span></a></p>"><span class="fa fa-info-circle fa-lg fa-fw"></span></a>
-                            </td>
-                            <!--<td></td>-->
-                            <td>
-                                <?= $venta->retraso; ?>
-                            </td>
-                            <td>
-                                <?= $venta->retrasados; ?>
-                            </td>
-                            <td>
-                                <?= $venta->adelantados; ?>
-                            </td>
-                            <td>
-                                <?= $venta->en_tiempo; ?>
-                            </td>
-                            <td>
-                                <?= $venta->realizados; ?>
-                            </td>
-                            <td>
-                                <?= $venta->descripcion; ?>
-                            </td>
-                            <td>$
-                                <?= number_format($venta->precio,2); ?>
-                            </td>
-                            <td>$
-                                <?= number_format($venta->precio * ($venta->porcentaje_comision/100),2); ?>
-                            </td>
-                            <td>$
-                                <?= number_format($venta->pagado,2); ?>
-                            </td>
-                            <td>$
-                                <?= number_format($venta->comisionado,2); ?>
-                            </td>
-                            <td>
-                                <?= $venta->nombre_lider; ?>
-                            </td>
-                            <td>
-                                <?= $venta->nombre_user?>
-                            </td>
+                            <td><?= $venta->precio ?></td>
+                            <td><?= $venta->comision ?></td>
+                            <td><?= $venta->pagado ?></td>
+                            <td><?= $venta->comisionado?></td>
+                            <td><?= $venta->nombre_lider; ?></td>
+                            <td><?= $venta->nombre_user?></td>
                             <td>
                                 <?php 
                                 if($venta->estado == 0 || $venta->estado == 1 || $venta->estado == 2): 
                                 ?>
-                                <a href="<?= base_url(); ?>reportes/contrato/<?= $venta->id_venta; ?>" class="btn btn-default" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> contrato</a>
-                                <a href="<?= base_url(); ?>reportes/<?= ($venta->version == 2) ? 'pagares' : 'recibos'?>/<?= $venta->id_venta; ?>" class="btn btn-primary" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> <?= ($venta->version == 2) ? 'pagarés' : ' recibos'?></a>
-                                <a href="<?= base_url() ?>registros/pagos/<?= $venta->id_venta; ?>" target="_blank" class="btn btn-info"><i class="fa fa-fw fa-eye"></i>pagos</a>
-                                <?php 
-                                    if($venta->estado == 2): 
+                                    <a href="<?= base_url(); ?>reportes/contrato/<?= $venta->id_venta; ?>" class="btn btn-default" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> contrato</a>
+                                    <a href="<?= base_url(); ?>reportes/<?= ($venta->version == 2) ? 'pagares' : 'recibos'?>/<?= $venta->id_venta; ?>" class="btn btn-primary" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> <?= ($venta->version == 2) ? 'pagarés' : ' recibos'?></a>
+                                    <a href="<?= base_url() ?>registros/pagos/<?= $venta->id_venta; ?>" target="_blank" class="btn btn-info"><i class="fa fa-fw fa-eye"></i>pagos</a>
+                                    <?php 
+                                    if($venta->estado != 1):
                                     ?>
-                                <button class="btn btn-success activar-venta"> <span class="fa fa-check"></span>Restablecer</button>
-                                <?php 
-                                    else: 
-                                    ?>
-                                <button title="Cancelar Contrato" class="btn btn-warning cancelar-venta"><span class="fa fa-ban fa-lg"></span> Cancelar</button>
-                                <?php 
+                                    <button title="Eliminar Contrato" class="btn btn-danger eliminar-venta"><span class="fa fa-trash fa-lg"></span> Eliminar</button>
+                                    <button title="Cancelar Contrato" class="btn btn-warning cancelar-venta"><span class="fa fa-ban fa-lg"></span> Cancelar</button>
+                                    <?php 
                                     endif; 
                                     ?>
-                                <button title="Eliminar Contrato" class="btn btn-danger eliminar-venta"><span class="fa fa-trash fa-lg"></span> Eliminar</button>
                                 <?php 
                                 else: 
                                 ?>
-                                <button class="btn recuperar-venta"> <span class="fa fa-undo"></span> Recuperar</button>
+                                    <button class="btn recuperar-venta"> <span class="fa fa-undo"></span> Recuperar</button>
                                 <?php 
                                 endif; 
                                 ?>
