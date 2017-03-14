@@ -31,12 +31,7 @@
                             </td>
                             <td>
                                 <?= $venta->nombre_cliente; ?>
-                                <a 
-                                    data-toggle="popover" 
-                                    tabindex="10" 
-                                    title="Detalles:" 
-                                    data-placement="top" 
-                                    data-content="<p>Correo: <a href='mailto:<?= $venta->email ?>'> <?= $venta->email ?></a></p><p>Telefono: <a href='tel:<?=$venta->phone?>'><span class='phone'><?=$venta->phone?></span></a></p>"><span class="fa fa-info-circle fa-lg fa-fw"></span></a>
+                                    <a data-toggle="popover" tabindex="10" title="Detalles:" data-placement="top" data-content="<p>Correo: <a href='mailto:<?= $venta->email ?>'> <?= $venta->email ?></a></p><p>Telefono: <a href='tel:<?=$venta->phone?>'><span class='phone'><?=$venta->phone?></span></a></p>"><span class="fa fa-info-circle fa-lg fa-fw"></span></a>
                             </td>
                             <!--<td></td>-->
                             <td>
@@ -81,23 +76,23 @@
                                 ?>
                                 <a href="<?= base_url(); ?>reportes/contrato/<?= $venta->id_venta; ?>" class="btn btn-default" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> contrato</a>
                                 <a href="<?= base_url(); ?>reportes/<?= ($venta->version == 2) ? 'pagares' : 'recibos'?>/<?= $venta->id_venta; ?>" class="btn btn-primary" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> <?= ($venta->version == 2) ? 'pagarés' : ' recibos'?></a>
-                                <a href="<?= base_url() ?>registros/pagos/<?= $venta->id_venta; ?>" target="_blank" class="btn btn-success"><i class="fa fa-fw fa-search"></i>pagos</a>
+                                <a href="<?= base_url() ?>registros/pagos/<?= $venta->id_venta; ?>" target="_blank" class="btn btn-info"><i class="fa fa-fw fa-eye"></i>pagos</a>
                                 <?php 
                                     if($venta->estado == 2): 
                                     ?>
-                                <button class="btn btn-warning activar-venta">Activar</button>
+                                <button class="btn btn-success activar-venta"> <span class="fa fa-check"></span>Restablecer</button>
                                 <?php 
                                     else: 
                                     ?>
-                                <button class="btn btn-warning cancelar-venta"><span class="fa fa-ban fa-lg"></span> </button>
+                                <button title="Cancelar Contrato" class="btn btn-warning cancelar-venta"><span class="fa fa-ban fa-lg"></span> Cancelar</button>
                                 <?php 
                                     endif; 
                                     ?>
-                                <button title="Eliminar Contrato" class="btn btn-danger eliminar-venta"><span class="fa fa-trash fa-lg"></span></button>
+                                <button title="Eliminar Contrato" class="btn btn-danger eliminar-venta"><span class="fa fa-trash fa-lg"></span> Eliminar</button>
                                 <?php 
                                 else: 
                                 ?>
-                                <button class="btn btn-danger recuperar-venta">Recuperar</button>
+                                <button class="btn recuperar-venta"> <span class="fa fa-undo"></span> Recuperar</button>
                                 <?php 
                                 endif; 
                                 ?>

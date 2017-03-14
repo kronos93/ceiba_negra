@@ -7,11 +7,14 @@ h6,
 p {
     margin: 0
 }
+
 html {
     margin: 30px 40px!important
 }
+
 table {
-    width: 100%
+    width: 100%;
+    table-layout: fixed;
 }
 
 table td {
@@ -19,39 +22,39 @@ table td {
     padding: 5px;
     border: 1px dashed #ccc;
     background: url('../img/logos/logo-small.png') center center no-repeat;
-    width: 50%
+    width: 50%;
 }
 
 body {
-    font-family: Helvetica
+    font-family: Helvetica;
 }
 
 .pagare__header h3 {
-    font-size: 8pt;
+    font-size: 10pt;
     text-transform: uppercase;
-    text-align: right
+    text-align: right;
 }
 
 .pagare__header p {
     color: #B88D2C;
-    font-size: 8pt;
-    padding: 5px 0 10px;
-    text-align: right
+    font-size: 10pt;
+    padding: 5px 0 5px;
+    text-align: right;
 }
 
 .pagare__body p {
-    font-size: 7pt;
-    text-align: justify
+    font-size: 10pt;
+    text-align: justify;
 }
 
 .pagare__footer p {
     font-size: 8pt;
-    text-align: center
+    text-align: center;
 }
 
 .pagare__footer .copy {
     font-size: 9pt;
     text-align: right;
     color: #ccc;
-    text-transform: uppercase
+    text-transform: uppercase;
 }

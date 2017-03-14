@@ -93,8 +93,7 @@ class Reportes extends CI_Controller
                                         <td>
                                             <div class='pagare'>
                                                 <div class='pagare__header'>
-                                                    <h3>No. {$n}</h3>
-                                                    <p>En Playa del carmen, municipio de Solidaridad, estado de Quintana Roo el día {$fecha->format('d-m-Y')}</p>
+                                                    <h3>RECIBO DE DINERO No. {$n} &nbsp; <span>FECHA: {$fecha->format('d-m-Y')}</span></h3>
                                                 </div>
                                                 <div class='pagare__body'>
                                                     <p>Debe(mos) y pagare(mos) incondicionalmente por este Pagaré a la orden de FRANCISCO ENRIQUE MARTINEZ CORDERO en Playa del carmen, municipio de Solidaridad, estado de Quintana Roo el día {$fecha->format('d-m-Y')} la cantidad de: <strong>&nbsp;$".number_format($historial->abono,2)." PESOS 00/100 M.N</strong></p><p>Valor recibido a mi (nuestra entera satisfacción). Este pagaré forma pare te una serie numerdada de 1 al {$n_historial} y todos estan sujetos a la condición de que, al no pagarse cualquiera de ellos a su vencimiento, serán exigibles todos los que le sigan en número, además de los ya vencidos, desde la fecha de vencimiento de este documento hasta el día de su liquidación, causará intereses moratorios al tipo de {$historial->porcentaje_penalizacion}% por cada día de de pago incumplido, pagado en esta ciudad.</p>
@@ -102,7 +101,7 @@ class Reportes extends CI_Controller
                                                 <div class='pagare__footer'>
                                                     <p>DEUDOR:</p>
                                                     <br>
-                                                    <p>{$historial->nombre_cliente}</p>
+                                                    <p><strong>{$historial->nombre_cliente}</strong></p>
                                                     <p class='copy'>Original</p>
                                                 </div>
                                             </div>
@@ -112,8 +111,7 @@ class Reportes extends CI_Controller
                         $pagares.="     <td>
                                             <div class='pagare'>
                                                 <div class='pagare__header'>
-                                                    <h3>No. {$n}</h3>
-                                                    <p>En Playa del carmen, municipio de Solidaridad, estado de Quintana Roo el día {$fecha->format('d-m-Y')}</p>
+                                                    <h3> RECIBO DE DINERO No. {$n} &nbsp;<span>FECHA: {$fecha->format('d-m-Y')}</span></h3>
                                                 </div>
                                                 <div class='pagare__body'>
                                                     <p>Debe(mos) y pagare(mos) incondicionalmente por este Pagaré a la orden de FRANCISCO ENRIQUE MARTINEZ CORDERO en Playa del carmen, municipio de Solidaridad, estado de Quintana Roo el día {$fecha->format('d-m-Y')} la cantidad de:<strong>&nbsp;$".number_format($historial->abono,2)." PESOS 00/100 M.N</strong></p><p>Valor recibido a mi (nuestra entera satisfacción). Este pagaré forma pare te una serie numerdada de 1 al {$n_historial} y todos estan sujetos a la condición de que, al no pagarse cualquiera de ellos a su vencimiento, serán exigibles todos los que le sigan en número, además de los ya vencidos, desde la fecha de vencimiento de este documento hasta el día de su liquidación, causará intereses moratorios al tipo de {$historial->porcentaje_penalizacion}% por cada día de de pago incumplido, pagado en esta ciudad.</p>
@@ -121,7 +119,7 @@ class Reportes extends CI_Controller
                                                 <div class='pagare__footer'>
                                                     <p>DEUDOR:</p>
                                                     <br>
-                                                    <p>{$historial->nombre_cliente}</p>
+                                                    <p><strong>{$historial->nombre_cliente}</strong></p>
                                                     <p class='copy'>Original</p>
                                                 </div>
                                             </div>
@@ -229,7 +227,7 @@ class Reportes extends CI_Controller
                                         <div class='pagare__footer'>
                                             <p>RECIBI:</p>
                                             <br>
-                                            <p>FRANCISCO ENRIQUE MARTINEZ CORDERO</p>
+                                            <p><strong>FRANCISCO ENRIQUE MARTINEZ CORDERO</strong></p>
                                             <p class='copy'>Original</p>
                                         </div>
                                     </div>
@@ -250,7 +248,7 @@ class Reportes extends CI_Controller
                                         <div class='pagare__footer'>
                                             <p>RECIBI:</p>
                                             <br>
-                                            <p>FRANCISCO ENRIQUE MARTINEZ CORDERO</p>
+                                            <p><strong>FRANCISCO ENRIQUE MARTINEZ CORDERO</strong></p>
                                             <p class='copy'>Original</p>
                                         </div>
                                     </div>
