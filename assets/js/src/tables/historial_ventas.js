@@ -42,11 +42,12 @@ var historial_ventas_table = $('#historial-ventas-table').DataTable({
                     var pagos = '<a href="' + base_url() + 'registros/pagos/' + full.id_venta + '" target="_blank" class="btn btn-info"><i class="fa fa-fw fa-eye"></i>pagos</a>';
                     var restablecer = '';
                     var eliminar = '<button title="Eliminar Contrato" class="btn btn-danger eliminar-venta"><span class="fa fa-trash fa-lg"></span> Eliminar</button>';
-                    var recuperar = '<button class="btn recuperar-venta"> <span class="fa fa-undo"></span> Recuperar</button>';
+                    var recuperar = '';
                     if (full.estado == 2) {
                         restablecer = '<button class="btn btn-success activar-venta"> <span class="fa fa-check"></span>Restablecer</button>';
+                        eliminar = '<button title="Eliminar Contrato" class="btn btn-danger eliminar-venta"><span class="fa fa-trash fa-lg"></span> Eliminar</button>';
                     }
-                    return contrato + ' ' + pagare_recibo + ' ' + pagos + ' ' + restablecer;
+                    return contrato + ' ' + pagare_recibo + ' ' + pagos + ' ' + restablecer + ' ' + eliminar;
                 } else {
                     return data;
                 }

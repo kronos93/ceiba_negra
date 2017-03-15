@@ -704,7 +704,6 @@ class Historial
                         $new_date = Carbon::createFromFormat('d-m-Y', $fecha->format('d-m-Y'));
                         $row->setFecha($new_date);
                         $this->historial[$key] = $row;
-                        $fecha = $fecha->endOfMonth()->addDay(1);
                         $next = "quincena";
                     } elseif ($next == 'quincena') {
                         $fecha = $fecha->addDay(14);

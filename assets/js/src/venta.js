@@ -9,6 +9,7 @@ import 'jquery-steps/build/jquery.steps';
 import 'jquery-validation/dist/jquery.validate'
 import 'jquery-mask-plugin/dist/jquery.mask';
 import 'jquery-ui/ui/widgets/datepicker';
+import './configs/datepicker';
 import './configs/validator';
 
 import 'tinymce';
