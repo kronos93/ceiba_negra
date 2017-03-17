@@ -46,7 +46,8 @@ class Reportes extends CI_Controller
             // Render the HTML as PDF
             $dompdf->render();
             // Output the generated PDF to Browser
-            $dompdf->stream('contrato.pdf',array('Attachment'=>0));
+            // Output the generated PDF (1 = download and 0 = preview)
+            $dompdf->stream('contrato',array('Attachment'=>1));
         }
             
     }
@@ -153,7 +154,7 @@ class Reportes extends CI_Controller
             // Render the HTML as PDF
             $dompdf->render();
             // Output the generated PDF to Browser
-            $dompdf->stream('historial.pdf',array('Attachment'=>0));
+            $dompdf->stream('historial',array('Attachment'=>1));
         }                                            
         
     }
@@ -291,7 +292,7 @@ class Reportes extends CI_Controller
             // Render the HTML as PDF
             $dompdf->render();
             // Output the generated PDF to Browser
-            $dompdf->stream('recibos.pdf',array('Attachment'=>0));
+            $dompdf->stream('recibos',array('Attachment'=>1));
         }
     }
 }

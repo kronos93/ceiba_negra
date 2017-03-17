@@ -40,14 +40,24 @@ var historial_ventas_table = $('#historial-ventas-table').DataTable({
                     var contrato = '<a href="' + base_url() + 'reportes/contrato/' + full.id_venta + '" class="btn btn-default" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> contrato</a>';
                     var pagare_recibo = '<a href="' + base_url() + 'reportes/' + ((full.version == 2) ? 'pagares' : 'recibos') + '/' + full.id_venta + '" class="btn btn-primary" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> ' + ((full.version == 2) ? 'pagares' : 'recibos') + '</a>';
                     var pagos = '<a href="' + base_url() + 'registros/pagos/' + full.id_venta + '" target="_blank" class="btn btn-info"><i class="fa fa-fw fa-eye"></i>pagos</a>';
+                    var cancelar = '';
                     var restablecer = '';
-                    var eliminar = '<button title="Eliminar Contrato" class="btn btn-danger eliminar-venta"><span class="fa fa-trash fa-lg"></span> Eliminar</button>';
+                    var eliminar = '';
                     var recuperar = '';
-                    if (full.estado == 2) {
+                    if (full.estado == 0) {
+                        cancelar = '<button title="Cancelar Contrato" class="btn btn-warning cancelar-venta"><span class="fa fa-ban fa-lg"></span> Cancelar</button>';
+                        eliminar = '<button title="Eliminar Contrato" class="btn btn-danger eliminar-venta"><span class="fa fa-trash fa-lg"></span> Eliminar</button>';
+                    } else if (full.estado == 2) {
                         restablecer = '<button class="btn btn-success activar-venta"> <span class="fa fa-check"></span>Restablecer</button>';
                         eliminar = '<button title="Eliminar Contrato" class="btn btn-danger eliminar-venta"><span class="fa fa-trash fa-lg"></span> Eliminar</button>';
+                    } else if (full.estado == 3) {
+                        recuperar = '<button class="btn recuperar-venta"> <span class="fa fa-undo"></span> Recuperar</button>';
+                        contrato = '';
+                        pagare_recibo = '';
+                        pagos = '';
+
                     }
-                    return contrato + ' ' + pagare_recibo + ' ' + pagos + ' ' + restablecer + ' ' + eliminar;
+                    return contrato + ' ' + pagare_recibo + ' ' + pagos + ' ' + cancelar + ' ' + restablecer + ' ' + eliminar + ' ' + recuperar;
                 } else {
                     return data;
                 }
@@ -73,7 +83,7 @@ var historial_ventas_table = $('#historial-ventas-table').DataTable({
 });
 var ventaDtRow;
 $('#historial-ventas-table').on('click', '.cancelar-venta', function() {
-    ventaDtRow = ($(this).closest('tr').hasClass('parent') || $(this).closest('tr').hasClass('child')) ?
+    ventaDtRow = $(this).closest('tr').hasClass('child') ?
         $(this).closest('tr').prev('tr.parent') :
         $(this).parents('tr');
     var parseDtRow = historial_ventas_table.row(ventaDtRow).data();
@@ -98,7 +108,7 @@ $('#historial-ventas-table').on('click', '.cancelar-venta', function() {
                 .done(function(response) {
                     var newData = historial_ventas_table.row(ventaDtRow).data(response).draw(false).node(); //
                     $(newData).css({ backgroundColor: 'yellow' }); //Animación para MAX
-                    swal("¡Venta cancelada!");
+                    swal("Confirmación", "¡Venta cancelada!", "success");
                 })
                 .fail(function(response) {
                     swal("Error:", "¡Ha ocurrido un error, contactar al administrador sí el problema persiste!", "error");
@@ -139,16 +149,16 @@ $('#historial-ventas-table').on('click', '.activar-venta', function() {
         });
 });
 $('#historial-ventas-table').on('click', '.eliminar-venta', function() {
-    pagoDtRow = ($(this).closest('tr').hasClass('parent') || $(this).closest('tr').hasClass('child')) ?
+    ventaDtRow = $(this).closest('tr').hasClass('child') ?
         $(this).closest('tr').prev('tr.parent') :
         $(this).parents('tr');
-    var parseDtRow = historial_ventas_table.row(pagoDtRow).data();
+    var parseDtRow = historial_ventas_table.row(ventaDtRow).data();
     var data = {
         id_venta: parseDtRow.id_venta
     };
     swal({
-            title: "Cancelar venta",
-            text: "Esta a punto de cancelar una venta, ¿Desea continuar?",
+            title: "Eliminar venta",
+            text: "Esta a punto de eliminar una venta, ¿Desea continuar?",
             type: "info",
             showCancelButton: true,
             closeOnConfirm: false,
@@ -162,12 +172,12 @@ $('#historial-ventas-table').on('click', '.eliminar-venta', function() {
                     type: "post",
                 })
                 .done(function(response) {
-                    /*var newData = pagos_table.row(pagoDtRow).data(response).draw(false).node(); //
-                    $(newData).animate({ backgroundColor: 'yellow' }); //Animación para MAX*/
-                    swal("¡Pago removido!");
+                    var newData = historial_ventas_table.row(ventaDtRow).data(response).draw(false).node(); //
+                    $(newData).css({ backgroundColor: 'yellow' }); //Animación para MAX
+                    swal("Confirmación", "¡Venta eliminada!", "success");
                 })
                 .fail(function(response) {
-
+                    swal("Error:", "¡Ha ocurrido un error, contactar al administrador sí el problema persiste!", "error");
                 });
         });
 });

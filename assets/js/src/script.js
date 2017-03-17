@@ -2,9 +2,6 @@ import $ from 'jquery';
 import { base_url } from './utils/util';
 import './config';
 
-
-
-
 import './mapplic';
 
 import './tables/manzanas';
@@ -19,8 +16,6 @@ phone();
 
 import './tables/pagos';
 import './tables/usuarios';
-
-
 
 if ($('#frm-venta').length) {
     require.ensure([], function(require) {
