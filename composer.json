@@ -13,7 +13,6 @@
     "require": {
         "php": ">=5.2.4",
         "nesbot/carbon": "^1.21",
-        "dompdf/dompdf": "^0.7.0",
         "zaininnari/html-minifier": "^0.4.2",
         "mailgun/mailgun-php": "^2.1",
         "php-http/guzzle6-adapter": "^1.1",
