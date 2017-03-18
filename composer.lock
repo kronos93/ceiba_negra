@@ -4,11 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-<<<<<<< HEAD
-    "content-hash": "5abd1da7dbb18704d1350f1769a3adf9",
-=======
     "content-hash": "79fcb757c4758d2774caf2bbc17936e5",
->>>>>>> origin/master
     "packages": [
         {
             "name": "clue/stream-filter",
@@ -60,8 +56,6 @@
             "time": "2015-11-08T23:41:30+00:00"
         },
         {
-<<<<<<< HEAD
-=======
             "name": "dompdf/dompdf",
             "version": "v0.8.0",
             "source": {
@@ -124,7 +118,6 @@
             "time": "2017-02-16T02:40:40+00:00"
         },
         {
->>>>>>> origin/master
             "name": "guzzlehttp/guzzle",
             "version": "6.2.3",
             "source": {
@@ -400,8 +393,6 @@
             "time": "2017-01-16T07:55:07+00:00"
         },
         {
-<<<<<<< HEAD
-=======
             "name": "phenx/php-font-lib",
             "version": "0.5",
             "source": {
@@ -476,7 +467,6 @@
             "time": "2016-12-13T20:25:45+00:00"
         },
         {
->>>>>>> origin/master
             "name": "php-http/discovery",
             "version": "1.2.1",
             "source": {

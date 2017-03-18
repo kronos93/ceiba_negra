@@ -90,7 +90,8 @@ class Reportes extends CI_Controller
             
             foreach ($historials as $key => $historial) {
                 $fecha = Carbon::createFromFormat('Y-m-d', $historial->fecha);
-                $pagares .= "<div class='pagarecontainer'>
+                $pagares .= "<div style='page-break-after: avoid;'></div>
+                                <div class='pagarecontainer'>
                                 <div class='pagarecontainer_wrap'>
                                     <div class='num_pagare'>
                                         <strong>PAGARE No. 145785</strong>
