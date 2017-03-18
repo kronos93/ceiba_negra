@@ -43,7 +43,7 @@
                                 if ($venta->estado == 0 || $venta->estado == 1|| $venta->estado== 2) :
                                 ?>
                                     <a href="<?= base_url(); ?>reportes/contrato/<?= $venta->id_venta; ?>" class="btn btn-default" target=""><i class="fa fa-file-pdf-o" aria-hidden="true"></i> contrato</a>
-                                    <a href="<?= base_url(); ?>reportes/<?= ($venta->version == 2) ? 'pagares' : 'recibos'?>/<?= $venta->id_venta; ?>" class="btn btn-primary" target=""><i class="fa fa-file-pdf-o" aria-hidden="true"></i> <?= ($venta->version == 2) ? 'pagarés' : ' recibos'?></a>
+                                    <a href="<?= base_url(); ?>reportes/<?= ($venta->version == 2) ? 'pagares' : 'recibos'?>/<?= $venta->id_venta; ?>" class="btn btn-primary" ><i class="fa fa-file-pdf-o" aria-hidden="true"></i> <?= ($venta->version == 2) ? 'pagarés' : ' recibos'?></a>
                                     <a href="<?= base_url() ?>registros/pagos/<?= $venta->id_venta; ?>" target="_blank" class="btn btn-info"><i class="fa fa-fw fa-eye"></i>pagos</a>
                                     <?php
                                     if ($venta->estado == 0) :

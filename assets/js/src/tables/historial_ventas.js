@@ -1,9 +1,9 @@
 import { base_url } from '../utils/util';
 var historial_ventas_table = $('#historial-ventas-table').DataTable({
     responsive: {
-        details: {
+        /*details: {
             display: $.fn.dataTable.Responsive.display.childRowImmediate,
-        }
+        }*/
     },
     "columns": [ //Atributos para la tabla
         { "data": "id_venta" },
