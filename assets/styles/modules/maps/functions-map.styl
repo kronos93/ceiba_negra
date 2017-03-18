@@ -1,15 +1,17 @@
 .mapplic-clickable:not(g),
 g.mapplic-clickable > *
-    opacity 0.5
+    opacity 1
+    transition 0.6s all ease
+    stroke: 1
 .mapplic-clickable:not(g):hover,
 g.mapplic-clickable:hover > *
-    opacity 0.8
-
+    opacity 0.6
 .mapplic-active,
 a.mapplic-active > path,
 g.mapplic-active > *
-    opacity 1.0 !important
-
+    opacity 0.6 !important
+    stroke:yellow
+    stroke-width: 1.5
 .mapplic-pin
     &.my-new-pin
         background-image url('../img/map/icons/my-new-pin.png')
@@ -18,25 +20,9 @@ g.mapplic-active > *
         margin-left -10px
         margin-top -15px
     &.mapplic-active
-        /*background-color: #91bf39 !important;*/
+        background-color: #91bf39 !important;
 // .mapplic-sidebar
 //     float:right
-#landmarks-ground .mapplic-clickable,
-#landmarks-underground .mapplic-clickable,
-#landmarks-level1 .mapplic-clickable
-    opacity 1 !important
-
-#landmarks-ground polygon.mapplic-active,
-#landmarks-ground path.mapplic-active
-    fill #ADDB2C
-
-#landmarks-underground polygon.mapplic-active,
-#landmarks-underground path.mapplic-active
-    fill #7EE0CD
-
-#landmarks-level1 polygon.mapplic-active,
-#landmarks-level1 path.mapplic-active
-    fill #F9684B
 [id^=landmarks] polygon:not(.mapplic-clickable),[id^=landmarks] path:not(.mapplic-clickable)
     fill #d6d6d6
 .mapplic-dark

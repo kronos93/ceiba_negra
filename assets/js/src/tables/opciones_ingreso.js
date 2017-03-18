@@ -30,8 +30,8 @@ var opciones_de_ingreso_table = $('#opciones-de-ingreso-table').DataTable({
         }, {
             "data": "",
             "render": function(data, type, full, meta) {
-                var btnEditar = '<button data-toggle="modal" data-title="Editar opción de ingreso" data-btn-type="edit" data-target="#opcionDeIngresoModal" class="btn btn-info btn-sm pull-right"><i class="fa fa-fw fa-pencil"></i></button>';
-                var btnShowIngresos = '<a href="ingresos/' + full.id_opcion_ingreso + '" class="btn btn-info btn-sm "><i class="fa fa-fw fa-search"></i>Ver ingresos<a/>';
+                var btnEditar = '<button data-toggle="modal" data-title="Editar opción de ingreso" data-btn-type="edit" data-target="#opcionDeIngresoModal" class="btn btn-info btn-sm pull-right"><i class="fa fa-fw fa-pencil"></i> Editar</button>';
+                var btnShowIngresos = '<a href="ingresos/' + full.id_opcion_ingreso + '" class="btn btn-success btn-sm "><i class="fa fa-fw fa-search"></i>Ver ingresos<a/>';
                 if (full.id_opcion_ingreso === 1 || full.nombre === 'CAJA') {
                     return btnShowIngresos;
                 } else {
