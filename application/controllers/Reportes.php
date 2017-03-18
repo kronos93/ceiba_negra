@@ -55,6 +55,7 @@ class Reportes extends CI_Controller
         ini_set('memory_limit', '1024M');
         ini_set('max_execution_time', 300);
         set_time_limit(300);
+        /*define(DOMPDF_ENABLE_CSS_FLOAT,true);*/
         $condicion = ['historial.id_venta' => $id];
 
         $historials = $this->Historial_model ->select("historial.abono,historial.fecha,CONCAT(users.first_name,' ',users.last_name) as nombre_cliente,ventas.porcentaje_penalizacion, ventas.version")
@@ -89,7 +90,41 @@ class Reportes extends CI_Controller
             
             foreach ($historials as $key => $historial) {
                 $fecha = Carbon::createFromFormat('Y-m-d', $historial->fecha);
-                if ($count == 1) {
+                $pagares .= "<div class='pagarecontainer'>
+                                <div class='pagarecontainer_wrap'>
+                                    <div class='num_pagare'>
+                                        <strong>PAGARE No. 145785</strong>
+                                    </div>
+                                    <div class='fecha_pagare'>
+                                        <div class='folio_pagare'>
+                                            <strong>PAGARE No. 145785</strong>
+                                        </div>
+                                        <ul>
+                                            <li><strong>Fecha de pago:</strong></li>
+                                            <li><span>Marzo 2016</span></li>
+                                        </ul>
+                                        <ul>
+                                            <li><strong>Lugar de Pago:</strong></li>
+                                            <li><span>Playa del Carmen, Solidaridad, Q. Roo</span></li>
+                                        </ul>
+                                    </div>
+                                    <p class='texto_pagare'>
+                                        Debo y pagaré incondicionalmente por este Pagaré a la orden de <strong>FRANCISCO ENRIQUE MARTINEZ CORDERO</strong>,
+                                        <strong>$30,000.00 PESOS 00/100 M.N</strong>,valor recibido a mi satisfacción.
+                                    </p>
+                                    <table>
+                                        <tr>
+                                            <td><strong>BELGIO ELIAS PINELO CASANOVA</strong></td>
+                                            <td>
+                                                <p> Este pagaré forma pare te una serie numerdada de 1 al 135 y todos estan sujetos a la condición de que, al no pagarse cualquiera de ellos a su vencimiento, serán exigibles todos los que le sigan en número, además de los ya vencidos,
+                                                    desde la fecha de vencimiento de este documento hasta el día de su liquidación, causará intereses moratorios al tipo de 1.00% por cada día de de pago incumplido, pagado en esta ciudad.
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>";
+                /*if ($count == 1) {
                         $pagares.="<tr>
                                         <td>
                                             <div class='pagare'>
@@ -129,24 +164,25 @@ class Reportes extends CI_Controller
                             $count = 1;
                             
                     }
-                $n++;                     
+                $n++; */                    
             }
             //Si al terminar no se han cerrado todas las etiquetas de td, cerrar
-            if($count==2){
+            /*if($count==2){
                 $pagares.="<td></td></tr>";
-            }
-            $html = "<html><head><title>Pagarés</title></head><body>
-                <link rel='stylesheet' type='text/css' href='".base_url().'assets/css/pagares.min.css'."' />
-                <table>       
+            }*/
+            $html = "<html><head><title>Pagarés</title><link rel='stylesheet' type='text/css' href='".base_url().'assets/css/pagares.min.css'."' /></head><body>
+                
                     {$pagares}                
-                </table>
+                
                 </body>
             </html>";
+
             $option = array('optimizationLevel' => HTMLMinify::OPTIMIZATION_ADVANCED);
             $HTMLMinify = new HTMLMinify($html,$option);
             $output = $HTMLMinify->process();            
             $options = new Options();
             $options->set('isRemoteEnabled', TRUE);
+            /*$options->set('DOMPDF_ENABLE_CSS_FLOAT', TRUE);*/
             $dompdf = new Dompdf($options);
             $dompdf->loadHtml($output);
             // (Optional) Setup the paper size and orientation
@@ -154,7 +190,7 @@ class Reportes extends CI_Controller
             // Render the HTML as PDF
             $dompdf->render();
             // Output the generated PDF to Browser
-            $dompdf->stream('historial',array('Attachment'=>1));
+            $dompdf->stream('historial',array('Attachment'=>0));
         }                                            
         
     }
