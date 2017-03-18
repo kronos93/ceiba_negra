@@ -97,12 +97,12 @@ class Reportes extends CI_Controller
                                         <strong>PAGARE No. 145785</strong>
                                     </div>
                                     <div class='fecha_pagare'>
-                                        <div class='folio_pagare'>
+                                        <!--<div class='folio_pagare'>
                                             <strong>PAGARE No. 145785</strong>
-                                        </div>
+                                        </div>-->
                                         <ul>
                                             <li><strong>Fecha de pago:</strong></li>
-                                            <li><span>Marzo 2016</span></li>
+                                            <li><span>{$fecha->format('d-m-Y')}</span></li>
                                         </ul>
                                         <ul>
                                             <li><strong>Lugar de Pago:</strong></li>
@@ -111,11 +111,11 @@ class Reportes extends CI_Controller
                                     </div>
                                     <p class='texto_pagare'>
                                         Debo y pagaré incondicionalmente por este Pagaré a la orden de <strong>FRANCISCO ENRIQUE MARTINEZ CORDERO</strong>,
-                                        <strong>$30,000.00 PESOS 00/100 M.N</strong>,valor recibido a mi satisfacción.
+                                        <strong>&nbsp;$".number_format($historial->abono,2)." PESOS 00/100 M.N</strong>,valor recibido a mi satisfacción.
                                     </p>
                                     <table>
                                         <tr>
-                                            <td><strong>BELGIO ELIAS PINELO CASANOVA</strong></td>
+                                            <td><strong>{$historial->nombre_cliente}</strong></td>
                                             <td>
                                                 <p> Este pagaré forma pare te una serie numerdada de 1 al 135 y todos estan sujetos a la condición de que, al no pagarse cualquiera de ellos a su vencimiento, serán exigibles todos los que le sigan en número, además de los ya vencidos,
                                                     desde la fecha de vencimiento de este documento hasta el día de su liquidación, causará intereses moratorios al tipo de 1.00% por cada día de de pago incumplido, pagado en esta ciudad.
@@ -130,15 +130,15 @@ class Reportes extends CI_Controller
                                         <td>
                                             <div class='pagare'>
                                                 <div class='pagare__header'>
-                                                    <h3>RECIBO DE DINERO No. {$n} &nbsp; <span>FECHA: {$fecha->format('d-m-Y')}</span></h3>
+                                                    <h3>RECIBO DE DINERO No. {$n} &nbsp; <span>FECHA: </span></h3>
                                                 </div>
                                                 <div class='pagare__body'>
-                                                    <p>Debe(mos) y pagare(mos) incondicionalmente por este Pagaré a la orden de FRANCISCO ENRIQUE MARTINEZ CORDERO en Playa del carmen, municipio de Solidaridad, estado de Quintana Roo el día {$fecha->format('d-m-Y')} la cantidad de: <strong>&nbsp;$".number_format($historial->abono,2)." PESOS 00/100 M.N</strong></p><p>Valor recibido a mi (nuestra entera satisfacción). Este pagaré forma pare te una serie numerdada de 1 al {$n_historial} y todos estan sujetos a la condición de que, al no pagarse cualquiera de ellos a su vencimiento, serán exigibles todos los que le sigan en número, además de los ya vencidos, desde la fecha de vencimiento de este documento hasta el día de su liquidación, causará intereses moratorios al tipo de {$historial->porcentaje_penalizacion}% por cada día de de pago incumplido, pagado en esta ciudad.</p>
+                                                    <p>Debe(mos) y pagare(mos) incondicionalmente por este Pagaré a la orden de FRANCISCO ENRIQUE MARTINEZ CORDERO en Playa del carmen, municipio de Solidaridad, estado de Quintana Roo el día {$fecha->format('d-m-Y')} la cantidad de: </p><p>Valor recibido a mi (nuestra entera satisfacción). Este pagaré forma pare te una serie numerdada de 1 al {$n_historial} y todos estan sujetos a la condición de que, al no pagarse cualquiera de ellos a su vencimiento, serán exigibles todos los que le sigan en número, además de los ya vencidos, desde la fecha de vencimiento de este documento hasta el día de su liquidación, causará intereses moratorios al tipo de {$historial->porcentaje_penalizacion}% por cada día de de pago incumplido, pagado en esta ciudad.</p>
                                                 </div>
                                                 <div class='pagare__footer'>
                                                     <p>DEUDOR:</p>
                                                     <br>
-                                                    <p><strong>{$historial->nombre_cliente}</strong></p>
+                                                    <p><strong></strong></p>
                                                     <p class='copy'>Original</p>
                                                 </div>
                                             </div>
