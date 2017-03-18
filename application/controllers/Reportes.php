@@ -231,7 +231,9 @@ class Reportes extends CI_Controller
             $n_historial = "";
             $n_h = count($historials);
             $de = "";
+            $page_break = 0;
             foreach ($historials as $key => $historial) {
+                $page_break++;
                 $fecha = Carbon::createFromFormat('Y-m-d', $historial->fecha);
                 $words = explode(" ", trim($historial->nombre_cliente));
                 $acronym = "";         
@@ -256,23 +258,57 @@ class Reportes extends CI_Controller
                         $acronym .= $w[0];
                     }                   
                 }
-                if ($count == 1) {                    
+                $recibos .= "<div style='page-break-after: avoid;'></div>
+                                <div class='pagarecontainer'>
+                                <div class='pagarecontainer_wrap'>
+                                    <div class='num_pagare'>
+                                        <strong>RECIBO {$n} {$de} {$n_historial}</strong>
+                                    </div>
+                                    <div class='fecha_pagare'>
+                                        <div class='folio_pagare'>
+                                            <strong>FOLIO No. ".strtoupper($acronym)."-{$n}-{$fecha->format('d-m-Y')}</strong>
+                                        </div>
+                                        <ul>
+                                            <li><strong>Fecha de pago:</strong></li>
+                                            <li><span>{$fecha->format('d-m-Y')}</span></li>
+                                        </ul>
+                                        <ul>
+                                            <li><strong>Lugar de Pago:</strong></li>
+                                            <li><span>Playa del Carmen, Solidaridad, Q. Roo</span></li>
+                                        </ul>
+                                    </div>
+                                    <p class='texto_pagare'>RECIBI: DEL(A) C. <strong>{$historial->nombre_cliente}</strong> LA CANTIDAD DE<strong>&nbsp;$ ".number_format($historial->abono,2)." PESOS 00/100 M.N</strong></p>
+                                    <table>
+                                        <tr>
+                                            <td><strong>FRANCISCO ENRIQUE MARTINEZ CORDERO</strong></td>
+                                            <td>
+                                                <p>POR CONCEPTO DE PAGO PARCIAL DE LA CESION PRIVADA , DE DERECHOS EN CO-PROPIEDAD DEL TERRENO EN BREÑA {$txt_huertos} DEL PREDIO 'LA CEIBA', UBICADO EN EL MUNICIPIO DE LAZARO CARDENAS, QUINTANA ROO.</p>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>";
+               if($page_break == 4){
+                    $recibos .= "<div style='page-break-before:always;'></div>";
+                    $page_break = 0;
+               }
+               /* if ($count == 1) {                    
                     $recibos.="<tr>
                                     <td>
                                         <div class='pagare'>                            
                                         <div class='pagare__header'>
-                                            <h3>Recibo de Dinero {$n} {$de} {$n_historial} <strong>&nbsp;de fecha : {$fecha->format('d-m-Y')}</strong></h3>
-                                            <p><strong>FOLIO:".strtoupper($acronym)."-{$n}-{$historial->fecha}</strong></p>
+                                            <h3>Recibo de Dinero  <strong>&nbsp;de fecha : </strong></h3>
+                                            <p><strong>FOLIO:</strong></p>
                                         </div>
                                         <div class='pagare__body'>
                                             <p>
-                                                RECIBI: DEL(A) C. <strong>{$historial->nombre_cliente}</strong> LA CANTIDAD DE<strong>&nbsp;$ ".number_format($historial->abono,2)." PESOS 00/100 M.N</strong> POR CONCEPTO DE PAGO PARCIAL DE LA CESION PRIVADA , DE DERECHOS EN CO-PROPIEDAD DEL TERRENO EN BREÑA {$txt_huertos} DEL PREDIO 'LA CEIBA', UBICADO EN EL MUNICIPIO DE LAZARO CARDENAS, QUINTANA ROO.
+                                                 
                                             </p>
                                         </div>
                                         <div class='pagare__footer'>
                                             <p>RECIBI:</p>
                                             <br>
-                                            <p><strong>FRANCISCO ENRIQUE MARTINEZ CORDERO</strong></p>
+                                            <p><strong></strong></p>
                                             <p class='copy'>Original</p>
                                         </div>
                                     </div>
@@ -302,18 +338,18 @@ class Reportes extends CI_Controller
                     $count = 1;
                         
                 }                
-                         
-            }
+                */         
+            }/*
             if($count==2){
                 $recibos.="<td></td></tr>";
-            }
+            }*/
            
             
-            $html = "<html><head><title>Recibos</title></head><body>
-                <link rel='stylesheet' type='text/css' href='".base_url().'assets/css/pagares.min.css'."' />
-                <table>       
+            $html = "<html><head><title>Recibos</title><link rel='stylesheet' type='text/css' href='".base_url().'assets/css/pagares.min.css'."' /></head><body>
+                
+           
                     {$recibos}                
-                </table>
+                
                 </body>
             </html>";
 
@@ -330,7 +366,7 @@ class Reportes extends CI_Controller
             // Render the HTML as PDF
             $dompdf->render();
             // Output the generated PDF to Browser
-            $dompdf->stream('recibos',array('Attachment'=>1));
+            $dompdf->stream('recibos',array('Attachment'=>0));
         }
     }
 }
