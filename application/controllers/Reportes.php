@@ -94,7 +94,7 @@ class Reportes extends CI_Controller
                                 <div class='pagarecontainer'>
                                 <div class='pagarecontainer_wrap'>
                                     <div class='num_pagare'>
-                                        <strong>PAGARE No. 145785</strong>
+                                        <strong>PAGARE No. {$n}</strong>
                                     </div>
                                     <div class='fecha_pagare'>
                                         <!--<div class='folio_pagare'>
@@ -117,23 +117,24 @@ class Reportes extends CI_Controller
                                         <tr>
                                             <td><strong>{$historial->nombre_cliente}</strong></td>
                                             <td>
-                                                <p> Este pagaré forma pare te una serie numerdada de 1 al 135 y todos estan sujetos a la condición de que, al no pagarse cualquiera de ellos a su vencimiento, serán exigibles todos los que le sigan en número, además de los ya vencidos,
-                                                    desde la fecha de vencimiento de este documento hasta el día de su liquidación, causará intereses moratorios al tipo de 1.00% por cada día de de pago incumplido, pagado en esta ciudad.
+                                                <p> Este pagaré forma pare te una serie numerdada de 1 al {$n_historial}  y todos estan sujetos a la condición de que, al no pagarse cualquiera de ellos a su vencimiento, serán exigibles todos los que le sigan en número, además de los ya vencidos,
+                                                    desde la fecha de vencimiento de este documento hasta el día de su liquidación, causará intereses moratorios al tipo de {$historial->porcentaje_penalizacion}% por cada día de de pago incumplido, pagado en esta ciudad.
                                                 </p>
                                             </td>
                                         </tr>
                                     </table>
                                 </div>
                             </div>";
+                $n++;
                 /*if ($count == 1) {
                         $pagares.="<tr>
                                         <td>
                                             <div class='pagare'>
                                                 <div class='pagare__header'>
-                                                    <h3>RECIBO DE DINERO No. {$n} &nbsp; <span>FECHA: </span></h3>
+                                                    <h3>RECIBO DE DINERO No.  &nbsp; <span>FECHA: </span></h3>
                                                 </div>
                                                 <div class='pagare__body'>
-                                                    <p>Debe(mos) y pagare(mos) incondicionalmente por este Pagaré a la orden de FRANCISCO ENRIQUE MARTINEZ CORDERO en Playa del carmen, municipio de Solidaridad, estado de Quintana Roo el día {$fecha->format('d-m-Y')} la cantidad de: </p><p>Valor recibido a mi (nuestra entera satisfacción). Este pagaré forma pare te una serie numerdada de 1 al {$n_historial} y todos estan sujetos a la condición de que, al no pagarse cualquiera de ellos a su vencimiento, serán exigibles todos los que le sigan en número, además de los ya vencidos, desde la fecha de vencimiento de este documento hasta el día de su liquidación, causará intereses moratorios al tipo de {$historial->porcentaje_penalizacion}% por cada día de de pago incumplido, pagado en esta ciudad.</p>
+                                                    <p>Debe(mos) y pagare(mos) incondicionalmente por este Pagaré a la orden de FRANCISCO ENRIQUE MARTINEZ CORDERO en Playa del carmen, municipio de Solidaridad, estado de Quintana Roo el día {$fecha->format('d-m-Y')} la cantidad de: </p><p>Valor recibido a mi (nuestra entera satisfacción). Este pagaré forma pare te una serie numerdada y todos estan sujetos a la condición de que, al no pagarse cualquiera de ellos a su vencimiento, serán exigibles todos los que le sigan en número, además de los ya vencidos, desde la fecha de vencimiento de este documento hasta el día de su liquidación, causará intereses moratorios al tipo de por cada día de de pago incumplido, pagado en esta ciudad.</p>
                                                 </div>
                                                 <div class='pagare__footer'>
                                                     <p>DEUDOR:</p>
@@ -165,7 +166,7 @@ class Reportes extends CI_Controller
                             $count = 1;
                             
                     }
-                $n++; */                    
+                 */                    
             }
             //Si al terminar no se han cerrado todas las etiquetas de td, cerrar
             /*if($count==2){
