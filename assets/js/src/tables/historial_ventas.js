@@ -10,30 +10,25 @@ var historial_ventas_table = $('#historial-ventas-table').DataTable({
         { "data": "nombre_cliente" },
         { "data": "descripcion" },
         { "data": "retraso" },
-        { "data": "detalles" },
-        {
+        { "data": "detalles" }, {
             "data": "precio",
             "render": $.fn.dataTable.render.number(',', '.', 2, '$'),
             "type": "num-fmt",
-        },
-        {
+        }, {
             "data": "comision",
             "render": $.fn.dataTable.render.number(',', '.', 2, '$'),
             "type": "num-fmt",
-        },
-        {
+        }, {
             "data": "pagado",
             "render": $.fn.dataTable.render.number(',', '.', 2, '$'),
             "type": "num-fmt",
-        },
-        {
+        }, {
             "data": "comisionado",
             "render": $.fn.dataTable.render.number(',', '.', 2, '$'),
             "type": "num-fmt",
         },
         { "data": "nombre_lider" },
-        { "data": "nombre_user" },
-        {
+        { "data": "nombre_user" }, {
             "data": "",
             "render": function(data, type, full, meta) {
                 if (full.estado != null && full.estado != undefined && full.estado != "") {
@@ -70,8 +65,7 @@ var historial_ventas_table = $('#historial-ventas-table').DataTable({
             "targets": -1,
             "data": null,
             "defaultContent": "",
-        },
-        {
+        }, {
             //Quitar busqueda para esta columna
             "targets": [],
             "searchable": false,

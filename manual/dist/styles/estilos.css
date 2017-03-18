@@ -1633,7 +1633,7 @@ table tbody tr td {
   .page {
     padding: 50px;
     padding-top: 90px;
-    min-height: 27cm;
+    min-height: 15cm;
   }
   .page .encabezado {
     padding: 0px 80px;
