@@ -1,5 +1,9 @@
 .mapplicManual,.toolTipContainer
 	position relative
+	display block
+	overflow hidden
+	+from-width(5)
+		overflow initial
 .toolTip
 	background-color $primaryColor
 	display inline-block
@@ -51,3 +55,40 @@
 	&.next-step
 		bottom 0px
 		right 0px
+	&.login_rememeber
+		top 70%
+		left 30%
+	&.login_forgot_pass
+		top 70%
+		right 30%
+	&.table_search
+		top 20px
+		right 10px
+	&.table_mostrar
+		top 3%
+		left 17%
+	&.table_columnas
+		top 15%
+		left 50%
+	&.table_controles
+		bottom 0px
+		right 20%
+	&.table_info
+		bottom 10px
+		left 10px
+.scrollTop
+	height 50px
+	width 50px
+	background-color teal
+	border-radius 50%
+	fixed bottom 50px right 50px
+	display none
+	&:after
+		content '\f077'
+		position absolute
+		top 50%
+		left 50%
+		transform translate(-50%,-50%)
+		font-family FontAwesome
+		color #fff
+		

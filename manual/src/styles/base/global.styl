@@ -56,6 +56,12 @@ ul
 // 	transform: scale(1)
 .container
 	max-width 960px
+	+from-width(48em)
+		width 90%
+	+from-width(64em)
+		width 90%
+	+from-width(75em)
+		width 90%
 .container-fluid
 	padding-right: 1rem
 	padding-left: 1rem
@@ -154,3 +160,8 @@ ul
 	+from-width(6)
 		&-lg
 			order:0
+// colores
+.primary
+	color #337ab7!important
+.success
+	color #31b131!important

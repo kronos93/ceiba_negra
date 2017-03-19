@@ -13,6 +13,8 @@
 </head>
 
 <body>
+    <div class="scrollTop" id="returntop">
+    </div>
     <!-- <section class="index">
         <div class="container-fluid container">
             <div class="row">
@@ -152,6 +154,18 @@
             </div>
         </div>
     </section> -->
+    <!--   <section class="page-container inicio_sesion" id="login">
+        <div class="container-fluid container">
+            <div class="row">
+                <article class="page col-xs-12">
+                    
+                </article>
+                <div class="footer">
+                    <span class="counter"></span>
+                </div>
+            </div>
+        </div>
+    </section> -->
     <section class="page-container introduccion" id="introduccion">
         <div class="container-fluid container">
             <div class="row">
@@ -167,9 +181,82 @@
                             <h3>Manual de Usuario Huertos la Ceiba</h3>
                         </div>
                         <div class="col-xs-12">
+                            <br>
+                            <br>
                             <p>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur omnis cum, corporis error quas, iusto esse nam quam blanditiis dignissimos accusantium vitae ad a repellat, quia officia facere expedita suscipit?
+                                El siguiente manual tiene la finalidad de dar a conocer el correcto uso del sistema de gestion de Venta de Huertos, lo guiaremos en cada una de las secciones, tanto el uso como administrador, como el uso y limitaciones de un usuario Lider.
+                                <br>Esperamos que el uso del sistema sea de su agrado, tanto como el nuestro al desarrollarlo.
                             </p>
+                        </div>
+                        <div class="col-xs-12">
+                            <h2>Indice de Contenidos</h2>
+                            <ul class="menu" id="menu">
+                                <li class="menu__item"><a href="#login">Inicio de Sesion</a>
+                                    <ul class="menu__sub_menu">
+                                        <li><a href="#">Recuperacion de Contraseña</a></li>
+                                    </ul>
+                                </li>
+                                <li class="menu__item"><a href="#plano">Plano</a>
+                                    <ul class="menu__sub__menu">
+                                        <li><a href="#">Herramientas Básicas</a></li>
+                                        <li><a href="#">Funciones del Mapa</a></li>
+                                    </ul>
+                                </li>
+                                <li class="menu__item"><a href="#tablas">Manejo de Tablas</a>
+                                    <ul class="menu__sub__menu">
+                                        <li><a href="#">Herramientas Básicas</a></li>
+                                        <li><a href="#">Funciones del Mapa</a></li>
+                                    </ul>
+                                </li>
+                                <li class="menu__item"><a href="#">Registros de Huertos y Manzanas</a>
+                                    <ul class="menu__sub_menu">
+                                        <li><a href="#">Visualizar</a></li>
+                                        <li><a href="#">Agregar</a></li>
+                                        <li>
+                                            <a href="#">Editar</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu__item"><a href="#">Venta de Huerto(s)</a>
+                                    <ul class="menu__sub_menu">
+                                        <li><a href="#">Selección del Huerto</a></li>
+                                        <li><a href="#">Agregar Carrito de Compras</a></li>
+                                        <li><a href="#">LLenado de Datos</a></li>
+                                        <li><a href="#">Generacion de Contrato</a></li>
+                                    </ul>
+                                </li>
+                                <li class="menu__item"><a href="#">Administracion de Ventas</a>
+                                    <ul class="menu__sub_menu">
+                                        <li><a href="#">Historial de Ventas</a>
+                                            <ul>
+                                                <li>Contratos</li>
+                                                <li>Pagarés/Recibos</li>
+                                                <li><a href="#">Pagos Pendientes</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="#">Ingresos</a>
+                                            <ul>
+                                                <li>Ver Ingresos</li>
+                                                <li>Agregar Opciones de Ingresos</li>
+                                                <li><a href="#">Editar Opciones de Ingreso</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="#">Comisiones</a>
+                                            <ul>
+                                                <li>Ver Comisiones</li>
+                                                <li>Saldar Comisiones</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu__item"><a href="#">Usuarios</a>
+                                    <ul class="">
+                                        <li><a href="#">Agregar Usuario</a></li>
+                                        <li><a href="#">Editar Usuario</a></li>
+                                        <li><a href="#">Activar/Desactivar</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                     <div class="footer">
@@ -179,7 +266,90 @@
             </div>
         </div>
     </section>
-    <section class="page-container venta" id="venta">
+    <!-- INICIO DE SESION -->
+    <section class="page-container inicio_sesion" id="login">
+        <div class="container-fluid container">
+            <div class="row">
+                <article class="page col-xs-12">
+                    <div class="encabezado">
+                        <div class="wrap-img">
+                        </div>
+                        <span>Huertos la Ceiba</span>
+                    </div>
+                    <h1>Inicio de Sesión</h1>
+                    <br>
+                    <h3>Acceso al Sistema</h3>
+                    <p>Para tener acceso al sistema, debe acceder primero, a esta direccion: <a href="http://huertoslaceiba.com/auth/login" class="link" target="_blank">http://huertoslaceiba.com/auth/login</a>
+                        <br> seguidamente aparecerá la siguiente Vista:</p>
+                    <br>
+                    <p>Pose el cursor del mouse sobre cada signo de interrogación para ver la descrpción de cada elemento.</p>
+                    <picture class="toolTipContainer">
+                        <img class="lazy img-responsive" data-original="dist/images/login/index_page.png" alt="">
+                        <div class="toolTip login_rememeber" data-text="Recuerdame,  habilita la opcion para que el navegador recuerde tus datos y ya no tengas que poner la contraseña de nuevo.">
+                            <span class="fa fa-question"></span>
+                        </div>
+                        <div class="toolTip login_forgot_pass" data-text="Opcion que habilita formulario para la recuperacion de la contraseña. (ver Recuperacion de Contraseña)">
+                            <span class="fa fa-question"></span>
+                        </div>
+                    </picture>
+                    <ul>
+                        <li><strong>Nombre:</strong> Nombre de Usuario, (Correo Electrónico) dado por el Administrador, si no tiene uno, consulte al Administrador.</li>
+                        <li><strong>Contraseña:</strong>Contraseña de al menos caracterés, creada al momento de registrarse.</li>
+                    </ul>
+                    <div class="footer">
+                        <span class="counter"></span>
+                    </div>
+                </article>
+                <article class="page col-xs-12">
+                    <div class="encabezado">
+                        <div class="wrap-img">
+                        </div>
+                        <span>Huertos la Ceiba</span>
+                    </div>
+                    <h2>Recuperacion de contraseña</h2>
+                    <div class="row article-item">
+                        <div class="col-xs-12">
+                            <h3>Pasos para la recuperacion de Contraseña</h3>
+                            <br>
+                            <p>1.- El primer paso es ingresar un correo Electronico Valido y existente en el sistema</p>
+                        </div>
+                        <div class="col-xs-12 col-sm-4">
+                            <img class="lazy img-responsive" data-original="dist/images/login/recuperacion_contrasena.png" alt="">
+                        </div>
+                        <div class="col-xs-12 col-sm-4">
+                            <img class="lazy img-responsive" data-original="dist/images/login/recuperacion_contrasena_2.png" alt="">
+                            <p><strong>Error si no introduce un correo electronico valido.</strong></p>
+                        </div>
+                        <div class="col-xs-12 col-sm-4">
+                            <img class="lazy img-responsive" data-original="dist/images/login/recuperacion_contrasena_3.png" alt="">
+                            <p><strong>Error si no introduce un correo electronico existente en el Sistema.</strong></p>
+                        </div>
+                        <div class="col-xs-12">
+                            <br>
+                            <br>
+                            <p>2.-Una vez enviado un correo valido y existente, se nos habrá enviado a nuestro correo electronico, un mensaje con el enlace para la recuperacion de la contraseña.</p>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <img class="lazy img-responsive" data-original="dist/images/login/recuperacion_contrasena_5.png" alt="">
+                        </div>
+                        <div class="col-xs-6">
+                            <img class="lazy img-responsive" data-original="dist/images/login/recuperacion_contrasena_6.png" alt="">
+                            <p><strong>Formulario para recuperacion de contraseña.</strong></p>
+                        </div>
+                        <div class="col-xs-12">
+                            <br>
+                            <p>3.-Una vez enviado el formulario, será redirigido al inicio de sesión para ingresar con la contraseña recuperada.</p>
+                        </div>
+                    </div>
+                    <div class="footer">
+                        <span class="counter"></span>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+    <!-- Seccion Mapa -->
+    <section class="page-container inicio_sesion" id="plano">
         <div class="container-fluid container">
             <div class="row">
                 <article class="page col-xs-12">
@@ -189,9 +359,9 @@
                         <span>Huertos la Ceiba</span>
                     </div>
                     <div class="row article-item">
-                        <h1>Venta de Huertos</h1>
+                        <h1>PLANO</h1>
                         <p>Para una venta mas comoda y sencilla, se utiliza la herrramienta del Mapa, donde se pueden visualizar cada una de las manzanas que contiene el huerto, en esta seccion se explicara el manejo de dicha heramienta para luego pasar a aconcretar una venta.</p>
-                        <h2>Manejo de Herramienta de mapa</h2>
+                        <h2>Herramientas Básicas</h2>
                         <p>Pose el cursor del mouse sobre cada signo de interrogación para ver la descrpción de cada elemento.</p>
                         <div class="mapplicManual col-xs-12">
                             <img class="lazy img-responsive" data-original="dist/images/venta/mapplic-controls.png" alt="algo">
@@ -214,6 +384,131 @@
                                 <span class="fa fa-question"></span>
                             </div>
                         </div>
+                        <br>
+                        <h2>Estado de los Huertos</h2>
+                        <p>Para el correcto uso del Mapa y la venta de los huertos, se manejan estados del huerto</p>
+                        <div class="col-xs-12">
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-2">
+                                    <div class="mapa_estado no_vendible">
+                                        <span>No Vendible</span>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-sm-2">
+                                    <div class="mapa_estado libre">
+                                        <span>Vendible</span>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-sm-2">
+                                    <div class="mapa_estado saldado_un_pago">
+                                        <span>Vendido en un solo Pago</span>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-sm-2">
+                                    <div class="mapa_estado saldado_abonos">
+                                        <span>Vendido en Abonos</span>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-sm-2">
+                                    <div class="mapa_estado reservado">
+                                        <span>Reservado</span>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-sm-2">
+                                    <div class="mapa_estado cancelado">
+                                        <span>Cancelado</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footer">
+                        <span class="counter"></span>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+    <!-- section uso de Tablas -->
+    <section class="page-container inicio_sesion" id="tablas">
+        <div class="container-fluid container">
+            <div class="row">
+                <article class="page col-xs-12">
+                    <div class="encabezado">
+                        <div class="wrap-img">
+                        </div>
+                        <span>Huertos la Ceiba</span>
+                    </div>
+                    <div class="row article-item">
+                        <h1>Tablas</h1>
+                        <p>Para la representacion de todos los datos dentro del sistema, se usa una tabla inteligente, con diferentes opciones y funciones que explicaremos, a continuacion.</p>
+                        <h2>Herramientas Básicas</h2>
+                        <p>Pose el cursor del mouse sobre cada signo de interrogación para ver la descrpción de cada elemento.</p>
+                        <div class="toolTipContainer col-xs-12">
+                            <img class="lazy img-responsive" data-original="dist/images/tablas/tabla_controles.png" alt="algo">
+                            <div class="toolTip table_search" data-text="Herramineta de Busqueda, puedes filtrar el listado, por cuaquier dato(columna de la tabla)">
+                                <span class="fa fa-question"></span>
+                            </div>
+                            <div class="toolTip table_mostrar" data-text="Puedes Elegir el numero de Registros que se mustran en la Tabla, por defecto, se mostraran 25">
+                                <span class="fa fa-question"></span>
+                            </div>
+                            <div class="toolTip table_columnas" data-text="Columnas de la tabla">
+                                <span class="fa fa-question"></span>
+                            </div>
+                            <div class="toolTip table_controles" data-text="Son los controles de navegacion, para visualizar los registros, puedes navegar entyre paginas.">
+                                <span class="fa fa-question"></span>
+                            </div>
+                            <div class="toolTip table_info" data-text="Nos muestra informacion de los registros totales y los que se visualizan.">
+                                <span class="fa fa-question"></span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="col-xs-12">
+                            <br>
+                            <br>
+                            <h2>Funciones de las tablas</h2>
+                            <p>Las tablas tienen tres funciones importantes</p>
+                        </div>
+                        <div class="col-xs-12">
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-5">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <p><strong>1.- Informacion Adicional.</strong><span class="fa fa-info-circle fa-fw fa-3x primary"></span></p>
+                                            <p>Al presionar al boton, mostrara informacion adicional, como correos y telefonos, para ocultar, presione de nuevo.</p>
+                                            <img class="lazy img-responsive" data-original="dist/images/tablas/tabla_tooltip.png" alt="">
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <p><strong>2.- Ordenamiento.</strong><span class="fa fa-sort fa-fw fa-3x primary"></span></p>
+                                            <p>Presione para ordenar ascendentemente y presione de nuevo para hacerlo descendentemente (funciona alphanumericamente)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-sm-7">
+                                    <p><span class="fa fa-plus-circle fa-fw fa-3x success"></span> <strong>3.- Expandir Fila</strong></p>
+                                    <p> Al expandir una fila, este mostrará mas informacion, (si es que existe)</p>
+                                    <img class="lazy img-responsive" data-original="dist/images/tablas/tabla_expandir.png" alt="">
+                                    <p></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footer">
+                        <span class="counter"></span>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+    <!-- Venta de Huertos -->
+    <section class="page-container venta" id="venta">
+        <div class="container-fluid container">
+            <div class="row">
+                <article class="page col-xs-12">
+                    <div class="encabezado">
+                        <div class="wrap-img">
+                        </div>
+                        <span>Huertos la Ceiba</span>
                     </div>
                     <div class="row article-item">
                         <div class="col-xs-12">
@@ -228,16 +523,6 @@
                             <p>para poder agregar un huerto al carrito de compras es necesario escoger un huerto del mapa o del menu lateral.</p>
                             <p>Al hacer click sobre el icono del carrito podrá observar que esta vacio, ya que no se ha seleccionado ningun huerto a vender, al escoger alguno se mostrará en este mismo menu la información del huerto o los huertos escogidos.</p>
                         </div>
-                    </div>
-                    <div class="footer">
-                        <span class="counter"></span>
-                    </div>
-                </article>
-                <article class="page col-xs-12">
-                    <div class="encabezado">
-                        <div class="wrap-img">
-                        </div>
-                        <span>Huertos la Ceiba</span>
                     </div>
                     <div class="row article-item">
                         <div class="col-xs-12">

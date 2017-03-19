@@ -1,0 +1,28 @@
+.mapa_estado
+	display block
+	height 100px
+	width 100px
+	background-color green
+	margin 1px auto
+	color #fff
+	border-radius 50%
+	font-weight bold
+	position relative
+	span
+		margin 0px!important
+		width 100%
+		text-align center
+		absolute top 50% 
+		transform translateY(-50%)
+	&.no_vendible
+		background-color rgb(127, 140, 141)
+	&.libre
+		background-color green
+	&.saldado_un_pago
+		background-color rgb(211, 84, 0)
+	&.saldado_abonos
+		background-color rgb(241, 196, 15)
+	&.reservado
+		background-color rgb(41, 128, 185)
+	&.cancelado
+		background-color #000

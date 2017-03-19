@@ -1,0 +1,28 @@
+.menu
+	width 100%
+	// max-width 500px
+	display block
+	li
+		display block
+		padding-left 25px
+		a
+			display block
+			padding 5px
+	&__item
+		&>a
+			color #b88d2c
+			font-weight bold
+			position relative
+			&:after
+				font-family FontAwesome
+				content '\f078'
+				display block
+				position absolute
+				top 5px
+				right 0px
+	// +from-width(5)
+	// 	fixed top 0 left 0
+	// 	height 100%
+	// 	width 20%
+	// 	background-color green
+	// 	overflow scroll
