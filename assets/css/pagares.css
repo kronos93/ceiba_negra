@@ -1,60 +1,223 @@
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
 h1,
 h2,
 h3,
 h4,
 h5,
 h6,
-p {
-    margin: 0
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  vertical-align: baseline;
 }
-
-html {
-    margin: 30px 40px!important
-}
-
-table {
-    width: 100%;
-    table-layout: fixed;
-}
-
-table td {
-    position: relative;
-    padding: 5px;
-    border: 1px dashed #ccc;
-    background: url('../img/logos/logo-small.png') center center no-repeat;
-    width: 50%;
-}
-
 body {
-    font-family: Helvetica;
+  line-height: 1;
+  color: #000;
+  background: #fff;
 }
-
-.pagare__header h3 {
-    font-size: 10pt;
-    text-transform: uppercase;
-    text-align: right;
+ol,
+ul {
+  list-style: none;
 }
-
-.pagare__header p {
-    color: #B88D2C;
-    font-size: 10pt;
-    padding: 5px 0 5px;
-    text-align: right;
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  vertical-align: middle;
 }
-
-.pagare__body p {
-    font-size: 10pt;
-    text-align: justify;
+caption,
+th,
+td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
 }
-
-.pagare__footer p {
-    font-size: 8pt;
-    text-align: center;
+a img {
+  border: none;
 }
-
-.pagare__footer .copy {
-    font-size: 9pt;
-    text-align: right;
-    color: #ccc;
-    text-transform: uppercase;
+body {
+  font-size: 14px;
+}
+p {
+  letter-spacing: 0.4px;
+  font-size: 14px;
+  padding-bottom: 15px;
+}
+ul li {
+  padding-left: 20px;
+}
+strong {
+  font-weight: 600;
+}
+.clearfix:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+html {
+  margin: 0.6cm;
+}
+.recibo_container {
+  display: table;
+  vertical-align: top;
+}
+.pagare_talon {
+  width: 30%;
+  display: table-cell;
+  vertical-align: top;
+  border: 1pt dashed #ccc;
+  padding: 2mm;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.pagare_talon__numero {
+  background-color: #b88d2c;
+  text-align: center;
+  color: #fff;
+  padding: 1mm 0mm;
+  margin-bottom: 1mm;
+}
+.pagare_talon__folio {
+  padding: 1mm;
+  margin: 1mm;
+}
+.pagare_talon__folio strong {
+  color: #b88d2c;
+}
+.pagarecontainer {
+  border: 1pt dashed #ccc;
+  padding: 1mm;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.pagarecontainer.recibo_body {
+  width: 70%;
+  display: table-cell;
+  vertical-align: top;
+}
+.pagarecontainer_wrap {
+  width: 100%;
+  border: 2pt solid #b88d2c;
+  border-radius: 4pt;
+  position: relative;
+  background: url("../images/small-brand.png") center center no-repeat;
+  padding-bottom: 0.1cm;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.pagarecontainer .num_pagare {
+  float: right;
+  height: 0.6cm;
+  background-color: #b88d2c;
+  border-radius: 0pt 0pt 0pt 10pt;
+  line-height: 0.6cm;
+  padding: 0cm 0.8cm;
+  font-size: 13pt;
+  color: #fff;
+}
+.pagarecontainer .fecha_pagare {
+  padding-top: 0.7cm;
+}
+.pagarecontainer .fecha_pagare ul {
+  display: block;
+}
+.pagarecontainer .fecha_pagare ul li {
+  display: inline-block;
+  padding: 2mm;
+  vertical-align: middle;
+}
+.pagarecontainer .fecha_pagare ul li span {
+  padding: 1mm 3mm;
+  background-color: #dcc896;
+}
+.pagarecontainer .fecha_pagare .folio_pagare {
+  float: right;
+  background-color: #b88d2c;
+  margin-top: 0.1cm;
+  height: 0.6cm;
+  line-height: 0.6cm;
+  padding-right: 3mm;
+  padding-left: 3mm;
+  color: #fff;
+}
+.pagarecontainer .texto_pagare {
+  padding-top: 0.3cm;
+  padding-bottom: 0.2cm;
+  padding-right: 2mm;
+  padding-left: 2mm;
+  text-align: justify;
+}
+table {
+  width: 100%;
+}
+table tr td {
+  width: 50%;
+  padding: 0.1cm;
+  vertical-align: bottom;
+  text-align: center;
+  padding-right: 3mm;
+  padding-left: 3mm;
+}
+table tr td p {
+  font-size: 8pt;
+  text-align: justify;
+}
+table tr td strong:before {
+  content: '';
+  display: block;
+  border-top: 2px solid #000;
+  margin-bottom: 1px;
 }

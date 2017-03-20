@@ -1294,7 +1294,7 @@ small {
   font-size: 12px;
 }
 ul li {
-  line-height: 20px;
+  line-height: 25px;
 }
 .container {
   max-width: 960px;
@@ -1523,7 +1523,7 @@ img.shadow {
   background-color: #f1c40f;
 }
 .mapa_estado.reservado {
-  background-color: #2980b9;
+  background-color: #8e44ad;
 }
 .mapa_estado.cancelado {
   background-color: #000;
