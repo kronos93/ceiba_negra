@@ -54,14 +54,16 @@ class Cart {
 
 
         if ($('#frm-venta #precio').length && $('#frm-venta #enganche').length && $('#frm-venta #abono').length && $('#comision').length) {
-
             $('#frm-venta #precio').autoNumeric('set', localStorage.getItem("precio"));
             $('#frm-venta #enganche').autoNumeric('set', localStorage.getItem("enganche"));
             $('#frm-venta #abono').autoNumeric('set', localStorage.getItem("abono"));
             ///////////////////////////////////////////////////////////////////////////
             var porcentaje_comision = $('#porcentaje_comision').val();
             $('#comision').autoNumeric('set', (porcentaje_comision / 100) * $('#precio').autoNumeric('get'));
-
+        } else if ($('#frm-reserva #precio').length && $('#frm-reserva #enganche').length && $('#frm-reserva #abono').length) {
+            $('#frm-reserva #precio').autoNumeric('set', localStorage.getItem("precio"));
+            $('#frm-reserva #enganche').autoNumeric('set', localStorage.getItem("enganche"));
+            $('#frm-reserva #abono').autoNumeric('set', localStorage.getItem("abono"));
         }
 
 
@@ -71,7 +73,7 @@ class Cart {
             var uri = window.location.pathname;
             var uri_split = uri.split('/');
             var name_uri = uri_split[uri_split.length - 1];
-            if (name_uri == 'venta') {
+            if (name_uri == 'venta' || name_uri == 'reserva') {
                 window.location.href = base_url();
             }
         };

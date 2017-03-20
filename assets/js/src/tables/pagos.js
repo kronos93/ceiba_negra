@@ -5,6 +5,7 @@ import moment from 'moment';
 import swa from 'sweetalert';
 import 'jquery-mask-plugin/dist/jquery.mask';
 import 'jquery-ui/ui/widgets/datepicker';
+import '../configs/datepicker';
 moment.locale('es');
 
 

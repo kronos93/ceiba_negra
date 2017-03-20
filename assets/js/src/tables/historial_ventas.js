@@ -208,19 +208,21 @@ $('#historial-ventas-table').on('click', '.recuperar-venta', function() {
                 });
         });
 });
-$('[data-toggle=popover]').on('click', function(e) {
-    var event = e;
-    $('[data-toggle=popover]').popover('hide');
-    $(this).popover({
-            'html': true,
-        }).popover('show')
-        .on('shown.bs.popover', function() {
-            event.stopPropagation();
-            $('.popover').attr('tabindex', "10").on('click', function(e) {
-                e.stopPropagation();
-            });
-        }).on('hidden.bs.popover', function() {
-            event.stopPropagation();
-        });
-    event.stopPropagation();
+
+$('a[data-toggle=popover]').popover({
+    'html': true,
+    trigger: 'manual'
+});
+$('a[data-toggle=popover]').on('click', function(e) {
+
+    $(this).popover('toggle');
+    $('.popover').on('click', function(e) {
+        e.stopPropagation();
+    });
+    e.stopPropagation();
+});
+
+$('a[data-toggle=popover]').on('shown.bs.popover', function(e) {
+    console.log("show" + this);
+    $('a[data-toggle=popover]').not(this).popover('hide');
 });

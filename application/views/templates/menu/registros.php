@@ -9,13 +9,13 @@
             <li><a href="<?= base_url() ?>registros/huertos">Huertos</a></li>
         </ul>
     </li>
-    <!-- <li><a href="<?= base_url() ?>"><span class="fa fa-map"></span> Plano</a></li> -->
+    <?php if ($this->ion_auth->in_group(['administrador','miembro'])) : ?>
     <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administracion de Ventas<span class="caret"></span></a>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Ventas<span class="caret"></span></a>
         <ul class="dropdown-menu">
             <!-- Links para nuevos registros -->
             <?php if ($this->ion_auth->in_group(['administrador','miembro'])) : ?>
-            <li><a href="<?= base_url() ?>venta/historial_de_ventas">Historial de ventas</a></li>
+            <li><a href="<?= base_url() ?>venta/historial_de_ventas">Historial - Contratos</a></li>
             <li role="separator" class="divider"></li>
             <?php endif;?>
             <?php if ($this->ion_auth->in_group('administrador')) : ?>
@@ -24,5 +24,7 @@
             <?php endif;?>
         </ul>
     </li>
+    <li><a href="<?= base_url() ?>">Reservas<span class="badge">42</span></a></li>
+    <?php endif;?>
 </ul>
 <?php endif; ?>

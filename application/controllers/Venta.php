@@ -21,12 +21,17 @@ class Venta extends CI_Controller
     }
     public function index()
     {
-        $data['title'] = "Venta";
-        $data['body'] = "venta";
-        $fecha = Carbon::now();
-        $data['fecha'] = $fecha->format('d-m-Y');
-        $data['ingresos'] = $this->Opciones_ingreso_model->get();
-        $this->load->view('templates/template', $data);
+        if (!$this->ion_auth->logged_in()) {
+            // redirect them to the login page
+            redirect('auth/login', 'refresh');
+        } else {
+            $data['title'] = "Venta";
+            $data['body'] = "venta";
+            $fecha = Carbon::now();
+            $data['fecha'] = $fecha->format('d-m-Y');
+            $data['ingresos'] = $this->Opciones_ingreso_model->get();
+            $this->load->view('templates/template', $data);
+        }
     }
     public function historial_de_ventas()
     {
@@ -461,8 +466,7 @@ class Venta extends CI_Controller
                 $this->Historial_model->insert_batch($db_historial);
                 $this->cart->destroy();
             }
-        }
-        //Si es un cliente nuevo
+        } //Si es un cliente nuevo
         elseif ($idNewUser = $this->ion_auth->register($identity, $password, $email, $additional_data, $group)) {
             $venta = [
                 'id_usuario' => $this->ion_auth->get_user_id(),
@@ -789,8 +793,7 @@ class Historial
                     }
                 }
             }
-        }
-        //Antiguos
+        } //Antiguos
         elseif ($this->tipo_historial === '1-16') {
             $fecha = $this->fecha;
             foreach ($this->historial as $key => $row) {
@@ -819,8 +822,7 @@ class Historial
                     }
                 }
             }
-        }
-        //En uso
+        } //En uso
         elseif ($this->tipo_historial === '1-15') {
             $fecha = $this->fecha;
             foreach ($this->historial as $key => $row) {
@@ -904,8 +906,7 @@ class Historial
                     }
                 }
             }
-        }
-        //En uso
+        } //En uso
         elseif ($this->tipo_historial === 'quincena-mes') {
             $fecha = $this->fecha;
             foreach ($this->historial as $key => $row) {
@@ -934,8 +935,7 @@ class Historial
                     }
                 }
             }
-        }
-        //En uso
+        } //En uso
         elseif ($this->tipo_historial === 'ini-mes') {
             $fecha = $this->fecha;
             foreach ($this->historial as $key => $row) {

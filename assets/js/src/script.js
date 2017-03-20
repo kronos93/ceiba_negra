@@ -13,13 +13,17 @@ import './tables/historial_ventas';
 import 'jquery-mask-plugin/dist/jquery.mask';
 import { phone } from './components/components.js';
 phone();
-
 import './tables/pagos';
 import './tables/usuarios';
 
 if ($('#frm-venta').length) {
     require.ensure([], function(require) {
         require("./venta.js");
+    });
+}
+if ($('#frm-reserva').length) {
+    require.ensure([], function(require) {
+        require('./reserva.js');
     });
 }
 if ($('#shopCartSale').length) {

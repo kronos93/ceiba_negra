@@ -2,6 +2,7 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 use Mailgun\Mailgun;
 use PHPMailer\PHPMailerAutoload;
+
 class Inicio extends CI_Controller
 {
     public function __construct()

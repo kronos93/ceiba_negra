@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import { base_url } from './utils/util';
 import { autocompleteClientes, autocompleteLideres, datepicker, phone, number, format_numeric } from './components/components.js';
 import moment from 'moment';
@@ -282,13 +281,13 @@ form_venta.steps({
                         localStorage.removeItem("enganche");
                         localStorage.removeItem("abono");
                         if (response.status != null && response.status != undefined != "" && response.status == 200) {
-                            swal("¡Contrato generado exitosamente! Será redigirdo al historial de ventas al pulsar aceptar");
+
 
                             swal({
                                     title: "¡Contrato realizado!",
                                     text: "Pulsar el boton continuar para ver el historial.",
                                     type: "success",
-                                    confirmButtonColor: "#DD6B55",
+                                    /*confirmButtonColor: "#DD6B55",*/
                                     confirmButtonText: "¡CONTINUAR!",
                                     closeOnConfirm: false
                                 },

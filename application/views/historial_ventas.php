@@ -23,7 +23,7 @@
                         <?php foreach ($ventas as $venta) :?>
                         <tr>
                             <td><?= $venta->id_venta; ?></td>
-                            <td><?= $venta->nombre_cliente; ?><a data-toggle="popover" tabindex="10" title="Detalles:" data-placement="top" data-content="<p>Correo: <a href='mailto:<?= $venta->email ?>'> <?= $venta->email ?></a></p><p>Telefono: <a href='tel:<?=$venta->phone?>'><span class='phone'><?=$venta->phone?></span></a></p>"><span class="fa fa-info-circle fa-lg fa-fw"></span></a></td>
+                            <td><?= $venta->nombre_cliente; ?><a data-toggle="popover" title="Detalles:" data-placement="top" data-content="<p>Correo: <a href='mailto:<?= $venta->email ?>'> <?= $venta->email ?></a></p><p>Telefono: <a href='tel:<?=$venta->phone?>'><span class='phone'><?=$venta->phone?></span></a></p>"><span class="fa fa-info-circle fa-lg fa-fw"></span></a></td>
                             <td><?= $venta->descripcion; ?></td>
                             <td><?= $venta->retraso; ?></td>
                             <td>
@@ -42,9 +42,9 @@
                                 <?php
                                 if ($venta->estado == 0 || $venta->estado == 1|| $venta->estado== 2) :
                                 ?>
-                                    <a href="<?= base_url(); ?>reportes/contrato/<?= $venta->id_venta; ?>" class="btn btn-default" target=""><i class="fa fa-file-pdf-o" aria-hidden="true"></i> contrato</a>
-                                    <a href="<?= base_url(); ?>reportes/<?= ($venta->version == 2) ? 'pagares' : 'recibos'?>/<?= $venta->id_venta; ?>" class="btn btn-primary" ><i class="fa fa-file-pdf-o" aria-hidden="true"></i> <?= ($venta->version == 2) ? 'pagarés' : ' recibos'?></a>
-                                    <a href="<?= base_url() ?>registros/pagos/<?= $venta->id_venta; ?>" target="_blank" class="btn btn-info"><i class="fa fa-fw fa-eye"></i>pagos</a>
+                                    <a href="<?= base_url(); ?>reportes/contrato/<?= $venta->id_venta; ?>" class="btn btn-default" target=""><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Contrato</a>
+                                    <a href="<?= base_url(); ?>reportes/<?= ($venta->version == 2) ? 'pagares' : 'recibos'?>/<?= $venta->id_venta; ?>" class="btn btn-primary" ><i class="fa fa-file-pdf-o" aria-hidden="true"></i> <?= ($venta->version == 2) ? ' Pagarés' : ' Recibos'?></a>
+                                    <a href="<?= base_url() ?>registros/pagos/<?= $venta->id_venta; ?>" target="_blank" class="btn btn-info"><i class="fa fa-fw fa-eye"></i> Pagos</a>
                                     <?php
                                     if ($venta->estado == 0) :
                                     ?>
