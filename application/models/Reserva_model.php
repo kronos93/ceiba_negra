@@ -11,4 +11,12 @@ class Reserva_model extends CI_Model {
         $id_reserva = $this->db->insert_id();
         return $id_reserva;
     }
+     public function where($condicion){
+        $this->db->where($condicion);
+        return $this;
+    }
+    public function count_all(){
+        $this->db->from($this->table);
+        return $this->db->count_all_results();
+    }
 }

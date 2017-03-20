@@ -24,7 +24,7 @@
             <?php endif;?>
         </ul>
     </li>
-    <li><a href="<?= base_url() ?>">Reservas<span class="badge">42</span></a></li>
     <?php endif;?>
+    <li><a href="<?= base_url() ?>">Reservas<span class="badge"><?= $this->reservas->total() ?></span></a></li>
 </ul>
 <?php endif; ?>

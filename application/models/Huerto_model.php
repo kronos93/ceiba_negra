@@ -120,8 +120,11 @@ class Huerto_model extends CI_Model
         $query = $this->db->query($sql);    
         return $this->db->affected_rows();
     }
-
+    public function where($condicion){
+        $this->db->where($condicion);
+        return $this;
+    }
     public function update_batch($data,$ref){
-        $this->db->update_batch($this->tabla, $data, $ref);
+        return $this->db->update_batch($this->tabla, $data, $ref);
     }
 }

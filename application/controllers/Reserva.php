@@ -9,6 +9,7 @@ class Reserva extends CI_Controller
         $this->load->model('Reserva_model');
         $this->load->model('HuertosReserva_model');
         $this->load->model('Huerto_model');
+        $this->load->model('Trans_model');
     }
     public function index()
     {
@@ -83,6 +84,7 @@ class Reserva extends CI_Controller
                 'fecha' =>  Carbon::today(),
                 'expira' =>  Carbon::today()->addDays(7),
              ];
+             $this->Trans_model->begin();
              $reserva = $this->Reserva_model->insert($data);
              if($reserva){
                 $huertos_reserva = [];
@@ -98,8 +100,20 @@ class Reserva extends CI_Controller
                     array_push($huertos, $huerto);
                 }
                 $this->HuertosReserva_model->insert_batch($huertos_reserva);
-                $this->Huerto_model->update_batch($huertos, 'id_huerto');
-                $this->cart->destroy();
+                $updated_huertos = $this->Huerto_model->where(['vendido'=>0])
+                                                      ->update_batch($huertos, 'id_huerto');
+                if ($this->Trans_model->status() === false) {
+                    $this->Trans_model->rollback();
+                    echo "<p>Error fatal</p>";
+                } else {
+                    if($this->cart->total_items() != $updated_huertos){
+                        echo "<p>No fue posible actualizar todos los registros, alguien más ha reservado.</p>";
+                    }else{
+                        $this->cart->destroy();
+                        $this->Trans_model->commit();
+                        echo json_encode(['status' => 200 ,'msg' => 'ok']);
+                    }
+                }
              }else{
                  echo "<p>Falló la inserción de datos, sí el problema persiste contactar al administrador.</p>";
              }

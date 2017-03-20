@@ -65,7 +65,7 @@ class Reportes extends CI_Controller
                                             ->where($condicion)
                                             ->get();
         if (count($historials)) {
-            $condicion = ['huertos_ventas.id_venta' => $id];                                     
+            $condicion = ['huertos_ventas.id_venta' => $id];
             $pagares = "";
             $count = 1;
             $n = 1;
@@ -160,7 +160,7 @@ class Reportes extends CI_Controller
                     if ($key > 0) {
                         $txt_huertos.= ',';
                     }
-                    $txt_huertos.= "No. {$huerto->huerto} MZ. {$huerto->manzana}";
+                    $txt_huertos.= "Huerto No. {$huerto->huerto} MZ. {$huerto->manzana}";
                 }
             }
                                      
@@ -198,15 +198,24 @@ class Reportes extends CI_Controller
                         $acronym .= $w[0];
                     }
                 }
-                $recibos .= "<div style='page-break-after: avoid;'></div>
-                                <div class='pagarecontainer'>
+                $recibos .= "<div class='recibo_container'>
+                                <div class='pagare_talon'>
+                                    <div class='pagare_talon__numero'><strong>RECIBO {$n} {$de} {$n_historial}</strong></div>
+                                    <div class='pagare_talon__folio'>FOLIO: ".strtoupper($acronym)."-{$n}-{$fecha->format('d-m-Y')}</strong></div>
+                                        <p><strong>Fecha de Pago:</strong><span>{$fecha->format('d-m-Y')}</span></p>
+                                        <p class='texto_pagare'>
+                                            RECIBI: DEL(A) <strong>C. {$nombre_cliente}</strong> LA CANTIDAD DE <strong>&nbsp;$ ".number_format($historial->abono, 2)." PESOS 00/100 M.N</strong>
+                                        </p>
+                                        <p>Por concepto de pago parcial de la cesion privada , de derechos en co-propiedad.</p>
+                                    </div>
+                                <div class='pagarecontainer recibo_body'>
                                 <div class='pagarecontainer_wrap'>
                                     <div class='num_pagare'>
                                         <strong>RECIBO {$n} {$de} {$n_historial}</strong>
                                     </div>
                                     <div class='fecha_pagare'>
                                         <div class='folio_pagare'>
-                                            <strong>FOLIO No. ".strtoupper($acronym)."-{$n}-{$fecha->format('d-m-Y')}</strong>
+                                            <strong>FOLIO: ".strtoupper($acronym)."-{$n}-{$fecha->format('d-m-Y')}</strong>
                                         </div>
                                         <ul>
                                             <li><strong>Fecha de pago:</strong></li>
@@ -217,17 +226,21 @@ class Reportes extends CI_Controller
                                             <li><span>Playa del Carmen, Solidaridad, Q. Roo</span></li>
                                         </ul>
                                     </div>
-                                    <p class='texto_pagare'>RECIBI: DEL(A) C. <strong>{$nombre_cliente}</strong> LA CANTIDAD DE<strong>&nbsp;$ ".number_format($historial->abono, 2)." PESOS 00/100 M.N</strong></p>
+                                    <p class='texto_pagare'>
+                                        RECIBI: DEL(A) <strong>{$nombre_cliente}</strong> LA CANTIDAD DE <strong>&nbsp;$ ".number_format($historial->abono, 2)." PESOS 00/100 M.N</strong>
+                                    </p>
                                     <table>
                                         <tr>
-                                            <td><strong>FRANCISCO ENRIQUE MARTINEZ CORDERO</strong></td>
+                                            <td><strong>BELGIO ELIAS PINELO CASANOVA</strong></td>
                                             <td>
-                                                <p>POR CONCEPTO DE PAGO PARCIAL DE LA CESION PRIVADA , DE DERECHOS EN CO-PROPIEDAD DEL TERRENO EN BREÑA {$txt_huertos} DEL PREDIO 'LA CEIBA', UBICADO EN EL MUNICIPIO DE LAZARO CARDENAS, QUINTANA ROO.</p>
+                                                <p> POR CONCEPTO DE PAGO PARCIAL DE LA CESION PRIVADA , DE DERECHOS EN CO-PROPIEDAD DEL TERRENO EN BREÑA {$txt_huertos} DEL PREDIO 'LA CEIBA', UBICADO EN EL MUNICIPIO DE LAZARO CARDENAS, QUINTANA ROO.
+                                                </p>
                                             </td>
                                         </tr>
                                     </table>
                                 </div>
-                            </div>";
+                            </div>
+                        </div>";
                 if ($page_break == 4) {
                     $recibos .= "<div style='page-break-before:always;'></div>";
                     $page_break = 0;

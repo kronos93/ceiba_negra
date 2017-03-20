@@ -49,14 +49,14 @@ form_reserva.on('submit', function(e) {
                                     window.location.href = base_url();
                                 });
                         } else {
-                            sweetAlert("¡Error!", "Algo salió mal, contactar al administrador sí el problema persiste.\nError:\n" + response.responseText, "error");
+                            sweetAlert("¡Error!", "Algo salió mal, contactar al administrador sí el problema persiste.<p>Error:</p>" + response.responseText, "error");
                         }
 
                     })
                     .fail(function(response) {
                         swal({
                             title: "¡Error!",
-                            text: "Algo salió mal, contactar al administrador sí el problema persiste.\nError:\n" + response.responseText,
+                            text: "Algo salió mal, contactar al administrador sí el problema persiste.<p>Error:</p>" + response.responseText,
                             type: "error",
                             html: true
                         });
