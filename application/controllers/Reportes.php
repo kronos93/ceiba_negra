@@ -262,7 +262,9 @@ class Reportes extends CI_Controller
             
             $options = new Options();
             $options->set('isRemoteEnabled', true);
+            $options->set('defaultFont', 'dejavu sans mono');
             $dompdf = new Dompdf($options);
+            $dompdf->set_option('isHtml5ParserEnabled', true);
             $dompdf->loadHtml($output);
             // (Optional) Setup the paper size and orientation
             $dompdf->setPaper('letter', 'portrait');

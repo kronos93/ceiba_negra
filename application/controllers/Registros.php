@@ -126,4 +126,14 @@ class Registros extends CI_Controller
         $data['body'] = "comisiones";
         $this->load->view('templates/template', $data);
     }
+    public function reservas () {
+        if (!$this->ion_auth->logged_in()) {
+        // redirect them to the login page
+            redirect('auth/login', 'refresh');
+        } else {
+            $data['title'] = "Reservas"; //Titulo de la página -> require
+            $data['body'] = "reservas";  //Nombre de la vista de cuerpo -> require
+            $this->load->view('templates/template', $data);  //Combina header y footer con body
+        }
+    }
 }

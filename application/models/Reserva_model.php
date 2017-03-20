@@ -11,8 +11,25 @@ class Reserva_model extends CI_Model {
         $id_reserva = $this->db->insert_id();
         return $id_reserva;
     }
+    public function select($select){
+        $this->db->select($select);
+        return $this;
+    }
      public function where($condicion){
         $this->db->where($condicion);
+        return $this;
+    }
+    public function join($table_join,$condicion,$type='left'){
+        $this->db->join($table_join,$condicion,$type);
+        return $this;
+    }
+    public function get(){       
+        $this->db->from($this->table);        
+        $query = $this->db->get();
+        return $query->result();
+    }
+    public function group_by($group){
+        $this->db->group_by($group);
         return $this;
     }
     public function count_all(){

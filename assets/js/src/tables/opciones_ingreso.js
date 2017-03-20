@@ -5,7 +5,8 @@ var opciones_de_ingreso_table = $('#opciones-de-ingreso-table').DataTable({
     "ajax": base_url() + 'ajax/get_opciones_de_ingreso',
     "columns": [ //Atributos para la tabla
         { "data": "id_opcion_ingreso" },
-        { "data": "nombre" }, {
+        { "data": "nombre" },
+        {
             "data": "cuenta",
             "render": function(data, type, full, meta) {
                 if (parseInt(data) === 0) {
@@ -14,7 +15,8 @@ var opciones_de_ingreso_table = $('#opciones-de-ingreso-table').DataTable({
                     return data;
                 }
             }
-        }, {
+        },
+        {
             "data": "tarjeta",
             "render": function(data, type, full, meta) {
                 if (parseInt(data) === 0) {
@@ -23,11 +25,13 @@ var opciones_de_ingreso_table = $('#opciones-de-ingreso-table').DataTable({
                     return data;
                 }
             }
-        }, {
+        },
+        {
             "data": "ingreso",
             "render": $.fn.dataTable.render.number(',', '.', 2, '$'),
             "type": "num-fmt",
-        }, {
+        },
+        {
             "data": "",
             "render": function(data, type, full, meta) {
                 var btnEditar = '<button data-toggle="modal" data-title="Editar opción de ingreso" data-btn-type="edit" data-target="#opcionDeIngresoModal" class="btn btn-info btn-sm pull-right"><i class="fa fa-fw fa-pencil"></i> Editar</button>';
