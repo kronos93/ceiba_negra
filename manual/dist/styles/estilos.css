@@ -1674,6 +1674,7 @@ table tbody tr td {
   bottom: 50px;
   right: 50px;
   display: none;
+  cursor: pointer;
 }
 .scrollTop:after {
   content: '\f077';

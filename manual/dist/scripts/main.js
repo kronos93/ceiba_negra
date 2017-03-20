@@ -12,16 +12,20 @@ for (var i in contador) {
     numerador++;
 }
 
-
-
-
-
+var $returntop = $("#returntop");
 $(window).scroll(function(event) {
     var $returntop = $("#returntop");
     var scroll = $(window).scrollTop();
     if (scroll > 300) {
         $returntop.show("slow");
+    } else {
+        $returntop.hide("slow")
     }
+});
+$returntop.on("click", function(e) {
+    $('html, body').animate({
+        scrollTop: 100
+    }, 2000);
 });
 $("#menu").on("click", "a", function(e) {
     var tag = $(this).attr("href");
