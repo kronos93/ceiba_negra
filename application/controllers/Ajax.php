@@ -14,6 +14,7 @@ class Ajax extends CI_Controller
         $this->load->model('Venta_model');
         $this->load->model('Historial_model');
         $this->load->model('HuertosVentas_model');
+        $this->load->model('Reserva_model');
         $this->load->model('Trans_model');
     }
     public function index()
@@ -558,6 +559,20 @@ class Ajax extends CI_Controller
         } else {
             echo validation_errors();
         }
+    }
+    //RESERVAS
+    public function get_reservas(){
+        header("Content-type: application/json; charset=utf-8"); //Header generico
+        $response = new stdClass(); //Clase generica
+        $reservas = $this->Reserva_model->select("reservas.id_reserva, CONCAT(lider.first_name, ' ',lider.last_name ) AS nombre_lider,GROUP_CONCAT('Mz. ',manzanas.manzana, ' Ht. ', huertos.huerto) as descripcion")
+                                        ->join('users AS lider','reservas.id_lider = lider.id','left')
+                                        ->join('huertos_reservas', 'reservas.id_reserva = huertos_reservas.id_reserva', 'inner')
+                                        ->join('huertos', 'huertos_reservas.id_huerto = huertos.id_huerto', 'inner')
+                                        ->join('manzanas', 'huertos.id_manzana = manzanas.id_manzana', 'inner')
+                                        ->group_by('reservas.id_reserva')
+                                        ->get();
+        $response->data = $reservas; // Atributo de la clase generico para el dataTable
+        echo json_encode($response); //Response JSON
     }
     public function get_pagos()
     {
@@ -1266,14 +1281,15 @@ class Ajax extends CI_Controller
 
         // set the flash data error message if there is one
         /*$this->data['message'] = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? $this->ion_auth->errors() : $this->session->flashdata('message')));
-/*
+        /*
         // pass the user to the view
         /*$this->data['user'] = $user;
         $this->data['groups'] = $groups;
         $this->data['currentGroups'] = $currentGroups;
 
 
-        $this->_render_page('auth/edit_user', $this->data);*/
+        $this->_render_page('auth/edit_user', $this->data);
+        */
     }
     public function _get_csrf_nonce()
     {

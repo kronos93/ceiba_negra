@@ -8,6 +8,8 @@ import './tables/manzanas';
 import './tables/huertos';
 import './tables/opciones_ingreso';
 
+import './tables/reservas';
+
 import './tables/historial_ventas';
 //Reacomodar
 import 'jquery-mask-plugin/dist/jquery.mask';
