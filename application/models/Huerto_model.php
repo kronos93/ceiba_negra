@@ -124,6 +124,23 @@ class Huerto_model extends CI_Model
         $this->db->where($condicion);
         return $this;
     }
+    public function select($select){
+        $this->db->select($select);
+        return $this;
+    }
+    public function join($table_join,$condicion,$type='left'){
+        $this->db->join($table_join,$condicion,$type);
+        return $this;
+    }
+    public function where_in($key,$values){
+        $this->db->where_in($key,$values);
+        return $this;
+    }
+    public function get(){       
+        $this->db->from($this->tabla);        
+        $query = $this->db->get();
+        return $query->result();
+    }
     public function update_batch($data,$ref){
         return $this->db->update_batch($this->tabla, $data, $ref);
     }

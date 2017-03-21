@@ -6,10 +6,10 @@ class Cart {
         $('#shopCartSale').off('click').on('click', function(e) {
             $(this).find('.my-dropdown').slideToggle('3500');
         });
-        $('#shopCartSale').find('nav').on('click', function(e) {
+        $('#shopCartSale').find('nav').off('click').on('click', function(e) {
             e.stopPropagation();
         });
-        $(document).mouseup(function(e) {
+        $(document).off('mouseup').on('mouseup', function(e) {
             var container = $(".my-dropdown");
             if (!container.is(e.target) // if the target of the click isn't the container...
                 &&

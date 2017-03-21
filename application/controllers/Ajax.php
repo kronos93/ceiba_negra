@@ -1007,6 +1007,51 @@ class Ajax extends CI_Controller
 
         echo json_encode($respuesta);
     }
+    public function aplicar_reserva(){
+        if ($this->input->is_ajax_request()) {
+            header("Content-type: application/json; charset=utf-8");
+            if($this->input->post('id_reserva'))
+            {
+                $this->cart->destroy();
+                $huertos_in_reservas = $this->Reserva_model->select('huertos_reservas.id_huerto')
+                                               ->where(['reservas.id_reserva'=>$this->input->post('id_reserva')])
+                                               ->join('huertos_reservas','reservas.id_reserva = huertos_reservas.id_reserva')
+                                               ->get();
+                $huertos_in_reserva = [];
+                $precio = 100;
+                $enganche = 100;
+                $abono = 100;
+                foreach($huertos_in_reservas as $huertos_in){
+                    array_push($huertos_in_reserva,$huertos_in->id_huerto);
+                }
+                $huertos = $this->Huerto_model->select('huertos.id_huerto,manzanas.id_manzana,huertos.huerto,manzanas.manzana')
+                                              ->join("manzanas", "huertos.id_manzana = manzanas.id_manzana", 'left')
+                                              ->where_in('id_huerto',$huertos_in_reserva)
+                                              ->get();
+                
+                if (count($huertos)) {
+                    foreach ($huertos as $huerto) {
+                        $data = array(
+                            'id'      => 'huerto_'.$huerto->id_huerto,
+                            'qty'     => 1,
+                            'price'   => (float) $precio,
+                            'abono'   => (float) $abono,
+                            'enganche'   => (float) $enganche,
+                            'name'    => "Manzana: {$huerto->manzana}, Huerto: {$huerto->huerto}",
+                            'id_huerto' => $huerto->id_huerto,
+                            'id_manzana' => $huerto->id_manzana,
+                            'manzana' => $huerto->manzana,
+                            'huerto' => $huerto->huerto,
+                        );
+                        $this->cart->insert($data);
+                    }
+                }
+                echo json_encode(['status' => 200 ,'msg' => 'ok']);
+            }
+        } else {
+            show_404(); //this is your login view file
+        }
+    }
     public function cancelar_venta()
     {
         header("Content-type: application/json; charset=utf-8");
