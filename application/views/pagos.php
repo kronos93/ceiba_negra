@@ -61,15 +61,17 @@
                             </td>
                             <td>
                                 <?php 
-                                if ($pago->estado == 0) {
-                                    echo '<button class="btn btn-success" data-toggle="modal" data-target="#pagoModal">Registrar pago</button> ' ;
-                                }else{
-                                    if ($this->ion_auth->in_group('administrador')) {
-                                        echo '<button class="btn btn-danger removerPago">Remover pago</button> ';
+                                if($pago->estado_venta == 0){
+                                    if ($pago->estado == 0) {
+                                        echo '<button class="btn btn-success" data-toggle="modal" data-target="#pagoModal">Registrar pago</button> ' ;
+                                    }else{
+                                        if ($this->ion_auth->in_group('administrador')) {
+                                            echo '<button class="btn btn-danger removerPago">Remover pago</button> ';
+                                        }
+                                        if($pago->comision == 0 ) {
+                                            echo '<button class="btn btn-warning" data-toggle="modal" data-target="#pagoComisionModal">Registrar comisión</button> ';
+                                        }                                            
                                     }
-                                    if($pago->comision == 0 ) {
-                                        echo '<button class="btn btn-warning" data-toggle="modal" data-target="#pagoComisionModal">Registrar comisión</button> ';
-                                    }                                            
                                 }
                                 ?>                                    
                             </td>

@@ -38,14 +38,15 @@ var historial_ventas_table = $('#historial-ventas-table').DataTable({
                     var cancelar = '';
                     var restablecer = '';
                     var eliminar = '';
-                    var recuperar = '';
+                    var recuperar = ''; //Activo
                     if (full.estado == 0) {
                         cancelar = '<button title="Cancelar Contrato" class="btn btn-warning cancelar-venta"><span class="fa fa-ban fa-lg"></span> Cancelar</button>';
                         eliminar = '<button title="Eliminar Contrato" class="btn btn-danger eliminar-venta"><span class="fa fa-trash fa-lg"></span> Eliminar</button>';
-                    } else if (full.estado == 2) {
+                    } else if (full.estado == 2) { //Cancelado
+                        /* pagos = '';*/
                         restablecer = '<button class="btn btn-success activar-venta"> <span class="fa fa-check"></span>Restablecer</button>';
                         eliminar = '<button title="Eliminar Contrato" class="btn btn-danger eliminar-venta"><span class="fa fa-trash fa-lg"></span> Eliminar</button>';
-                    } else if (full.estado == 3) {
+                    } else if (full.estado == 3) { //Eliminado
                         recuperar = '<button class="btn recuperar-venta"> <span class="fa fa-undo"></span> Recuperar</button>';
                         contrato = '';
                         pagare_recibo = '';
@@ -118,8 +119,8 @@ $('#historial-ventas-table').on('click', '.activar-venta', function() {
         id_venta: parseDtRow.id_venta
     };
     swal({
-            title: "Cancelar venta",
-            text: "Esta a punto de cancelar una venta, ¿Desea continuar?",
+            title: "Restablecer venta",
+            text: "Esta a punto de restablecer una venta, ¿Desea continuar?",
             type: "info",
             showCancelButton: true,
             closeOnConfirm: false,
@@ -133,12 +134,17 @@ $('#historial-ventas-table').on('click', '.activar-venta', function() {
                     type: "post",
                 })
                 .done(function(response) {
-                    /*var newData = pagos_table.row(pagoDtRow).data(response).draw(false).node(); //
-                    $(newData).animate({ backgroundColor: 'yellow' }); //Animación para MAX*/
-                    swal("¡Pago removido!");
+                    if (response.status == 200) {
+                        var newData = historial_ventas_table.row(ventaDtRow).data(response).draw(false).node(); //
+                        $(newData).animate({ backgroundColor: 'yellow' }); //Animación para MAX
+                        swal("Confirmación", "¡Venta restablecida!", 'success');
+                    } else {
+                        swal("Error:", "¡Ha ocurrido un error, contactar al administrador sí el problema persiste! \n" + response.msg_status, "error");
+                    }
+
                 })
                 .fail(function(response) {
-
+                    swal("Error:", "¡Ha ocurrido un error, contactar al administrador sí el problema persiste! ", "error");
                 });
         });
 });
@@ -176,16 +182,16 @@ $('#historial-ventas-table').on('click', '.eliminar-venta', function() {
         });
 });
 $('#historial-ventas-table').on('click', '.recuperar-venta', function() {
-    pagoDtRow = (this.btn.closest('tr').hasClass('parent') || this.btn.closest('tr').hasClass('child')) ?
-        this.btn.closest('tr').prev('tr.parent') :
-        this.btn.parents('tr')
-    var parseDtRow = historial_ventas_table.row(pagoDtRow).data();
+    ventaDtRow = $(this).closest('tr').hasClass('child') ?
+        $(this).closest('tr').prev('tr.parent') :
+        $(this).parents('tr');
+    var parseDtRow = historial_ventas_table.row(ventaDtRow).data();
     var data = {
         id_venta: parseDtRow.id_venta
     };
     swal({
-            title: "Cancelar venta",
-            text: "Esta a punto de cancelar una venta, ¿Desea continuar?",
+            title: "Recuperar venta",
+            text: "Esta a punto de recuperar una venta, ¿Desea continuar?",
             type: "info",
             showCancelButton: true,
             closeOnConfirm: false,
@@ -199,12 +205,12 @@ $('#historial-ventas-table').on('click', '.recuperar-venta', function() {
                     type: "post",
                 })
                 .done(function(response) {
-                    /*var newData = pagos_table.row(pagoDtRow).data(response).draw(false).node(); //
+                    var newData = historial_ventas_table.row(ventaDtRow).data(response).draw(false).node(); //
                     $(newData).animate({ backgroundColor: 'yellow' }); //Animación para MAX*/
-                    swal("¡Pago removido!");
+                    swal("Confirmación", "¡Venta recuperada!", 'success');
                 })
                 .fail(function(response) {
-
+                    swal("Error:", "¡Ha ocurrido un error, contactar al administrador sí el problema persiste!", "error");
                 });
         });
 });

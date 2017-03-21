@@ -37,7 +37,7 @@ import 'tinymce/plugins/paste/plugin.js';
 import 'tinymce/plugins/textcolor/plugin.js';
 import 'tinymce/plugins/colorpicker/plugin.js';
 import 'tinymce/plugins/textpattern/plugin.js';
-console.log($('#frm-venta #precio').val());
+/*console.log($('#frm-venta #precio').val());*/
 moment.locale('es');
 tinymce.init({
     selector: '#contrato_html',

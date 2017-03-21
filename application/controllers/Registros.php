@@ -98,7 +98,8 @@ class Registros extends CI_Controller
 														 historial.pago,
 														 historial.comision,
 														 historial.penalizacion,
-														 (historial.pago + historial.penalizacion - historial.comision) as total')
+														 (historial.pago + historial.penalizacion - historial.comision) as total,
+                                                         ventas.estado AS estado_venta')
                                                 ->join('ventas', 'historial.id_venta = ventas.id_venta', 'left')
                                                 ->join('users AS cliente', 'ventas.id_cliente = cliente.id', 'left')
                                                 ->join('users AS lider', 'historial.id_lider = lider.id', 'left')

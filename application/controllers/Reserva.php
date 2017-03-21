@@ -110,7 +110,7 @@ class Reserva extends CI_Controller
                     echo "<p>Error fatal</p>";
                 } else {
                     if($this->cart->total_items() != $updated_huertos){
-                        echo "<p>No fue posible actualizar todos los registros, alguien más ha reservado.</p>";
+                        echo "<p>No fue posible actualizar todos los registros, alguien más ha reservado, revise la disponibilidad de los huertos.</p>";
                     }else{
                         $this->cart->destroy();
                         $this->Trans_model->commit();

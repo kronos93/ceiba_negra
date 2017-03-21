@@ -467,7 +467,7 @@ class Ajax extends CI_Controller
                                                                             )) as ingreso	
 																  ')
                                                          ->join('historial', 'opciones_ingreso.id_opcion_ingreso = historial.id_ingreso', 'left')
-                                                         ->join('ventas','historial.id_venta = ventas.id_venta','left')
+                                                         ->join('ventas', 'historial.id_venta = ventas.id_venta', 'left')
 
                                                          ->group_by('opciones_ingreso.id_opcion_ingreso')
                                                          ->get(); //<- Obtener datos
@@ -561,11 +561,12 @@ class Ajax extends CI_Controller
         }
     }
     //RESERVAS
-    public function get_reservas(){
+    public function get_reservas()
+    {
         header("Content-type: application/json; charset=utf-8"); //Header generico
         $response = new stdClass(); //Clase generica
         $reservacion = new $this->Reserva_model();
-        if($this->ion_auth->in_group(['lider'])){
+        if ($this->ion_auth->in_group(['lider'])) {
             $reservacion->where(['reservas.id_lider'=> $this->ion_auth->get_user_id()]);
             
             if ($this->session->userdata('id_reserva')) {
@@ -585,19 +586,19 @@ class Ajax extends CI_Controller
                                                   reservas.abono,
                                                   DATE_FORMAT(reservas.expira,'%d-%m-%Y') as expira
                                                   ")
-                                        ->join('users AS lider','reservas.id_lider = lider.id','left')
+                                        ->join('users AS lider', 'reservas.id_lider = lider.id', 'left')
                                         ->join('huertos_reservas', 'reservas.id_reserva = huertos_reservas.id_reserva', 'inner')
                                         ->join('huertos', 'huertos_reservas.id_huerto = huertos.id_huerto', 'inner')
                                         ->join('manzanas', 'huertos.id_manzana = manzanas.id_manzana', 'inner')
                                         ->group_by('reservas.id_reserva')
                                         ->get();
-        foreach($reservas as $key => $reserva){
+        foreach ($reservas as $key => $reserva) {
             $reservas[$key]->detalles = '';
             $reservas[$key]->detalles .= "<p><strong>Correo: </strong>".$reserva->email."<p>";
             $reservas[$key]->detalles .= "<p><strong>Teléfono: </strong><span class='phone'>".$reserva->phone."</span><p>";
-            $reservas[$key]->detalles .= "<p><strong>Precio: </strong>$".number_format($reserva->precio,2)."<p>";
-            $reservas[$key]->detalles .= "<p><strong>Enganche: </strong>$".number_format($reserva->enganche,2)."<p>";
-            $reservas[$key]->detalles .= "<p><strong>Abono: </strong>$".number_format($reserva->abono,2)."<p>";
+            $reservas[$key]->detalles .= "<p><strong>Precio: </strong>$".number_format($reserva->precio, 2)."<p>";
+            $reservas[$key]->detalles .= "<p><strong>Enganche: </strong>$".number_format($reserva->enganche, 2)."<p>";
+            $reservas[$key]->detalles .= "<p><strong>Abono: </strong>$".number_format($reserva->abono, 2)."<p>";
             $reservas[$key]->detalles .= "<p><strong>Comentarios: </strong>".$reserva->comment."<p>";
             $reservas[$key]->is_admin = $this->ion_auth->in_group('administrador');
         }
@@ -673,74 +674,81 @@ class Ajax extends CI_Controller
             $pago_final = $this->Historial_model->select('IF(SUM(historial.abono)  = SUM(historial.pago),1,0 ) as pago_final')
                                                 ->where(['id_venta' => $id_venta[0]->id_venta])
                                                 ->get();
-                                                
-            if ($pago_final[0]->pago_final) {
-                $huertos = $this->HuertosVentas_model->select('id_huerto, 3 AS vendido')
-                                                     ->where(['id_venta' => $id_venta[0]->id_venta])
-                                                     ->get();
-                $this->Huerto_model->update_batch($huertos, 'id_huerto');
-            }
-            if ($n_updated_pago == 1) {
-                $updated_pago = $this->Historial_model->select('historial.id_historial,
-																CONCAT(cliente.first_name," ",cliente.last_name) AS nombre_cliente,
-																CONCAT(lider.first_name," ",lider.last_name) AS nombre_lider,
-																IF( opciones_ingreso.id_opcion_ingreso != 1, 
-																	CONCAT(opciones_ingreso.nombre, " - " ,opciones_ingreso.cuenta),
-																	opciones_ingreso.nombre) as nombre,
-																historial.concepto,
-																historial.abono,
-																DATE_FORMAT(historial.fecha,"%d-%m-%Y") as fecha,
-																historial.estado,
-																DATE_FORMAT(historial.fecha_pago,"%d-%m-%Y") as fecha_pago, 
-																IF( historial.estado = 0 , DATEDIFF( CURRENT_DATE() , historial.fecha ) , DATEDIFF( historial.fecha_pago ,historial.fecha ) ) as daysAccumulated,
-																historial.pago,
-																historial.comision,
-																historial.penalizacion,
-																(historial.pago + historial.penalizacion - historial.comision) as total')
-                                                      ->join('ventas', 'historial.id_venta = ventas.id_venta', 'left')
-                                                      ->join('users AS cliente', 'ventas.id_cliente = cliente.id', 'left')
-                                                      ->join('users AS lider', 'historial.id_lider = lider.id', 'left')
-                                                      ->join('opciones_ingreso', 'historial.id_ingreso = opciones_ingreso.id_opcion_ingreso', 'left')
-                                                      ->where(['id_historial' => $this->input->post('id_historial')])
-                                                      ->get();
-                $detalles = "";
-                foreach ($updated_pago as $key => $ingreso) {
-                    if ($ingreso->estado == 0) {
-                        $fecha = Carbon::createFromFormat('d-m-Y', $ingreso->fecha);
-                        $today = Carbon::createFromFormat('Y-m-d', Carbon::today()->format('Y-m-d'));
-                        $updated_pago[$key]->diff = $fecha->diff($today);
-                    } else {
-                        $fecha = Carbon::createFromFormat('d-m-Y', $ingreso->fecha);
-                        $fecha_pago = Carbon::createFromFormat('d-m-Y', $ingreso->fecha_pago);
-                        $updated_pago[$key]->diff = $fecha->diff($fecha_pago);
-                    }
+            $estado_venta = $this->Historial_model->select('ventas.estado')
+                                                  ->join('ventas','historial.id_venta = ventas.id_venta','left')
+                                                  ->where(['id_historial' => $this->input->post('id_historial')])
+                                                  ->get();
+            if($estado_venta[0]->estado != 2 || $estado_venta[0]->estado != 3) {
+                if ($pago_final[0]->pago_final) {
+                    $huertos = $this->HuertosVentas_model->select('id_huerto, 3 AS vendido')
+                                                        ->where(['id_venta' => $id_venta[0]->id_venta])
+                                                        ->get();
+                    $this->Huerto_model->update_batch($huertos, 'id_huerto');
                 }
-                foreach ($updated_pago as $pago) {
-                    if ($pago->daysAccumulated > 0) {
-                        $detalles .= 'Realizó el pago con un retraso de: ' . $pago->diff->format('%y año(s) %m mes(es) y %d día(s)');
-                    } elseif ($pago->daysAccumulated == 0) {
-                        $detalles .= 'Pagado en tiempo.';
-                    } elseif ($pago->daysAccumulated < 0) {
-                        $detalles .= 'Pagado por adelantado. Con: ' . $pago->diff->format('%y año(s) %m mes(es) y %d día(s)');
+                if ($n_updated_pago == 1) {
+                    $updated_pago = $this->Historial_model->select('historial.id_historial,
+                                                                    CONCAT(cliente.first_name," ",cliente.last_name) AS nombre_cliente,
+                                                                    CONCAT(lider.first_name," ",lider.last_name) AS nombre_lider,
+                                                                    IF( opciones_ingreso.id_opcion_ingreso != 1, 
+                                                                        CONCAT(opciones_ingreso.nombre, " - " ,opciones_ingreso.cuenta),
+                                                                        opciones_ingreso.nombre) as nombre,
+                                                                    historial.concepto,
+                                                                    historial.abono,
+                                                                    DATE_FORMAT(historial.fecha,"%d-%m-%Y") as fecha,
+                                                                    historial.estado,
+                                                                    DATE_FORMAT(historial.fecha_pago,"%d-%m-%Y") as fecha_pago, 
+                                                                    IF( historial.estado = 0 , DATEDIFF( CURRENT_DATE() , historial.fecha ) , DATEDIFF( historial.fecha_pago ,historial.fecha ) ) as daysAccumulated,
+                                                                    historial.pago,
+                                                                    historial.comision,
+                                                                    historial.penalizacion,
+                                                                    (historial.pago + historial.penalizacion - historial.comision) as total')
+                                                        ->join('ventas', 'historial.id_venta = ventas.id_venta', 'left')
+                                                        ->join('users AS cliente', 'ventas.id_cliente = cliente.id', 'left')
+                                                        ->join('users AS lider', 'historial.id_lider = lider.id', 'left')
+                                                        ->join('opciones_ingreso', 'historial.id_ingreso = opciones_ingreso.id_opcion_ingreso', 'left')
+                                                        ->where(['id_historial' => $this->input->post('id_historial')])
+                                                        ->get();
+                    $detalles = "";
+                    foreach ($updated_pago as $key => $ingreso) {
+                        if ($ingreso->estado == 0) {
+                            $fecha = Carbon::createFromFormat('d-m-Y', $ingreso->fecha);
+                            $today = Carbon::createFromFormat('Y-m-d', Carbon::today()->format('Y-m-d'));
+                            $updated_pago[$key]->diff = $fecha->diff($today);
+                        } else {
+                            $fecha = Carbon::createFromFormat('d-m-Y', $ingreso->fecha);
+                            $fecha_pago = Carbon::createFromFormat('d-m-Y', $ingreso->fecha_pago);
+                            $updated_pago[$key]->diff = $fecha->diff($fecha_pago);
+                        }
                     }
-                    $detalles .= '<div>Pago: $' . number_format($pago->pago, 2) .'</div>';
-                    $detalles .= '<div>Deposito en: ' . $pago->nombre .'</div>';
-                    $detalles .= '<div>Fecha: ' . $pago->fecha_pago .'</div>';
-                    $detalles .= '<div>Comisión: $' . number_format($pago->comision, 2) .'</div>';
-                    $detalles .= '<div>Penalización: $' . number_format($pago->penalizacion, 2) .'</div>';
-                    $detalles .= '<div>Total: $' . number_format($pago->total, 2) .'</div>';
+                    foreach ($updated_pago as $pago) {
+                        if ($pago->daysAccumulated > 0) {
+                            $detalles .= 'Realizó el pago con un retraso de: ' . $pago->diff->format('%y año(s) %m mes(es) y %d día(s)');
+                        } elseif ($pago->daysAccumulated == 0) {
+                            $detalles .= 'Pagado en tiempo.';
+                        } elseif ($pago->daysAccumulated < 0) {
+                            $detalles .= 'Pagado por adelantado. Con: ' . $pago->diff->format('%y año(s) %m mes(es) y %d día(s)');
+                        }
+                        $detalles .= '<div>Pago: $' . number_format($pago->pago, 2) .'</div>';
+                        $detalles .= '<div>Deposito en: ' . $pago->nombre .'</div>';
+                        $detalles .= '<div>Fecha: ' . $pago->fecha_pago .'</div>';
+                        $detalles .= '<div>Comisión: $' . number_format($pago->comision, 2) .'</div>';
+                        $detalles .= '<div>Penalización: $' . number_format($pago->penalizacion, 2) .'</div>';
+                        $detalles .= '<div>Total: $' . number_format($pago->total, 2) .'</div>';
+                    }
+                    $updated_pago[0]->estado = ($updated_pago[0]->estado == 0) ? 'Pendiente' : 'Pagado';
+                    $updated_pago[0]->detalles = $detalles;
+                    $updated_pago[0]->abono = '$' . number_format($updated_pago[0]->abono, 2);
+                    $updated_pago[0]->is_admin = $this->ion_auth->in_group('administrador');
+                    echo json_encode($updated_pago[0]);
                 }
-                $updated_pago[0]->estado = ($updated_pago[0]->estado == 0) ? 'Pendiente' : 'Pagado';
-                $updated_pago[0]->detalles = $detalles;
-                $updated_pago[0]->abono = '$' . number_format($updated_pago[0]->abono, 2);
-                $updated_pago[0]->is_admin = $this->ion_auth->in_group('administrador');
-                echo json_encode($updated_pago[0]);
-            }
-            if ($this->Trans_model->status() === false) {
-                $this->Trans_model->rollback();
-                echo "Error fatal";
-            } else {
-                $this->Trans_model->commit();
+                if ($this->Trans_model->status() === false) {
+                    $this->Trans_model->rollback();
+                    echo "Error fatal";
+                } else {
+                    $this->Trans_model->commit();
+                }
+            }else{
+                 echo "Error: No es posible actualizar una venta cancelada";
             }
         }
     }
@@ -758,77 +766,85 @@ class Ajax extends CI_Controller
                 'penalizacion' => 0,
                 'estado' => 0,
             ];
-            $this->Trans_model->begin();
-            $n_updated_pago = $this->Historial_model->where(['id_historial' => $this->input->post('id_historial')])
-                                  ->update($set_data)
-                                  ->affected_rows();
-            $id_venta = $this->Historial_model->select('id_venta')
-                                              ->where(['id_historial' => $this->input->post('id_historial')])
-                                              ->get();
-            $pago_final = $this->Historial_model->select('IF(SUM(historial.abono)  > SUM(historial.pago),1,0 ) as pago_final')
-                                                ->where(['id_venta' => $id_venta[0]->id_venta])
+            $estado_venta = $this->Historial_model->select('ventas.estado')
+                                                  ->join('ventas','historial.id_venta = ventas.id_venta','left')
+                                                  ->where(['id_historial' => $this->input->post('id_historial')])
+                                                  ->get();
+            if($estado_venta[0]->estado != 2 || $estado_venta[0]->estado != 3) {
+                $this->Trans_model->begin();
+                $n_updated_pago = $this->Historial_model->where(['id_historial' => $this->input->post('id_historial')])
+                                    ->update($set_data)
+                                    ->affected_rows();
+                $id_venta = $this->Historial_model->select('id_venta')
+                                                ->where(['id_historial' => $this->input->post('id_historial')])
                                                 ->get();
-                                                
-            if ($pago_final[0]->pago_final) {
-                $huertos = $this->HuertosVentas_model->select('id_huerto, 1 AS vendido')
-                                                     ->where(['id_venta' => $id_venta[0]->id_venta])
-                                                     ->get();
-                $this->Huerto_model->update_batch($huertos, 'id_huerto');
-            }
-            if ($n_updated_pago == 1) {
-                $updated_pago = $this->Historial_model->select('historial.id_historial,
-																CONCAT(cliente.first_name," ",cliente.last_name) AS nombre_cliente,
-																CONCAT(lider.first_name," ",lider.last_name) AS nombre_lider,
-																IF( opciones_ingreso.id_opcion_ingreso != 1, 
-																	CONCAT(opciones_ingreso.nombre, " - " ,opciones_ingreso.cuenta),
-																	opciones_ingreso.nombre) as nombre,
-																historial.concepto,
-																historial.abono,
-																DATE_FORMAT(historial.fecha,"%d-%m-%Y") AS fecha,
-																historial.estado,
-																DATE_FORMAT(historial.fecha_pago,"%d-%m-%Y") AS fecha_pago, 
-																IF( historial.estado = 0 , DATEDIFF( CURRENT_DATE() , historial.fecha ) , DATEDIFF( historial.fecha_pago ,historial.fecha ) ) as daysAccumulated,
-																historial.pago,
-																historial.comision,
-																historial.penalizacion,
-																(historial.pago + historial.penalizacion - historial.comision) as total')
-                                                      ->join('ventas', 'historial.id_venta = ventas.id_venta', 'left')
-                                                      ->join('users AS cliente', 'ventas.id_cliente = cliente.id', 'left')
-                                                      ->join('users AS lider', 'historial.id_lider = lider.id', 'left')
-                                                      ->join('opciones_ingreso', 'historial.id_ingreso = opciones_ingreso.id_opcion_ingreso', 'left')
-                                                      ->where(['id_historial' => $this->input->post('id_historial')])
-                                                      ->get();
-                $detalles = "";
-                foreach ($updated_pago as $key => $ingreso) {
-                    if ($ingreso->estado == 0) {
-                        $fecha = Carbon::createFromFormat('d-m-Y', $ingreso->fecha);
-                        $today = Carbon::createFromFormat('Y-m-d', Carbon::today()->format('Y-m-d'));
-                        $updated_pago[$key]->diff = $fecha->diff($today);
-                    } else {
-                        $fecha = Carbon::createFromFormat('d-m-Y', $ingreso->fecha);
-                        $fecha_pago = Carbon::createFromFormat('d-m-Y', $ingreso->fecha_pago);
-                        $updated_pago[$key]->diff = $fecha->diff($fecha_pago);
-                    }
+                $pago_final = $this->Historial_model->select('IF(SUM(historial.abono)  > SUM(historial.pago),1,0 ) as pago_final')
+                                                    ->where(['id_venta' => $id_venta[0]->id_venta])
+                                                    ->get();
+                                                    
+                if ($pago_final[0]->pago_final) {
+                    $huertos = $this->HuertosVentas_model->select('id_huerto, 1 AS vendido')
+                                                        ->where(['id_venta' => $id_venta[0]->id_venta])
+                                                        ->get();
+                    $this->Huerto_model->update_batch($huertos, 'id_huerto');
                 }
-                foreach ($updated_pago as $pago) {
-                    if ($pago->daysAccumulated > 0) {
-                        $detalles.= 'Tiene un retraso en pago de: ' . $pago->diff->format('%y año(s) %m mes(es) y %d día(s)');
-                    } elseif ($pago->daysAccumulated == 0) {
-                        $detalles.= 'Hoy es día de pago.';
-                    } else {
-                        $detalles.= 'Aun no es fecha de pago. Faltan: '. $pago->diff->format('%y año(s) %m mes(es) y %d día(s)');
+                if ($n_updated_pago == 1) {
+                    $updated_pago = $this->Historial_model->select('historial.id_historial,
+                                                                    CONCAT(cliente.first_name," ",cliente.last_name) AS nombre_cliente,
+                                                                    CONCAT(lider.first_name," ",lider.last_name) AS nombre_lider,
+                                                                    IF( opciones_ingreso.id_opcion_ingreso != 1, 
+                                                                        CONCAT(opciones_ingreso.nombre, " - " ,opciones_ingreso.cuenta),
+                                                                        opciones_ingreso.nombre) as nombre,
+                                                                    historial.concepto,
+                                                                    historial.abono,
+                                                                    DATE_FORMAT(historial.fecha,"%d-%m-%Y") AS fecha,
+                                                                    historial.estado,
+                                                                    DATE_FORMAT(historial.fecha_pago,"%d-%m-%Y") AS fecha_pago, 
+                                                                    IF( historial.estado = 0 , DATEDIFF( CURRENT_DATE() , historial.fecha ) , DATEDIFF( historial.fecha_pago ,historial.fecha ) ) as daysAccumulated,
+                                                                    historial.pago,
+                                                                    historial.comision,
+                                                                    historial.penalizacion,
+                                                                    (historial.pago + historial.penalizacion - historial.comision) as total')
+                                                        ->join('ventas', 'historial.id_venta = ventas.id_venta', 'left')
+                                                        ->join('users AS cliente', 'ventas.id_cliente = cliente.id', 'left')
+                                                        ->join('users AS lider', 'historial.id_lider = lider.id', 'left')
+                                                        ->join('opciones_ingreso', 'historial.id_ingreso = opciones_ingreso.id_opcion_ingreso', 'left')
+                                                        ->where(['id_historial' => $this->input->post('id_historial')])
+                                                        ->get();
+                    $detalles = "";
+                    foreach ($updated_pago as $key => $ingreso) {
+                        if ($ingreso->estado == 0) {
+                            $fecha = Carbon::createFromFormat('d-m-Y', $ingreso->fecha);
+                            $today = Carbon::createFromFormat('Y-m-d', Carbon::today()->format('Y-m-d'));
+                            $updated_pago[$key]->diff = $fecha->diff($today);
+                        } else {
+                            $fecha = Carbon::createFromFormat('d-m-Y', $ingreso->fecha);
+                            $fecha_pago = Carbon::createFromFormat('d-m-Y', $ingreso->fecha_pago);
+                            $updated_pago[$key]->diff = $fecha->diff($fecha_pago);
+                        }
                     }
+                    foreach ($updated_pago as $pago) {
+                        if ($pago->daysAccumulated > 0) {
+                            $detalles.= 'Tiene un retraso en pago de: ' . $pago->diff->format('%y año(s) %m mes(es) y %d día(s)');
+                        } elseif ($pago->daysAccumulated == 0) {
+                            $detalles.= 'Hoy es día de pago.';
+                        } else {
+                            $detalles.= 'Aun no es fecha de pago. Faltan: '. $pago->diff->format('%y año(s) %m mes(es) y %d día(s)');
+                        }
+                    }
+                    $updated_pago[0]->estado = ($updated_pago[0]->estado == 0) ? 'Pendiente' : 'Pagado';
+                    $updated_pago[0]->detalles = $detalles;
+                    $updated_pago[0]->abono = '$' . number_format($updated_pago[0]->abono, 2);
+                    echo json_encode($updated_pago[0]);
                 }
-                $updated_pago[0]->estado = ($updated_pago[0]->estado == 0) ? 'Pendiente' : 'Pagado';
-                $updated_pago[0]->detalles = $detalles;
-                $updated_pago[0]->abono = '$' . number_format($updated_pago[0]->abono, 2);
-                echo json_encode($updated_pago[0]);
-            }
-            if ($this->Trans_model->status() === false) {
-                $this->Trans_model->rollback();
-                echo "Error fatal";
+                if ($this->Trans_model->status() === false) {
+                    $this->Trans_model->rollback();
+                    echo "Error fatal";
+                } else {
+                    $this->Trans_model->commit();
+                }
             } else {
-                $this->Trans_model->commit();
+                echo "Error: no se puede remover el pago de una venta cancelada.";
             }
         }
     }
@@ -840,64 +856,72 @@ class Ajax extends CI_Controller
                 'comision' => $this->input->post('comision'),
                 'id_lider' => $this->input->post('id_lider'),
             ];
-            $n_updated_pago = $this->Historial_model->where(['id_historial' => $this->input->post('id_historial')])
-                                  ->update($set_data)
-                                  ->affected_rows();
-            if ($n_updated_pago == 1) {
-                $updated_pago = $this->Historial_model->select(' historial.id_historial,
-																CONCAT(cliente.first_name," ",cliente.last_name) AS nombre_cliente,
-																CONCAT(lider.first_name," ",lider.last_name) AS nombre_lider,
-																IF( opciones_ingreso.id_opcion_ingreso != 1, 
-																	CONCAT(opciones_ingreso.nombre, " - " ,opciones_ingreso.cuenta),
-																	opciones_ingreso.nombre) as nombre,
-																historial.concepto,
-																historial.abono,
-																DATE_FORMAT(historial.fecha,"%d-%m-%Y") AS fecha,
-																historial.estado,
-																DATE_FORMAT(historial.fecha_pago,"%d-%m-%Y") AS fecha_pago, 
-																IF( historial.estado = 0 , DATEDIFF( CURRENT_DATE() , historial.fecha ) , DATEDIFF( historial.fecha_pago ,historial.fecha ) ) as daysAccumulated,
-																historial.pago,
-																historial.comision,
-																historial.penalizacion,
-																(historial.pago + historial.penalizacion - historial.comision) as total')
-                                                      ->join('ventas', 'historial.id_venta = ventas.id_venta', 'left')
-                                                      ->join('users AS cliente', 'ventas.id_cliente = cliente.id', 'left')
-                                                      ->join('users AS lider', 'historial.id_lider = lider.id', 'left')
-                                                      ->join('opciones_ingreso', 'historial.id_ingreso = opciones_ingreso.id_opcion_ingreso', 'left')
-                                                      ->where(['id_historial' => $this->input->post('id_historial')])
-                                                      ->get();
-                $detalles = "";
-                foreach ($updated_pago as $key => $ingreso) {
-                    if ($ingreso->estado == 0) {
-                        $fecha = Carbon::createFromFormat('d-m-Y', $ingreso->fecha);
-                        $today = Carbon::createFromFormat('Y-m-d', Carbon::today()->format('Y-m-d'));
-                        $updated_pago[$key]->diff = $fecha->diff($today);
-                    } else {
-                        $fecha = Carbon::createFromFormat('d-m-Y', $ingreso->fecha);
-                        $fecha_pago = Carbon::createFromFormat('d-m-Y', $ingreso->fecha_pago);
-                        $updated_pago[$key]->diff = $fecha->diff($fecha_pago);
+            $estado_venta = $this->Historial_model->select('ventas.estado')
+                                                  ->join('ventas','historial.id_venta = ventas.id_venta','left')
+                                                  ->where(['id_historial' => $this->input->post('id_historial')])
+                                                  ->get();
+            if($estado_venta[0]->estado != 2 || $estado_venta[0]->estado != 3) {
+                $n_updated_pago = $this->Historial_model->where(['id_historial' => $this->input->post('id_historial')])
+                                    ->update($set_data)
+                                    ->affected_rows();
+                if ($n_updated_pago == 1) {
+                    $updated_pago = $this->Historial_model->select(' historial.id_historial,
+                                                                    CONCAT(cliente.first_name," ",cliente.last_name) AS nombre_cliente,
+                                                                    CONCAT(lider.first_name," ",lider.last_name) AS nombre_lider,
+                                                                    IF( opciones_ingreso.id_opcion_ingreso != 1, 
+                                                                        CONCAT(opciones_ingreso.nombre, " - " ,opciones_ingreso.cuenta),
+                                                                        opciones_ingreso.nombre) as nombre,
+                                                                    historial.concepto,
+                                                                    historial.abono,
+                                                                    DATE_FORMAT(historial.fecha,"%d-%m-%Y") AS fecha,
+                                                                    historial.estado,
+                                                                    DATE_FORMAT(historial.fecha_pago,"%d-%m-%Y") AS fecha_pago, 
+                                                                    IF( historial.estado = 0 , DATEDIFF( CURRENT_DATE() , historial.fecha ) , DATEDIFF( historial.fecha_pago ,historial.fecha ) ) as daysAccumulated,
+                                                                    historial.pago,
+                                                                    historial.comision,
+                                                                    historial.penalizacion,
+                                                                    (historial.pago + historial.penalizacion - historial.comision) as total')
+                                                        ->join('ventas', 'historial.id_venta = ventas.id_venta', 'left')
+                                                        ->join('users AS cliente', 'ventas.id_cliente = cliente.id', 'left')
+                                                        ->join('users AS lider', 'historial.id_lider = lider.id', 'left')
+                                                        ->join('opciones_ingreso', 'historial.id_ingreso = opciones_ingreso.id_opcion_ingreso', 'left')
+                                                        ->where(['id_historial' => $this->input->post('id_historial')])
+                                                        ->get();
+                    $detalles = "";
+                    foreach ($updated_pago as $key => $ingreso) {
+                        if ($ingreso->estado == 0) {
+                            $fecha = Carbon::createFromFormat('d-m-Y', $ingreso->fecha);
+                            $today = Carbon::createFromFormat('Y-m-d', Carbon::today()->format('Y-m-d'));
+                            $updated_pago[$key]->diff = $fecha->diff($today);
+                        } else {
+                            $fecha = Carbon::createFromFormat('d-m-Y', $ingreso->fecha);
+                            $fecha_pago = Carbon::createFromFormat('d-m-Y', $ingreso->fecha_pago);
+                            $updated_pago[$key]->diff = $fecha->diff($fecha_pago);
+                        }
                     }
-                }
-                foreach ($updated_pago as $pago) {
-                    if ($pago->daysAccumulated > 0) {
-                        $detalles .= 'Realizó el pago con un retraso de: ' . $pago->diff->format('%y año(s) %m mes(es) y %d día(s)');
-                    } elseif ($pago->daysAccumulated == 0) {
-                        $detalles .= 'Pagado en tiempo.';
-                    } elseif ($pago->daysAccumulated < 0) {
-                        $detalles .= 'Pagado por adelantado. Con: ' . $pago->diff->format('%y año(s) %m mes(es) y %d día(s)');
+                    foreach ($updated_pago as $pago) {
+                        if ($pago->daysAccumulated > 0) {
+                            $detalles .= 'Realizó el pago con un retraso de: ' . $pago->diff->format('%y año(s) %m mes(es) y %d día(s)');
+                        } elseif ($pago->daysAccumulated == 0) {
+                            $detalles .= 'Pagado en tiempo.';
+                        } elseif ($pago->daysAccumulated < 0) {
+                            $detalles .= 'Pagado por adelantado. Con: ' . $pago->diff->format('%y año(s) %m mes(es) y %d día(s)');
+                        }
+                        $detalles .= '<div>Pago: $' . number_format($pago->pago, 2) .'</div>';
+                        $detalles .= '<div>Deposito en: ' . $pago->nombre .'</div>';
+                        $detalles .= '<div>Fecha: ' . $pago->fecha_pago .'</div>';
+                        $detalles .= '<div>Comisión: $' . number_format($pago->comision, 2) .'</div>';
+                        $detalles .= '<div>Penalización: $' . number_format($pago->penalizacion, 2) .'</div>';
+                        $detalles .= '<div>Total: $' . number_format($pago->total, 2) .'</div>';
                     }
-                    $detalles .= '<div>Pago: $' . number_format($pago->pago, 2) .'</div>';
-                    $detalles .= '<div>Deposito en: ' . $pago->nombre .'</div>';
-                    $detalles .= '<div>Fecha: ' . $pago->fecha_pago .'</div>';
-                    $detalles .= '<div>Comisión: $' . number_format($pago->comision, 2) .'</div>';
-                    $detalles .= '<div>Penalización: $' . number_format($pago->penalizacion, 2) .'</div>';
-                    $detalles .= '<div>Total: $' . number_format($pago->total, 2) .'</div>';
+                    $updated_pago[0]->estado = ($updated_pago[0]->estado == 0) ? 'Pendiente' : 'Pagado';
+                    $updated_pago[0]->detalles = $detalles;
+                    $updated_pago[0]->abono = '$' . number_format($updated_pago[0]->abono, 2);
+                    $updated_pago[0]->is_admin = $this->ion_auth->in_group('administrador');
+                    echo json_encode($updated_pago[0]);
                 }
-                $updated_pago[0]->estado = ($updated_pago[0]->estado == 0) ? 'Pendiente' : 'Pagado';
-                $updated_pago[0]->detalles = $detalles;
-                $updated_pago[0]->abono = '$' . number_format($updated_pago[0]->abono, 2);
-                $updated_pago[0]->is_admin = $this->ion_auth->in_group('administrador');
-                echo json_encode($updated_pago[0]);
+            } else {
+                 echo "Error: no es posible actualizar una venta cancelada";
             }
         }
     }
@@ -978,6 +1002,9 @@ class Ajax extends CI_Controller
         if ($this->input->post("rowid")) {
             $this->cart->remove($this->input->post("rowid"));
         }
+        if($this->cart->total() == 0){
+            $this->cart->destroy();
+        }
         $this->show_cart();
     }
     public function show_cart()
@@ -990,7 +1017,9 @@ class Ajax extends CI_Controller
             $obj = new stdClass();
             $obj->descripcion = $items["name"];
             $rowid = $items["rowid"];
-            $obj->btn = "<button class='btn btn-danger itemCartDelete' value='{$rowid}'><i class='fa fa-trash'></i></button>";
+            if($items["price"] != 0){
+                $obj->btn = "<button class='btn btn-danger itemCartDelete' value='{$rowid}'><i class='fa fa-trash'></i></button>";
+            }
             array_push($respuesta->huertos, $obj);
             $respuesta->enganche +=  $items["enganche"];
             $respuesta->abono +=  $items["abono"];
@@ -1007,42 +1036,55 @@ class Ajax extends CI_Controller
 
         echo json_encode($respuesta);
     }
-    public function aplicar_reserva(){
+    public function aplicar_reserva()
+    {
         if ($this->input->is_ajax_request()) {
             header("Content-type: application/json; charset=utf-8");
-            if($this->input->post('id_reserva'))
-            {
+            if ($this->input->post('id_reserva')) {
                 $this->cart->destroy();
-                $huertos_in_reservas = $this->Reserva_model->select('huertos_reservas.id_huerto')
+                $huertos_in_reservas = $this->Reserva_model->select('reservas.precio, reservas.enganche, reservas.abono,huertos_reservas.id_huerto')
                                                ->where(['reservas.id_reserva'=>$this->input->post('id_reserva')])
-                                               ->join('huertos_reservas','reservas.id_reserva = huertos_reservas.id_reserva')
+                                               ->join('huertos_reservas', 'reservas.id_reserva = huertos_reservas.id_reserva')
                                                ->get();
                 $huertos_in_reserva = [];
-                $precio = 100;
-                $enganche = 100;
-                $abono = 100;
-                foreach($huertos_in_reservas as $huertos_in){
-                    array_push($huertos_in_reserva,$huertos_in->id_huerto);
+                $precio = 0;
+                $enganche = 0;
+                $abono = 0;
+                /*var_dump($huertos_in_reservas);
+                die();*/
+                foreach ($huertos_in_reservas as $key => $huertos_in) {
+                    if ($key == 0) {
+                        $precio = $huertos_in->precio;
+                        $enganche = $huertos_in->enganche;
+                        $abono = $huertos_in->abono;
+                    }
+                    array_push($huertos_in_reserva, $huertos_in->id_huerto);
                 }
                 $huertos = $this->Huerto_model->select('huertos.id_huerto,manzanas.id_manzana,huertos.huerto,manzanas.manzana')
                                               ->join("manzanas", "huertos.id_manzana = manzanas.id_manzana", 'left')
-                                              ->where_in('id_huerto',$huertos_in_reserva)
+                                              ->where_in('id_huerto', $huertos_in_reserva)
                                               ->get();
                 
                 if (count($huertos)) {
-                    foreach ($huertos as $huerto) {
+                    foreach ($huertos as $key => $huerto) {
                         $data = array(
                             'id'      => 'huerto_'.$huerto->id_huerto,
                             'qty'     => 1,
-                            'price'   => (float) $precio,
-                            'abono'   => (float) $abono,
-                            'enganche'   => (float) $enganche,
                             'name'    => "Manzana: {$huerto->manzana}, Huerto: {$huerto->huerto}",
                             'id_huerto' => $huerto->id_huerto,
                             'id_manzana' => $huerto->id_manzana,
                             'manzana' => $huerto->manzana,
                             'huerto' => $huerto->huerto,
                         );
+                        if ($key == 0) {
+                            $data['price'] = (float) $precio;
+                            $data['abono'] = (float) $abono;
+                            $data['enganche'] = (float) $enganche;
+                        } else {
+                            $data['price'] = 0;
+                            $data['abono'] = 0;
+                            $data['enganche'] = 0;
+                        }
                         $this->cart->insert($data);
                     }
                 }
@@ -1110,6 +1152,7 @@ class Ajax extends CI_Controller
     {
         header("Content-type: application/json; charset=utf-8");
         if ($this->input->post("id_venta")) {
+            $this->Trans_model->begin();
             $id_venta = $this->input->post("id_venta");
             $huertos = $this->Venta_model->select('huertos.id_huerto')
                               ->join('huertos_ventas', 'ventas.id_venta = huertos_ventas.id_venta', 'left')
@@ -1121,26 +1164,137 @@ class Ajax extends CI_Controller
             foreach ($huertos as $key => $huerto) {
                 $huertos[$key]->vendido = 1;
             }
-            $this->Huerto_model->update_batch($huertos, 'id_huerto');
+            $huertos_updated = $this->Huerto_model->where(['vendido' => 0])
+                                                  ->update_batch($huertos, 'id_huerto');
+            $venta = $this->Venta_model->select("ventas.id_venta, 
+                                          ventas.version, 
+                                          ventas.precio, 
+										  ventas.comision, 
+                                          ventas.porcentaje_comision,
+                                          ventas.estado,
+                                          SUM(IF(historial.estado = 0 && DATE(historial.fecha) <= NOW(),1,0)) AS retraso,
+                                          SUM(IF(DATEDIFF( historial.fecha_pago ,historial.fecha) > 0 ,1,0)) AS retrasados,
+                                          SUM(IF(DATEDIFF( historial.fecha_pago ,historial.fecha) < 0 ,1,0)) AS adelantados,
+                                          SUM(IF(historial.estado = 1 && DATE(historial.fecha) = DATE(historial.fecha_pago),1,0)) AS en_tiempo,
+                                          SUM(IF(historial.estado = 1,1,0)) AS realizados,
+                                          SUM(historial.pago) AS pagado, 
+                                          SUM(IF(historial.estado = 1,historial.comision,0)) AS comisionado,
+                                          CONCAT(cliente.first_name,' ',cliente.last_name) AS nombre_cliente,
+                                          cliente.phone,
+                                          cliente.email,
+                                          CONCAT(lider.first_name,' ',lider.last_name) AS nombre_lider,
+                                          CONCAT(user.first_name,' ',user.last_name) AS nombre_user")
+                                ->join('historial', 'ventas.id_venta = historial.id_venta', 'left')
+                                ->join('users as cliente', 'ventas.id_cliente = cliente.id', 'left')
+                                ->join('users as lider', 'ventas.id_lider = lider.id', 'left')
+                                ->join('users as user', 'ventas.id_usuario = user.id', 'left')
+                                ->where(['ventas.id_venta' => $id_venta])
+                                ->get();
+            foreach ($venta as $key => $v) {
+                $descripcion = $this->Venta_model->select('GROUP_CONCAT("Mz. ",manzanas.manzana, " Ht. ", huertos.huerto) as descripcion')
+                                                 ->join('huertos_ventas', 'ventas.id_venta = huertos_ventas.id_venta', 'inner')
+                                                 ->join('huertos', 'huertos_ventas.id_huerto = huertos.id_huerto', 'inner')
+                                                 ->join('manzanas', 'huertos.id_manzana = manzanas.id_manzana', 'inner')
+                                                 ->where(['ventas.id_venta' => $v->id_venta])
+                                                 ->get();
+                $venta[$key]->descripcion = $descripcion[0]->descripcion;
+                $venta[$key]->detalles = "Pagado en tiempo: {$v->en_tiempo} Pagado con retraso: {$v->retrasados} delantado: {$v->adelantados} Realizados: {$v->realizados}";
+            }
+            if ($this->Trans_model->status() === false) {
+                $this->Trans_model->rollback();
+                echo "<p>Error de transacción</p>";
+            }else{
+                if($huertos_updated == count($huertos)){
+                    $this->Trans_model->commit();
+                    $venta[0]->status = 200;
+                    $venta[0]->msg_status = "Ok";
+                    echo json_encode($venta[0]);
+                }else{
+                    $this->Trans_model->rollback();
+                    $venta[0]->status = 400;
+                    $venta[0]->msg_status = "Error, algún huerto ya ha sido reservado, verificar informacion";
+                    echo json_encode($venta[0]);
+                }
+                
+            }
+            
         }
     }
     public function eliminar_venta()
     {
         header("Content-type: application/json; charset=utf-8");
         if ($this->input->post("id_venta")) {
+            $this->Trans_model->begin();
             $id_venta = $this->input->post("id_venta");
-            $huertos = $this->Venta_model->select('huertos.id_huerto')
+            $huertos = $this->Venta_model->select('huertos.id_huerto,huertos.vendido')
                               ->join('huertos_ventas', 'ventas.id_venta = huertos_ventas.id_venta', 'left')
                               ->join('huertos', 'huertos_ventas.id_huerto = huertos.id_huerto', 'left')
                               ->where(['ventas.id_venta' => $id_venta])
                               ->get();
             $this->Venta_model->where(['ventas.id_venta' => $id_venta])
                               ->update(['estado' => 3]);
+            $update = true;
             foreach ($huertos as $key => $huerto) {
+                if($huerto->vendido != 1){
+                    $update = false;
+                    break;
+                }
                 $huertos[$key]->vendido = 0;
             }
-            $this->Huerto_model->update_batch($huertos, 'id_huerto');
-
+            if($update){
+                $this->Huerto_model->update_batch($huertos, 'id_huerto');
+            }
+            
+            $venta = $this->Venta_model->select("ventas.id_venta, 
+                                          ventas.version, 
+                                          ventas.precio, 
+										  ventas.comision, 
+                                          ventas.porcentaje_comision,
+                                          ventas.estado,
+                                          SUM(IF(historial.estado = 0 && DATE(historial.fecha) <= NOW(),1,0)) AS retraso,
+                                          SUM(IF(DATEDIFF( historial.fecha_pago ,historial.fecha) > 0 ,1,0)) AS retrasados,
+                                          SUM(IF(DATEDIFF( historial.fecha_pago ,historial.fecha) < 0 ,1,0)) AS adelantados,
+                                          SUM(IF(historial.estado = 1 && DATE(historial.fecha) = DATE(historial.fecha_pago),1,0)) AS en_tiempo,
+                                          SUM(IF(historial.estado = 1,1,0)) AS realizados,
+                                          SUM(historial.pago) AS pagado, 
+                                          SUM(IF(historial.estado = 1,historial.comision,0)) AS comisionado,
+                                          CONCAT(cliente.first_name,' ',cliente.last_name) AS nombre_cliente,
+                                          cliente.phone,
+                                          cliente.email,
+                                          CONCAT(lider.first_name,' ',lider.last_name) AS nombre_lider,
+                                          CONCAT(user.first_name,' ',user.last_name) AS nombre_user")
+                                ->join('historial', 'ventas.id_venta = historial.id_venta', 'left')
+                                ->join('users as cliente', 'ventas.id_cliente = cliente.id', 'left')
+                                ->join('users as lider', 'ventas.id_lider = lider.id', 'left')
+                                ->join('users as user', 'ventas.id_usuario = user.id', 'left')
+                                ->where(['ventas.id_venta' => $id_venta])
+                                ->get();
+            foreach ($venta as $key => $v) {
+                $descripcion = $this->Venta_model->select('GROUP_CONCAT("Mz. ",manzanas.manzana, " Ht. ", huertos.huerto) as descripcion')
+                                                 ->join('huertos_ventas', 'ventas.id_venta = huertos_ventas.id_venta', 'inner')
+                                                 ->join('huertos', 'huertos_ventas.id_huerto = huertos.id_huerto', 'inner')
+                                                 ->join('manzanas', 'huertos.id_manzana = manzanas.id_manzana', 'inner')
+                                                 ->where(['ventas.id_venta' => $v->id_venta])
+                                                 ->get();
+                $venta[$key]->descripcion = $descripcion[0]->descripcion;
+                $venta[$key]->detalles = "Pagado en tiempo: {$v->en_tiempo} Pagado con retraso: {$v->retrasados} delantado: {$v->adelantados} Realizados: {$v->realizados}";
+            }
+            if ($this->Trans_model->status() === false) {
+                $this->Trans_model->rollback();
+                echo "<p>Error de transacción</p>";
+            }else{
+                $this->Trans_model->commit();
+                echo json_encode($venta[0]);
+            }
+        }
+    }
+    public function recuperar_venta()
+    {
+        header("Content-type: application/json; charset=utf-8");
+        if ($this->input->post("id_venta")) {
+            $id_venta = $this->input->post("id_venta");
+            $this->Venta_model->where(['ventas.id_venta' => $id_venta])
+                              ->update(['estado' => 2]);
             $venta = $this->Venta_model->select("ventas.id_venta, 
                                           ventas.version, 
                                           ventas.precio, 
@@ -1176,15 +1330,6 @@ class Ajax extends CI_Controller
                 $venta[$key]->detalles = "Pagado en tiempo: {$v->en_tiempo} Pagado con retraso: {$v->retrasados} delantado: {$v->adelantados} Realizados: {$v->realizados}";
             }
             echo json_encode($venta[0]);
-        }
-    }
-    public function recuperar_venta()
-    {
-        header("Content-type: application/json; charset=utf-8");
-        if ($this->input->post("id_venta")) {
-            $id_venta = $this->input->post("id_venta");
-            $this->Venta_model->where(['ventas.id_venta' => $id_venta])
-                              ->update(['estado' => 2]);
         }
     }
     public function add_ion_user()
@@ -1310,21 +1455,21 @@ class Ajax extends CI_Controller
                 }
 
                 // check to see if we are updating the user
-               if ($this->ion_auth->update($user->id, $data)) {
-                   // redirect them back to the admin page if admin, or to the base url if non admin
+                if ($this->ion_auth->update($user->id, $data)) {
+                    // redirect them back to the admin page if admin, or to the base url if non admin
                     //$this->session->set_flashdata('message', $this->ion_auth->messages() );
                     $newUser = $this->ion_auth->user($user->id)->row();
-                   $newUser->btn_activar_desactivar = '<a href="'.base_url().'auth/deactivate/'.$user->id.'" class="btn btn-success" data-target="#userModal" data-toggle="modal">Activo</a>';
-                   $newUser->btn_editar = '<a href="'.base_url().'auth/edit_user/'.$user->id.'" class="btn btn-info" data-target="#userModal" data-toggle="modal" data-btn-type="edit">Editar Usuario</a>';
-                   $grupo = "<ul>";
-                   foreach ($this->ion_auth->get_users_groups($user->id)->result() as $group) {
-                       $grupo.= '<li>'.$group->name.'</li>';
-                   }
-                   $grupo .= "<ul>";
-                   $newUser->groups = $grupo;
-                   $response = [];
-                   array_push($response, $newUser);
-                   echo json_encode($response);
+                    $newUser->btn_activar_desactivar = '<a href="'.base_url().'auth/deactivate/'.$user->id.'" class="btn btn-success" data-target="#userModal" data-toggle="modal">Activo</a>';
+                    $newUser->btn_editar = '<a href="'.base_url().'auth/edit_user/'.$user->id.'" class="btn btn-info" data-target="#userModal" data-toggle="modal" data-btn-type="edit">Editar Usuario</a>';
+                    $grupo = "<ul>";
+                    foreach ($this->ion_auth->get_users_groups($user->id)->result() as $group) {
+                        $grupo.= '<li>'.$group->name.'</li>';
+                    }
+                    $grupo .= "<ul>";
+                    $newUser->groups = $grupo;
+                    $response = [];
+                    array_push($response, $newUser);
+                    echo json_encode($response);
                     /*if ($this->ion_auth->is_admin())
                     {
                         redirect('auth', 'refresh');
@@ -1333,8 +1478,8 @@ class Ajax extends CI_Controller
                     {
                         redirect('/', 'refresh');
                     }*/
-               } else {
-                   // redirect them back to the admin page if admin, or to the base url if non admin
+                } else {
+                    // redirect them back to the admin page if admin, or to the base url if non admin
                     echo $this->ion_auth->errors();
                     /*$this->session->set_flashdata('message', $this->ion_auth->errors() );
                     if ($this->ion_auth->is_admin())
@@ -1345,7 +1490,7 @@ class Ajax extends CI_Controller
                     {
                         redirect('/', 'refresh');
                     }*/
-               }
+                }
             } else {
                 echo validation_errors();
             }

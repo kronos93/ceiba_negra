@@ -46,28 +46,29 @@
                                     <a href="<?= base_url(); ?>reportes/<?= ($venta->version == 2) ? 'pagares' : 'recibos'?>/<?= $venta->id_venta; ?>" class="btn btn-primary" ><i class="fa fa-file-pdf-o" aria-hidden="true"></i> <?= ($venta->version == 2) ? ' Pagarés' : ' Recibos'?></a>
                                     <a href="<?= base_url() ?>registros/pagos/<?= $venta->id_venta; ?>" target="_blank" class="btn btn-info"><i class="fa fa-fw fa-eye"></i> Pagos</a>
                                     <?php
-                                    if ($venta->estado == 0) :
+                                    if ($venta->estado == 0) : //Activo 0
                                     ?>
                                     <button title="Cancelar Contrato" class="btn btn-warning cancelar-venta"><span class="fa fa-ban fa-lg"></span> Cancelar</button>
+                                    <button title="Eliminar Contrato" class="btn btn-danger eliminar-venta"><span class="fa fa-trash fa-lg"></span> Eliminar</button>
+                                    
+                                    <?php
+                                    endif;
+                                    ?>
+                                    <?php
+                                    if ($venta->estado == 1) ://Saldado 1
+                                    ?>
+        
+                                    <?php
+                                    endif;
+                                    if ($venta->estado == 2) : // Cancelado 2
+                                    ?>
+                                    <button class="btn btn-success activar-venta"> <span class="fa fa-check"></span>Restablecer</button>
                                     <button title="Eliminar Contrato" class="btn btn-danger eliminar-venta"><span class="fa fa-trash fa-lg"></span> Eliminar</button>
                                     <?php
                                     endif;
                                     ?>
-                                    <?php
-                                    if ($venta->estado == 1) :
-                                    ?>
-                                    
-                                    <?php
-                                    endif;
-                                    if ($venta->estado == 2) :
-                                    ?>
-                                    <button class="btn btn-success activar-venta"> <span class="fa fa-check"></span>Restablecer</button>
-                                     <button title="Eliminar Contrato" class="btn btn-danger eliminar-venta"><span class="fa fa-trash fa-lg"></span> Eliminar</button>
-                                    <?php
-                                    endif;
-                                    ?>
                                 <?php
-                                else :
+                                else : //Si es 3 es eliminado
                                 ?>
                                     <button class="btn recuperar-venta"> <span class="fa fa-undo"></span> Recuperar</button>
                                 <?php

@@ -143,7 +143,7 @@ $("#frm-pago").on('submit', function(e) {
             swal("Hechó", "¡Pago realizado!", "success");
         })
         .fail(function(response) {
-            swal("¡Error!", "La operación que intentó realizar ha fallado, contactar al administador sí el error persiste", "error");
+            swal("¡Error!", "La operación que intentó realizar ha fallado, contactar al administador sí el error persiste.\n" + response.responseText, "error");
         });
 });
 $('#pagos-table').on('click', '.removerPago', function() {
@@ -173,7 +173,7 @@ $('#pagos-table').on('click', '.removerPago', function() {
                     swal("Hechó", "¡Pago removido!", "success");
                 })
                 .fail(function(response) {
-                    swal("¡Error!", "La operación que intentó realizar ha fallado, contactar al administador sí el error persiste", "error");
+                    swal("¡Error!", "La operación que intentó realizar ha fallado, contactar al administador sí el error persiste.\n" + response.responseText, "error");
                 });
         });
 });
@@ -242,6 +242,6 @@ $("#frm-pago-comision").on('submit', function(e) {
             swal("Hechó", "¡Pago realizado!", "success");
         })
         .fail(function(response) {
-            swal("¡Error!", "La operación que intentó hacer ha fallado, contactar al administador", "error");
+            swal("¡Error!", "La operación que intentó hacer ha fallado, contactar al administador.\n" + response.responseText, "error");
         });
 });
