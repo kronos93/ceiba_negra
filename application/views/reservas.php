@@ -9,11 +9,11 @@
 					<thead>
 						<tr>
 							<th data-visible="false">Id. reserva</th>
-                            <th>Lider</th>
+                            <th class="all">Lider</th>
                             <th>Descripción</th>
                             <th>Detalles</th>
 							<th>Expira</th>
-							<th <?= ($this->ion_auth->in_group('administrador')) ? 'class="all"' : 'data-visible="false"' ?>>Opciones</th>	                
+							<th <?= ($this->ion_auth->in_group(['administrador','lider'])) ? 'class="all"' : 'data-visible="false"' ?>>Opciones</th>	                
 						</tr>
 					</thead>
 				</table>

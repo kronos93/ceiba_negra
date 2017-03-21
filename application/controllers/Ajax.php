@@ -564,7 +564,17 @@ class Ajax extends CI_Controller
     public function get_reservas(){
         header("Content-type: application/json; charset=utf-8"); //Header generico
         $response = new stdClass(); //Clase generica
-        $reservas = $this->Reserva_model->select("reservas.id_reserva, 
+        $reservacion = new $this->Reserva_model();
+        if($this->ion_auth->in_group(['lider'])){
+            $reservacion->where(['reservas.id_lider'=> $this->ion_auth->get_user_id()]);
+            
+            if ($this->session->userdata('id_reserva')) {
+                $reservacion->where(['reservas.id_reserva' => $this->session->userdata('id_reserva')]);
+                $this->session->unset_userdata('id_reserva');
+            }
+        }
+         
+        $reservas = $reservacion->select("reservas.id_reserva, 
                                                   CONCAT(lider.first_name, ' ',lider.last_name ) AS nombre_lider,
                                                   GROUP_CONCAT('Mz. ',manzanas.manzana, ' Ht. ', huertos.huerto) AS descripcion,
                                                   reservas.email,

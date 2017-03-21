@@ -28,6 +28,10 @@ class Reserva_model extends CI_Model {
         $query = $this->db->get();
         return $query->result();
     }
+    public function delete(){
+        $this->db->delete($this->table);
+        return $this->db->affected_rows();
+    }
     public function group_by($group){
         $this->db->group_by($group);
         return $this;

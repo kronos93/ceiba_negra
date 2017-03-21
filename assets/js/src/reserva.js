@@ -39,14 +39,14 @@ form_reserva.on('submit', function(e) {
                         if (response.status != null && response.status != undefined != "" && response.status == 200) {
                             swal({
                                     title: "¡Huertos reservados!",
-                                    text: "Pulsar el boton continuar para ir al mapa.",
+                                    text: "Pulsar el boton continuar.",
                                     type: "success",
                                     /*confirmButtonColor: "#DD6B55",*/
                                     confirmButtonText: "¡CONTINUAR!",
                                     closeOnConfirm: false
                                 },
                                 function() {
-                                    window.location.href = base_url();
+                                    window.location.href = base_url() + 'registros/reservas/';
                                 });
                         } else {
                             sweetAlert("¡Error!", "Algo salió mal, contactar al administrador sí el problema persiste.<p>Error:</p>" + response.responseText, "error");
