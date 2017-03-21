@@ -8,6 +8,18 @@ var reservas_table = $('#reservas-table').DataTable({
         { "data": "descripcion" },
         { "data": "detalles" },
         { "data": "expira" },
+        {
+            "data": "",
+            "render": function(data, type, full, meta) {
+                var btn_eliminar = '<button class="btn btn-danger">Eliminar</button>';
+                var btn_vender = '<button class="btn btn-primary">Vender</button>';
+                if (full.is_admin == 1) {
+                    return btn_eliminar + ' ' + btn_vender;
+                } else {
+                    return btn_eliminar;
+                }
+            }
+        }
     ],
     columnDefs: [ //
         {

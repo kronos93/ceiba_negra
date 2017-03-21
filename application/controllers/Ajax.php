@@ -589,6 +589,7 @@ class Ajax extends CI_Controller
             $reservas[$key]->detalles .= "<p><strong>Enganche: </strong>$".number_format($reserva->enganche,2)."<p>";
             $reservas[$key]->detalles .= "<p><strong>Abono: </strong>$".number_format($reserva->abono,2)."<p>";
             $reservas[$key]->detalles .= "<p><strong>Comentarios: </strong>".$reserva->comment."<p>";
+            $reservas[$key]->is_admin = $this->ion_auth->in_group('administrador');
         }
         $response->data = $reservas; // Atributo de la clase generico para el dataTable
         echo json_encode($response); //Response JSON
