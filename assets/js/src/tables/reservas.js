@@ -7,6 +7,7 @@ var reservas_table = $('#reservas-table').DataTable({
         { "data": "nombre_lider" },
         { "data": "descripcion" },
         { "data": "detalles" },
+        { "data": "expira" },
     ],
     columnDefs: [ //
         {

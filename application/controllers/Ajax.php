@@ -564,13 +564,32 @@ class Ajax extends CI_Controller
     public function get_reservas(){
         header("Content-type: application/json; charset=utf-8"); //Header generico
         $response = new stdClass(); //Clase generica
-        $reservas = $this->Reserva_model->select("reservas.id_reserva, CONCAT(lider.first_name, ' ',lider.last_name ) AS nombre_lider,GROUP_CONCAT('Mz. ',manzanas.manzana, ' Ht. ', huertos.huerto) as descripcion")
+        $reservas = $this->Reserva_model->select("reservas.id_reserva, 
+                                                  CONCAT(lider.first_name, ' ',lider.last_name ) AS nombre_lider,
+                                                  GROUP_CONCAT('Mz. ',manzanas.manzana, ' Ht. ', huertos.huerto) AS descripcion,
+                                                  reservas.email,
+                                                  reservas.phone,
+                                                  reservas.comment,
+                                                  reservas.precio,
+                                                  reservas.enganche,
+                                                  reservas.abono,
+                                                  DATE_FORMAT(reservas.expira,'%d-%m-%Y') as expira
+                                                  ")
                                         ->join('users AS lider','reservas.id_lider = lider.id','left')
                                         ->join('huertos_reservas', 'reservas.id_reserva = huertos_reservas.id_reserva', 'inner')
                                         ->join('huertos', 'huertos_reservas.id_huerto = huertos.id_huerto', 'inner')
                                         ->join('manzanas', 'huertos.id_manzana = manzanas.id_manzana', 'inner')
                                         ->group_by('reservas.id_reserva')
                                         ->get();
+        foreach($reservas as $key => $reserva){
+            $reservas[$key]->detalles = '';
+            $reservas[$key]->detalles .= "<p><strong>Correo: </strong>".$reserva->email."<p>";
+            $reservas[$key]->detalles .= "<p><strong>Teléfono: </strong><span class='phone'>".$reserva->phone."</span><p>";
+            $reservas[$key]->detalles .= "<p><strong>Precio: </strong>$".number_format($reserva->precio,2)."<p>";
+            $reservas[$key]->detalles .= "<p><strong>Enganche: </strong>$".number_format($reserva->enganche,2)."<p>";
+            $reservas[$key]->detalles .= "<p><strong>Abono: </strong>$".number_format($reserva->abono,2)."<p>";
+            $reservas[$key]->detalles .= "<p><strong>Comentarios: </strong>".$reserva->comment."<p>";
+        }
         $response->data = $reservas; // Atributo de la clase generico para el dataTable
         echo json_encode($response); //Response JSON
     }

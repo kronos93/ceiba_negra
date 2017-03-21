@@ -125,8 +125,9 @@ class Reportes extends CI_Controller
             $output = $HTMLMinify->process();
             $options = new Options();
             $options->set('isRemoteEnabled', true);
-            /*$options->set('DOMPDF_ENABLE_CSS_FLOAT', TRUE);*/
+            $options->set('defaultFont', 'Helvetica');
             $dompdf = new Dompdf($options);
+            $dompdf->set_option('isHtml5ParserEnabled', true);
             $dompdf->loadHtml($output);
             // (Optional) Setup the paper size and orientation
             $dompdf->setPaper('letter', 'portrait');
@@ -231,7 +232,7 @@ class Reportes extends CI_Controller
                                     </p>
                                     <table>
                                         <tr>
-                                            <td><strong>BELGIO ELIAS PINELO CASANOVA</strong></td>
+                                            <td><strong>FRANCISCO ENRIQUE MARTINEZ CORDERO</strong></td>
                                             <td>
                                                 <p> POR CONCEPTO DE PAGO PARCIAL DE LA CESION PRIVADA , DE DERECHOS EN CO-PROPIEDAD DEL TERRENO EN BREÑA {$txt_huertos} DEL PREDIO 'LA CEIBA', UBICADO EN EL MUNICIPIO DE LAZARO CARDENAS, QUINTANA ROO.
                                                 </p>
