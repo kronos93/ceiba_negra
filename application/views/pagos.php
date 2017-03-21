@@ -61,7 +61,7 @@
                             </td>
                             <td>
                                 <?php 
-                                if($pago->estado_venta == 0){
+                                if($pago->estado_venta == 0 || $pago->estado_venta == 1){
                                     if ($pago->estado == 0) {
                                         echo '<button class="btn btn-success" data-toggle="modal" data-target="#pagoModal">Registrar pago</button> ' ;
                                     }else{

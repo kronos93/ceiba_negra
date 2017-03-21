@@ -9,11 +9,11 @@
                     <div class="row row-equal">
                         <div class="form-group col-xs-12 col-sm-3">
                             <label class="" >Fecha inical:</label>
-                            <input type="text" name="init_date" id="init_date" class="form-control" value="<?= $init_date->format('d-m-Y'); ?>" required/>
+                            <input type="text" name="init_date" id="init_date" class="form-control datepicker" value="<?= $init_date->format('d-m-Y'); ?>" required/>
                         </div>
                         <div class="form-group col-xs-12 col-sm-3">
                             <label class="" >Fecha final:</label>
-                            <input type="text" name="end_date" id="end_date" class="form-control" value="<?= isset($end_date) ? $end_date->format('d-m-Y') : '' ?>" required/>
+                            <input type="text" name="end_date" id="end_date" class="form-control datepicker" value="<?= isset($end_date) ? $end_date->format('d-m-Y') : '' ?>" required/>
                        </div>
                        <div class="form-group col-xs-12 col-sm-3">
                             <input type="submit" value="Filtrar" class="btn btn-primary"/>
@@ -22,9 +22,10 @@
                    <div class="clearfix"></div>
                 </form>
                 
-				<table id="" class="table">
+				<table id="historial-ingresos-table" class="table">
 					<thead>
-						<tr>								
+						<tr>
+                            <!--<th>ID</th>	-->								
 							<th>Nombre</th>	
                             <th>Fecha de ingreso / pago</th>
                             <th>Ingreso</th>
@@ -39,7 +40,8 @@
                         $pagos = 0;
                         foreach($ingresos as $ingreso){ 
                         ?>
-                        <tr>                       
+                        <tr>
+                            <!--<td><?= $ingreso->id_historial ?> </td>  -->                     
                             <td><?= $ingreso->nombre ?> </td>
                             <td><?= $ingreso->fecha_pago ?> </td>
                             <td>$<?= number_format($ingreso->pago,2) ?> </td>                            

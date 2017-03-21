@@ -35,7 +35,12 @@ if ($('#shopCartSale').length) {
         cart.get();
     });
 }
-
+if ($('#historial-ingresos-table').length) {
+    require.ensure([], function(require) {
+        var components = require('./components/components.js');
+        components.datepicker();
+    });
+}
 
 if (module.hot) {
     module.hot.accept();

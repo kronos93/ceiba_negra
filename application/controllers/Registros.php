@@ -61,13 +61,29 @@ class Registros extends CI_Controller
             if ($this->input->get('init_date') && $this->input->get('end_date')) {
                 $data['init_date'] = Carbon::createFromFormat('d-m-Y', $this->input->get('init_date'));
                 $data['end_date'] = Carbon::createFromFormat('d-m-Y', $this->input->get('end_date'));
-                $data['ingresos'] = $this->Opciones_ingreso_model->join('historial', 'historial.id_ingreso = opciones_ingreso.id_opcion_ingreso', 'left')
-                                                                ->where("id_opcion_ingreso = {$id} AND fecha BETWEEN '{$data['init_date']->format('Y-m-d')}' AND '{$data['end_date']->format('Y-m-d')}'")
-                                                                ->get();
+                $data['ingresos'] =
+                                    $this->Historial_model->select('opciones_ingreso.nombre,
+                                                                    historial.id_historial, 
+                                                                    historial.pago, 
+                                                                    historial.penalizacion,
+                                                                    historial.comision, 
+                                                                    DATE_FORMAT(historial.fecha_pago,"%d-%m-%Y") AS fecha_pago')
+                                                          ->join('ventas', 'historial.id_venta = ventas.id_venta', 'left')
+                                                          ->join('opciones_ingreso', 'historial.id_ingreso = opciones_ingreso.id_opcion_ingreso', 'left')
+                                                          ->where(['historial.id_ingreso' => $id,"ventas.estado !=" => 3])
+                                                          ->where("fecha BETWEEN '{$data['init_date']->format('Y-m-d')}' AND '{$data['end_date']->format('Y-m-d')}'")
+                                                          ->get();
             } else {
-                $data['ingresos'] = $this->Opciones_ingreso_model->join('historial', 'historial.id_ingreso = opciones_ingreso.id_opcion_ingreso', 'left')
-                                                                ->where(['id_opcion_ingreso' => $id])
-                                                                ->get();
+                $data['ingresos'] = $this->Historial_model->select('opciones_ingreso.nombre,
+                                                                    historial.id_historial, 
+                                                                    historial.pago, 
+                                                                    historial.penalizacion,
+                                                                    historial.comision, 
+                                                                    DATE_FORMAT(historial.fecha_pago,"%d-%m-%Y") AS fecha_pago')
+                                                          ->join('ventas', 'historial.id_venta = ventas.id_venta', 'left')
+                                                          ->join('opciones_ingreso', 'historial.id_ingreso = opciones_ingreso.id_opcion_ingreso', 'left')
+                                                          ->where(['historial.id_ingreso' => $id,"ventas.estado !=" => 3])
+                                                          ->get();
                 $data['init_date'] = $this->Historial_model->select('fecha')
                                                         ->order_by('fecha ASC')
                                                         ->limit(1)

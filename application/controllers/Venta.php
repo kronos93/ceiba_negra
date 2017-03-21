@@ -549,7 +549,24 @@ class Venta extends CI_Controller
                     array_push($huertos_venta, $huerto_venta);
                 }
                 
+                $huertos_venta = [];
+                $huertos = [];
+                foreach ($this->cart->contents() as $items) {
+                    $huerto_venta = new stdClass();
+                    $huerto_venta->id_venta  = $id_venta;
+                    $huerto_venta->id_huerto = $items['id_huerto'];
+                    array_push($huertos_venta, $huerto_venta);
+                    $huerto = new stdClass();
+                    $huerto->id_huerto = $items['id_huerto'];
+                    $huerto->vendido = 1;
+                    if ($enganche == $precio) {
+                        $huerto->vendido = 2;
+                    }
+                    array_push($huertos, $huerto);
+                }
+                
                 $this->HuertosVentas_model->insert_batch($huertos_venta);
+                $this->Huerto_model->update_batch($huertos, 'id_huerto');
                 $this->Historial_model->insert_batch($db_historial);
                 $this->cart->destroy();
             }
