@@ -11,6 +11,7 @@ import './tables/opciones_ingreso';
 import './tables/reservas';
 
 import './tables/historial_ventas';
+
 //Reacomodar
 import 'jquery-mask-plugin/dist/jquery.mask';
 import { phone } from './components/components.js';
@@ -37,8 +38,10 @@ if ($('#shopCartSale').length) {
 }
 if ($('#historial-ingresos-table').length) {
     require.ensure([], function(require) {
+        require('./tables/historial_ingresos');
         var components = require('./components/components.js');
         components.datepicker();
+
     });
 }
 

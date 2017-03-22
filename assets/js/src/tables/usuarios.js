@@ -4,6 +4,7 @@ $(function() {
     //USUARIOS
     var users_table = $('#users-table').DataTable({
         "columns": [ //Atributos para la tabla
+            { "data": "id", "type": "num", },
             { "data": "first_name" },
             { "data": "last_name" },
             { "data": "email" },
@@ -24,7 +25,7 @@ $(function() {
             }
         ],
         "order": [
-            [0, "asc"]
+            [1, "asc"]
         ],
     });
     $('#userModal').on('shown.bs.modal', function(e) {

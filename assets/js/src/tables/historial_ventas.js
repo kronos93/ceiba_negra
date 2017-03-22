@@ -227,8 +227,24 @@ $('a[data-toggle=popover]').on('click', function(e) {
     });
     e.stopPropagation();
 });
-
 $('a[data-toggle=popover]').on('shown.bs.popover', function(e) {
     console.log("show" + this);
     $('a[data-toggle=popover]').not(this).popover('hide');
+});
+
+$('#email-notificator').on('click', function(e) {
+    var btn = this;
+    $(btn).next().css('visibility', 'visible');
+
+    $.ajax({
+            url: base_url() + "mail/",
+
+            type: "get",
+            async: true,
+        }).done(function(response) {
+            $(btn).attr("disabled", false).next().css('visibility', 'hidden');
+        })
+        .fail(function(response) {
+            $(btn).attr("disabled", false).next().css('visibility', 'hidden');
+        });
 });

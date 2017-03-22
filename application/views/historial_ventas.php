@@ -2,6 +2,19 @@
     <div class="container-fluid container">
         <div class="row">
             <div class="col-xs-12">
+				<legend>Historial de ventas - Contratos
+                    <div class="pull-right ajax-button">
+                        <button id="email-notificator" class="btn btn-success">Notificar a clientes retrasados (Email-masivo)</button>
+                        <div class="loader-gif">
+                            <div class="loader-gif-item"></div>
+                            <div class="loader-gif-item"></div>
+                            <div class="loader-gif-item"></div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </legend>
+            </div>    
+            <div class="col-xs-12">
                 <table id="historial-ventas-table" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
                     <thead>
                         <tr>

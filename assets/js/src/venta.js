@@ -42,6 +42,7 @@ moment.locale('es');
 tinymce.init({
     selector: '#contrato_html',
     mode: 'specifics_textareas',
+    language: 'es_MX',
     editor_selector: 'mceEditor',
     height: '600px',
     plugins: [

@@ -22,7 +22,6 @@ class GenericFrm {
             this.btn.parents('tr');
 
         this.parseDtRow = this.dtTable.row(this.dtRow).data();
-        console.log(this.parseDtRow);
         this.response;
         this.fnOnDone;
 
@@ -87,9 +86,10 @@ class GenericFrm {
     }
     ajaxAddDone() {
         this.frm[0].reset();
-        console.log(this.response);
+        console.log(this.response[0]);
         var newData = this.dtTable.row.add(this.response[0]).draw(false).node();
-        $(newData).animate({ backgroundColor: 'yellow' }); //Animación para MAX
+        console.log(newData);
+        $(newData).css({ backgroundColor: 'yellow' }); //Animación para MAX
         this.dtTable.order([0, 'desc']).draw(); //Ordenar por id
         ajax_msg.show_success(this.msg);
     }
@@ -98,7 +98,7 @@ class GenericFrm {
             this.parseDtRow[data] = this.response[0][data];
         }
         var newData = this.dtTable.row(this.dtRow).data(this.parseDtRow).draw(false).node(); //
-        $(newData).animate({ backgroundColor: 'yellow' }); //Animación para MAX
+        $(newData).css({ backgroundColor: 'yellow' }); //Animación para MAX
         ajax_msg.show_success(this.msg);
     }
     on_submit() {
