@@ -17,62 +17,72 @@
                                     </div>
                                 </div>
                                 <legend>Datos personales</legend>
-                                <div class="form-group col-xs-12 col-sm-6">
-                                    <label class="required" for="first_name">Nombre(s):</label>
-                                    <input type="text" class="form-control required" name="first_name" id="first_name" placeholder="Nombre" />
+                                <div class="row">
+                                    <div class="form-group col-xs-12 col-sm-6">
+                                        <label class="required" for="first_name">Nombre(s):</label>
+                                        <input type="text" class="form-control required" name="first_name" id="first_name" placeholder="Nombre" />
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6">
+                                        <label class="required" for="last_name">Apellidos</label>
+                                        <input type="text" class="form-control required" name="last_name" id="last_name" placeholder="Apellido Apellido" />
+                                    </div>
                                 </div>
-                                <div class="form-group col-xs-12 col-sm-6">
-                                    <label class="required" for="last_name">Apellidos</label>
-                                    <input type="text" class="form-control required" name="last_name" id="last_name" placeholder="Apellido Apellido" />
+                                <div class="row">
+                                    <div class="form-group col-xs-12 col-sm-6">
+                                        <label class="required" for="email">Correo electrónico</label>
+                                        <input type="text" class="form-control required email" name="email" id="email" placeholder="alguien@dominio.com" />
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6">
+                                        <label class="" for="phone">Celular</label>
+                                        <input type="text" class="form-control phone" name="phone" id="phone" placeholder="9983129864" />
+                                    </div>
                                 </div>
-                                <div class="form-group col-xs-12 col-sm-6">
-                                    <label class="required" for="email">Correo electrónico</label>
-                                    <input type="text" class="form-control required email" name="email" id="email" placeholder="alguien@dominio.com" />
-                                </div>
-                                <div class="form-group col-xs-12 col-sm-6">
-                                    <label class="" for="phone">Celular</label>
-                                    <input type="text" class="form-control phone" name="phone" id="phone" placeholder="9983129864" />
-                                </div>
-                                <div class="form-group col-xs-12 col-sm-6">
-                                    <label class="required" for="lugar_nacimiento">Lugar de nacimiento: </label>
-                                    <input type="text" class="form-control required" name="lugar_nacimiento" id="lugar_nacimiento" placeholder="Cáncun, Quintana Roo" />
-                                </div>
-                                <div class="form-group col-xs-12 col-sm-6">
-                                    <label class="" for="fecha_nacimiento">Fecha de nacimiento</label>
-                                    <input type="text" class="form-control required datepicker" name="fecha_nacimiento" id="fecha_nacimiento" placeholder="dd-mm-yyyy" />
+                                <div class="row">
+                                    <div class="form-group col-xs-12 col-sm-6">
+                                        <label class="required" for="lugar_nacimiento">Lugar de nacimiento: </label>
+                                        <input type="text" class="form-control required" name="lugar_nacimiento" id="lugar_nacimiento" placeholder="Cáncun, Quintana Roo" />
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6">
+                                        <label class="" for="fecha_nacimiento">Fecha de nacimiento</label>
+                                        <input type="text" class="form-control required datepicker" name="fecha_nacimiento" id="fecha_nacimiento" placeholder="dd-mm-yyyy" />
+                                    </div>
                                 </div>
                                 <legend>Domicilio</legend>
-                                <div class="form-group col-xs-12 col-sm-6">
-                                    <label class="required" for="calle">Calle</label>
-                                    <input type="text" class="form-control required" name="calle" id="calle" placeholder="Av. siempre viva" />
+                                <div class="row">
+                                    <div class="form-group col-xs-12 col-sm-6">
+                                        <label class="required" for="calle">Calle</label>
+                                        <input type="text" class="form-control required" name="calle" id="calle" placeholder="Av. siempre viva" />
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-3 col-lg-2">
+                                        <label class="required" for="no_ext">No. Exterior:</label>
+                                        <input type="text" class="form-control required" name="no_ext" id="no_ext" placeholder="Lt. 8" />
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-3 col-lg-2">
+                                        <label class="" for="no_int">No. Interior:</label>
+                                        <input type="text" class="form-control" name="no_int" id="no_int" value="S/N" placeholder="S/N" />
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-lg-2">
+                                        <label class="required" for="colonia">Colonia:</label>
+                                        <input type="text" class="form-control required" name="colonia" id="colonia" placeholder="Reg. 233" />
+                                    </div>
                                 </div>
-                                <div class="form-group col-xs-12 col-sm-3 col-lg-2">
-                                    <label class="required" for="no_ext">No. Exterior:</label>
-                                    <input type="text" class="form-control required" name="no_ext" id="no_ext" placeholder="Lt. 8" />
-                                </div>
-                                <div class="form-group col-xs-12 col-sm-3 col-lg-2">
-                                    <label class="" for="no_int">No. Interior:</label>
-                                    <input type="text" class="form-control" name="no_int" id="no_int" value="S/N" placeholder="S/N" />
-                                </div>
-                                <div class="form-group col-xs-12 col-sm-6 col-lg-2">
-                                    <label class="required" for="colonia">Colonia:</label>
-                                    <input type="text" class="form-control required" name="colonia" id="colonia" placeholder="Reg. 233" />
-                                </div>
-                                <div class="form-group col-xs-12 col-sm-6">
-                                    <label class="required" for="municipio">Municipio:</label>
-                                    <input type="text" class="form-control required" name="municipio" id="municipio" placeholder="Solidaridad" />
-                                </div>
-                                <div class="form-group col-xs-12 col-sm-6">
-                                    <label class="required" for="estado">Estado:</label>
-                                    <input type="text" class="form-control required" name="estado" id="estado" placeholder="Quintana Roo" />
-                                </div>
-                                <div class="form-group col-xs-12 col-sm-3">
-                                    <label class="required" for="ciudad">Ciudad</label>
-                                    <input type="text" class="form-control required" name="ciudad" id="ciudad" placeholder="Cancún" />
-                                </div>
-                                <div class="form-group col-xs-12 col-sm-3">
-                                    <label class="required" for="cp">C.P</label>
-                                    <input type="text" class="form-control required number" name="cp" id="cp" placeholder="77510" />
+                                <div class="row">
+                                    <div class="form-group col-xs-12 col-sm-6">
+                                        <label class="required" for="municipio">Municipio:</label>
+                                        <input type="text" class="form-control required" name="municipio" id="municipio" placeholder="Solidaridad" />
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6">
+                                        <label class="required" for="estado">Estado:</label>
+                                        <input type="text" class="form-control required" name="estado" id="estado" placeholder="Quintana Roo" />
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-3">
+                                        <label class="required" for="ciudad">Ciudad</label>
+                                        <input type="text" class="form-control required" name="ciudad" id="ciudad" placeholder="Cancún" />
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-3">
+                                        <label class="required" for="cp">C.P</label>
+                                        <input type="text" class="form-control required number" name="cp" id="cp" placeholder="77510" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -81,27 +91,33 @@
                     <div>
                         <div class="container-fluid">
                             <div class="row">
-                                <legend>Contrato</legend>
-                                <div class="form-group col-xs-12 col-sm-3">
-                                    <label class="required" for="fecha_init">Fecha del contrato:</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control required datepicker" id="fecha_init" placeholder="dd-mm-yyyy" value="<?= $fecha ?>" name="fecha_init" />
-                                        <span class="input-group-addon" id="sizing-addon1">
-											<i class="fa fa-calendar"></i>
-										</span>
+                                <div class="col-xs-12">
+                                    <legend>Contrato</legend>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-xs-12 col-sm-3">
+                                        <label class="required" for="fecha_init">Fecha del contrato:</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control required datepicker" id="fecha_init" placeholder="dd-mm-yyyy" value="<?= $fecha ?>" name="fecha_init" />
+                                            <span class="input-group-addon" id="sizing-addon1">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6">
+                                        <label class="required" for="ciudad">Ciudad de expedición</label>
+                                        <input type="text" class="form-control required" name="ciudad_expedicion" id="ciudad_expedicion" placeholder="Cancún" required />
                                     </div>
                                 </div>
-                                <div class="form-group col-xs-12 col-sm-6">
-                                    <label class="required" for="ciudad">Ciudad de expedición</label>
-                                    <input type="text" class="form-control required" name="ciudad_expedicion" id="ciudad_expedicion" placeholder="Cancún" required />
-                                </div>
-                                <div class="form-group col-xs-12 col-sm-6">
-                                    <label class="required" for="testigo_1">Nombre completo del testigo #1</label>
-                                    <input type="text" class="form-control required" id="testigo_1" name="testigo_1" placeholder="Nombre Apellido Apellido" required />
-                                </div>
-                                <div class="form-group col-xs-12 col-sm-6">
-                                    <label class="required" for="testigo_2">Nombre completo del testigo #2</label>
-                                    <input type="text" class="form-control required" id="testigo_2" name="testigo_2" placeholder="Nombre Apellido Apellido" required />
+                                <div class="row">
+                                    <div class="form-group col-xs-12 col-sm-6">
+                                        <label class="required" for="testigo_1">Nombre completo del testigo #1</label>
+                                        <input type="text" class="form-control required" id="testigo_1" name="testigo_1" placeholder="Nombre Apellido Apellido" required />
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6">
+                                        <label class="required" for="testigo_2">Nombre completo del testigo #2</label>
+                                        <input type="text" class="form-control required" id="testigo_2" name="testigo_2" placeholder="Nombre Apellido Apellido" required />
+                                    </div>
                                 </div>
                                 <legend>Precios</legend>
                                 <div class="form-group col-xs-12 col-sm-4">
@@ -127,19 +143,17 @@
                                         </optgroup>
                                         <optgroup label="Clientes Previos">
                                             <option value="1-15">Quincenal (días 01 a 15 de mes)</option>
-                                            <option value="ini-mes">Mensual (01 de mes)</option>   
-                                            <option value="quincena-mes">Mensual (días 15 del mes)</option>   
+                                            <option value="ini-mes">Mensual (01 de mes)</option>
+                                            <option value="quincena-mes">Mensual (días 15 del mes)</option>
                                         </optgroup>
-                                        
-                                        <!--<option value="nuevo-mensual-f">Mensual (Clientes nuevos, finales de mes, 10 días de solapamiento)</option>   -->                                     
-                                                                              
-                                        <!--<option value="1-16">Quincenal (Clientes previos, días 01 a días 16 del mes)</option>-->                                                                          
-                                        <!--<option value="15-1">Quincenal (Clientes previos, días 15 de un mes al 01 del siguiente mes)</option>-->                                    
+                                        <!--<option value="nuevo-mensual-f">Mensual (Clientes nuevos, finales de mes, 10 días de solapamiento)</option>   -->
+                                        <!--<option value="1-16">Quincenal (Clientes previos, días 01 a días 16 del mes)</option>-->
+                                        <!--<option value="15-1">Quincenal (Clientes previos, días 15 de un mes al 01 del siguiente mes)</option>-->
                                     </select>
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-5" id="empezar_pago" style="display:none;">
                                     <label class="required" for="n_pago">Pagos realizados:</label>
-                                    <input type="number" class="form-control required" name="n_pago" id="n_pago" step="1" min="0" max="1000" value="0"/>
+                                    <input type="number" class="form-control required" name="n_pago" id="n_pago" step="1" min="0" max="1000" value="0" />
                                 </div>
                                 <div class="row">
                                     <div class="col-xs-12">
@@ -165,7 +179,7 @@
                                 </div>
                                 <div class="form-group col-xs-12  col-sm-8 col-sm-2">
                                     <label class="required" for="porcentaje_comision">Porcentaje comisión:</label>
-                                    <input type="number" step="1" min="1" max="100" class="form-control required" id="porcentaje_comision" value="10" name="porcentaje_comision"/>
+                                    <input type="number" step="1" min="1" max="100" class="form-control required" id="porcentaje_comision" value="10" name="porcentaje_comision" />
                                 </div>
                                 <div class="form-group col-xs-12  col-sm-8 col-sm-3">
                                     <label class="required" for="comision">Comisión:</label>
@@ -213,8 +227,8 @@
                             </div>
                         </div>
                     </div>
-                    <input type="hidden" id="id_lider" name="id_lider" value=""/>
-                    <input type="hidden" id="id_cliente" name="id_cliente" value=""/>
+                    <input type="hidden" id="id_lider" name="id_lider" value="" />
+                    <input type="hidden" id="id_cliente" name="id_cliente" value="" />
                 </form>
             </div>
         </div>
