@@ -1,5 +1,5 @@
 import { base_url } from './utils/util';
-import { autocompleteClientes, autocompleteLideres, datepicker, phone, number, format_numeric } from './components/components.js';
+import { autocompleteSaldosClientes, autocompleteClientes, autocompleteLideres, datepicker, phone, number, format_numeric } from './components/components.js';
 import moment from 'moment';
 import swal from 'sweetalert';
 import NumeroALetras from './utils/NumeroALetras.js';
@@ -109,6 +109,7 @@ form_venta.steps({
         number();
         datepicker();
         autocompleteClientes(base_url);
+        autocompleteSaldosClientes(base_url);
         autocompleteLideres(base_url);
 
         $("#precio").on('change keyup', function() {

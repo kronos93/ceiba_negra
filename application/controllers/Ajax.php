@@ -953,6 +953,40 @@ class Ajax extends CI_Controller
             echo json_encode($response);
         }
     }
+    public function autocomplete_saldos_clientes(){
+        header("Content-type: application/json; charset=utf-8");
+        if ($this->input->get('query')) {
+            $like = $this->input->get('query');
+            $full_name = "CONCAT(users.first_name,' ',users.last_name)";
+            $select = " $full_name AS data, 
+                        CONCAT({$full_name}, ventas.id_venta ) AS value,
+                        users.id AS id_cliente,
+						users.first_name, 
+						users.last_name, 
+						users.email, 
+						users.phone, 
+						users.calle, 
+						users.no_ext, 
+						users.no_int, 
+						users.phone, 
+						users.colonia, 
+						users.municipio, 
+						users.estado,
+						users.ciudad,
+						users.cp,
+						users.lugar_nacimiento,
+						DATE_FORMAT(users.fecha_nacimiento,'%d-%m-%Y') as fecha_nacimiento";
+            //$clientes = $this->ion_auth->select("{$select},{$full_name} AS data, {$full_name} AS value")->where(["{$full_name} LIKE" => "%{$like}%",'active' => 1])->users('cliente')->result();
+            $clientes = $this->Venta_model->select($select)
+                                          ->join('users','ventas.id_cliente = users.id','left')
+                                          ->where(['ventas.estado' => 2])
+                                          ->where(["{$full_name} LIKE" => "%{$like}%",'users.active' => 1])
+                                          ->get();
+            $response = new stdClass();
+            $response->suggestions = $clientes;
+            echo json_encode($response);
+        }
+    }
     public function autocomplete_lideres()
     {
         header("Content-type: application/json; charset=utf-8");

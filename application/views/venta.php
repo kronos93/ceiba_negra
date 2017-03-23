@@ -1,5 +1,13 @@
 <main class="wrap-main">
     <!-- <textarea id="contrato"></textarea> -->
+    <style>
+    .autocomplete-suggestions { border: 1px solid #999; background: #FFF; }
+.autocomplete-suggestion { padding: 2px 5px; white-space: normal;  }
+.autocomplete-selected { background: #F0F0F0; }
+.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
+.autocomplete-group { padding: 2px 5px; }
+.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
+    </style>
     <div class="container-fluid container">
         <div class="row">
             <div class="col-xs-12">
@@ -8,8 +16,16 @@
                     <div>
                         <div class="container-fluid">
                             <div class="row">
-                                <div class="form-group col-xs-12  col-sm-offset-8 col-sm-4">
-                                    <label class="pull-right" for="clientes_autocomplete">Buscar Cliente</label>
+                                <div class="form-group col-xs-12  col-sm-offset-8 col-sm-4">                                    
+                                    <label class="pull-right" for="clientes_autocomplete">Buscar clientes</label>
+                                    <div class="clearfix"></div>
+                                    <div class="input-group">
+                                        <input id="saldos_clientes_autocomplete" type="text" class="form-control" name="saldos" />
+                                        <div class="input-group-addon"><span class="fa fa-search"></span></div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-xs-12  col-sm-offset-8 col-sm-4">                                    
+                                    <label class="pull-right" for="clientes_autocomplete">Buscar clientes</label>
                                     <div class="clearfix"></div>
                                     <div class="input-group">
                                         <input id="clientes_autocomplete" type="text" class="form-control" name="cliente" />
