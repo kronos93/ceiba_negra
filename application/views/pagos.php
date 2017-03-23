@@ -106,7 +106,7 @@
                          <label>Monto:</label>
                          <input type="text" id="pago" name="pago" class="form-control currency" readonly/>
                     </div>
-                    <div class="form-group col-xs-12 col-sm-12">
+                    <div class="form-group col-xs-12 col-sm-12" >
                         <label class="" for="manzana">Seleccione el ingreso</label>
                         <select name="id_ingreso" id="id_ingreso" class="form-control">
                             <?php foreach ($ingresos as $ingreso) : ?>
@@ -116,6 +116,10 @@
                             </option>
                             <?php endforeach?>
                         </select>
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-12" id="cnt-folio" style="display:none;">
+                        <label class="" for="folio">Folio bancario</label>
+                        <input type="text" class="form-control" name="folio" id="folio" />
                     </div>
                     <div class="clearfix"></div>
                     <legend>Comisión</legend>
@@ -133,7 +137,7 @@
                     </div>
                     <div class="form-group col-xs-12 col-sm-3">
                          <label>% comisión:</label>
-                         <input type="number" step="1" min="1" max="100" id="porcentaje_comision" name="porcentaje_comision" class="form-control"/>
+                         <input type="number" min="1.00" max="100.00" step="0.01" id="porcentaje_comision" name="porcentaje_comision" class="form-control"/>
                     </div>
                     <div class="form-group col-xs-12 col-sm-6">
                         <label class="" for="lider" aria-required="true">Contemplar comisión</label>
@@ -144,6 +148,23 @@
                             <label for="comisionFalse">No:</label>
                         </div>
                     </div>
+
+                    <div id="cnt-estado-comision" style="display:none;">
+                        <legend>Estado de la comisión</legend> 
+                        <div class="form-group col-xs-12 col-sm-6">
+                            <label>Pagado:</label>
+                            <input type="text" id="pagado" name="" class="form-control currency" readonly/>
+                        </div>  
+                        <div class="form-group col-xs-12 col-sm-6">
+                            <label>Virtual:</label>
+                            <input type="text" id="virtual" name="" class="form-control currency" readonly/>
+                        </div>  
+                        <div class="form-group col-xs-12 col-sm-6">
+                            <label>Limite:</label>
+                            <input type="text" id="limite" name="" class="form-control currency" readonly/>
+                        </div>    
+                    </div>
+
                     <div class="clearfix"></div>
                     <legend>Penalización</legend>
                     <div class="form-group col-xs-12 col-sm-2">
@@ -210,7 +231,20 @@
                     </div>
                     <div class="form-group col-xs-12 col-sm-3">
                          <label>% comisión:</label>
-                         <input type="number" id="porcentaje_comision2" name="porcentaje_comision" min="1" max="100" step="1" class="form-control" required/>
+                         <input type="number" id="porcentaje_comision2" name="porcentaje_comision" min="1.00" max="100.00" step="0.01" class="form-control" required/>
+                    </div>
+                    <legend>Estado de la comisión</legend> 
+                    <div class="form-group col-xs-12 col-sm-6">
+                         <label>Pagado:</label>
+                         <input type="text" id="pagado2" name="" class="form-control currency" readonly/>
+                    </div>  
+                    <div class="form-group col-xs-12 col-sm-6">
+                         <label>Virtual:</label>
+                         <input type="text" id="virtual2" name="" class="form-control currency" readonly/>
+                    </div>  
+                    <div class="form-group col-xs-12 col-sm-6">
+                         <label>Limite:</label>
+                         <input type="text" id="limite2" name="" class="form-control currency" readonly/>
                     </div>                    
                 </div>
             </div>

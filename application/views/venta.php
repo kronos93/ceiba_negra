@@ -39,8 +39,8 @@
                             <div class="col-xs-12 col-sm-offset-6 col-sm-6">
                                 <div class="wrapper">
                                     <ul class="tabs clearfix" data-tabgroup="first-tab-group">
-                                        <li><a href="#tab1" class="active">Buscar Clientes Viejos</a></li>
-                                        <li><a href="#tab2">Buscar Clientes Nuevos</a></li>
+                                        <li><a href="#tab1" class="active">Buscar saldos de clientes</a></li>
+                                        <li><a href="#tab2">Buscar datos de clientes</a></li>
                                     </ul>
                                     <section id="first-tab-group" class="tabgroup">
                                         <div id="tab1" class="tabgroup__item">

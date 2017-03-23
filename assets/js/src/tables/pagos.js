@@ -115,7 +115,10 @@ $('#pagoModal').on('shown.bs.modal', function(e) {
             $('#penalizacion').autoNumeric('set', response.penalizacion);
             $('#porcentaje_penalizacion').val(response.porcentaje_penalizacion);
             $('#daysAccumulated').val(response.daysAccumulated);
-
+            //Estado de la comision
+            $('#pagado').autoNumeric('set', response.comisionado);
+            $('#limite').autoNumeric('set', response.limite_comision);
+            $('#virtual').autoNumeric('set', parseFloat($('#comision').autoNumeric('get')) + parseFloat($('#pagado').autoNumeric('get')));
         })
         .fail(function(response) {
             swal("¡Error!", "La operación que intentó realizar ha fallado, contactar al administador sí el error persiste", "error");
@@ -137,6 +140,7 @@ $("#frm-pago").on('submit', function(e) {
         })
         .done(function(response) {
             $('#pagoModal').modal('hide');
+            $("#cnt-estado-comision").slideUp();
             that.reset();
             var newData = pagos_table.row(pagoDtRow).data(response).draw(false).node(); //
             $(newData).css({ backgroundColor: 'yellow' }); //Animación para MAX
@@ -186,6 +190,7 @@ $('#frm-pago #comision').on('change keyup', function() {
     var comision = $(this).autoNumeric('get');
     var monto = $('#frm-pago #pago').autoNumeric('get');
     $('#frm-pago #porcentaje_comision').val((100 * (comision / monto)).toFixed(2));
+    $('#virtual').autoNumeric('set', parseFloat($('#comision').autoNumeric('get')) + parseFloat($('#pagado').autoNumeric('get')));
 });
 $('#frm-pago #porcentaje_penalizacion').on('change keyup', function() {
     var porcentaje_penalizacion = $(this).val();
@@ -214,6 +219,10 @@ $('#pagoComisionModal').on('shown.bs.modal', function(e) {
             $('#id_lider2').val(response.id_lider);
             $('#comision2').autoNumeric('set', response.comision);
             $('#porcentaje_comision2').val(response.porcentaje_comision);
+            //Estado de la comision
+            $('#pagado2').autoNumeric('set', response.comisionado);
+            $('#limite2').autoNumeric('set', response.limite_comision);
+            $('#virtual2').autoNumeric('set', parseFloat($('#comision2').autoNumeric('get')) + parseFloat($('#pagado2').autoNumeric('get')));
         })
         .fail(function(response) {
             swal("¡Error!", "La operación que intentó realizar ha fallado, contactar al administador sí el error persiste", "error");
@@ -223,6 +232,13 @@ $('#porcentaje_comision2').on('change keyup', function() {
     var porcentaje_comision = $(this).val();
     var monto = $('#pago2').autoNumeric('get');
     $('#comision2').autoNumeric('set', monto * (porcentaje_comision / 100));
+    $('#virtual2').autoNumeric('set', parseFloat($('#comision2').autoNumeric('get')) + parseFloat($('#pagado2').autoNumeric('get')));
+});
+$('#comision2').on('change keyup', function() {
+    var comision = $(this).autoNumeric('get');
+    var precio = $('#pago2').autoNumeric('get');
+    $('#porcentaje_comision2').val((100 * (comision / precio)).toFixed(2));
+    $('#virtual2').autoNumeric('set', parseFloat($('#comision2').autoNumeric('get')) + parseFloat($('#pagado2').autoNumeric('get')));
 });
 $("#frm-pago-comision").on('submit', function(e) {
     e.preventDefault();
@@ -244,4 +260,23 @@ $("#frm-pago-comision").on('submit', function(e) {
         .fail(function(response) {
             swal("¡Error!", "La operación que intentó hacer ha fallado, contactar al administador.\n" + response.responseText, "error");
         });
+});
+
+//Evento para el Radioboton
+$('[name="confirm_comision"]').on('change', function() {
+    var radio = $(this).val();
+    console.log(radio);
+    if (radio == 'true') {
+        $("#cnt-estado-comision").slideDown();
+    } else if (radio == 'false') {
+        $("#cnt-estado-comision").slideUp();
+    }
+});
+$('#id_ingreso').on('change', function() {
+    let op_ingreso = $(this).val();
+    if (op_ingreso == 1) {
+        $('#cnt-folio').slideUp();
+    } else {
+        $('#cnt-folio').slideDown();
+    }
 });

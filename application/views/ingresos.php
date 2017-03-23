@@ -26,12 +26,12 @@
 					<thead>
 						<tr>
                             <!--<th>ID</th>	-->								
-							<th>Nombre</th>	
+							<th class="all">Nombre</th>	
                             <th>Fecha de ingreso / pago</th>
                             <th>Ingreso</th>
                             <th>Comision</th>
                             <th>Penalizacion</th>	
-                            <th>Total</th>													
+                            <th class="all">Total</th>													
                         </tr>
 					</thead>
                     <tbody>

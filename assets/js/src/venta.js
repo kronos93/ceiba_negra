@@ -1,5 +1,5 @@
 import { base_url } from './utils/util';
-import { autocompleteSaldosClientes, autocompleteClientes, autocompleteLideres, datepicker, phone, number, format_numeric } from './components/components.js';
+import { autocompleteSaldosClientes, autocompleteClientes, autocompleteLideres, datepicker, phone, number, format_numeric, tabs } from './components/components.js';
 import moment from 'moment';
 import swal from 'sweetalert';
 import NumeroALetras from './utils/NumeroALetras.js';
@@ -111,7 +111,7 @@ form_venta.steps({
         autocompleteClientes(base_url);
         autocompleteSaldosClientes(base_url);
         autocompleteLideres(base_url);
-
+        tabs();
         $("#precio").on('change keyup', function() {
             var precio = parseFloat($(this).autoNumeric('get'));
             var porcentaje = parseFloat($('#porcentaje_comision').val());

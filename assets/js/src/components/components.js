@@ -125,6 +125,9 @@ module.exports = {
                     }
                     $('#' + data).val(suggestion[data]).trigger('input');
                 }
+                if (suggestion.pagado) {
+                    $('#enganche').autoNumeric('set', suggestion.pagado);
+                }
                 $('#id_cliente').val(suggestion.id_cliente);
             },
             onSearchError: function(query, jqXHR, textStatus, errorThrown) {
@@ -132,7 +135,6 @@ module.exports = {
             },
             onInvalidateSelection: function() {
                 console.log("Ha ocurrido un error en la selección.");
-
             },
         });
     },
@@ -198,5 +200,21 @@ module.exports = {
         };
         $('.number').mask('0#', options);
     },
+    tabs: function() {
+        $('.tabgroup > div').hide();
+        $('.tabgroup > div:first-of-type').show();
+        $('.tabs a').click(function(e) {
+            console.log('tab');
+            e.preventDefault();
+            var $this = $(this),
+                tabgroup = '#' + $this.parents('.tabs').data('tabgroup'),
+                others = $this.closest('li').siblings().children('a'),
+                target = $this.attr('href');
+            others.removeClass('active');
+            $this.addClass('active');
+            $(tabgroup).children('div').hide();
+            $(target).show();
 
+        });
+    }
 };
