@@ -31,6 +31,11 @@
     </style>
     <div class="container-fluid container">
         <div class="row">
+            <div class="container-fluid">
+                <div class="row">
+                    <p class="well well-sm" id="comments" style="display:none; overflow-wrap: break-word;">Comentarios</p>
+                </div>
+            </div>
             <form id="frm-venta" autocomplete="off">
                 <h3>Datos del Cliente:</h3>
                 <div>
@@ -279,6 +284,7 @@
                 </div>
                 <input type="hidden" id="id_lider" name="id_lider" value="" />
                 <input type="hidden" id="id_cliente" name="id_cliente" value="" />
+                <input type="hidden" id="id_reserva" name="id_reserva" value="" />
             </form>
         </div>
     </div>

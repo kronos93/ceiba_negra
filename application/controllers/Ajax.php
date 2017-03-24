@@ -655,21 +655,84 @@ class Ajax extends CI_Controller
             //Cuanto se ha pagado en comisiones
             $comisionado = $this->Historial_model->select("SUM(historial.comision) AS comisionado")
                                                  ->where(['id_venta' =>$historial[0]->id_venta])
+                                                 ->where(['estado' =>1])
                                                  ->get();
             $historial[0]->comisionado = $comisionado[0]->comisionado;
             echo json_encode($historial[0]);
         }
+    }
+    public function get_comision_per_lider(){
+        $response = new stdClass();
+        $lideres = $this->Venta_model->select(" users.id, 
+                                                IF(users.last_name != NULL OR users.last_name != '',
+                                                    CONCAT(users.first_name, ' ' , users.last_name),
+                                                    users.first_name) AS nombre,
+                                                SUM(ventas.comision) AS comision")                                  
+                                  ->join('users','ventas.id_lider = users.id','left')
+                                  ->where('ventas.estado = 0 OR ventas.estado = 1 OR ventas.estado = 2')
+                                  ->group_by('ventas.id_lider')
+                                  ->get();
+        foreach($lideres as $key => $lider){
+            $comisiones_pendientes = $this->Historial_model->select("
+                                                            SUM(historial.pago * (ventas.porcentaje_comision/100)) AS comisiones_pendientes
+                                                            ")
+                                                           ->join('ventas','historial.id_venta = ventas.id_venta','left')
+                                                           ->where([
+                                                               'historial.id_lider' => $lider->id,
+                                                               'historial.estado' => 1,
+                                                               'historial.comision' => 0,
+                                                           ])
+                                                           ->where('ventas.estado = 0 OR ventas.estado = 1 OR ventas.estado = 2')
+                                                           ->get();
+            $comisiones_pagadas = $this->Historial_model->select("
+                                                            SUM(historial.comision) AS comisiones_pagadas
+                                                            ")
+                                                           ->join('ventas','historial.id_venta = ventas.id_venta','left')
+                                                           ->where([
+                                                               'historial.id_lider' => $lider->id,
+                                                               'historial.estado' => 1,
+                                                               'historial.comision >' => 0,
+                                                              
+                                                           ])
+                                                           ->where('ventas.estado = 0 OR ventas.estado = 1 OR ventas.estado = 2')
+                                                           ->get();
+            $lideres[$key]->comisiones_pendientes = $comisiones_pendientes[0]->comisiones_pendientes; 
+            $lideres[$key]->comisiones_pagadas = $comisiones_pagadas[0]->comisiones_pagadas; 
+        }
+        $response->data = $lideres;
+        echo json_encode($response);
     }
     public function pagar()
     {
         header("Content-type: application/json; charset=utf-8");
         if ($this->input->post('id_historial') &&
            $this->input->post('id_ingreso')) {
+            if($this->input->post('folio')){
+                $folio_repetido = $this->Historial_model->select('  historial.concepto,
+                                                                    DATE_FORMAT(historial.fecha_pago,"%d-%m-%Y") AS fecha,
+                                                                    CONCAT(users.first_name," ",users.last_name) AS nombre_cliente')
+                                                        ->join('ventas','historial.id_venta = ventas.id_venta','left')
+                                                        ->join('users','ventas.id_cliente = users.id','left')
+                                                        ->where(['historial.folio' => $this->input->post('folio')])
+                                                        ->get(); 
+                $n_folios_repeditos = count($folio_repetido);
+                if($n_folios_repeditos){
+                    echo "Existe un folio de banco duplicado, verifique la información. 
+                    Folio duplicado: {$this->input->post('folio')}
+                    Coincidencias: {$n_folios_repeditos}
+                    Fecha :  {$folio_repetido[0]->fecha}
+                    Cliente: {$folio_repetido[0]->nombre_cliente}";
+                    exit();
+                }
+                
+            }
+
             $fecha = Carbon::createFromFormat('d-m-Y', $this->input->post('fecha_pago'));
             $set_data = [
                 'fecha_pago' => $fecha->format('Y-m-d'),
                 'pago' => $this->input->post('pago'),
                 'id_ingreso' => $this->input->post('id_ingreso'),
+                'folio' => $this->input->post('folio'),
                 'estado' => 1,
             ];
             if ($this->input->post('confirm_comision') == 'true') {
@@ -1085,7 +1148,8 @@ class Ajax extends CI_Controller
         $respuesta->huertos = [];
         $respuesta->enganche = 0;
         $respuesta->abono = 0;
-        var_dump($this->cart->contents());
+        /*var_dump($this->cart->contents());*/
+        $respuesta->is_reserva = false;
         foreach ($this->cart->contents() as $items) {
             $obj = new stdClass();
             $obj->descripcion = $items["name"];
@@ -1096,11 +1160,25 @@ class Ajax extends CI_Controller
             array_push($respuesta->huertos, $obj);
             $respuesta->enganche +=  $items["enganche"];
             $respuesta->abono +=  $items["abono"];
+            
+            if(isset($items['id_reserva'])){
+                $respuesta->is_reserva = true;
+                $respuesta->id_reserva = $items['id_reserva'];
+                $respuesta->id_lider = $items['id_lider'];
+
+                $respuesta->nombre_lider = $items['nombre_lider'];
+                $respuesta->nombre_cliente = $items['nombre_cliente'];
+                $respuesta->apellidos_cliente = $items['apellidos_cliente'];
+                $respuesta->email_cliente = $items['email_cliente'];
+                $respuesta->phone_cliente = $items['phone_cliente'];
+                $respuesta->comment = $items['comment'];
+            }
         }
         $respuesta->enganche = ($respuesta->enganche);
         $respuesta->abono = ($respuesta->abono);
         $respuesta->total = ($this->cart->total());
         $respuesta->count = $this->cart->total_items();
+       
         if ($this->ion_auth->in_group('administrador') || $this->ion_auth->in_group('miembro')) {
             $respuesta->link = ($this->cart->total_items()>0) ? '<a href="'.base_url().'venta" class="btn btn-success center-block">Vender</a>' : '';
         } elseif ($this->ion_auth->in_group('lider')) {

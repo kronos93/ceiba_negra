@@ -52,14 +52,64 @@ class Cart {
         localStorage.setItem("enganche", response.enganche);
         localStorage.setItem("abono", response.abono);
 
+        if (response.is_reserva) {
+            localStorage.setItem("id_reserva", response.id_reserva);
+            localStorage.setItem("id_lider", response.id_lider);
+            localStorage.setItem("nombre_lider", response.nombre_lider);
+            localStorage.setItem("nombre_cliente", response.nombre_cliente);
+            localStorage.setItem("apellidos_cliente", response.apellidos_cliente);
+            localStorage.setItem("email_cliente", response.email_cliente);
+            localStorage.setItem("phone_cliente", response.phone_cliente);
+            localStorage.setItem("comment", response.comment);
+            localStorage.setItem("is_reserva", true);
+        } else {
+            localStorage.removeItem("id_reserva");
+            localStorage.removeItem("id_lider");
+            localStorage.removeItem("nombre_lider");
+            localStorage.removeItem("nombre_cliente");
+            localStorage.removeItem("apellidos_cliente");
+            localStorage.removeItem("email_cliente");
+            localStorage.removeItem("phone_cliente");
+            localStorage.removeItem("comment");
+            localStorage.setItem("is_reserva", false);
+        }
 
         if ($('#frm-venta #precio').length && $('#frm-venta #enganche').length && $('#frm-venta #abono').length && $('#comision').length) {
+            //Esto esta aquí por si se cambia el carrito dinamicamente se actualizen los datos
+            //Dinamicamente,
+            /////////////////////////////////////////////////////////////////////////
             $('#frm-venta #precio').autoNumeric('set', localStorage.getItem("precio"));
             $('#frm-venta #enganche').autoNumeric('set', localStorage.getItem("enganche"));
             $('#frm-venta #abono').autoNumeric('set', localStorage.getItem("abono"));
-            ///////////////////////////////////////////////////////////////////////////
+
             var porcentaje_comision = $('#porcentaje_comision').val();
-            $('#comision').autoNumeric('set', (porcentaje_comision / 100) * $('#precio').autoNumeric('get'));
+            $('#frm-venta #comision').autoNumeric('set', (porcentaje_comision / 100) * $('#precio').autoNumeric('get'));
+            ///////////////////////////////////////////////////////////////////////////////
+            if (response.is_reserva) {
+                ///////////////////////////////////////////////////////////////////////////
+                $('#first_name').val(localStorage.getItem("nombre_cliente"));
+                $('#last_name').val(localStorage.getItem("apellidos_cliente"));
+                $('#id_lider').val(localStorage.getItem("id_lider"));
+                $('#lideres_autocomplete').val(localStorage.getItem("nombre_lider"));
+                $('#email').val(localStorage.getItem("email_cliente"));
+                $('#phone').val(localStorage.getItem("phone_cliente"));
+                if (localStorage.getItem("comment")) {
+                    $('#comments').show().html(localStorage.getItem("comment"));
+                } else {
+                    $('#comments').hide().html("");
+                }
+                $('#id_reserva').val(localStorage.getItem("id_reserva"));
+                ///////////////////////////////////////////////////////////////////////////////
+            } else {
+                $('#first_name').val("");
+                $('#last_name').val("");
+                $('#id_lider').val("");
+                $('#lideres_autocomplete').val("");
+                $('#email').val("");
+                $('#phone').val("");
+                $('#comments').hide().empty();
+                $('#id_reserva').val("");
+            }
         } else if ($('#frm-reserva #precio').length && $('#frm-reserva #enganche').length && $('#frm-reserva #abono').length) {
             $('#frm-reserva #precio').autoNumeric('set', localStorage.getItem("precio"));
             $('#frm-reserva #enganche').autoNumeric('set', localStorage.getItem("enganche"));

@@ -102,6 +102,32 @@ form_venta.steps({
         $('#frm-venta #enganche').autoNumeric('set', localStorage.getItem("enganche"));
         $('#frm-venta #abono').autoNumeric('set', localStorage.getItem("abono"));
         ///////////////////////////////////////////////////////////////////////////
+        if (localStorage.getItem("is_reserva")) {
+            ///////////////////////////////////////////////////////////////////////////
+            $('#first_name').val(localStorage.getItem("nombre_cliente"));
+            $('#last_name').val(localStorage.getItem("apellidos_cliente"));
+            $('#id_lider').val(localStorage.getItem("id_lider"));
+            $('#lideres_autocomplete').val(localStorage.getItem("nombre_lider"));
+            $('#email').val(localStorage.getItem("email_cliente"));
+            $('#phone').val(localStorage.getItem("phone_cliente"));
+            if (localStorage.getItem("comment")) {
+                $('#comments').show().html(localStorage.getItem("comment"));
+            } else {
+                $('#comments').hide().html("");
+            }
+            $('#id_reserva').val(localStorage.getItem("id_reserva"));
+            ///////////////////////////////////////////////////////////////////////////////
+        } else {
+            $('#first_name').val("");
+            $('#last_name').val("");
+            $('#id_lider').val("");
+            $('#lideres_autocomplete').val("");
+            $('#email').val("");
+            $('#phone').val("");
+            $('#comments').hide().empty();
+            $('#id_reserva').val("");
+        }
+        //////////////////////////////////////////////////////////////////////////////////////
         var porcentaje_comision = $('#porcentaje_comision').val();
         $('#comision').autoNumeric('set', (porcentaje_comision / 100) * $('#precio').autoNumeric('get'));
         ///////////////////////////////////////////////////////////////////////////

@@ -568,6 +568,8 @@ class Venta extends CI_Controller
                 $this->HuertosVentas_model->insert_batch($huertos_venta);
                 $this->Huerto_model->update_batch($huertos, 'id_huerto');
                 $this->Historial_model->insert_batch($db_historial);
+                $this->Reserva_model->where(['id_reserva' => $this->input->post('id_reserva')])
+                                    ->delete();
                 $this->cart->destroy();
             }
         }

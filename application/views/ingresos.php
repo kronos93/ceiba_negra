@@ -26,7 +26,7 @@
 					<thead>
 						<tr>
                             <!--<th>ID</th>	-->								
-							<th class="all">Nombre</th>	
+							<th class="all">Nombre </th>	
                             <th>Fecha de ingreso / pago</th>
                             <th>Ingreso</th>
                             <th>Comision</th>
@@ -42,7 +42,7 @@
                         ?>
                         <tr>
                             <!--<td><?= $ingreso->id_historial ?> </td>  -->                     
-                            <td><?= $ingreso->nombre ?> </td>
+                            <td><?= $ingreso->nombre ?> <a data-toggle="popover" title="Cliente:" data-placement="top" data-content="<p><?= $ingreso->nombre_cliente ?></p>"><span class="fa fa-info-circle fa-lg fa-fw"></span></a></td>
                             <td><?= $ingreso->fecha_pago ?> </td>
                             <td>$<?= number_format($ingreso->pago,2) ?> </td>                            
                             <td>$<?= number_format($ingreso->comision,2) ?> </td>

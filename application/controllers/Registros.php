@@ -74,13 +74,16 @@ class Registros extends CI_Controller
                                                           ->where("fecha BETWEEN '{$data['init_date']->format('Y-m-d')}' AND '{$data['end_date']->format('Y-m-d')}'")
                                                           ->get();
             } else {
-                $data['ingresos'] = $this->Historial_model->select('opciones_ingreso.nombre,
+                $data['ingresos'] = $this->Historial_model->select('
+                                                                    CONCAT(users.first_name, " ", users.last_name) as nombre_cliente,
+                                                                    opciones_ingreso.nombre,
                                                                     historial.id_historial, 
                                                                     historial.pago, 
                                                                     historial.penalizacion,
                                                                     historial.comision, 
                                                                     DATE_FORMAT(historial.fecha_pago,"%d-%m-%Y") AS fecha_pago')
                                                           ->join('ventas', 'historial.id_venta = ventas.id_venta', 'left')
+                                                          ->join('users','ventas.id_cliente = users.id','left')
                                                           ->join('opciones_ingreso', 'historial.id_ingreso = opciones_ingreso.id_opcion_ingreso', 'left')
                                                           ->where(['historial.id_ingreso' => $id,"ventas.estado !=" => 3])
                                                           ->get();

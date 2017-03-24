@@ -41,10 +41,13 @@ if ($('#historial-ingresos-table').length) {
         require('./tables/historial_ingresos');
         var components = require('./components/components.js');
         components.datepicker();
-
     });
 }
-
+if ($('#comisiones-per-lider-table').length) {
+    require.ensure([], function(require) {
+        require('./tables/comisiones_per_lider.js');
+    });
+}
 if (module.hot) {
     module.hot.accept();
 }
