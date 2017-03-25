@@ -3,8 +3,8 @@ module.exports = {
     base_url: function() {
         return (DEVELOPMENT) ?
             'http://' + window.location.hostname + '/ceiba_negra/' :
-            'http://' + window.location.hostname + '/ceiba_negra/';
-        /* 'http://dev.huertoslaceiba.com/';*/
+            /*'http://' + window.location.hostname + '/ceiba_negra/';*/
+            'http://dev.huertoslaceiba.com/';
         /*    'http://huertoslaceiba.com/';*/
     },
     multiplicar: function() {
