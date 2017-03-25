@@ -1,33 +1,33 @@
 module.exports = {
     autocompleteClientes: function(base_url) {
+        var base = {
+            "first_name": "Default",
+            "last_name": "Default Default",
+            "email": "default@huertoslaceiba.com",
+            "phone": "99821234567",
+            "calle": "Default",
+            "no_ext": "100",
+            "no_int": "100",
+            "colonia": "Default",
+            "municipio": "Default",
+            "estado": "Default",
+            "ciudad": "Default",
+            "cp": "77777",
+            "lugar_nacimiento": "Default",
+            "fecha_nacimiento": "01-01-1999",
+
+        };
+        var extra = {
+            "ciudad_expedicion": "Playa del Carmen",
+            "testigo_1": "XXXX XXXX XXXX",
+            "testigo_2": "XXXX XXXX XXXX",
+        };
         $('#clientes_autocomplete').autocomplete({
             serviceUrl: base_url() + 'ajax/autocomplete_clientes',
             noCache: true,
             autoSelectFirst: true,
             onSelect: function(suggestion) {
                 console.log(suggestion);
-                var base = {
-                    "first_name": "Default",
-                    "last_name": "Default Default",
-                    "email": "default@huertoslaceiba.com",
-                    "phone": "99821234567",
-                    "calle": "Default",
-                    "no_ext": "100",
-                    "no_int": "100",
-                    "colonia": "Default",
-                    "municipio": "Default",
-                    "estado": "Default",
-                    "ciudad": "Default",
-                    "cp": "77777",
-                    "lugar_nacimiento": "Default",
-                    "fecha_nacimiento": "01-01-1999",
-
-                }
-                var extra = {
-                    "ciudad_expedicion": "Playa del Carmen",
-                    "testigo_1": "XXXX XXXX XXXX",
-                    "testigo_2": "XXXX XXXX XXXX",
-                };
                 for (var data in suggestion) {
                     if (suggestion[data] == "" || suggestion[data] == null || suggestion[data] == 0) {
                         suggestion[data] = base[data];
@@ -44,28 +44,6 @@ module.exports = {
             },
             onInvalidateSelection: function() {
                 console.log("Ha ocurrido un error en la selección.");
-                var base = {
-                    "first_name": "Default",
-                    "last_name": "Default Default",
-                    "email": "default@huertoslaceiba.com",
-                    "phone": "99821234567",
-                    "calle": "Default",
-                    "no_ext": "100",
-                    "no_int": "100",
-                    "colonia": "Default",
-                    "municipio": "Default",
-                    "estado": "Default",
-                    "ciudad": "Default",
-                    "cp": "77777s",
-                    "lugar_nacimiento": "Default",
-                    "fecha_nacimiento": "01-01-1999",
-
-                }
-                var extra = {
-                    "ciudad_expedicion": "Playa del Carmen",
-                    "testigo_1": "XXXX XXXX XXXX",
-                    "testigo_2": "XXXX XXXX XXXX",
-                };
                 for (var data in base) {
                     $('#' + data).val("");
                 }
@@ -74,6 +52,18 @@ module.exports = {
                 }
                 $('#id_cliente').val("");
             },
+        });
+        $('#clientes_autocomplete').on('keyup', function() {
+            if (this.value == "" || this.value == null || this.value == undefined) {
+                console.log("Ha ocurrido un error en la selección.");
+                for (var data in base) {
+                    $('#' + data).val("");
+                }
+                for (var data in extra) {
+                    $('#' + data).val("");
+                }
+                $('#id_cliente').val("");
+            }
         });
     },
     autocompleteLideres: function(base_url) {
@@ -93,6 +83,26 @@ module.exports = {
         });
     },
     autocompleteSaldosClientes: function(base_url) {
+        var base = {
+            "first_name": "Default",
+            "last_name": "Default Default",
+            "email": "default@huertoslaceiba.com",
+            "phone": "99821234567",
+            "calle": "Default",
+            "no_ext": "100",
+            "no_int": "100",
+            "colonia": "Default",
+            "municipio": "Default",
+            "estado": "Default",
+            "ciudad": "Default",
+            "cp": "77777",
+            "lugar_nacimiento": "Default",
+            "fecha_nacimiento": "01-01-1999",
+            "ciudad_expedicion": "Playa del Carmen",
+            "testigo_1": "XXXX XXXX XXXX",
+            "testigo_2": "XXXX XXXX XXXX",
+
+        }
         $('#saldos_clientes_autocomplete').autocomplete({
             serviceUrl: base_url() + 'ajax/autocomplete_saldos_clientes',
             noCache: true,
@@ -100,25 +110,6 @@ module.exports = {
             onSelect: function(suggestion) {
                 $('#saldos_clientes_autocomplete').val(suggestion.data);
                 console.log(suggestion);
-                var base = {
-                    "first_name": "Default",
-                    "last_name": "Default Default",
-                    "email": "default@huertoslaceiba.com",
-                    "phone": "99821234567",
-                    "calle": "Default",
-                    "no_ext": "100",
-                    "no_int": "100",
-                    "colonia": "Default",
-                    "municipio": "Default",
-                    "estado": "Default",
-                    "ciudad": "Default",
-                    "cp": "77777",
-                    "lugar_nacimiento": "Default",
-                    "fecha_nacimiento": "01-01-1999",
-                    "ciudad_expedicion": "Playa del Carmen",
-                    "testigo_1": "XXXX XXXX XXXX",
-                    "testigo_2": "XXXX XXXX XXXX",
-                }
                 for (var data in suggestion) {
                     if (suggestion[data] == "" || suggestion[data] == null || suggestion[data] == 0) {
                         suggestion[data] = base[data];
@@ -129,6 +120,7 @@ module.exports = {
                     $('#enganche').autoNumeric('set', suggestion.pagado);
                 }
                 $('#id_cliente').val(suggestion.id_cliente);
+                $('#id_venta').val(suggestion.id_venta);
             },
             onSearchError: function(query, jqXHR, textStatus, errorThrown) {
                 console.log("Ha ocurrido un error xhr.");
@@ -136,6 +128,18 @@ module.exports = {
             onInvalidateSelection: function() {
                 console.log("Ha ocurrido un error en la selección.");
             },
+            onSearchStart: function(query) {
+                console.log(query);
+            }
+        });
+        $('#saldos_clientes_autocomplete').on('keyup', function() {
+            if (this.value == "" || this.value == null || this.value == undefined) {
+                for (var data in base) {
+                    $('#' + data).val("").trigger('input');
+                }
+                $('#id_cliente').val("");
+                $('#id_venta').val("");
+            }
         });
     },
     datepicker: function(moment) {

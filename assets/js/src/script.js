@@ -9,8 +9,12 @@ import './tables/huertos';
 import './tables/opciones_ingreso';
 
 import './tables/reservas';
+if ($('#historial-ventas-table').length) {
+    require.ensure([], function(require) {
+        require('./tables/historial_ventas');
+    });
+}
 
-import './tables/historial_ventas';
 
 //Reacomodar
 import 'jquery-mask-plugin/dist/jquery.mask';

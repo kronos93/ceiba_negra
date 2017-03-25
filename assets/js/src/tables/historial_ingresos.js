@@ -64,3 +64,20 @@ $('#historial-ingresos-table').DataTable({
         [1, "asc"]
     ],
 });
+
+$('a[data-toggle=popover]').popover({
+    'html': true,
+    trigger: 'manual'
+});
+$('a[data-toggle=popover]').on('click', function(e) {
+
+    $(this).popover('toggle');
+    $('.popover').on('click', function(e) {
+        e.stopPropagation();
+    });
+    e.stopPropagation();
+});
+$('a[data-toggle=popover]').on('shown.bs.popover', function(e) {
+    console.log("show" + this);
+    $('a[data-toggle=popover]').not(this).popover('hide');
+});

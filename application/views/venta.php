@@ -44,8 +44,8 @@
                             <div class="col-xs-12 col-sm-offset-6 col-sm-6">
                                 <div class="wrapper">
                                     <ul class="tabs clearfix" data-tabgroup="first-tab-group">
-                                        <li><a href="#tab1" class="active">Buscar saldos de clientes</a></li>
-                                        <li><a href="#tab2">Buscar datos de clientes</a></li>
+                                        <li><a href="#tab1" class="active">Buscar datos de clientes</a></li>
+                                        <li><a href="#tab2">Buscar saldos de clientes</a></li>
                                     </ul>
                                     <section id="first-tab-group" class="tabgroup">
                                         <div id="tab1" class="tabgroup__item">
@@ -53,7 +53,7 @@
                                                 <!-- <label for="clientes_autocomplete">Buscar clientes</label> -->
                                                 <!-- <div class="clearfix"></div> -->
                                                 <div class="input-group">
-                                                    <input id="saldos_clientes_autocomplete" type="text" class="form-control" name="saldos" />
+                                                    <input id="clientes_autocomplete" type="text" class="form-control" name="cliente" />
                                                     <div class="input-group-addon"><span class="fa fa-search"></span></div>
                                                 </div>
                                             </div>
@@ -63,10 +63,10 @@
                                                 <!-- <label for="clientes_autocomplete">Buscar clientes</label> -->
                                                 <!-- <div class="clearfix"></div> -->
                                                 <div class="input-group">
-                                                    <input id="clientes_autocomplete" type="text" class="form-control" name="cliente" />
+                                                    <input id="saldos_clientes_autocomplete" type="text" class="form-control" name="saldos" />
                                                     <div class="input-group-addon"><span class="fa fa-search"></span></div>
                                                 </div>
-                                            </div>
+                                            </div>                                            
                                         </div>
                                     </section>
                                 </div>
@@ -284,6 +284,7 @@
                 </div>
                 <input type="hidden" id="id_lider" name="id_lider" value="" />
                 <input type="hidden" id="id_cliente" name="id_cliente" value="" />
+                <input type="hidden" id="id_venta" name="id_venta" value="" />
                 <input type="hidden" id="id_reserva" name="id_reserva" value="" />
             </form>
         </div>

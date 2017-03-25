@@ -64,6 +64,7 @@ class Venta extends CI_Controller
                                 ->join('users as cliente', 'ventas.id_cliente = cliente.id', 'left')
                                 ->join('users as lider', 'ventas.id_lider = lider.id', 'left')
                                 ->join('users as user', 'ventas.id_usuario = user.id', 'left')
+                                ->where(['ventas.estado !=' => 4])
                                 ->group_by('ventas.id_venta')
                                 ->get();
         foreach ($data['ventas'] as $key => $venta) {
@@ -445,6 +446,40 @@ class Venta extends CI_Controller
                     }
                     array_push($db_historial, $db_pago);
                 }
+                if($venta['version'] == 2 && $this->input->post('id_venta')){
+                    //Cuando se esté migrando un contrato
+                    $venta = $this->Venta_model->select("
+                                          SUM(IF(historial.estado = 1,historial.pago,0)) AS pagado, 
+                                          SUM(IF(historial.estado = 1,historial.comision,0)) AS comisionado,
+                                          ")
+                                    ->join('historial', 'ventas.id_venta = historial.id_venta', 'left')
+                                    ->where(['ventas.id_venta' => $this->input->post('id_venta')])
+                                    ->get();
+                    $ajuste_db_historial = [];
+                    $key_0;
+                    foreach($db_historial as $key => $db_h){
+                        if($key == 0){
+                            $db_historial[$key]->comision = $venta[0]->comisionado; 
+                            array_push($ajuste_db_historial,$db_h);
+                            $key_0 = clone $db_h;
+                            $key_0->concepto = "AJUSTE DE MIGRACIÓN";
+                            $key_0->estado = 2;
+                            $key_0->pago = $venta[0]->pagado * -1;
+                            $key_0->abono = $venta[0]->pagado * -1;
+                            $key_0->comision =  $venta[0]->comisionado * -1;
+                            array_push($ajuste_db_historial,$key_0);
+                        }else{
+                            array_push($ajuste_db_historial,$db_h);
+                        }
+                    }
+                    $db_historial = [];
+                    $db_historial = $ajuste_db_historial;
+                    $this->Venta_model->where(['ventas.id_venta' => $this->input->post('id_venta')])
+                                      ->update(['ventas.estado' => 4]);
+                   /* var_dump($db_historial);
+                    die();*/
+                }
+                
                 $huertos_venta = [];
                 $huertos = [];
                 foreach ($this->cart->contents() as $items) {

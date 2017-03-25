@@ -1,4 +1,31 @@
 import { base_url } from '../utils/util';
+/* Custom filtering function which will search data in column four between two values */
+$.fn.dataTable.ext.search.push(
+    function(settings, data, dataIndex) {
+
+        var filter = $('.estado-venta:checked').val();
+        var estado = data[1];
+        if (filter == undefined || filter == "" || filter == null || filter == "all") {
+            if (estado == 0 || estado == 1 || estado == 2 || estado == 3) {
+                return true;
+            }
+        } else {
+            if (estado == filter) {
+                return true;
+            }
+        }
+        return false;
+    }
+);
+
+$(document).ready(function() {
+    var table = $('#example').DataTable();
+
+    // Event listener to the two range filtering inputs to redraw on input
+    $('#min, #max').keyup(function() {
+        table.draw();
+    });
+});
 var historial_ventas_table = $('#historial-ventas-table').DataTable({
     responsive: {
         /*details: {
@@ -7,6 +34,7 @@ var historial_ventas_table = $('#historial-ventas-table').DataTable({
     },
     "columns": [ //Atributos para la tabla
         { "data": "id_venta" },
+        { "data": "estado" },
         { "data": "nombre_cliente" },
         { "data": "descripcion" },
         { "data": "retraso" },
@@ -31,7 +59,11 @@ var historial_ventas_table = $('#historial-ventas-table').DataTable({
         { "data": "nombre_user" }, {
             "data": "",
             "render": function(data, type, full, meta) {
-                if (full.estado != null && full.estado != undefined && full.estado != "") {
+                if (full.estado != null && full.estado != undefined && full.estado != "" &&
+                    full.version != null && full.version != undefined && full.version != "") {
+                    console.log("Render data");
+                    console.log(full.estado);
+                    console.log(full.version);
                     var contrato = '<a href="' + base_url() + 'reportes/contrato/' + full.id_venta + '" class="btn btn-default" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> contrato</a>';
                     var pagare_recibo = '<a href="' + base_url() + 'reportes/' + ((full.version == 2) ? 'pagares' : 'recibos') + '/' + full.id_venta + '" class="btn btn-primary" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> ' + ((full.version == 2) ? 'pagares' : 'recibos') + '</a>';
                     var pagos = '<a href="' + base_url() + 'registros/pagos/' + full.id_venta + '" target="_blank" class="btn btn-info"><i class="fa fa-fw fa-eye"></i>pagos</a>';
@@ -55,8 +87,10 @@ var historial_ventas_table = $('#historial-ventas-table').DataTable({
                     }
                     return contrato + ' ' + pagare_recibo + ' ' + pagos + ' ' + cancelar + ' ' + restablecer + ' ' + eliminar + ' ' + recuperar;
                 } else {
+                    console.log("Return data");
                     return data;
                 }
+
             }
         },
     ],
@@ -73,7 +107,7 @@ var historial_ventas_table = $('#historial-ventas-table').DataTable({
         }
     ],
     "order": [
-        [1, "asc"]
+        [2, "asc"]
     ],
 });
 var ventaDtRow;
@@ -247,4 +281,8 @@ $('#email-notificator').on('click', function(e) {
         .fail(function(response) {
             $(btn).attr("disabled", false).next().css('visibility', 'hidden');
         });
+});
+
+$('.estado-venta').on('change', function() {
+    historial_ventas_table.draw();
 });

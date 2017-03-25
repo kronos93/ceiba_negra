@@ -63,6 +63,7 @@ class Reportes extends CI_Controller
                                             ->join('ventas', 'historial.id_venta = ventas.id_venta', 'left')
                                             ->join('users', 'ventas.id_cliente = users.id', 'left')
                                             ->where($condicion)
+                                            ->where(['historial.estado !=' => 2])
                                             ->get();
         if (count($historials)) {
             $condicion = ['huertos_ventas.id_venta' => $id];
@@ -243,7 +244,7 @@ class Reportes extends CI_Controller
                             </div>
                         </div>";
                 if ($page_break == 4) {
-                    $recibos .= "<div style='page-break-before:always;'></div>";
+                    /*$recibos .= "<div style='page-break-before:always;'></div>";*/
                     $page_break = 0;
                 }
             }

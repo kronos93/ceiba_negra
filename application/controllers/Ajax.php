@@ -667,13 +667,14 @@ class Ajax extends CI_Controller
                                                 IF(users.last_name != NULL OR users.last_name != '',
                                                     CONCAT(users.first_name, ' ' , users.last_name),
                                                     users.first_name) AS nombre,
-                                                SUM(ventas.comision) AS comision")                                  
+                                                SUM(IF(ventas.estado = 0 || ventas.estado = 1, ventas.comision , 0)) AS comision")                                  
                                   ->join('users','ventas.id_lider = users.id','left')
-                                  ->where('ventas.estado = 0 OR ventas.estado = 1 OR ventas.estado = 2')
+                                  /*->where('ventas.estado = 0 OR ventas.estado = 1 OR ventas.estado = 2')*/
                                   ->group_by('ventas.id_lider')
                                   ->get();
+        
         foreach($lideres as $key => $lider){
-            $comisiones_pendientes = $this->Historial_model->select("
+            /*$comisiones_pendientes = $this->Historial_model->select("
                                                             SUM(historial.pago * (ventas.porcentaje_comision/100)) AS comisiones_pendientes
                                                             ")
                                                            ->join('ventas','historial.id_venta = ventas.id_venta','left')
@@ -690,14 +691,13 @@ class Ajax extends CI_Controller
                                                            ->join('ventas','historial.id_venta = ventas.id_venta','left')
                                                            ->where([
                                                                'historial.id_lider' => $lider->id,
-                                                               'historial.estado' => 1,
                                                                'historial.comision >' => 0,
                                                               
                                                            ])
                                                            ->where('ventas.estado = 0 OR ventas.estado = 1 OR ventas.estado = 2')
-                                                           ->get();
-            $lideres[$key]->comisiones_pendientes = $comisiones_pendientes[0]->comisiones_pendientes; 
-            $lideres[$key]->comisiones_pagadas = $comisiones_pagadas[0]->comisiones_pagadas; 
+                                                           ->get();*/
+            $lideres[$key]->comisiones_pendientes = 0; //$comisiones_pendientes[0]->comisiones_pendientes; 
+            $lideres[$key]->comisiones_pagadas = 0;//$comisiones_pagadas[0]->comisiones_pagadas; 
         }
         $response->data = $lideres;
         echo json_encode($response);
@@ -1057,7 +1057,7 @@ class Ajax extends CI_Controller
                         ventas.testigo_1 AS testigo_1,
                         ventas.testigo_2 AS testigo_2,
                         ventas.ciudad_expedicion,
-                        SUM(historial.pago) - SUM(historial.comision) + SUM(historial.penalizacion) AS pagado,
+                        SUM( IF( historial.estado = 1,(historial.pago + historial.penalizacion), 0 ) ) AS pagado,
                         ventas.id_venta";
             //$clientes = $this->ion_auth->select("{$select},{$full_name} AS data, {$full_name} AS value")->where(["{$full_name} LIKE" => "%{$like}%",'active' => 1])->users('cliente')->result();
             $clientes = $this->Venta_model->select($select)
@@ -1334,6 +1334,15 @@ class Ajax extends CI_Controller
                                                  ->get();
                 $venta[$key]->descripcion = $descripcion[0]->descripcion;
                 $venta[$key]->detalles = "Pagado en tiempo: {$v->en_tiempo} Pagado con retraso: {$v->retrasados} delantado: {$v->adelantados} Realizados: {$v->realizados}";
+                if ($venta[$key]->estado == 0) {
+                    $venta[$key]->detalles .= '<span class="label label-warning">En proceso de pago</span>';
+                } elseif ($venta[$key]->estado == 1) {
+                    $venta[$key]->detalles .= '<span class="label label-success">Saldado</span>';
+                } elseif ($venta[$key]->estado == 2) {
+                    $venta[$key]->detalles .= '<span class="label label-default">Cancelado</span>';
+                } elseif ($venta[$key]->estado == 3) {
+                    $venta[$key]->detalles .= '<span class="label label-danger">Eliminado</span>';
+                } 
             }
             echo json_encode($venta[0]);
         }
@@ -1388,7 +1397,16 @@ class Ajax extends CI_Controller
                                                  ->where(['ventas.id_venta' => $v->id_venta])
                                                  ->get();
                 $venta[$key]->descripcion = $descripcion[0]->descripcion;
-                $venta[$key]->detalles = "Pagado en tiempo: {$v->en_tiempo} Pagado con retraso: {$v->retrasados} delantado: {$v->adelantados} Realizados: {$v->realizados}";
+                $venta[$key]->detalles = "Pagado en tiempo: {$v->en_tiempo} Pagado con retraso: {$v->retrasados} delantado: {$v->adelantados} Realizados: {$v->realizados} ";
+                if ($venta[$key]->estado == 0) {
+                    $venta[$key]->detalles .= '<span class="label label-warning">En proceso de pago</span>';
+                } elseif ($venta[$key]->estado == 1) {
+                    $venta[$key]->detalles .= '<span class="label label-success">Saldado</span>';
+                } elseif ($venta[$key]->estado == 2) {
+                    $venta[$key]->detalles .= '<span class="label label-default">Cancelado</span>';
+                } elseif ($venta[$key]->estado == 3) {
+                    $venta[$key]->detalles .= '<span class="label label-danger">Eliminado</span>';
+                } 
             }
             if ($this->Trans_model->status() === false) {
                 $this->Trans_model->rollback();
@@ -1467,7 +1485,16 @@ class Ajax extends CI_Controller
                                                  ->where(['ventas.id_venta' => $v->id_venta])
                                                  ->get();
                 $venta[$key]->descripcion = $descripcion[0]->descripcion;
-                $venta[$key]->detalles = "Pagado en tiempo: {$v->en_tiempo} Pagado con retraso: {$v->retrasados} delantado: {$v->adelantados} Realizados: {$v->realizados}";
+                $venta[$key]->detalles = "Pagado en tiempo: {$v->en_tiempo} Pagado con retraso: {$v->retrasados} delantado: {$v->adelantados} Realizados: {$v->realizados} ";
+                if ($venta[$key]->estado == 0) {
+                    $venta[$key]->detalles .= '<span class="label label-warning">En proceso de pago</span>';
+                } elseif ($venta[$key]->estado == 1) {
+                    $venta[$key]->detalles .= '<span class="label label-success">Saldado</span>';
+                } elseif ($venta[$key]->estado == 2) {
+                    $venta[$key]->detalles .= '<span class="label label-default">Cancelado</span>';
+                } elseif ($venta[$key]->estado == 3) {
+                    $venta[$key]->detalles .= '<span class="label label-danger">Eliminado</span>';
+                } 
             }
             if ($this->Trans_model->status() === false) {
                 $this->Trans_model->rollback();
@@ -1517,7 +1544,16 @@ class Ajax extends CI_Controller
                                                  ->where(['ventas.id_venta' => $v->id_venta])
                                                  ->get();
                 $venta[$key]->descripcion = $descripcion[0]->descripcion;
-                $venta[$key]->detalles = "Pagado en tiempo: {$v->en_tiempo} Pagado con retraso: {$v->retrasados} delantado: {$v->adelantados} Realizados: {$v->realizados}";
+                $venta[$key]->detalles = "Pagado en tiempo: {$v->en_tiempo} Pagado con retraso: {$v->retrasados} delantado: {$v->adelantados} Realizados: {$v->realizados} ";
+                if ($venta[$key]->estado == 0) {
+                    $venta[$key]->detalles .= '<span class="label label-warning">En proceso de pago</span>';
+                } elseif ($venta[$key]->estado == 1) {
+                    $venta[$key]->detalles .= '<span class="label label-success">Saldado</span>';
+                } elseif ($venta[$key]->estado == 2) {
+                    $venta[$key]->detalles .= '<span class="label label-default">Cancelado</span>';
+                } elseif ($venta[$key]->estado == 3) {
+                    $venta[$key]->detalles .= '<span class="label label-danger">Eliminado</span>';
+                } 
             }
             echo json_encode($venta[0]);
         }

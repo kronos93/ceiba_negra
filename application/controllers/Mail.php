@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 use Carbon\Carbon;
+use PHPMailer\PHPMailerAutoload;
 
 class Mail extends CI_Controller
 {
@@ -8,12 +9,14 @@ class Mail extends CI_Controller
     {
         parent::__construct();
         $this->load->model('Notification_model');
+        $this->load->model('Venta_model');
     }
     public function index()
     {
         $date = Carbon::now(); //Hoy
-        $limit_per_hour = 5;   //Limite por hora
-        $limit_per_mounth = 10;//Limite por mes
+        $limit_per_minute = 10;   //Limite por minuto
+        $limit_per_hour = 100;   //Limite por hora
+        $limit_per_mounth = 10000;//Limite por mes
         $last_insert = $this->Notification_model->limit(1)
                                                 ->order_by('id_notification DESC')
                                                 ->get();
@@ -22,29 +25,30 @@ class Mail extends CI_Controller
             //Fecha de la última inserción
             $date_last_insert = Carbon::createFromFormat('Y-m-d H:i:s', "{$last_insert[0]->date} {$last_insert[0]->time}");
             //Número de los ultimos enviados por hora
-            $last_enviados_por_hora = $this->Notification_model->where("#HOUR(time) = {$date_last_insert->format('H')} && 
-                                                                        MINUTE(time) = {$date_last_insert->format('i')} && 
+            $last_enviados_por_minuto = $this->Notification_model->where("MINUTE(time) = {$date_last_insert->format('i')} && 
+                                                                          YEAR(date) = {$date_last_insert->format('Y')} && 
+                                                                          MONTH(date) = {$date_last_insert->format('m')}
+                                                                          ")
+                                                                        ->get();
+            $last_enviados_por_hora = $this->Notification_model->where("HOUR(time) = {$date_last_insert->format('H')} &&                                                                         
                                                                         YEAR(date) = {$date_last_insert->format('Y')} && 
                                                                         MONTH(date) = {$date_last_insert->format('m')}
                                                                         ")
                                                                         ->get();
-            $last_enviados_por_mes = $this->Notification_model->where("#HOUR(time) = {$date_last_insert->format('H')} && 
-                                                                       #MINUTE(time) = {$date_last_insert->format('i')} && 
-                                                                        YEAR(date) = {$date_last_insert->format('Y')} && 
+            $last_enviados_por_mes = $this->Notification_model->where(" YEAR(date) = {$date_last_insert->format('Y')} && 
                                                                         MONTH(date) = {$date_last_insert->format('m')}
                                                                         ")
                                                                         ->get();
            /* var_dump((int) $date->format('m') );
             var_dump((int) $date_last_insert->format('m') );
             var_dump(((int) $date->format('m') > (int) $date_last_insert->format('m')));*/
-            if(count($last_enviados_por_mes) <  $limit_per_mounth || ((int) $date->format('m') > (int) $date_last_insert->format('m'))){
+            if (count($last_enviados_por_mes) <  $limit_per_mounth || ((int) $date->format('m') > (int) $date_last_insert->format('m'))) {
                 //Este mes te sobran correos
                 echo "<p>Este mes puedes enviar correos</p>";
-                if (count($last_enviados_por_hora) == $limit_per_hour && $date->diffInMinutes($date_last_insert) < 1) {
-                    echo "<p>Ya no puedes enviar :(, hasta {$date_last_insert->addMinute()->format('H:i:s')}</p>";
+                if (count($last_enviados_por_hora) == $limit_per_hour && $date->diffInHours($date_last_insert) < 1) {
+                    echo "<p>Ya no puedes enviar :(, hasta {$date_last_insert->addHour()->format('H:i:s')}</p>";
                 } else {
-                    $enviados_por_hora = $this->Notification_model->where("#HOUR(time) = {$date->format('H')} && 
-                                                                            MINUTE(time) = {$date->format('i')} && 
+                    /*$enviados_por_hora = $this->Notification_model->where(" HOUR(time) = {$date->format('H')} &&
                                                                             YEAR(date) = {$date->format('Y')} && 
                                                                             MONTH(date) = {$date->format('m')}
                                                                             ")
@@ -53,27 +57,90 @@ class Mail extends CI_Controller
                         //No podrá enviar hasta futuro
                         echo "<p>No puedes enviar hasta el siguiente minuto</p>";
                     } else {
-                        $this->Notification_model->insert(
-                                                            [
-                                                                "id_notification" => null,
-                                                                "date" => $date->format('Y-m-d'),
-                                                                "time" => $date->format('H:i:s')
-                                                            ]
-                                                        );
+                        
+                    }*/
+                    if (count($last_enviados_por_minuto) == $limit_per_minute && $date->diffInHours($date_last_insert) < 1) {
+                        echo "<p>Ya no puedes enviar :(, hasta {$date_last_insert->addMinutes(10)->format('H:i:s')}</p>";
+                    } else {
                     }
                 }
-            }else{
+            } else {
                 echo "<p>Agotaste tu cuota mensual, espera hasta {$date->endOfMonth()->addDays(1)->format('m-Y')}  para seguir enviando correos</p>";
             }
         //Sino se ha notificado
         } else {
-            $this->Notification_model->insert(
-                [
-                    "id_notification" => null,
-                    "date" => $date->format('Y-m-d'),
-                    "time" => $date->format('H:i:s')
-                ]
-            );
+            //Puede envir mensajes
+            $limit = 10;
+            $valid_send = true;
+            $msg = "";
+        }
+        $venta = new $this->Venta_model();
+        $ventas = $venta->select("SUM(IF(historial.estado = 0 && DATE(historial.fecha) <= NOW(),1,0)) AS retraso,
+                                          CONCAT(cliente.first_name,' ',cliente.last_name) AS nombre_cliente,
+                                          cliente.email
+                                          ")
+                                ->join('historial', 'ventas.id_venta = historial.id_venta', 'left')
+                                ->join('users as cliente', 'ventas.id_cliente = cliente.id', 'left')
+                                ->where("ventas.estado = 0 OR ventas.estado = 1")
+                                ->group_by('ventas.id_venta')
+                                ->get();
+                               
+        for ($i = 0; $i < $limit && $i < count($ventas); $i++) {
+            if ($ventas[$i]->retraso > 0) {
+                /*echo ;
+                echo ;*/
+                $mail = new PHPMailer;
+                //Tell PHPMailer to use SMTP
+                $mail->isSMTP();
+                //Enable SMTP debugging
+                // 0 = off (for production use)
+                // 1 = client messages
+                // 2 = client and server messages
+                $mail->SMTPDebug = 0;
+                //Ask for HTML-friendly debug output
+                $mail->Debugoutput = 'html';
+                //Set the hostname of the mail server
+                //$mail->Host = 'smtp.gmail.com';
+                $mail->Host = 'mail.huertoslaceiba.com';
+                //$mail->Port = 465;
+                $mail->Port = 25;
+                //$mail->SMTPSecure = 'ssl';
+                //Whether to use SMTP authentication
+                $mail->SMTPAuth = true;
+                //Username to use for SMTP authentication - use full email address for gmail
+                $mail->Username = "admin@huertoslaceiba.com";
+                //Password to use for SMTP authentication
+                $mail->Password = "Admin1r2d2";
+                //Set who the message is to be sent from
+                $mail->setFrom('admin@huertoslaceiba.com', 'Huertos la ceiba');
+                //Set an alternative reply-to address
+                //$mail->addReplyTo('replyto@example.com', 'First Last');
+                //Set who the message is to be sent to
+                $mail->addAddress($ventas[$i]->email, $ventas[$i]->nombre_cliente);
+                //Set the subject line
+                $mail->Subject = 'PHPMailer GMail SMTP test';
+                //Read an HTML message body from an external file, convert referenced images to embedded,
+                //convert HTML into a basic plain-text alternative body
+                $mail->msgHTML("<h1>Aviso de retraso en pagos</h1>");
+                //Replace the plain text body with one created manually
+                $mail->AltBody = 'Estimado cliente, le recordamos que usted tiene un retrado de: '.$ventas[$i]->retraso.' pagos para sus huertos, en caso de incumplir 3 meses su contrato se dará como cancelado. Favor de saldar su cuenta lo antes posible para que su inversión este asegurada. Buen día. Atte. la dministración de Huertos la ceiba.com';
+                //Attach an image file
+                //$mail->addAttachment('images/phpmailer_mini.png');
+                //send the message, check for errors
+                if (!$mail->send()) {
+                    echo "Mailer Error: " . $mail->ErrorInfo;
+                } else {
+                    /*echo "Message sent!";*/
+                    $this->Notification_model->insert(
+                                                        [
+                                                            "id_notification" => null,
+                                                            "date" => $date->format('Y-m-d'),
+                                                            "time" => $date->format('H:i:s')
+                                                        ]
+                                                    );
+                }
+                
+            }
         }
     }
 }

@@ -38,6 +38,8 @@
                         <?php 
                         $total = 0;
                         $pagos = 0;
+                        $total_comision = 0;
+                        $total_penalizacion = 0;
                         foreach($ingresos as $ingreso){ 
                         ?>
                         <tr>
@@ -52,7 +54,8 @@
                         <?php 
                             $pagos += $ingreso->pago;
                             $total += $ingreso->pago + $ingreso->penalizacion - $ingreso->comision;
-                            
+                            $total_comision += $ingreso->comision;
+                            $total_penalizacion += $ingreso->penalizacion;
                         }
                         ?>
                     </tbody>
@@ -61,8 +64,8 @@
                             <td></td>
                             <td></td>
                             <td>$<?= number_format($pagos,2);?></td>
-                            <td></td>
-                            <td></td>
+                            <td>$<?= number_format($total_comision,2);?></td>
+                            <td>$<?= number_format($total_penalizacion,2);?></td>
                             <td>$<?= number_format($total,2);?></td>
                         </tr>
                     </tfoot>
