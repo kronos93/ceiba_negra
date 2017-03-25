@@ -11,7 +11,7 @@ class Mail extends CI_Controller
         $this->load->model('Notification_model');
         $this->load->model('Venta_model');
     }
-    public function index()
+    /*public function index()
     {
         $date = Carbon::now(); //Hoy
         $limit_per_minute = 10;   //Limite por minuto
@@ -41,7 +41,7 @@ class Mail extends CI_Controller
                                                                         ->get();
            /* var_dump((int) $date->format('m') );
             var_dump((int) $date_last_insert->format('m') );
-            var_dump(((int) $date->format('m') > (int) $date_last_insert->format('m')));*/
+            var_dump(((int) $date->format('m') > (int) $date_last_insert->format('m')));/
             if (count($last_enviados_por_mes) <  $limit_per_mounth || ((int) $date->format('m') > (int) $date_last_insert->format('m'))) {
                 //Este mes te sobran correos
                 echo "<p>Este mes puedes enviar correos</p>";
@@ -58,7 +58,7 @@ class Mail extends CI_Controller
                         echo "<p>No puedes enviar hasta el siguiente minuto</p>";
                     } else {
                         
-                    }*/
+                    }/
                     if (count($last_enviados_por_minuto) == $limit_per_minute && $date->diffInHours($date_last_insert) < 1) {
                         echo "<p>Ya no puedes enviar :(, hasta {$date_last_insert->addMinutes(10)->format('H:i:s')}</p>";
                     } else {
@@ -88,7 +88,7 @@ class Mail extends CI_Controller
         for ($i = 0; $i < $limit && $i < count($ventas); $i++) {
             if ($ventas[$i]->retraso > 0) {
                 /*echo ;
-                echo ;*/
+                echo ;/
                 $mail = new PHPMailer;
                 //Tell PHPMailer to use SMTP
                 $mail->isSMTP();
@@ -130,7 +130,7 @@ class Mail extends CI_Controller
                 if (!$mail->send()) {
                     echo "Mailer Error: " . $mail->ErrorInfo;
                 } else {
-                    /*echo "Message sent!";*/
+                    /*echo "Message sent!";/
                     $this->Notification_model->insert(
                                                         [
                                                             "id_notification" => null,
@@ -142,5 +142,5 @@ class Mail extends CI_Controller
                 
             }
         }
-    }
+    }*/
 }
