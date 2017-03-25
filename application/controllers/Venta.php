@@ -446,6 +446,7 @@ class Venta extends CI_Controller
                     }
                     array_push($db_historial, $db_pago);
                 }
+                $comisionado = 0;
                 if($venta['version'] == 2 && $this->input->post('id_venta')){
                     //Cuando se esté migrando un contrato
                     $venta = $this->Venta_model->select("
@@ -467,6 +468,7 @@ class Venta extends CI_Controller
                             $key_0->pago = $venta[0]->pagado * -1;
                             $key_0->abono = $venta[0]->pagado * -1;
                             $key_0->comision =  $venta[0]->comisionado * -1;
+                            $comisionado = $venta[0]->comisionado * -1;
                             array_push($ajuste_db_historial,$key_0);
                         }else{
                             array_push($ajuste_db_historial,$db_h);
@@ -476,8 +478,10 @@ class Venta extends CI_Controller
                     $db_historial = $ajuste_db_historial;
                     $this->Venta_model->where(['ventas.id_venta' => $this->input->post('id_venta')])
                                       ->update(['ventas.estado' => 4]);
-                   /* var_dump($db_historial);
-                    die();*/
+                    $this->Venta_model->where(['ventas.id_venta' => $id_venta])
+                                      ->update(['ventas.comision' => ($venta['comision'] - $comisionado)]);
+                    var_dump( ($venta['comision'] - $comisionado));
+                    die();
                 }
                 
                 $huertos_venta = [];
