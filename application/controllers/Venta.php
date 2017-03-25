@@ -369,7 +369,7 @@ class Venta extends CI_Controller
                 'estado' => 0,//En proceso de Pago
                 'testigo_1' =>  ucwords($this->input->post('testigo_1')),
                 'testigo_2' =>  ucwords($this->input->post('testigo_1')),
-
+                'comision' => 0,
                 'precio' => $this->input->post('precio'),
                 'enganche' => $this->input->post('enganche'),
                 'abono' => $this->input->post('abono'),
@@ -397,8 +397,10 @@ class Venta extends CI_Controller
             if ($this->input->post('enganche') == $this->input->post('precio')) {
                 $venta['estado'] =  1;
             }
+            
             $id_venta = $this->Venta_model->insert($venta);
             if ($id_venta) {
+                
                 $db_historial = [];
                 $precio = $this->input->post('precio');
                 $enganche = $this->input->post('enganche');
@@ -447,6 +449,7 @@ class Venta extends CI_Controller
                     array_push($db_historial, $db_pago);
                 }
                 $comisionado = 0;
+                $comision_venta = $venta['comision'];
                 if($venta['version'] == 2 && $this->input->post('id_venta')){
                     //Cuando se esté migrando un contrato
                     $venta = $this->Venta_model->select("
@@ -460,7 +463,7 @@ class Venta extends CI_Controller
                     $key_0;
                     foreach($db_historial as $key => $db_h){
                         if($key == 0){
-                            $db_historial[$key]->comision = $venta[0]->comisionado; 
+                            /*$db_historial[$key]->comision = $venta[0]->comisionado; */
                             array_push($ajuste_db_historial,$db_h);
                             $key_0 = clone $db_h;
                             $key_0->concepto = "AJUSTE DE MIGRACIÓN";
@@ -479,9 +482,8 @@ class Venta extends CI_Controller
                     $this->Venta_model->where(['ventas.id_venta' => $this->input->post('id_venta')])
                                       ->update(['ventas.estado' => 4]);
                     $this->Venta_model->where(['ventas.id_venta' => $id_venta])
-                                      ->update(['ventas.comision' => ($venta['comision'] - $comisionado)]);
-                    var_dump( ($venta['comision'] - $comisionado));
-                    die();
+                                      ->update(['ventas.comision' => ($comision_venta + $comisionado)]);
+                    
                 }
                 
                 $huertos_venta = [];

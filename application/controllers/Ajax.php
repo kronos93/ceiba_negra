@@ -655,7 +655,7 @@ class Ajax extends CI_Controller
             //Cuanto se ha pagado en comisiones
             $comisionado = $this->Historial_model->select("SUM(historial.comision) AS comisionado")
                                                  ->where(['id_venta' =>$historial[0]->id_venta])
-                                                 ->where(['estado' =>1])
+                                                 ->where('historial.estado = 1 OR historial.estado = 2')
                                                  ->get();
             $historial[0]->comisionado = $comisionado[0]->comisionado;
             echo json_encode($historial[0]);
