@@ -674,16 +674,15 @@ class Ajax extends CI_Controller
                                   ->get();
         
         foreach($lideres as $key => $lider){
-            /*$comisiones_pendientes = $this->Historial_model->select("
+            $comisiones_pendientes = $this->Historial_model->select("
                                                             SUM(historial.pago * (ventas.porcentaje_comision/100)) AS comisiones_pendientes
                                                             ")
                                                            ->join('ventas','historial.id_venta = ventas.id_venta','left')
                                                            ->where([
                                                                'historial.id_lider' => $lider->id,
-                                                               'historial.estado' => 1,
-                                                               'historial.comision' => 0,
                                                            ])
-                                                           ->where('ventas.estado = 0 OR ventas.estado = 1 OR ventas.estado = 2')
+                                                           ->where('(ventas.estado = 0 OR ventas.estado = 1) AND (historial.comision = 0 AND (historial.estado = 1 OR historial.estado = 2))')
+                                                           
                                                            ->get();
             $comisiones_pagadas = $this->Historial_model->select("
                                                             SUM(historial.comision) AS comisiones_pagadas
@@ -694,10 +693,10 @@ class Ajax extends CI_Controller
                                                                'historial.comision >' => 0,
                                                               
                                                            ])
-                                                           ->where('ventas.estado = 0 OR ventas.estado = 1 OR ventas.estado = 2')
-                                                           ->get();*/
-            $lideres[$key]->comisiones_pendientes = 0; //$comisiones_pendientes[0]->comisiones_pendientes; 
-            $lideres[$key]->comisiones_pagadas = 0;//$comisiones_pagadas[0]->comisiones_pagadas; 
+                                                           ->where('ventas.estado = 0 OR ventas.estado = 1')
+                                                           ->get();
+            $lideres[$key]->comisiones_pendientes = $comisiones_pendientes[0]->comisiones_pendientes; 
+            $lideres[$key]->comisiones_pagadas = $comisiones_pagadas[0]->comisiones_pagadas; 
         }
         $response->data = $lideres;
         echo json_encode($response);
