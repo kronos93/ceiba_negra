@@ -185,8 +185,10 @@ $('#frm-pago #porcentaje_comision').on('change keyup', function() {
     var porcentaje_comision = $(this).val();
     var monto = $('#frm-pago #pago').autoNumeric('get');
     $('#frm-pago #comision').autoNumeric('set', monto * (porcentaje_comision / 100));
+    $('#virtual').autoNumeric('set', parseFloat($('#comision').autoNumeric('get')) + parseFloat($('#pagado').autoNumeric('get')));
 });
 $('#frm-pago #comision').on('change keyup', function() {
+    console.log('comision');
     var comision = $(this).autoNumeric('get');
     var monto = $('#frm-pago #pago').autoNumeric('get');
     $('#frm-pago #porcentaje_comision').val((100 * (comision / monto)).toFixed(2));
