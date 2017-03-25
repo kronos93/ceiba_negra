@@ -277,6 +277,7 @@ $('#email-notificator').on('click', function(e) {
             async: true,
         }).done(function(response) {
             $(btn).attr("disabled", false).next().css('visibility', 'hidden');
+            swa('finalizado');
         })
         .fail(function(response) {
             $(btn).attr("disabled", false).next().css('visibility', 'hidden');
