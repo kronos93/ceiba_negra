@@ -1,4 +1,3 @@
-const webpack_validator = require('webpack-validator');
 const { resolve } = require('path');
 const webpack = require('webpack');
 
@@ -29,13 +28,13 @@ plugins.push(
     })
 );
 const config = {
-    'externals': {
-        'jquery': 'jQuery' //jquery is external and available at the global variable jQuery
+    externals: {
+        jquery: 'jQuery' //jquery is external and available at the global variable jQuery
     },
-    "entry": entry,
-    "plugins": plugins,
-    "module": {
-        "loaders": [{
+    entry: entry,
+    plugins: plugins,
+    module: {
+        loaders: [{
                 test: /\.js$/,
                 loaders: ['babel-loader'],
                 exclude: /node_modules/
@@ -50,17 +49,14 @@ const config = {
             }
         ]
     },
-    "externals": {
-        "jquery": 'jQuery'
-    },
-    "output": {
-        "path": resolve(__dirname, './dist'),
-        /*"publicPath": "http://localhost:3030/dist/",*/
+    output: {
+        path: resolve(__dirname, './dist'),
+        "publicPath": "http://localhost:3030/dist/",
         /*"publicPath": "http://localhost/ceiba_negra/assets/js/dist/",*/
-        "publicPath": "http://dev.huertoslaceiba.com/assets/js/dist/",
+        /*publicPath: "http://dev.huertoslaceiba.com/assets/js/dist/",*/
         /*"publicPath": "http://huertoslaceiba.com/assets/js/dist/",*/
-        "filename": "bundle.js"
+        filename: "bundle.js"
     }
 };
 
-module.exports = webpack_validator(config);
+module.exports = (config);
