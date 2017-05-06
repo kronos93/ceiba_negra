@@ -261,26 +261,26 @@ class Mail extends CI_Controller
 
     public function sendmail(){
         
-        $emailFrom = "samuel.rojas.t93@gmail.com";
+        
         $mailin = new Mailin('https://api.sendinblue.com/v2.0','OBFvYxVH6s7qSDAN');
         $data = array( 
-                    "to" => array("samuel_-_rojas@hotmail.com"=>"Samuel R."),
-                    "from" => array("samuel.rojas.t93@gmail.com","Samuel R."),
-                    "replyto" => array("samuel.rojas.t93@gmail.com","Samuel R."),
+                    "to" => array("desconocido_-_93@hotmail.com"=>"Samuel R."),
+                    "from" => array("admin@huertoslaceiba.com","Huertos la ceiba"),
+                    "replyto" => array("admin@huertoslaceiba.com","Huertos la ceiba"),
                     "subject" => "My subject",
                     "html" => "This is the <h1>HTML</h1><br/>This is inline image 1.<br/>",
                     "headers" => array(
                         "MIME-Version" => "1.0",
                         "Content-Type"=> "Content-type: text/html; charset=iso-8859-1",     
-                        "From" => "samuel.rojas.t93@gmail.com",
-                        "Reply-to" => "samuel.rojas.t93@gmail.com",
-                        "To" => "samuel_-_rojas@hotmail.com", 
+                        "From" => "admin@huertoslaceiba.com",
+                        "Reply-to" => "admin@huertoslaceiba.com",
+                        "To" => "desconocido_-_93@hotmail.com", 
                         "X-Priority" => 1,
                         "X-MSMail-Priority" => "High",                        
                         "X-Mailer" => "PHP/".phpversion()
                         ),
                     
-        );
+                        );
         var_dump($mailin->send_email($data));
         
     }

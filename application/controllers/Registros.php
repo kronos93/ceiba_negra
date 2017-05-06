@@ -73,7 +73,7 @@ class Registros extends CI_Controller
                                                           ->join('users','ventas.id_cliente = users.id','left')
                                                           ->join('opciones_ingreso', 'historial.id_ingreso = opciones_ingreso.id_opcion_ingreso', 'left')
                                                           ->where(['historial.id_ingreso' => $id,"ventas.estado !=" => 3])
-                                                          ->where("fecha BETWEEN '{$data['init_date']->format('Y-m-d')}' AND '{$data['end_date']->format('Y-m-d')}'")
+                                                          ->where("historial.fecha_pago BETWEEN '{$data['init_date']->format('Y-m-d')}' AND '{$data['end_date']->format('Y-m-d')}'")
                                                           ->get();
             } else {
                 $data['ingresos'] = $this->Historial_model->select('
@@ -156,6 +156,16 @@ class Registros extends CI_Controller
         } else {
             $data['title'] = "Reservas"; //Titulo de la página -> require
             $data['body'] = "reservas";  //Nombre de la vista de cuerpo -> require
+            $this->load->view('templates/template', $data);  //Combina header y footer con body
+        }
+    }
+    public function reservas_eliminadas(){
+        if (!$this->ion_auth->logged_in()) {
+        // redirect them to the login page
+            redirect('auth/login', 'refresh');
+        } else {
+            $data['title'] = "Reservas eliminadas"; //Titulo de la página -> require
+            $data['body'] = "reservas_eliminadas";  //Nombre de la vista de cuerpo -> require
             $this->load->view('templates/template', $data);  //Combina header y footer con body
         }
     }

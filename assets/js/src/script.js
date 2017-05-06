@@ -7,8 +7,8 @@ import './mapplic';
 import './tables/manzanas';
 import './tables/huertos';
 import './tables/opciones_ingreso';
-
 import './tables/reservas';
+import './tables/reservas_eliminadas';
 if ($('#historial-ventas-table').length) {
     require.ensure([], function(require) {
         require('./tables/historial_ventas');

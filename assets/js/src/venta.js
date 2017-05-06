@@ -37,52 +37,8 @@ import 'tinymce/plugins/paste/plugin.js';
 import 'tinymce/plugins/textcolor/plugin.js';
 import 'tinymce/plugins/colorpicker/plugin.js';
 import 'tinymce/plugins/textpattern/plugin.js';
-/*console.log($('#frm-venta #precio').val());*/
+console.log($('#contrato_html'));
 moment.locale('es');
-tinymce.init({
-    selector: '#contrato_html',
-    mode: 'specifics_textareas',
-    language: 'es_MX',
-    editor_selector: 'mceEditor',
-    height: '600px',
-    plugins: [
-        'advlist autolink lists charmap print preview hr anchor pagebreak',
-        'searchreplace wordcount visualblocks visualchars code fullscreen',
-        'nonbreaking save table directionality',
-        'template paste textcolor colorpicker textpattern'
-    ],
-    toolbar1: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-    content_css: base_url() + '/assets/css/tinymce.css',
-    setup: function(ed) {
-        ed.on('init', function(args) {});
-    },
-    init_instance_callback: function(editor) {
-        editor.on('SetContent', function(e) {
-            var fechas = tinymce.activeEditor.dom.select('.fecha_txt');
-            //var fechas = ['fecha_primer_pago', 'fecha_ultimo_pago', 'fecha_init_1', 'fecha_init_2', 'fecha_init_3', 'fecha_init_4', 'fecha_init_5'];
-            fechas.map((fecha) => {
-                let fecha_tiny = tinymce.activeEditor.dom.get(fecha);
-                let fecha_val = $(fecha_tiny).html();
-                let fecha_moment = moment(fecha_val, 'DD-MM-YYYY');
-                tinymce.activeEditor.dom.setHTML(fecha_tiny, fecha_moment.format("[el día ] dddd, DD [de] MMMM [del] [año] YYYY"));
-            });
-            //var currencies = ['precio_1', 'precio_2', 'enganche', 'abono_1', 'abono_2', 'porcentaje'];
-            var currencies = tinymce.activeEditor.dom.select('.currency_txt');
-            currencies.map((currency) => {
-                let currency_tiny = tinymce.activeEditor.dom.get(currency);
-                let currency_val = $(currency_tiny).html();
-                let currency_format = "";
-                if (currency_tiny.id != 'porcentaje') {
-                    currency_format = new NumeroALetras(currency_val).data.txt.replace(/\s{2,}/g, " ");
-                } else {
-                    currency_format = new NumeroALetras(currency_val).data.txt.replace(/\b00\/100 MN\b/, '').replace(/\bPeso\b/, '').replace(/\bCON\b/g, 'PUNTO').replace(/\bPESOS\b/g, '').replace(/\bCENTAVOS\b/g, '').replace(/\s{2,}/g, " ");
-                }
-                tinymce.activeEditor.dom.setHTML(currency_tiny, currency_format);
-            });
-        });
-    }
-});
-
 
 var form_venta = $("#frm-venta");
 form_venta.validate({
@@ -138,6 +94,49 @@ form_venta.steps({
         autocompleteSaldosClientes(base_url);
         autocompleteLideres(base_url);
         tabs();
+        tinymce.init({
+            selector: '#contrato_html',
+            mode: 'specifics_textareas',
+            language: 'es_MX',
+            editor_selector: 'mceEditor',
+            height: '600px',
+            plugins: [
+                'advlist autolink lists charmap print preview hr anchor pagebreak',
+                'searchreplace wordcount visualblocks visualchars code fullscreen',
+                'nonbreaking save table directionality',
+                'template paste textcolor colorpicker textpattern'
+            ],
+            toolbar1: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+            content_css: base_url() + '/assets/css/tinymce.css',
+            setup: function(ed) {
+                ed.on('init', function(args) {});
+            },
+            init_instance_callback: function(editor) {
+                editor.on('SetContent', function(e) {
+                    var fechas = tinymce.activeEditor.dom.select('.fecha_txt');
+                    //var fechas = ['fecha_primer_pago', 'fecha_ultimo_pago', 'fecha_init_1', 'fecha_init_2', 'fecha_init_3', 'fecha_init_4', 'fecha_init_5'];
+                    fechas.map((fecha) => {
+                        let fecha_tiny = tinymce.activeEditor.dom.get(fecha);
+                        let fecha_val = $(fecha_tiny).html();
+                        let fecha_moment = moment(fecha_val, 'DD-MM-YYYY');
+                        tinymce.activeEditor.dom.setHTML(fecha_tiny, fecha_moment.format("[el día ] dddd, DD [de] MMMM [del] [año] YYYY"));
+                    });
+                    //var currencies = ['precio_1', 'precio_2', 'enganche', 'abono_1', 'abono_2', 'porcentaje'];
+                    var currencies = tinymce.activeEditor.dom.select('.currency_txt');
+                    currencies.map((currency) => {
+                        let currency_tiny = tinymce.activeEditor.dom.get(currency);
+                        let currency_val = $(currency_tiny).html();
+                        let currency_format = "";
+                        if (currency_tiny.id != 'porcentaje') {
+                            currency_format = new NumeroALetras(currency_val).data.txt.replace(/\s{2,}/g, " ");
+                        } else {
+                            currency_format = new NumeroALetras(currency_val).data.txt.replace(/\b00\/100 MN\b/, '').replace(/\bPeso\b/, '').replace(/\bCON\b/g, 'PUNTO').replace(/\bPESOS\b/g, '').replace(/\bCENTAVOS\b/g, '').replace(/\s{2,}/g, " ");
+                        }
+                        tinymce.activeEditor.dom.setHTML(currency_tiny, currency_format);
+                    });
+                });
+            }
+        });
         $("#precio").on('change keyup', function() {
             var precio = parseFloat($(this).autoNumeric('get'));
             var porcentaje = parseFloat($('#porcentaje_comision').val());

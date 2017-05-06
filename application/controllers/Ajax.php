@@ -15,6 +15,7 @@ class Ajax extends CI_Controller
         $this->load->model('Historial_model');
         $this->load->model('HuertosVentas_model');
         $this->load->model('Reserva_model');
+        $this->load->model('ReservaEliminada_model');
         $this->load->model('Trans_model');
     }
     public function index()
@@ -604,6 +605,20 @@ class Ajax extends CI_Controller
         }
         $response->data = $reservas; // Atributo de la clase generico para el dataTable
         echo json_encode($response); //Response JSON
+    }
+    public function get_reservas_eliminadas(){
+        header("Content-type: application/json; charset=utf-8"); //Header generico
+        $response = new stdClass(); //Clase generica
+        $reservas_eliminadas = new $this->ReservaEliminada_model();
+        $query = $reservas_eliminadas->db->get('reservas_eliminadas');
+        /*foreach ($query as $key => $reserva) {
+            $reservas[$key]->detalles = '';
+            $reservas[$key]->detalles .= "<p><strong>Nombre: </strong>".$reserva->fitst_name."<p>";
+            $reservas[$key]->detalles .= "<p><strong>Apellidos: </strong>".$reserva->last_name."<p>";
+            $reservas[$key]->detalles .= "<p><strong>Correo: </strong>".$reserva->email."<p>";
+            $reservas[$key]->detalles .= "<p><strong>Teléfono: </strong><span class='phone'>".$reserva->phone."</span><p>";
+        }*/
+        echo json_encode($query->result());
     }
     public function get_pagos()
     {
