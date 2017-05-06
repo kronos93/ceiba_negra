@@ -31,6 +31,7 @@ class Ajax extends CI_Controller
         $respuesta->mapwidth = 800;
         $respuesta->mapheight = 600;
         $respuesta->levels = [];
+        
         foreach ($categories_mz as $mz) {
             $mz->show = "false";
             
@@ -609,16 +610,29 @@ class Ajax extends CI_Controller
     public function get_reservas_eliminadas(){
         header("Content-type: application/json; charset=utf-8"); //Header generico
         $response = new stdClass(); //Clase generica
-        $reservas_eliminadas = new $this->ReservaEliminada_model();
-        $query = $reservas_eliminadas->db->get('reservas_eliminadas');
-        /*foreach ($query as $key => $reserva) {
-            $reservas[$key]->detalles = '';
-            $reservas[$key]->detalles .= "<p><strong>Nombre: </strong>".$reserva->fitst_name."<p>";
-            $reservas[$key]->detalles .= "<p><strong>Apellidos: </strong>".$reserva->last_name."<p>";
-            $reservas[$key]->detalles .= "<p><strong>Correo: </strong>".$reserva->email."<p>";
-            $reservas[$key]->detalles .= "<p><strong>Teléfono: </strong><span class='phone'>".$reserva->phone."</span><p>";
-        }*/
-        echo json_encode($query->result());
+        
+        $query = $this->ReservaEliminada_model->db->select("reservas_eliminadas.id_reserva_eliminada,
+                                                            CONCAT(users.first_name,' ',users.last_name) AS nombre_lider,
+                                                            reservas_eliminadas.first_name,
+                                                            reservas_eliminadas.last_name,
+                                                            reservas_eliminadas.email,
+                                                            reservas_eliminadas.phone,
+                                                            reservas_eliminadas.description,
+                                                            reservas_eliminadas.fecha
+                                                    ")
+                                                  ->from('reservas_eliminadas')
+                                                  ->join('users','reservas_eliminadas.id_lider = users.id','left')
+                                                  ->get();
+        $result = $query->result();
+        foreach ($result as $key => $reserva) {
+            $result[$key]->detalles = '';
+            $result[$key]->detalles .= "<p><strong>Nombre: </strong>".$reserva->first_name."<p>";
+            $result[$key]->detalles .= "<p><strong>Apellidos: </strong>".$reserva->last_name."<p>";
+            $result[$key]->detalles .= "<p><strong>Correo: </strong>".$reserva->email."<p>";
+            $result[$key]->detalles .= "<p><strong>Teléfono: </strong><span class='phone'>".$reserva->phone."</span><p>";
+        }
+        $response->data = $result;
+        echo json_encode($response);
     }
     public function get_pagos()
     {

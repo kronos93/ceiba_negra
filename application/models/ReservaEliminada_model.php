@@ -5,7 +5,7 @@ class ReservaEliminada_model extends CI_Model {
     {
         parent::__construct();
         $this->load->database();
-        /*$this->db->from($this->table);*/
+        
     }
  
 }

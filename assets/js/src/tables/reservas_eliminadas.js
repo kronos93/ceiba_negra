@@ -7,15 +7,9 @@ var reservas_table = $('#reservas-eliminadas-table').DataTable({
         { "data": "detalles" },
         { "data": "description" },
         { "data": "fecha" },
-
     ],
     columnDefs: [ //
-        {
-            //Añadir boton dinamicamente, para esta columna*
-            "targets": -1,
-            "data": null,
-            "defaultContent": "",
-        },
+
         {
             //Quitar ordenamiento para estas columnas
             "sortable": false,

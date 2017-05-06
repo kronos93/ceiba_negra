@@ -8,7 +8,7 @@
 				<table id="reservas-eliminadas-table" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
 					<thead>
 						<tr>
-							<th data-visible="false">Id. reserva</th>
+							<th data-visible="false">Id. reserva eliminada</th>
                             <th class="all">Lider</th>
                             <th>Detalles</th>
                             <th>Descripción</th>

@@ -53,7 +53,8 @@ class Manzana_model extends CI_Model
                             manzana
                         ");
         $this->db->order_by('manzana', 'ASC');
-        $query = $this->db->get($this->tabla);
+        $this->db->from($this->tabla);
+        $query = $this->db->get();
         return $query->result();
     }
     public function _get(){

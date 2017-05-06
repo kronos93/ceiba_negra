@@ -4,8 +4,8 @@ module.exports = {
         return (DEVELOPMENT) ?
             'http://' + window.location.hostname + '/ceiba_negra/' :
             /*'http://' + window.location.hostname + '/ceiba_negra/';*/
-            'http://dev.huertoslaceiba.com/';
-        /*    'http://huertoslaceiba.com/';*/
+            /*'http://dev.huertoslaceiba.com/';*/
+            'http://huertoslaceiba.com/';
     },
     multiplicar: function() {
 
