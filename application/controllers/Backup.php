@@ -4,6 +4,7 @@ class Backup extends CI_Controller
 {
     public function index()
     {
+        ini_set('memory_limit', '1024M');
         // Load the DB utility class
         $this->load->dbutil();
 

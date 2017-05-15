@@ -6,6 +6,7 @@ class Venta_model extends CI_Model {
     {
         parent::__construct();
         $this->load->database();
+        echo "Hola.!";
     }
     public function get($condicion = array()){
         $this->db->from($this->table);

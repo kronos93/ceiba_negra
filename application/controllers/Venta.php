@@ -38,7 +38,7 @@ class Venta extends CI_Controller
         $data['title'] = "Historial de ventas";
         $data['body'] = "historial_ventas";
 
-        $venta = new $this->Venta_model();
+        $venta = $this->Venta_model;
         if ($this->session->flashdata('id_venta')) {
             $venta->where(['ventas.id_venta' => $this->session->flashdata('id_venta')]);
         }

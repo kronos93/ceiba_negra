@@ -4,7 +4,7 @@
             <div class="col-xs-12">
                 <legend>Historial de ventas - Contratos
                     <div class="pull-right ajax-button">
-                        <button id="email-notificator" class="btn btn-success">Notificar a clientes retrasados (Email-masivo)</button>
+                        <!--<button id="email-notificator" class="btn btn-success">Notificar a clientes retrasados (Email-masivo)</button>-->
                         <div class="loader-gif">
                             <div class="loader-gif-item"></div>
                             <div class="loader-gif-item"></div>
