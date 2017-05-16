@@ -107,7 +107,7 @@ var historial_ventas_table = $('#historial-ventas-table').DataTable({
         }
     ],
     "order": [
-        [2, "asc"]
+        [3, "asc"]
     ],
 });
 var ventaDtRow;

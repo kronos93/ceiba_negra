@@ -6,7 +6,6 @@ class Venta_model extends CI_Model {
     {
         parent::__construct();
         $this->load->database();
-        echo "Hola.!";
     }
     public function get($condicion = array()){
         $this->db->from($this->table);
@@ -40,6 +39,10 @@ class Venta_model extends CI_Model {
     }
     public function group_by($group){
         $this->db->group_by($group);
+        return $this;
+    }
+    public function order_by($order){
+        $this->db->order_by($order);
         return $this;
     }
 }

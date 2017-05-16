@@ -66,6 +66,7 @@ class Venta extends CI_Controller
                                 ->join('users as user', 'ventas.id_usuario = user.id', 'left')
                                 ->where(['ventas.estado !=' => 4])
                                 ->group_by('ventas.id_venta')
+                                
                                 ->get();
         foreach ($data['ventas'] as $key => $venta) {
             $descripcion = $this->Venta_model->select('GROUP_CONCAT("Mz. ",manzanas.manzana, " Ht. ", huertos.huerto) as descripcion')
@@ -73,6 +74,7 @@ class Venta extends CI_Controller
                                               ->join('huertos', 'huertos_ventas.id_huerto = huertos.id_huerto', 'inner')
                                               ->join('manzanas', 'huertos.id_manzana = manzanas.id_manzana', 'inner')
                                               ->where(['ventas.id_venta' => $venta->id_venta])
+                                              ->order_by('manzanas.manzana ASC, huertos.huerto ASC')
                                               ->get();
             $data['ventas'][$key]->descripcion = $descripcion[0]->descripcion;
         }
