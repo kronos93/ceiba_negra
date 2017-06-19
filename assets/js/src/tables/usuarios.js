@@ -1,12 +1,20 @@
+import '../configs/datatables';
+import 'jquery-mask-plugin/dist/jquery.mask';
+import { phone } from '../components/components';
 import { base_url, ajax_msg } from '../utils/util';
 import GenericFrm from '../GenericFrm';
 $(function() {
     //USUARIOS
     var users_table = $('#users-table').DataTable({
+        "initComplete": function(settings, json) {
+            phone();
+        },
         "columns": [ //Atributos para la tabla
-            { "data": "id", "type": "num", },
-            { "data": "first_name" },
-            { "data": "last_name" },
+            {
+                "data": "id",
+                "type": "num",
+            },
+            { "data": "name" },
             { "data": "email" },
             { "data": "phone" },
             { "data": "groups" },
@@ -17,7 +25,7 @@ $(function() {
             {
                 //Quitar ordenamiento para estas columnas
                 "sortable": false,
-                "targets": [1, 2, 3, 4, 5],
+                "targets": [-1, 2, 3, 4, 5],
             }, {
                 //Quitar busqueda para esta columna
                 "targets": [],

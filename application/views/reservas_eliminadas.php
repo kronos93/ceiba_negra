@@ -3,7 +3,7 @@
 		<div class="row">
 			<div class="col-xs-12">				
 				<legend>
-					Reservas
+					<?= $title ?>
 				</legend>
 				<table id="reservas-eliminadas-table" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
 					<thead>

@@ -40,7 +40,6 @@ class Auth extends CI_Controller {
 
 			$data = array_merge($this->data,array('title'=>'Usuarios','body' => 'auth/index'));
 			$this->load->view('templates/template',$data);
-			//$this->_render_page('', $this->data);
 		}
 	}
 

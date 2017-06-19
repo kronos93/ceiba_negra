@@ -114,7 +114,7 @@ import './dependencies/script';
                     .addClass('mapplic-popup-link btn btn-success')
                     .attr('href', '#')
                     .on('click', function(e) {
-                        e.preventDefault;
+                        e.preventDefault();
                         var id_huerto = this.getAttribute("href");
                         $.ajax({
                                 url: base_url() + "ajax/add_cart",

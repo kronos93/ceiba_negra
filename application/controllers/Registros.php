@@ -15,28 +15,35 @@ class Registros extends CI_Controller
     public function manzanas()
     {
         if (!$this->ion_auth->logged_in()) {
-        // redirect them to the login page
             redirect('auth/login', 'refresh');
         } else {
             $data['title'] = "Manzanas"; //Titulo de la página -> require
-            $data['body'] = "manzanas";  //Nombre de la vista de cuerpo -> require
+            $data['body'] = "registros/manzanas";  //Nombre de la vista de cuerpo -> require
             $this->load->view('templates/template', $data);  //Combina header y footer con body
         }
     }
     public function huertos()
     {
-		if (!$this->ion_auth->logged_in()) {
-        // redirect them to the login page
+        if (!$this->ion_auth->logged_in()) {
             redirect('auth/login', 'refresh');
         } else {
-			$data['title'] = "Huertos";
-			$data['body'] = "huertos";
-			$data['manzanas'] = $this->Manzana_model->select('id_manzana,manzana')
-													->get_();
-			$data['precios'] = $this->Precio_model->select('id_precio,enganche,abono')
-													->get();
-			$this->load->view('templates/template', $data);
-		}
+            $data['title'] = "Huertos";
+            $data['body'] = "registros/huertos";
+            $data['manzanas'] = $this->Manzana_model->select('id_manzana,manzana')
+                                                    ->get_();
+            $data['precios'] = $this->Precio_model->select('id_precio,enganche,abono')
+                                                    ->get();
+            $this->load->view('templates/template', $data);
+        }
+    }
+    public function opciones_de_pago(){
+        if (!$this->ion_auth->logged_in()) {
+            redirect('auth/login', 'refresh');
+        } else {
+            $data['title'] = "Opciones de pago";
+            $data['body'] = "registros/opciones_de_pago";
+            $this->load->view('templates/template', $data);
+        }
     }
     public function opciones_de_ingreso()
     {
@@ -70,7 +77,7 @@ class Registros extends CI_Controller
                                                                     historial.comision, 
                                                                     DATE_FORMAT(historial.fecha_pago,"%d-%m-%Y") AS fecha_pago')
                                                           ->join('ventas', 'historial.id_venta = ventas.id_venta', 'left')
-                                                          ->join('users','ventas.id_cliente = users.id','left')
+                                                          ->join('users', 'ventas.id_cliente = users.id', 'left')
                                                           ->join('opciones_ingreso', 'historial.id_ingreso = opciones_ingreso.id_opcion_ingreso', 'left')
                                                           ->where(['historial.id_ingreso' => $id,"ventas.estado !=" => 3])
                                                           ->where("historial.fecha_pago BETWEEN '{$data['init_date']->format('Y-m-d')}' AND '{$data['end_date']->format('Y-m-d')}'")
@@ -85,7 +92,7 @@ class Registros extends CI_Controller
                                                                     historial.comision, 
                                                                     DATE_FORMAT(historial.fecha_pago,"%d-%m-%Y") AS fecha_pago')
                                                           ->join('ventas', 'historial.id_venta = ventas.id_venta', 'left')
-                                                          ->join('users','ventas.id_cliente = users.id','left')
+                                                          ->join('users', 'ventas.id_cliente = users.id', 'left')
                                                           ->join('opciones_ingreso', 'historial.id_ingreso = opciones_ingreso.id_opcion_ingreso', 'left')
                                                           ->where(['historial.id_ingreso' => $id,"ventas.estado !=" => 3])
                                                           ->get();
@@ -149,7 +156,8 @@ class Registros extends CI_Controller
         $data['body'] = "comisiones";
         $this->load->view('templates/template', $data);
     }
-    public function reservas () {
+    public function reservas()
+    {
         if (!$this->ion_auth->logged_in()) {
         // redirect them to the login page
             redirect('auth/login', 'refresh');
@@ -159,12 +167,12 @@ class Registros extends CI_Controller
             $this->load->view('templates/template', $data);  //Combina header y footer con body
         }
     }
-    public function reservas_eliminadas(){
+    public function reservas_vencidas()
+    {
         if (!$this->ion_auth->logged_in()) {
-        // redirect them to the login page
             redirect('auth/login', 'refresh');
         } else {
-            $data['title'] = "Reservas eliminadas"; //Titulo de la página -> require
+            $data['title'] = "Reservas vencidas"; //Titulo de la página -> require
             $data['body'] = "reservas_eliminadas";  //Nombre de la vista de cuerpo -> require
             $this->load->view('templates/template', $data);  //Combina header y footer con body
         }

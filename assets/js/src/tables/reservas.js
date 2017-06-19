@@ -1,3 +1,5 @@
+import '../configs/datatables';
+import 'sweetalert';
 import { base_url, ajax_msg } from '../utils/util';
 import GenericFrm from '../GenericFrm';
 import Cart from '../Cart';
@@ -9,7 +11,10 @@ var reservas_table = $('#reservas-table').DataTable({
         { "data": "nombre_lider" },
         { "data": "descripcion" },
         { "data": "detalles" },
-        { "data": "expira" },
+        {
+            "data": "expira",
+            "render": $.fn.dataTable.render.moment('DD-MM-YYYY')
+        },
         {
             "data": "",
             "render": function(data, type, full, meta) {
@@ -33,7 +38,7 @@ var reservas_table = $('#reservas-table').DataTable({
         {
             //Quitar ordenamiento para estas columnas
             "sortable": false,
-            "targets": [-1],
+            "targets": [-1, 3],
         },
     ]
 });
@@ -84,7 +89,7 @@ $('#reservas-table').on('click', '.aplicar-reserva', function() {
     var data = {
         id_reserva: parseDtRow.id_reserva
     };
-    /**/
+
     swal({
             title: "Aplicar reserva",
             text: "Esta a punto de aplicar una reserva, se limpiará el carrito ¿Desea continuar?",
@@ -101,18 +106,9 @@ $('#reservas-table').on('click', '.aplicar-reserva', function() {
                     type: "post",
                 })
                 .done(function(response) {
-                    /*localStorage.removeItem("precio");
-                    localStorage.removeItem("enganche");
-                    localStorage.removeItem("abono");*/
                     var newData = reservas_table.row(reservaDtRow).data(parseDtRow).draw(false).node(); //
                     $(newData).css({ backgroundColor: 'yellow' }); //Animación para MAX
                     cart.get();
-                    /*reservas_table
-                           .row(reservaDtRow)
-                           .remove()
-                           .draw();
-                       var n_reservas = $('#reservas-badge').html();
-                       $('#reservas-badge').html(n_reservas - 1);*/
                     swal("Hechó", "¡Reserva aplicada!", "success");
                 })
                 .fail(function(response) {

@@ -15,7 +15,7 @@
                         <tr>
                             <th data-visible="false">id</th>
                             <th class="all"><?= lang('index_fname_th'); ?></th>
-                            <th><?= lang('index_lname_th');?></th>
+                            
                             <th><?= lang('index_email_th');?></th>
                             <th>Telefono:</th>
                             <th><?= lang('index_groups_th');?></th>                            
@@ -27,10 +27,10 @@
                         <?php foreach ($users as $user) :?>
                         <tr>
                             <td><?= $user->id ?></td>
-                            <td><?= htmlspecialchars($user->first_name, ENT_QUOTES, 'UTF-8');?></td>
-                            <td><?= htmlspecialchars($user->last_name, ENT_QUOTES, 'UTF-8');?></td>
+                            <td><?= htmlspecialchars($user->first_name, ENT_QUOTES, 'UTF-8').' '.htmlspecialchars($user->last_name, ENT_QUOTES, 'UTF-8');?></td>
+                            
                             <td><?= htmlspecialchars($user->email, ENT_QUOTES, 'UTF-8');?></td>     
-                            <td><?= $user->phone ?></td>                       
+                            <td class="phone"><?= $user->phone ?></td>                       
                             <td>
                                 <ul>
                                 <?php foreach ($user->groups as $group) :?>

@@ -9,6 +9,7 @@ class Ajax extends CI_Controller
         parent::__construct();
         $this->load->model('Huerto_model');
         $this->load->model('Manzana_model');
+        $this->load->model('Precio_model');
         $this->load->model('Cliente_model');
         $this->load->model('Opciones_ingreso_model');
         $this->load->model('Venta_model');
@@ -243,6 +244,7 @@ class Ajax extends CI_Controller
                 'id_manzana' => $this->input->post("id_manzana"),
                 'huerto' => $this->input->post("huerto"),
                 'superficie' => $this->input->post("superficie"),
+                'precio_x_m2' => $this->input->post("precio_x_m2"),
                 'id_precio' => $this->input->post("id_precio"),
                 'col_norte' => $this->input->post('col_norte'),
                 'col_noreste' => $this->input->post('col_noreste'),
@@ -270,6 +272,9 @@ class Ajax extends CI_Controller
         header("Content-type: application/json; charset=utf-8"); //Header generico
         $response = new stdClass(); //Clase generica
         $manzanas = $this->Manzana_model->getAll('array'); //<- Obtener datos
+        $response->draw= $this->input->get('draw');
+        $response->recordsTotal = count($manzanas);
+        $response->recordsFiltered = count($manzanas);
         $response->data = $manzanas; // Atributo de la clase generico para el dataTable
         echo json_encode($response); //Response JSON
     }
@@ -454,6 +459,59 @@ class Ajax extends CI_Controller
             echo validation_errors();
         }
     }
+    public function get_op_pago(){
+        $op_pago = $this->Precio_model->from()->db->get()->result();
+        $response = new stdClass();
+        $response->data = $op_pago;
+        echo json_encode($response);
+    }
+    public function add_op_pago(){
+        //Cabazera de respuesta JSON
+        header("Content-type: application/json; charset=utf-8");
+        //Validación de form
+        $config = [
+            [
+                'field' => 'enganche',
+                'label' => 'Enganche',
+                'rules' => 'trim|required|is_natural_no_zero',
+            ],
+            [
+                'field' => 'abono',
+                'label' => 'Abono',
+                'rules' => 'trim|required|is_natural_no_zero|callback_uniqueop_check'
+            ],
+            /*[
+                'field' => 'abono',
+                'label' => 'Abono',
+                'rules' => [
+                    'trim|required|is_natural_no_zero|opcion_pago_callable',
+                    [
+                        'opcion_pago_callable', //nombre de la validación, permite setear un mensaje
+                        [ $this->Precio_model,'valid_opcion_pago'] //Modelo y function a hacer un callback
+                    ]
+                ],
+            ],*/
+        ];
+        
+        $this->form_validation->set_rules($config);
+        if ($this->form_validation->run()) {
+            $data = [
+                'enganche' => $this->input->post('enganche'),
+                'abono' => $this->input->post('abono')
+            ];
+            $new_op_pago = $this->Precio_model->db
+                                              ->insert($this->Precio_model->table(),$data);
+            $id_op_pago = $this->Precio_model->db
+                                             ->insert_id();
+            $op_pago = $this->Precio_model->from()->db
+                                                  ->where(['id_precio' => $id_op_pago])
+                                                  ->get()
+                                                  ->result();
+            echo json_encode($op_pago);
+        } else {
+            echo validation_errors();
+        }
+    }
     //OPCIONES DE INGRESO
     public function get_opciones_de_ingreso()
     {
@@ -586,7 +644,7 @@ class Ajax extends CI_Controller
                                                   reservas.precio,
                                                   reservas.enganche,
                                                   reservas.abono,
-                                                  DATE_FORMAT(reservas.expira,'%d-%m-%Y') as expira
+                                                  DATE_FORMAT(reservas.expira,'%Y-%m-%d') as expira
                                                   ")
                                         ->join('users AS lider', 'reservas.id_lider = lider.id', 'left')
                                         ->join('huertos_reservas', 'reservas.id_reserva = huertos_reservas.id_reserva', 'inner')
@@ -607,7 +665,8 @@ class Ajax extends CI_Controller
         $response->data = $reservas; // Atributo de la clase generico para el dataTable
         echo json_encode($response); //Response JSON
     }
-    public function get_reservas_eliminadas(){
+    public function get_reservas_eliminadas()
+    {
         header("Content-type: application/json; charset=utf-8"); //Header generico
         $response = new stdClass(); //Clase generica
         
@@ -618,10 +677,10 @@ class Ajax extends CI_Controller
                                                             reservas_eliminadas.email,
                                                             reservas_eliminadas.phone,
                                                             reservas_eliminadas.description,
-                                                            reservas_eliminadas.fecha
+                                                            DATE_FORMAT(reservas_eliminadas.fecha,'%Y-%m-%d') AS fecha
                                                     ")
                                                   ->from('reservas_eliminadas')
-                                                  ->join('users','reservas_eliminadas.id_lider = users.id','left')
+                                                  ->join('users', 'reservas_eliminadas.id_lider = users.id', 'left')
                                                   ->get();
         $result = $query->result();
         foreach ($result as $key => $reserva) {
@@ -690,23 +749,24 @@ class Ajax extends CI_Controller
             echo json_encode($historial[0]);
         }
     }
-    public function get_comision_per_lider(){
+    public function get_comision_per_lider()
+    {
         $response = new stdClass();
         $lideres = $this->Venta_model->select(" users.id, 
                                                 IF(users.last_name != NULL OR users.last_name != '',
                                                     CONCAT(users.first_name, ' ' , users.last_name),
                                                     users.first_name) AS nombre,
-                                                SUM(IF(ventas.estado = 0 || ventas.estado = 1, ventas.comision , 0)) AS comision")                                  
-                                  ->join('users','ventas.id_lider = users.id','left')
+                                                SUM(IF(ventas.estado = 0 || ventas.estado = 1, ventas.comision , 0)) AS comision")
+                                  ->join('users', 'ventas.id_lider = users.id', 'left')
                                   /*->where('ventas.estado = 0 OR ventas.estado = 1 OR ventas.estado = 2')*/
                                   ->group_by('ventas.id_lider')
                                   ->get();
         
-        foreach($lideres as $key => $lider){
+        foreach ($lideres as $key => $lider) {
             $comisiones_pendientes = $this->Historial_model->select("
                                                             SUM(historial.pago * (ventas.porcentaje_comision/100)) AS comisiones_pendientes
                                                             ")
-                                                           ->join('ventas','historial.id_venta = ventas.id_venta','left')
+                                                           ->join('ventas', 'historial.id_venta = ventas.id_venta', 'left')
                                                            ->where([
                                                                'historial.id_lider' => $lider->id,
                                                            ])
@@ -716,7 +776,7 @@ class Ajax extends CI_Controller
             $comisiones_pagadas = $this->Historial_model->select("
                                                             SUM(historial.comision) AS comisiones_pagadas
                                                             ")
-                                                           ->join('ventas','historial.id_venta = ventas.id_venta','left')
+                                                           ->join('ventas', 'historial.id_venta = ventas.id_venta', 'left')
                                                            ->where([
                                                                'historial.id_lider' => $lider->id,
                                                                'historial.comision >' => 0,
@@ -724,8 +784,8 @@ class Ajax extends CI_Controller
                                                            ])
                                                            ->where('ventas.estado = 0 OR ventas.estado = 1')
                                                            ->get();
-            $lideres[$key]->comisiones_pendientes = $comisiones_pendientes[0]->comisiones_pendientes; 
-            $lideres[$key]->comisiones_pagadas = $comisiones_pagadas[0]->comisiones_pagadas; 
+            $lideres[$key]->comisiones_pendientes = $comisiones_pendientes[0]->comisiones_pendientes;
+            $lideres[$key]->comisiones_pagadas = $comisiones_pagadas[0]->comisiones_pagadas;
         }
         $response->data = $lideres;
         echo json_encode($response);
@@ -735,16 +795,16 @@ class Ajax extends CI_Controller
         header("Content-type: application/json; charset=utf-8");
         if ($this->input->post('id_historial') &&
            $this->input->post('id_ingreso')) {
-            if($this->input->post('folio')){
+            if ($this->input->post('folio')) {
                 $folio_repetido = $this->Historial_model->select('  historial.concepto,
                                                                     DATE_FORMAT(historial.fecha_pago,"%d-%m-%Y") AS fecha,
                                                                     CONCAT(users.first_name," ",users.last_name) AS nombre_cliente')
-                                                        ->join('ventas','historial.id_venta = ventas.id_venta','left')
-                                                        ->join('users','ventas.id_cliente = users.id','left')
+                                                        ->join('ventas', 'historial.id_venta = ventas.id_venta', 'left')
+                                                        ->join('users', 'ventas.id_cliente = users.id', 'left')
                                                         ->where(['historial.folio' => $this->input->post('folio')])
-                                                        ->get(); 
+                                                        ->get();
                 $n_folios_repeditos = count($folio_repetido);
-                if($n_folios_repeditos){
+                if ($n_folios_repeditos) {
                     echo "Existe un folio de banco duplicado, verifique la información. 
                     Folio duplicado: {$this->input->post('folio')}
                     Coincidencias: {$n_folios_repeditos}
@@ -752,7 +812,6 @@ class Ajax extends CI_Controller
                     Cliente: {$folio_repetido[0]->nombre_cliente}";
                     exit();
                 }
-                
             }
 
             $fecha = Carbon::createFromFormat('d-m-Y', $this->input->post('fecha_pago'));
@@ -781,10 +840,10 @@ class Ajax extends CI_Controller
                                                 ->where(['id_venta' => $id_venta[0]->id_venta])
                                                 ->get();
             $estado_venta = $this->Historial_model->select('ventas.estado')
-                                                  ->join('ventas','historial.id_venta = ventas.id_venta','left')
+                                                  ->join('ventas', 'historial.id_venta = ventas.id_venta', 'left')
                                                   ->where(['id_historial' => $this->input->post('id_historial')])
                                                   ->get();
-            if($estado_venta[0]->estado != 2 || $estado_venta[0]->estado != 3) {
+            if ($estado_venta[0]->estado != 2 || $estado_venta[0]->estado != 3) {
                 if ($pago_final[0]->pago_final) {
                     $huertos = $this->HuertosVentas_model->select('id_huerto, 3 AS vendido')
                                                         ->where(['id_venta' => $id_venta[0]->id_venta])
@@ -853,7 +912,7 @@ class Ajax extends CI_Controller
                 } else {
                     $this->Trans_model->commit();
                 }
-            }else{
+            } else {
                  echo "Error: No es posible actualizar una venta cancelada";
             }
         }
@@ -873,10 +932,10 @@ class Ajax extends CI_Controller
                 'estado' => 0,
             ];
             $estado_venta = $this->Historial_model->select('ventas.estado')
-                                                  ->join('ventas','historial.id_venta = ventas.id_venta','left')
+                                                  ->join('ventas', 'historial.id_venta = ventas.id_venta', 'left')
                                                   ->where(['id_historial' => $this->input->post('id_historial')])
                                                   ->get();
-            if($estado_venta[0]->estado != 2 || $estado_venta[0]->estado != 3) {
+            if ($estado_venta[0]->estado != 2 || $estado_venta[0]->estado != 3) {
                 $this->Trans_model->begin();
                 $n_updated_pago = $this->Historial_model->where(['id_historial' => $this->input->post('id_historial')])
                                     ->update($set_data)
@@ -963,10 +1022,10 @@ class Ajax extends CI_Controller
                 'id_lider' => $this->input->post('id_lider'),
             ];
             $estado_venta = $this->Historial_model->select('ventas.estado')
-                                                  ->join('ventas','historial.id_venta = ventas.id_venta','left')
+                                                  ->join('ventas', 'historial.id_venta = ventas.id_venta', 'left')
                                                   ->where(['id_historial' => $this->input->post('id_historial')])
                                                   ->get();
-            if($estado_venta[0]->estado != 2 || $estado_venta[0]->estado != 3) {
+            if ($estado_venta[0]->estado != 2 || $estado_venta[0]->estado != 3) {
                 $n_updated_pago = $this->Historial_model->where(['id_historial' => $this->input->post('id_historial')])
                                     ->update($set_data)
                                     ->affected_rows();
@@ -1059,7 +1118,8 @@ class Ajax extends CI_Controller
             echo json_encode($response);
         }
     }
-    public function autocomplete_saldos_clientes(){
+    public function autocomplete_saldos_clientes()
+    {
         header("Content-type: application/json; charset=utf-8");
         if ($this->input->get('query')) {
             $like = $this->input->get('query');
@@ -1089,8 +1149,8 @@ class Ajax extends CI_Controller
                         ventas.id_venta";
             //$clientes = $this->ion_auth->select("{$select},{$full_name} AS data, {$full_name} AS value")->where(["{$full_name} LIKE" => "%{$like}%",'active' => 1])->users('cliente')->result();
             $clientes = $this->Venta_model->select($select)
-                                          ->join('users','ventas.id_cliente = users.id','left')
-                                          ->join('historial','ventas.id_venta = historial.id_venta','left')
+                                          ->join('users', 'ventas.id_cliente = users.id', 'left')
+                                          ->join('historial', 'ventas.id_venta = historial.id_venta', 'left')
                                           ->where(['ventas.estado' => 2])
                                           ->where(["{$full_name} LIKE" => "%{$like}%",'users.active' => 1])
                                           ->group_by('ventas.id_venta')
@@ -1103,13 +1163,11 @@ class Ajax extends CI_Controller
                                                 ->where(['ventas.id_venta' => $cliente->id_venta])
                                                 ->get();
 
-                 $clientes[$key]->value = $clientes[$key]->value . ' - <strong>$' . number_format($clientes[$key]->pagado,2).'</strong>';
+                 $clientes[$key]->value = $clientes[$key]->value . ' - <strong>$' . number_format($clientes[$key]->pagado, 2).'</strong>';
                  $clientes[$key]->data = $clientes[$key]->data . ' - $' . number_format($clientes[$key]->pagado);
                 
                  $clientes[$key]->value = $clientes[$key]->value . ' - <strong>' . $descripcion[0]->descripcion.'</strong>';
                  $clientes[$key]->data = $clientes[$key]->data . ' - ' . $descripcion[0]->descripcion;
-
-                
             }
             $response = new stdClass();
             $response->suggestions = $clientes;
@@ -1165,7 +1223,7 @@ class Ajax extends CI_Controller
         if ($this->input->post("rowid")) {
             $this->cart->remove($this->input->post("rowid"));
         }
-        if($this->cart->total() == 0){
+        if ($this->cart->total() == 0) {
             $this->cart->destroy();
         }
         $this->show_cart();
@@ -1182,14 +1240,14 @@ class Ajax extends CI_Controller
             $obj = new stdClass();
             $obj->descripcion = $items["name"];
             $rowid = $items["rowid"];
-            if($items["price"] != 0){
+            if ($items["price"] != 0) {
                 $obj->btn = "<button class='btn btn-danger itemCartDelete' value='{$rowid}'><i class='fa fa-trash'></i></button>";
             }
             array_push($respuesta->huertos, $obj);
             $respuesta->enganche +=  $items["enganche"];
             $respuesta->abono +=  $items["abono"];
             
-            if(isset($items['id_reserva'])){
+            if (isset($items['id_reserva'])) {
                 $respuesta->is_reserva = true;
                 $respuesta->id_reserva = $items['id_reserva'];
                 $respuesta->id_lider = $items['id_lider'];
@@ -1283,7 +1341,7 @@ class Ajax extends CI_Controller
                             'id_huerto' => $huerto->id_huerto,
                             'id_manzana' => $huerto->id_manzana,
                             'manzana' => $huerto->manzana,
-                            'huerto' => $huerto->huerto,                            
+                            'huerto' => $huerto->huerto,
                         );
                         if ($key == 0) {
                             $data['price'] = (float) $precio;
@@ -1370,7 +1428,7 @@ class Ajax extends CI_Controller
                     $venta[$key]->detalles .= '<span class="label label-default">Cancelado</span>';
                 } elseif ($venta[$key]->estado == 3) {
                     $venta[$key]->detalles .= '<span class="label label-danger">Eliminado</span>';
-                } 
+                }
             }
             echo json_encode($venta[0]);
         }
@@ -1434,26 +1492,24 @@ class Ajax extends CI_Controller
                     $venta[$key]->detalles .= '<span class="label label-default">Cancelado</span>';
                 } elseif ($venta[$key]->estado == 3) {
                     $venta[$key]->detalles .= '<span class="label label-danger">Eliminado</span>';
-                } 
+                }
             }
             if ($this->Trans_model->status() === false) {
                 $this->Trans_model->rollback();
                 echo "<p>Error de transacción</p>";
-            }else{
-                if($huertos_updated == count($huertos)){
+            } else {
+                if ($huertos_updated == count($huertos)) {
                     $this->Trans_model->commit();
                     $venta[0]->status = 200;
                     $venta[0]->msg_status = "Ok";
                     echo json_encode($venta[0]);
-                }else{
+                } else {
                     $this->Trans_model->rollback();
                     $venta[0]->status = 400;
                     $venta[0]->msg_status = "Error, algún huerto ya ha sido reservado, verificar informacion";
                     echo json_encode($venta[0]);
                 }
-                
             }
-            
         }
     }
     public function eliminar_venta()
@@ -1471,13 +1527,13 @@ class Ajax extends CI_Controller
                               ->update(['estado' => 3]);
             $update = true;
             foreach ($huertos as $key => $huerto) {
-                if($huerto->vendido != 1){
+                if ($huerto->vendido != 1) {
                     $update = false;
                     break;
                 }
                 $huertos[$key]->vendido = 0;
             }
-            if($update){
+            if ($update) {
                 $this->Huerto_model->update_batch($huertos, 'id_huerto');
             }
             
@@ -1522,12 +1578,12 @@ class Ajax extends CI_Controller
                     $venta[$key]->detalles .= '<span class="label label-default">Cancelado</span>';
                 } elseif ($venta[$key]->estado == 3) {
                     $venta[$key]->detalles .= '<span class="label label-danger">Eliminado</span>';
-                } 
+                }
             }
             if ($this->Trans_model->status() === false) {
                 $this->Trans_model->rollback();
                 echo "<p>Error de transacción</p>";
-            }else{
+            } else {
                 $this->Trans_model->commit();
                 echo json_encode($venta[0]);
             }
@@ -1581,7 +1637,7 @@ class Ajax extends CI_Controller
                     $venta[$key]->detalles .= '<span class="label label-default">Cancelado</span>';
                 } elseif ($venta[$key]->estado == 3) {
                     $venta[$key]->detalles .= '<span class="label label-danger">Eliminado</span>';
-                } 
+                }
             }
             echo json_encode($venta[0]);
         }
@@ -1875,5 +1931,23 @@ class Ajax extends CI_Controller
             $this->form_validation->set_message('opingreso_check', 'Intenta actualizar una opcion de ingreso no existente.'); // set your message
             return false;
         }
+    }
+
+    public function uniqueop_check($a, $b){
+        $enganche = $this->input->post('enganche');
+        $abono = $this->input->post('abono');
+
+        $same_op = $this->Precio_model->from()->db      
+                                      ->where([
+                                                'enganche' => $enganche,
+                                                'abono' => $abono,
+                                                ])
+                                      ->count_all_results();
+        if($same_op){
+            $this->form_validation->set_message('uniqueop_check', 'El enganche y el abono que intenta ingresar ya han sido registrados*');
+            return false;
+        }else{
+            return true;
+        } 
     }
 }

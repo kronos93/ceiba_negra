@@ -1,3 +1,5 @@
+/*import Inputmask from 'inputmask';*/
+/**/
 module.exports = {
     autocompleteClientes: function(base_url) {
         var base = {
@@ -149,18 +151,18 @@ module.exports = {
             dateFormat: "dd-mm-yy"
         });
 
-        if (datepicker.val() == "") {
+        if (datepicker.val() === "") {
             datepicker.datepicker("setDate", new Date());
         }
     },
     format_numeric: function(action) {
-        if ($('.superficie').length) {
+        if ($('.superficie').length > 0) {
             $('.superficie').autoNumeric(action, {
                 currencySymbol: ' m\u00B2',
                 currencySymbolPlacement: 's'
             }); //Averiguar más del plugin para evitar menores a 0
         }
-        if ($(".currency").length) {
+        if ($(".currency").length > 0) {
             $(".currency").autoNumeric(action, {
                 currencySymbol: "$"
             });
@@ -220,5 +222,8 @@ module.exports = {
             $(target).show();
 
         });
+    },
+    tarjeta: function() {
+        Inputmask('0000-0000-0000-0000').mask('.tarjeta');
     }
 };

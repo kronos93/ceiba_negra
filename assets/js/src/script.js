@@ -1,29 +1,71 @@
+require('datatables.net-dt/css/jquery.dataTables.css');
+require('datatables.net-responsive-dt/css/responsive.dataTables.css');
+require('sweetalert/dist/sweetalert.css');
 import $ from 'jquery';
 import { base_url } from './utils/util';
 import './config';
+import { format_numeric } from './components/components'; //Temporal
+format_numeric('init'); //Temporal
+if ($('#mapplic').length > 0) {
+    //Mapplic funciona con JQuery > v. 3.0
+    require.ensure([], function(require) {
+        require('./mapplic');
+    });
+}
+//Import script para dt de manzanas
+if ($('#manzanas-table').length > 0) {
+    require.ensure([], function(require) {
+        require('./tables/manzanas');
+    });
+}
+//Import script para dt de huertos
+if ($('#huertos-table').length > 0) {
+    require.ensure([], function(require) {
+        require('./tables/huertos');
+    });
+}
+//Import script para dt de opciones de pago
+if ($('#opciones-pago-table').length > 0) {
+    require.ensure([], function(require) {
+        require('./tables/opciones_de_pago');
+    });
+}
+//Import script para dt de reservas eliminadas
+if ($('#reservas-eliminadas-table').length > 0) {
+    require.ensure([], function(require) {
+        require('./tables/reservas_eliminadas');
+    });
+}
+//Import script para dt de reservas reservas
+if ($('#reservas-table').length > 0) {
+    require.ensure([], function(require) {
+        require('./tables/reservas');
+    });
+}
+if ($('#users-table').length > 0) {
+    require.ensure([], function(require) {
+        require('./tables/usuarios');
+    });
+}
 
-import './mapplic';
-
-import './tables/manzanas';
-import './tables/huertos';
-import './tables/opciones_ingreso';
-import './tables/reservas';
-import './tables/reservas_eliminadas';
 if ($('#historial-ventas-table').length) {
     require.ensure([], function(require) {
         require('./tables/historial_ventas');
     });
 }
-
-
+if ($('#opciones-de-ingreso-table').length) {
+    require.ensure([], function(require) {
+        require('./tables/opciones_ingreso');
+    });
+}
 //Reacomodar
-import 'jquery-mask-plugin/dist/jquery.mask';
-import { phone } from './components/components.js';
-phone();
-import './tables/pagos';
-import './tables/usuarios';
+/*import 'jquery-mask-plugin/dist/jquery.mask';
+import { phone } from './components/components.js';*/
+/*phone();*/
+/*import './tables/pagos';
+ */
 
-if ($('#frm-venta').length) {
+/*if ($('#frm-venta').length) {
     require.ensure([], function(require) {
         require("./venta.js");
     });
@@ -51,7 +93,7 @@ if ($('#comisiones-per-lider-table').length) {
     require.ensure([], function(require) {
         require('./tables/comisiones_per_lider.js');
     });
-}
+}*/
 if (module.hot) {
     module.hot.accept();
 }

@@ -8,7 +8,10 @@
 					<button  data-toggle="modal" data-target="#opcionDeIngresoModal" data-title="Añadir opción de ingreso" data-btn-type="add" class="btn btn-success pull-right"><i class="fa fa-plus"></i></button> <div class="clearfix"></div>
 					<?php endif ?>
 				</legend>
-				<table id="opciones-de-ingreso-table" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
+				<ul class="nav nav-tabs">
+					 <li role="presentation" class="active"><a href="#">Total: <span class="badge" id="total-op-ingresos">0</span></a></li>
+				</ul>
+				<table id="opciones-de-ingreso-table" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
 					<thead>
 						<tr>
 							<th data-visible="false">Id. opción de ingreso</th>					
@@ -16,13 +19,15 @@
 							<th>Cuenta</th>
 							<th>Tarjeta</th>		
 							<th>Ingreso</th>					
-							<th <?= ($this->ion_auth->in_group('administrador')) ? 'class="all"' : 'data-visible="false"' ?>>Opciones</th>	                
+							<th <?= ($this->ion_auth->in_group('administrador')) ? 'class="all"' : 'data-visible="false"' ?>>Opciones</th>
 						</tr>
-					</thead>
+					</thead>	
+					<tbody></tbody>				
 				</table>
 			</div>
 		</div>
 	</div>
+	<div id="total-op-pago"></div>
 </main>
 <?php if($this->ion_auth->in_group('administrador')): ?>
 <div class="modal fade" id="opcionDeIngresoModal" tabindex="-1" role="dialog" aria-labelledby="opcionDeIngresoModal" aria-hidden="true">
@@ -42,11 +47,11 @@
 							</div>
 							<div class="form-group col-xs-12 col-sm-6">
 								<label class="required" for="cuenta">Cuenta:</label>
-								<input type="number" class="form-control" id="cuenta" name="cuenta" min="1" placeholder="23700524891" required />
+								<input type="text" class="form-control cuenta-banco" id="cuenta" name="cuenta" min="1" placeholder="000-0000-0000" required />
 							</div>
 							<div class="form-group col-xs-12 col-sm-6">
 								<label class="required" for="tarjeta">Tarjeta:</label>
-								<input type="number" class="form-control tarjeta" id="tarjeta" min="1" name="tarjeta" placeholder="5579209088642019" required />
+								<input type="text" class="form-control tarjeta" id="tarjeta" min="1" name="tarjeta" placeholder="0000-0000-0000-0000" required />
 							</div>													  			
 						</div>						
 					</div>	

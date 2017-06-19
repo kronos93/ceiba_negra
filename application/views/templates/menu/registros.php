@@ -7,7 +7,8 @@
             <!-- Links para nuevos registros -->
             <li><a href="<?= base_url() ?>registros/manzanas">Mazanas</a></li>
             <li><a href="<?= base_url() ?>registros/huertos">Huertos</a></li>
-            <li><a href="<?= base_url() ?>registros/reservas_eliminadas">Reservas eliminadas</a></li>
+            <li><a href="<?= base_url() ?>registros/opciones_de_pago">Opciones de pago</a></li>
+            <li><a href="<?= base_url() ?>registros/reservas_vencidas">Reservas vencidas</a></li>
         </ul>
     </li>
     <?php if ($this->ion_auth->in_group(['administrador','miembro'])) : ?>

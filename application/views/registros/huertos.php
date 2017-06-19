@@ -79,7 +79,7 @@
 							    <input type="text" class="form-control autoNumeric currency" id="precio" name="precio" placeholder="0" value="$ 0.00" readonly required/>							
                             </div>
 							<div class="form-group col-xs-12 col-sm-12">
-								<label class="required" for="precio">Precio:</label>
+								<label class="required" for="precio">Opciones de pago:</label>
 									<select class="form-control" name="id_precio" id="id_precio" required >
 										<?php foreach ($precios as $precio) { ?>
 										<option value="<?= $precio->id_precio ?>">Enganche: $<?= number_format($precio->enganche,2) ?> - Abono: $<?= number_format($precio->abono,2) ?></option>

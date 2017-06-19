@@ -1,8 +1,12 @@
+import '../configs/datatables';
 import { base_url, ajax_msg } from '../utils/util';
 import GenericFrm from '../GenericFrm';
 //MANZANAS
 //Estructura de Datatable para las Manzanas (La tabla de vista)
 var manzanas_table = $('#manzanas-table').DataTable({
+    /*"processing": true,
+    "serverSide": true,
+    "pageLength": 25,*/
     "ajax": base_url() + 'ajax/get_manzanas', //URL de datos
     "columns": [ //Atributos para la tabla
         {

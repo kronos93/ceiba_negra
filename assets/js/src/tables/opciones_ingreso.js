@@ -1,5 +1,8 @@
+import '../configs/datatables';
+/*import AutoNumeric from 'AutoNumeric/dist/AutoNumeric';*/
 import { base_url, ajax_msg } from '../utils/util';
 import GenericFrm from '../GenericFrm';
+import Inputmask from 'inputmask';
 //OPCIONES DE INGRESO
 var opciones_de_ingreso_table = $('#opciones-de-ingreso-table').DataTable({
     "ajax": base_url() + 'ajax/get_opciones_de_ingreso',
@@ -12,9 +15,10 @@ var opciones_de_ingreso_table = $('#opciones-de-ingreso-table').DataTable({
                 if (parseInt(data) === 0) {
                     return '';
                 } else {
-                    return data;
+                    return Inputmask.format(data, { alias: "999-9999-9999" });
                 }
-            }
+            },
+            className: "cuenta-banco"
         },
         {
             "data": "tarjeta",
@@ -22,7 +26,7 @@ var opciones_de_ingreso_table = $('#opciones-de-ingreso-table').DataTable({
                 if (parseInt(data) === 0) {
                     return '';
                 } else {
-                    return data;
+                    return Inputmask.format(data, { alias: "9999-9999-9999-9999" });
                 }
             }
         },
@@ -51,6 +55,11 @@ var opciones_de_ingreso_table = $('#opciones-de-ingreso-table').DataTable({
             "targets": [1, 5]
         },
     ],
+    initComplete: function() {
+        let api = this.api();
+        let total = api.column(4).data().sum();
+        $('#total-op-ingresos').text(total).autoNumeric('init', { currencySymbol: "$" });
+    },
 });
 
 $('#opcionDeIngresoModal').on('show.bs.modal', function(e) {
@@ -61,7 +70,6 @@ $('#opcionDeIngresoModal').on('show.bs.modal', function(e) {
     var btnType = button.data('btnType');
     var modal = $(this);
     modal.find('.model-title').html(title);
-
     var config = {
         'frm': '#frm-opcion-ingreso',
         'urls': { 'edit': 'ajax/update_opcion_ingreso', 'add': 'ajax/add_opcion_ingreso' },
