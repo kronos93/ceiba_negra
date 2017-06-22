@@ -1,7 +1,9 @@
 require('datatables.net-dt/css/jquery.dataTables.css');
 require('datatables.net-responsive-dt/css/responsive.dataTables.css');
 require('sweetalert/dist/sweetalert.css');
+
 import $ from 'jquery';
+
 import { base_url } from './utils/util';
 import './config';
 import { format_numeric } from './components/components'; //Temporal
@@ -42,6 +44,13 @@ if ($('#reservas-table').length > 0) {
         require('./tables/reservas');
     });
 }
+//Import script para dt de ingresos /bancos/caja
+if ($('#historial-ingresos-table').length > 0) {
+
+    require.ensure([], function(require) {
+        require('./tables/historial_ingresos');
+    });
+}
 if ($('#users-table').length > 0) {
     require.ensure([], function(require) {
         require('./tables/usuarios');
@@ -59,7 +68,7 @@ if ($('#opciones-de-ingreso-table').length) {
     });
 }
 //Reacomodar
-/*import 'jquery-mask-plugin/dist/jquery.mask';
+/*
 import { phone } from './components/components.js';*/
 /*phone();*/
 /*import './tables/pagos';
@@ -82,13 +91,7 @@ if ($('#shopCartSale').length) {
         cart.get();
     });
 }
-if ($('#historial-ingresos-table').length) {
-    require.ensure([], function(require) {
-        require('./tables/historial_ingresos');
-        var components = require('./components/components.js');
-        components.datepicker();
-    });
-}
+
 if ($('#comisiones-per-lider-table').length) {
     require.ensure([], function(require) {
         require('./tables/comisiones_per_lider.js');

@@ -148,7 +148,7 @@ $.extend(true, $.fn.dataTable.defaults, {
  *    $('#example').DataTable();
  */
 
-/*(function($) {
+(function($) {
 
     $.fn.dataTable.moment = function(format, locale) {
         var types = $.fn.dataTable.ext.type;
@@ -173,7 +173,7 @@ $.extend(true, $.fn.dataTable.defaults, {
         };
     };
 
-}(jQuery));*/
+}(jQuery));
 
 /* Custom filtering function which will search data in column four between two values */
 /*$.fn.dataTable.ext.search.push(

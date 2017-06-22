@@ -5,7 +5,7 @@
 				<legend>
 					Ingresos
 				</legend>
-                <form action="<?= base_url(); ?>registros/ingresos/<?= $id ?>" method="get">
+                <form id="frm-filter-ingreso" action="<?= base_url(); ?>registros/ingresos/<?= $name ?>/<?= $id ?>" method="get">
                     <div class="row row-equal">
                         <div class="form-group col-xs-12 col-sm-3">
                             <label class="" >Fecha inical:</label>
@@ -15,17 +15,19 @@
                             <label class="" >Fecha final:</label>
                             <input type="text" name="end_date" id="end_date" class="form-control datepicker" value="<?= isset($end_date) ? $end_date->format('d-m-Y') : '' ?>" required/>
                        </div>
-                       <div class="form-group col-xs-12 col-sm-3">
+                       <div class="form-group col-xs-12 col-sm-1">
                             <input type="submit" value="Filtrar" class="btn btn-primary"/>
                        </div>
-                        </div>
+                       <div class="form-group col-xs-12 col-sm-2">
+                            <a class="btn btn-success" href="<?= base_url(); ?>registros/ingresos/<?= $name ?>/<?= $id ?>/<?= $init_date->format('d-m-Y'); ?>/<?= $end_date->format('d-m-Y') ?>/download_excel" target="_blank">Descargar Excel</a>
+                       </div>
+                    </div>
                    <div class="clearfix"></div>
                 </form>
                 
-				<table id="historial-ingresos-table" class="table">
+				<table id="historial-ingresos-table" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
 					<thead>
-						<tr>
-                            <!--<th>ID</th>	-->								
+						<tr>							
 							<th class="all">Nombre </th>	
                             <th>Fecha de ingreso / pago</th>
                             <th>Ingreso</th>

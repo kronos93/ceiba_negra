@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e8ddad783525a7a2d88b56b8c0f51e43",
+    "content-hash": "fdfdff6e17284a0feac7549d339de68e",
     "packages": [
         {
             "name": "clue/stream-filter",
@@ -665,16 +665,16 @@
         },
         {
             "name": "maatwebsite/excel",
-            "version": "2.1.17",
+            "version": "2.1.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Maatwebsite/Laravel-Excel.git",
-                "reference": "14d5abf8e20563c80dd074fd7c8cf1c05bf51f1d"
+                "reference": "a43db59e621e8e8d72321e885d1610509cc7b096"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Maatwebsite/Laravel-Excel/zipball/14d5abf8e20563c80dd074fd7c8cf1c05bf51f1d",
-                "reference": "14d5abf8e20563c80dd074fd7c8cf1c05bf51f1d",
+                "url": "https://api.github.com/repos/Maatwebsite/Laravel-Excel/zipball/a43db59e621e8e8d72321e885d1610509cc7b096",
+                "reference": "a43db59e621e8e8d72321e885d1610509cc7b096",
                 "shasum": ""
             },
             "require": {
@@ -701,6 +701,16 @@
                 "illuminate/view": "5.0.*|5.1.*|5.2.*|5.3.*|5.4.*"
             },
             "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Maatwebsite\\Excel\\ExcelServiceProvider"
+                    ],
+                    "aliases": {
+                        "Excel": "Maatwebsite\\Excel\\Facades\\Excel"
+                    }
+                }
+            },
             "autoload": {
                 "classmap": [
                     "src/Maatwebsite/Excel"
@@ -729,20 +739,20 @@
                 "import",
                 "laravel"
             ],
-            "time": "2017-04-04T18:28:12+00:00"
+            "time": "2017-06-21T20:39:34+00:00"
         },
         {
             "name": "mailgun/mailgun-php",
-            "version": "v2.3.3",
+            "version": "2.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mailgun/mailgun-php.git",
-                "reference": "dd591edb3c18b10c6c6af75b432af296c4086fd0"
+                "reference": "f58c5914aefa16fa6ed2b5cf9ee84d40cbda1b3a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mailgun/mailgun-php/zipball/dd591edb3c18b10c6c6af75b432af296c4086fd0",
-                "reference": "dd591edb3c18b10c6c6af75b432af296c4086fd0",
+                "url": "https://api.github.com/repos/mailgun/mailgun-php/zipball/f58c5914aefa16fa6ed2b5cf9ee84d40cbda1b3a",
+                "reference": "f58c5914aefa16fa6ed2b5cf9ee84d40cbda1b3a",
                 "shasum": ""
             },
             "require": {
@@ -776,7 +786,7 @@
                 }
             ],
             "description": "The Mailgun SDK provides methods for all API functions.",
-            "time": "2017-06-03T08:39:37+00:00"
+            "time": "2017-06-20T19:56:09+00:00"
         },
         {
             "name": "mailin-api/mailin-api-php",

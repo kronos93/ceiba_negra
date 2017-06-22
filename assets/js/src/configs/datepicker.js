@@ -1,3 +1,4 @@
+ import 'jquery-ui/ui/widgets/datepicker';
  $.datepicker.regional['es'] = {
      closeText: 'Cerrar',
      prevText: '< Ant',

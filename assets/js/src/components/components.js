@@ -1,5 +1,3 @@
-/*import Inputmask from 'inputmask';*/
-/**/
 module.exports = {
     autocompleteClientes: function(base_url) {
         var base = {

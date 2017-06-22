@@ -21,7 +21,7 @@
             <li role="separator" class="divider"></li>
             <?php endif;?>
             <?php if ($this->ion_auth->in_group('administrador')) : ?>
-            <li><a href="<?= base_url() ?>registros/opciones_de_ingreso">Ingresos</a></li>
+            <li><a href="<?= base_url() ?>registros/ingresos">Ingresos</a></li>
             <li><a href="<?= base_url() ?>registros/comisiones">Comisiones</a></li>
             <?php endif;?>
         </ul>

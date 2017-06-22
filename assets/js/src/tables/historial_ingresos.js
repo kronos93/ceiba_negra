@@ -1,5 +1,9 @@
-import moment from 'moment';
 import '../configs/datatables';
+import 'jquery-mask-plugin/dist/jquery.mask';
+import '../configs/datepicker';
+import moment from 'moment';
+import { datepicker } from '../components/components';
+datepicker();
 $.fn.dataTable.moment('DD-MM-YYYY');
 $('#historial-ingresos-table').DataTable({
     columnDefs: [ //
@@ -17,7 +21,14 @@ $('#historial-ingresos-table').DataTable({
         [1, "asc"]
     ],
 });
+$('#frm-filter-ingreso').on('submit', function(e) {
+    e.preventDefault();
+    let init_date = $('#init_date').val();
+    let end_date = $('#end_date').val();
+    let url = this.action;
+    window.location.href = url + '/' + init_date + '/' + end_date;
 
+});
 $('a[data-toggle=popover]').popover({
     'html': true,
     trigger: 'manual'

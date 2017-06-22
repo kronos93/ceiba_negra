@@ -38,8 +38,9 @@ var opciones_de_ingreso_table = $('#opciones-de-ingreso-table').DataTable({
         {
             "data": "",
             "render": function(data, type, full, meta) {
+                //full.id_opcion_ingreso
                 var btnEditar = '<button data-toggle="modal" data-title="Editar opción de ingreso" data-btn-type="edit" data-target="#opcionDeIngresoModal" class="btn btn-info btn-sm pull-right"><i class="fa fa-fw fa-pencil"></i> Editar</button>';
-                var btnShowIngresos = '<a href="ingresos/' + full.id_opcion_ingreso + '" class="btn btn-success btn-sm "><i class="fa fa-fw fa-search"></i>Ver ingresos<a/>';
+                var btnShowIngresos = '<a href="' + base_url() + 'registros/ingresos/' + full.nombre.toLowerCase() + '/' + full.id_opcion_ingreso + '" data-index="' + full.id_opcion_ingreso + '" class="btn btn-success btn-sm go-to-ingreso"><i class="fa fa-fw fa-search"></i>Ver detalles de ingreso</a>';
                 if (full.id_opcion_ingreso === 1 || full.nombre === 'CAJA') {
                     return btnShowIngresos;
                 } else {
@@ -61,6 +62,10 @@ var opciones_de_ingreso_table = $('#opciones-de-ingreso-table').DataTable({
         $('#total-op-ingresos').text(total).autoNumeric('init', { currencySymbol: "$" });
     },
 });
+/*$('#opciones-de-ingreso-table').on('click', '.go-to-ingreso', function(e) {
+    e.preventDefault();
+    console.log(this);
+});*/
 
 $('#opcionDeIngresoModal').on('show.bs.modal', function(e) {
     //Ocultar mensajes de la caja AJAX

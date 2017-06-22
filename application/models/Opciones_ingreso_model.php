@@ -42,4 +42,8 @@ class Opciones_ingreso_model extends CI_Model {
     public function affected_rows() {
         return $this->db->affected_rows();
     }
+    public function from(){
+        $this->db->from($this->table);
+        return $this;
+    }
 }
