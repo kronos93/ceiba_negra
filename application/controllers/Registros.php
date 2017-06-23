@@ -93,13 +93,21 @@ class Registros extends CI_Controller
                                                                         historial.pago, 
                                                                         historial.penalizacion,
                                                                         historial.comision, 
-                                                                        DATE_FORMAT(historial.fecha_pago,"%d-%m-%Y") AS fecha_pago')
+                                                                        DATE_FORMAT(historial.fecha_pago,"%d-%m-%Y") AS fecha_pago,
+                                                                        GROUP_CONCAT(DISTINCT manzanas.manzana ORDER BY  manzanas.manzana ASC) as manzanas, 
+                                                                        GROUP_CONCAT("Mz. ",manzanas.manzana, " Ht. ", huertos.huerto ORDER BY  manzanas.manzana ASC) as descripcion ')
                                                                 ->join('ventas', 'historial.id_venta = ventas.id_venta', 'left')
                                                                 ->join('users', 'ventas.id_cliente = users.id', 'left')
                                                                 ->join('opciones_ingreso', 'historial.id_ingreso = opciones_ingreso.id_opcion_ingreso', 'left')
+                                                                
+                                                                ->join('huertos_ventas', 'ventas.id_venta = huertos_ventas.id_venta', 'left')
+                                                                ->join('huertos', 'huertos_ventas.id_huerto = huertos.id_huerto', 'left')
+                                                                ->join('manzanas', 'huertos.id_manzana = manzanas.id_manzana', 'left')
+                                                                
                                                                 ->where(['historial.id_ingreso' => $id,"ventas.estado !=" => 3])
                                                                 ->where("historial.fecha_pago BETWEEN '{$data['init_date']->format('Y-m-d')}' AND '{$data['end_date']->format('Y-m-d')}'")
                                                                 ->order_by('historial.fecha_pago ASC,historial.id_historial ASC')
+                                                                ->group_by('historial.id_historial')
                                                                 ->get();
                 } else {
                     $data['ingresos'] = $this->Historial_model->select('
@@ -169,7 +177,17 @@ class Registros extends CI_Controller
                     $objDrawing = new PHPExcel_Worksheet_Drawing();
                     $objDrawing->setName('Logo');
                     $objDrawing->setDescription('Logo');
-                    $logo = dirname(__FILE__) . '\..\..\assets\img\logos\logo.png'; // Provide path to your logo file
+                    
+                    try{
+                        $logo = dirname(__FILE__) . '/../../assets/img/logos/logo.png'; // Provide path to your logo file
+                    } 
+                    catch(Exception $e){
+                        $logo = dirname(__FILE__) . '\..\..\assets\img\logos\logo.png'; // Provide path to your logo file
+                    }
+                    catch (Exception $e) {
+                        echo 'Excepción capturada: ',  $e->getMessage(), "\n";
+                    }
+                    
                     $objDrawing->setPath($logo);
                     /*$objDrawing->setOffsetX(8);    // setOffsetX works properly
                     $objDrawing->setOffsetY(300);  //setOffsetY has no effect*/
@@ -188,6 +206,9 @@ class Registros extends CI_Controller
 
                     $i = 9;
                     $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+                    $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+                    $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+                    $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);                    
                     $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
                     $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
                     $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
@@ -195,6 +216,8 @@ class Registros extends CI_Controller
                     $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
                     $objPHPExcel->getActiveSheet()->setCellValue("A{$i}", "Fecha");
                     $objPHPExcel->getActiveSheet()->setCellValue("B{$i}", "Contrato");
+                    $objPHPExcel->getActiveSheet()->setCellValue("C{$i}", "Manzanas");
+                    $objPHPExcel->getActiveSheet()->setCellValue("D{$i}", "Huertos/Descripción");
                     $objPHPExcel->getActiveSheet()->setCellValue("E{$i}", "Nombre del cliente");
                     $objPHPExcel->getActiveSheet()->setCellValue("F{$i}", "Importe");
                     $objPHPExcel->getActiveSheet()->setCellValue("G{$i}", "Comisión");
@@ -205,6 +228,8 @@ class Registros extends CI_Controller
                         $i++;
                         $objPHPExcel->getActiveSheet()->setCellValue("A{$i}", $ingreso->fecha_pago);
                         $objPHPExcel->getActiveSheet()->setCellValue("B{$i}", $this->getInitials($ingreso->nombre_cliente).'-'.$ingreso->id_venta);
+                        $objPHPExcel->getActiveSheet()->setCellValue("C{$i}", $ingreso->manzanas);
+                        $objPHPExcel->getActiveSheet()->setCellValue("D{$i}", $ingreso->descripcion);
                         $objPHPExcel->getActiveSheet()->setCellValue("E{$i}", $ingreso->nombre_cliente);
                         $objPHPExcel->getActiveSheet()->setCellValue("F{$i}", $ingreso->pago);
                         $objPHPExcel->getActiveSheet()->getStyle("F{$i}")->getNumberFormat()

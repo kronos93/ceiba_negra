@@ -20,7 +20,6 @@
         "phpmailer/phpmailer": "^5.2",
         "dompdf/dompdf": "^0.8.0",
         "mailin-api/mailin-api-php": "^1.0",
-        "maatwebsite/excel": "^2.1",
         "phpoffice/phpexcel": "^1.8"
     },
     "suggest": {

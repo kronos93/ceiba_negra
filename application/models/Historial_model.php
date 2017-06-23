@@ -54,4 +54,8 @@ class Historial_model extends CI_Model {
     public function insert_batch($data) {
         $this->db->insert_batch($this->table, $data);
     }
+    public function group_by($group){
+        $this->db->group_by($group);
+        return $this;
+    }
 }
