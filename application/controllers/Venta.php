@@ -1063,3 +1063,10 @@ class Historial
         return $this->fecha_ultimo_pago;
     }
 }
+/*
+    SELECT GROUP_CONCAT(DISTINCT manzanas.manzana ORDER BY  manzanas.manzana ASC) as manzanas, GROUP_CONCAT("Mz. ",manzanas.manzana, " Ht. ", huertos.huerto ORDER BY  manzanas.manzana ASC) as descripcion FROM ventas
+    LEFT JOIN huertos_ventas ON ventas.id_venta = huertos_ventas.id_venta
+    LEFT JOIN huertos ON huertos_ventas.id_huerto = huertos.id_huerto
+    LEFT JOIN manzanas ON huertos.id_manzana = manzanas.id_manzana
+    WHERE ventas.id_venta = 3;
+*/

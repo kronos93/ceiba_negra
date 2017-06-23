@@ -89,6 +89,7 @@ class Registros extends CI_Controller
                     $data['ingresos'] = $this->Historial_model->select('CONCAT(users.first_name, " ", users.last_name) as nombre_cliente,
                                                                         opciones_ingreso.nombre,
                                                                         historial.id_historial, 
+                                                                        historial.id_venta, 
                                                                         historial.pago, 
                                                                         historial.penalizacion,
                                                                         historial.comision, 
@@ -105,6 +106,7 @@ class Registros extends CI_Controller
                                                                         CONCAT(users.first_name, " ", users.last_name) as nombre_cliente,
                                                                         opciones_ingreso.nombre,
                                                                         historial.id_historial, 
+                                                                        historial.id_venta, 
                                                                         historial.pago, 
                                                                         historial.penalizacion,
                                                                         historial.comision, 
@@ -192,6 +194,7 @@ class Registros extends CI_Controller
                     $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
                     $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
                     $objPHPExcel->getActiveSheet()->setCellValue("A{$i}", "Fecha");
+                    $objPHPExcel->getActiveSheet()->setCellValue("B{$i}", "Contrato");
                     $objPHPExcel->getActiveSheet()->setCellValue("E{$i}", "Nombre del cliente");
                     $objPHPExcel->getActiveSheet()->setCellValue("F{$i}", "Importe");
                     $objPHPExcel->getActiveSheet()->setCellValue("G{$i}", "Comisión");
@@ -201,7 +204,7 @@ class Registros extends CI_Controller
                     foreach ($data['ingresos'] as $ingreso) {
                         $i++;
                         $objPHPExcel->getActiveSheet()->setCellValue("A{$i}", $ingreso->fecha_pago);
-                        
+                        $objPHPExcel->getActiveSheet()->setCellValue("B{$i}", $this->getInitials($ingreso->nombre_cliente).'-'.$ingreso->id_venta);
                         $objPHPExcel->getActiveSheet()->setCellValue("E{$i}", $ingreso->nombre_cliente);
                         $objPHPExcel->getActiveSheet()->setCellValue("F{$i}", $ingreso->pago);
                         $objPHPExcel->getActiveSheet()->getStyle("F{$i}")->getNumberFormat()
@@ -370,5 +373,15 @@ class Registros extends CI_Controller
         header ('Pragma: public'); // HTTP/1.0
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
         $objWriter->save('php://output');
+    }
+    public function getInitials($name){
+        //split name using spaces
+        $words=explode(" ",trim($name));
+        $inits='';
+        //loop through array extracting initial letters
+            foreach($words as $word){
+            $inits.=strtoupper(substr($word,0,1));
+            }
+        return $inits;	
     }
 }
