@@ -144,7 +144,7 @@ class Reportes extends CI_Controller
         ini_set('max_execution_time', 300);
         set_time_limit(300);
         $condicion = ['historial.id_venta' => $id];
-        $historials = $this->Historial_model ->select("historial.abono,historial.concepto,historial.fecha,CONCAT(users.first_name,' ',users.last_name) as nombre_cliente,  ventas.version")
+        $historials = $this->Historial_model->select("historial.abono,historial.concepto,historial.fecha,CONCAT(users.first_name,' ',users.last_name) as nombre_cliente,  ventas.version")
                                             ->join('ventas', 'historial.id_venta = ventas.id_venta', 'left')
                                             ->join('users', 'ventas.id_cliente = users.id', 'left')
                                             ->where($condicion)
@@ -275,5 +275,106 @@ class Reportes extends CI_Controller
             // Output the generated PDF to Browser
             $dompdf->stream("Recibos-{$nombre_cliente}", array('Attachment'=>1));
         }
+    }
+    public function estado_de_cuenta($id){
+        $historials = $this->Historial_model->from()->db
+                                            ->where(['id_venta' => $id])
+                                            ->get()
+                                            ->result();
+        $venta = $this->Venta_model->from()->db
+                                     ->select("CONCAT(users.first_name, ' ', users.last_name) AS nombre_cliente, ventas.id_venta")
+                                     ->join('users','ventas.id_cliente = users.id','left')
+                                     ->where(['id_venta' => $id])
+                                     
+                                     ->get()
+                                     ->result();
+
+        $venta = array_pop($venta);
+        $objPHPExcel = new PHPExcel();
+                   
+        $creator = base_url();
+        $lastModifiedBy = base_url();
+        $styleArray = [
+            'font' => [
+                'bold' => true,
+                'size' => 14
+            ]
+        ];
+        // Set document properties
+        $objPHPExcel->getProperties()
+                        ->setCreator($creator)
+                        ->setLastModifiedBy($lastModifiedBy)
+                        ->setTitle("")
+                        ->setSubject("")
+                        ->setDescription("")
+                        ->setKeywords("")
+                        ->setCategory("");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial');
+        $objPHPExcel->getDefaultStyle()->getFont()->setSize(12);
+        // Add some data
+        $objPHPExcel->setActiveSheetIndex(0)
+        ->setCellValue('C3', 'HUERTOS LA CEIBA')
+        ->setCellValue('C4', 'ESTADO DE CUENTA')
+        ->setCellValue('A7', 'Cliente: '.$venta->nombre_cliente)
+        ->setCellValue('A8', 'Contrato: '.$this->utils->getInitials($venta->nombre_cliente).'-'.$venta->id_venta)
+        ->setCellValue('E7', 'Fecha de emisión: '.Carbon::today()->format('d-m-Y'))
+        /*
+        ->setCellValue('E5', 'INFORMDE DE: '.$ingreso->nombre)
+        ->setCellValue('F6', 'Fecha')
+        ->setCellValue('G6', $init_date)
+        ->setCellValue('H6', 'al')
+        ->setCellValue('I6', $end_date)*/;
+        $objPHPExcel->setActiveSheetIndex(0)->getStyle('C3:C4')->applyFromArray($styleArray);
+        /*$objPHPExcel->setActiveSheetIndex(0)->getStyle('F6')->applyFromArray($styleArray);
+        $objPHPExcel->setActiveSheetIndex(0)->getStyle('H6')->applyFromArray($styleArray);*/
+        //Draw logo
+        $objDrawing = new PHPExcel_Worksheet_Drawing();
+        $objDrawing->setName('Logo');
+        $objDrawing->setDescription('Logo');
+        
+        try{
+            $logo = dirname(__FILE__) . '/../../assets/img/logos/logo.png'; // Provide path to your logo file
+        } 
+        catch(Exception $e){
+            $logo = dirname(__FILE__) . '\..\..\assets\img\logos\logo.png'; // Provide path to your logo file
+        }
+        catch (Exception $e) {
+            echo 'Excepción capturada: ',  $e->getMessage(), "\n";
+        }
+        
+        $objDrawing->setPath($logo);
+        /*$objDrawing->setOffsetX(8);    // setOffsetX works properly
+        $objDrawing->setOffsetY(300);  //setOffsetY has no effect*/
+        $objDrawing->setCoordinates('A1');
+        $objDrawing->setHeight(90); // logo height
+        $objDrawing->setOffsetX(8);
+        $objDrawing->getShadow()->setVisible(true);
+        $objDrawing->getShadow()->setDirection(45);
+        $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+
+        // Rename worksheet
+        $objPHPExcel->getActiveSheet()->setTitle('Informe-');
+        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+
+        
+        // Redirect output to a client’s web browser (Excel5)
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="Informe-'.'.xls"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        // If you're serving to IE over SSL, then the following may be needed
+        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header ('Pragma: public'); // HTTP/1.0
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+        $objWriter->save('php://output');
+                
     }
 }

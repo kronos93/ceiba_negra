@@ -14,6 +14,10 @@ class Venta_model extends CI_Model {
         $query = $this->db->get();
         return $query->result();
     }
+    public function from(){
+        $this->db->from($this->table);
+        return $this;
+    }
     public function select($select){
         $this->db->select($select);
         return $this;

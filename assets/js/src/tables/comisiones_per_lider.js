@@ -1,4 +1,5 @@
 import { base_url } from '../utils/util';
+import '../configs/datatables';
 var huertos_table = $('#comisiones-per-lider-table').DataTable({
     "ajax": base_url() + 'ajax/get_comision_per_lider',
     "columns": [ //Atributos para la tabla

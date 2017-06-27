@@ -1,5 +1,5 @@
 import { base_url } from '../utils/util';
-
+import '../configs/datatables';
 
 $(document).ready(function() {
     var table = $('#example').DataTable();
@@ -39,7 +39,8 @@ var historial_ventas_table = $('#historial-ventas-table').DataTable({
             "type": "num-fmt",
         },
         { "data": "nombre_lider" },
-        { "data": "nombre_user" }, {
+        { "data": "nombre_user" },
+        {
             "data": "",
             "render": function(data, type, full, meta) {
                 if (full.estado != null && full.estado != undefined && full.estado != "" &&
@@ -50,6 +51,7 @@ var historial_ventas_table = $('#historial-ventas-table').DataTable({
                     var contrato = '<a href="' + base_url() + 'reportes/contrato/' + full.id_venta + '" class="btn btn-default" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> contrato</a>';
                     var pagare_recibo = '<a href="' + base_url() + 'reportes/' + ((full.version == 2) ? 'pagares' : 'recibos') + '/' + full.id_venta + '" class="btn btn-primary" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> ' + ((full.version == 2) ? 'pagares' : 'recibos') + '</a>';
                     var pagos = '<a href="' + base_url() + 'registros/pagos/' + full.id_venta + '" target="_blank" class="btn btn-info"><i class="fa fa-fw fa-eye"></i>pagos</a>';
+                    var estado_cta = '<a href="' + base_url() + 'registros/pagos/' + full.id_venta + '" target="_blank" class="btn btn-info">Estado de cta.</a>';
                     var cancelar = '';
                     var restablecer = '';
                     var eliminar = '';
@@ -68,9 +70,9 @@ var historial_ventas_table = $('#historial-ventas-table').DataTable({
                         pagos = '';
 
                     }
-                    return contrato + ' ' + pagare_recibo + ' ' + pagos + ' ' + cancelar + ' ' + restablecer + ' ' + eliminar + ' ' + recuperar;
+                    return contrato + ' ' + estado_cta + ' ' + pagare_recibo + ' ' + pagos + ' ' + cancelar + ' ' + restablecer + ' ' + eliminar + ' ' + recuperar;
                 } else {
-                    console.log("Return data");
+
                     return data;
                 }
 

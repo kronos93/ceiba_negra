@@ -12,6 +12,10 @@ class Historial_model extends CI_Model {
         $query = $this->db->get();
         return $query->result();
     }
+    public function from(){
+        $this->db->from($this->table);
+        return $this;
+    }
     public function getArray(){       
         $this->db->from($this->table);        
         $query = $this->db->get();

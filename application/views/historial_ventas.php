@@ -109,6 +109,7 @@
                                 
                                 ?>
                                     <a href="<?= base_url(); ?>reportes/contrato/<?= $venta->id_venta; ?>" class="btn btn-default" target=""><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Contrato</a>
+                                    <a href="<?= base_url(); ?>reportes/estado_de_cuenta/<?= $venta->id_venta; ?>" target="_blank" class="btn btn-info">Estado de cta.</a>
                                     <a href="<?= base_url(); ?>reportes/<?= ($venta->version == 2) ? 'pagares' : 'recibos'?>/<?= $venta->id_venta; ?>" class="btn btn-primary"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> <?= ($venta->version == 2) ? ' Pagarés' : ' Recibos'?></a>
                                     <a href="<?= base_url() ?>registros/pagos/<?= $venta->id_venta; ?>" target="_blank" class="btn btn-info"><i class="fa fa-fw fa-eye"></i> Pagos</a>
                                     <?php

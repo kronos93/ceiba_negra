@@ -57,14 +57,19 @@ if ($('#users-table').length > 0) {
     });
 }
 
-if ($('#historial-ventas-table').length) {
+if ($('#historial-ventas-table').length > 0) {
     require.ensure([], function(require) {
         require('./tables/historial_ventas');
     });
 }
-if ($('#opciones-de-ingreso-table').length) {
+if ($('#opciones-de-ingreso-table').length > 0) {
     require.ensure([], function(require) {
         require('./tables/opciones_ingreso');
+    });
+}
+if ($('#comisiones-per-lider-table').length > 0) {
+    require.ensure([], function(require) {
+        require('./tables/comisiones_per_lider.js');
     });
 }
 //Reacomodar
@@ -92,11 +97,7 @@ if ($('#shopCartSale').length) {
     });
 }
 
-if ($('#comisiones-per-lider-table').length) {
-    require.ensure([], function(require) {
-        require('./tables/comisiones_per_lider.js');
-    });
-}*/
+*/
 if (module.hot) {
     module.hot.accept();
 }
