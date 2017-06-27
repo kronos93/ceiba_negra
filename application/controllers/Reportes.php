@@ -278,14 +278,29 @@ class Reportes extends CI_Controller
     }
     public function estado_de_cuenta($id){
         $historials = $this->Historial_model->from()->db
+                                            ->select("
+                                                concepto, fecha, abono
+                                            ")
                                             ->where(['id_venta' => $id])
+                                            ->where(['estado' => 0])
                                             ->get()
                                             ->result();
         $venta = $this->Venta_model->from()->db
-                                     ->select("CONCAT(users.first_name, ' ', users.last_name) AS nombre_cliente, ventas.id_venta")
+                                     ->select("
+                                        CONCAT(users.first_name, ' ', users.last_name) AS nombre_cliente, 
+                                        ventas.id_venta,
+                                        ventas.porcentaje_penalizacion,
+                                        GROUP_CONCAT(DISTINCT manzanas.manzana ORDER BY  manzanas.manzana ASC) as manzanas, 
+                                        GROUP_CONCAT('Mz. ',manzanas.manzana,   ' Ht. ', huertos.huerto ORDER BY  manzanas.manzana ASC) as descripcion
+                                     ")
                                      ->join('users','ventas.id_cliente = users.id','left')
-                                     ->where(['id_venta' => $id])
                                      
+                                     ->join('huertos_ventas', 'ventas.id_venta = huertos_ventas.id_venta', 'left')
+                                     ->join('huertos', 'huertos_ventas.id_huerto = huertos.id_huerto', 'left')
+                                     ->join('manzanas', 'huertos.id_manzana = manzanas.id_manzana', 'left')
+
+                                     ->where(['ventas.id_venta' => $id])
+                                     /*->group_by('ventas.id_vental')*/
                                      ->get()
                                      ->result();
 
@@ -317,7 +332,9 @@ class Reportes extends CI_Controller
         ->setCellValue('C4', 'ESTADO DE CUENTA')
         ->setCellValue('A7', 'Cliente: '.$venta->nombre_cliente)
         ->setCellValue('A8', 'Contrato: '.$this->utils->getInitials($venta->nombre_cliente).'-'.$venta->id_venta)
+        ->setCellValue('A9', 'Manzana (s): '.$venta->manzanas)
         ->setCellValue('E7', 'Fecha de emisión: '.Carbon::today()->format('d-m-Y'))
+        ->setCellValue('E9', 'Huertos (s): '.$venta->descripcion)
         /*
         ->setCellValue('E5', 'INFORMDE DE: '.$ingreso->nombre)
         ->setCellValue('F6', 'Fecha')
@@ -352,19 +369,85 @@ class Reportes extends CI_Controller
         $objDrawing->getShadow()->setDirection(45);
         $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
 
+        $i=11;
+        $objPHPExcel->getActiveSheet()->setCellValue("A{$i}", "Quincena");
+        $objPHPExcel->getActiveSheet()->setCellValue("B{$i}", "Fecha de pago");
+        $objPHPExcel->getActiveSheet()->setCellValue("C{$i}", "Cantidad a pagar");
+        $objPHPExcel->getActiveSheet()->setCellValue("D{$i}", "Días retrasados");
+        $objPHPExcel->getActiveSheet()->setCellValue("E{$i}", "% de penalización por día retrasado");
+        $objPHPExcel->getActiveSheet()->setCellValue("F{$i}", "Penalización por día retrasado");
+        $objPHPExcel->getActiveSheet()->setCellValue("G{$i}", "Penalización por días retrasado");
+        $objPHPExcel->getActiveSheet()->setCellValue("H{$i}", "Total a pagar");
+        $now =Carbon::now();
+        $total_p = 0;
+        $total_a = 0;
+        foreach ($historials as $historial) {
+            $fecha = Carbon::createFromFormat('Y-m-d',  $historial->fecha);
+            $diff = $fecha->diffInDays($now,false);
+            if($diff > 0){
+                $i++;
+                $porcentaje_p = $venta->porcentaje_penalizacion/100; //Porcentaje de la penalización
+                $p_x_dia = $historial->abono * ($porcentaje_p);      //Cálculo de la penalización por día
+                $p_t = $p_x_dia*$diff;                               //Cálculo de la penalización acumulada por días
+                $total_p+= $p_t;
+                $deuda = $p_t + $historial->abono;                   //Deuda total de penalizaciones más el pago pendiente
+                $total_a += $historial->abono;
+                $objPHPExcel->getActiveSheet()->setCellValue("A{$i}", $historial->concepto);
+                $objPHPExcel->getActiveSheet()->setCellValue("B{$i}", Carbon::createFromFormat('Y-m-d',  $historial->fecha)->format('d-m-Y'));
+                /*$objPHPExcel->getActiveSheet()->getStyle("B{$i}")->getNumberFormat()
+                                                                 ->setFormatCode('dd/mm/yyyy');*/
+                $objPHPExcel->getActiveSheet()->setCellValue("C{$i}", $historial->abono);
+                $objPHPExcel->getActiveSheet()->getStyle("C{$i}")->getNumberFormat()
+                                                                 ->setFormatCode('$#,##0.00');
+                $objPHPExcel->getActiveSheet()->setCellValue("D{$i}", $diff);
+                $objPHPExcel->getActiveSheet()->setCellValue("E{$i}", $venta->porcentaje_penalizacion);
+                $objPHPExcel->getActiveSheet()->setCellValue("F{$i}", $p_x_dia);
+                $objPHPExcel->getActiveSheet()->getStyle("F{$i}")->getNumberFormat()
+                                                                 ->setFormatCode('$#,##0.00');
+                $objPHPExcel->getActiveSheet()->setCellValue("G{$i}", $p_t);
+                $objPHPExcel->getActiveSheet()->getStyle("G{$i}")->getNumberFormat()
+                                                                 ->setFormatCode('$#,##0.00');
+                $objPHPExcel->getActiveSheet()->setCellValue("H{$i}", $deuda);
+                $objPHPExcel->getActiveSheet()->getStyle("H{$i}")->getNumberFormat()
+                                                                 ->setFormatCode('$#,##0.00');
+            }
+            
+        }
+        $i = $i+2;
+        $objPHPExcel->getActiveSheet()->setCellValue("A{$i}", "Total de pagos retrasados: ");
+        $objPHPExcel->getActiveSheet()->setCellValue("B{$i}", $total_a);
+        $objPHPExcel->getActiveSheet()->getStyle("B{$i}")->getNumberFormat()
+                                                                 ->setFormatCode('$#,##0.00');
+        $i = $i+1;
+        $objPHPExcel->getActiveSheet()->setCellValue("A{$i}", "Total de las penalidades: ");
+        $objPHPExcel->getActiveSheet()->setCellValue("B{$i}", $total_p);
+        $objPHPExcel->getActiveSheet()->getStyle("B{$i}")->getNumberFormat()
+                                                                 ->setFormatCode('$#,##0.00');
+        
+        $i = $i+1;
+        $objPHPExcel->getActiveSheet()->setCellValue("A{$i}", "Total a pagar: ");
+        $objPHPExcel->getActiveSheet()->setCellValue("B{$i}", $total_p + $total_a);
+        $objPHPExcel->getActiveSheet()->getStyle("B{$i}")->getNumberFormat()
+                                                                 ->setFormatCode('$#,##0.00');
+        $objPHPExcel->setActiveSheetIndex(0)->getStyle("A{$i}:B{$i}")->applyFromArray($styleArray);
         // Rename worksheet
-        $objPHPExcel->getActiveSheet()->setTitle('Informe-');
+        $objPHPExcel->getActiveSheet()->setTitle('Estado_de_cuenta');
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $objPHPExcel->setActiveSheetIndex(0);
 
         $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
 
         
         // Redirect output to a client’s web browser (Excel5)
         header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="Informe-'.'.xls"');
+        header('Content-Disposition: attachment;filename="Estado_de_cuenta_'.strtolower(str_replace(' ','_',$venta->nombre_cliente)).'.xls"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');

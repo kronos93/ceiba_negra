@@ -175,24 +175,6 @@ $.extend(true, $.fn.dataTable.defaults, {
 
 }(jQuery));
 
-/* Custom filtering function which will search data in column four between two values */
-/*$.fn.dataTable.ext.search.push(
-    function(settings, data, dataIndex) {
-
-        var filter = $('.estado-venta:checked').val();
-        var estado = data[1];
-        if (filter == undefined || filter == "" || filter == null || filter == "all") {
-            if (estado == 0 || estado == 1 || estado == 2 || estado == 3) {
-                return true;
-            }
-        } else {
-            if (estado == filter) {
-                return true;
-            }
-        }
-        return false;
-    }
-);*/
 
 //https://datatables.net/plug-ins/api/sum()
 jQuery.fn.dataTable.Api.register('sum()', function() {

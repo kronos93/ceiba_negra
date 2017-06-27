@@ -3,12 +3,31 @@ import '../configs/datatables';
 
 $(document).ready(function() {
     var table = $('#example').DataTable();
-
     // Event listener to the two range filtering inputs to redraw on input
     $('#min, #max').keyup(function() {
         table.draw();
     });
 });
+
+/* Custom filtering function which will search data in column four between two values */
+/*Función creada especificamente para historial_ventas.js */
+$.fn.dataTable.ext.search.push(
+    function(settings, data, dataIndex) {
+
+        var filter = $('.estado-venta:checked').val();
+        var estado = data[1];
+        if (filter == undefined || filter == "" || filter == null || filter == "all") {
+            if (estado == 0 || estado == 1 || estado == 2 || estado == 3) {
+                return true;
+            }
+        } else {
+            if (estado == filter) {
+                return true;
+            }
+        }
+        return false;
+    }
+);
 var historial_ventas_table = $('#historial-ventas-table').DataTable({
     responsive: {
         /*details: {
@@ -45,9 +64,9 @@ var historial_ventas_table = $('#historial-ventas-table').DataTable({
             "render": function(data, type, full, meta) {
                 if (full.estado != null && full.estado != undefined && full.estado != "" &&
                     full.version != null && full.version != undefined && full.version != "") {
-                    console.log("Render data");
+                    /*console.log("Render data");
                     console.log(full.estado);
-                    console.log(full.version);
+                    console.log(full.version);*/
                     var contrato = '<a href="' + base_url() + 'reportes/contrato/' + full.id_venta + '" class="btn btn-default" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> contrato</a>';
                     var pagare_recibo = '<a href="' + base_url() + 'reportes/' + ((full.version == 2) ? 'pagares' : 'recibos') + '/' + full.id_venta + '" class="btn btn-primary" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> ' + ((full.version == 2) ? 'pagares' : 'recibos') + '</a>';
                     var pagos = '<a href="' + base_url() + 'registros/pagos/' + full.id_venta + '" target="_blank" class="btn btn-info"><i class="fa fa-fw fa-eye"></i>pagos</a>';
@@ -72,7 +91,6 @@ var historial_ventas_table = $('#historial-ventas-table').DataTable({
                     }
                     return contrato + ' ' + estado_cta + ' ' + pagare_recibo + ' ' + pagos + ' ' + cancelar + ' ' + restablecer + ' ' + eliminar + ' ' + recuperar;
                 } else {
-
                     return data;
                 }
 
@@ -257,7 +275,6 @@ $('#email-notificator').on('click', function(e) {
 
     $.ajax({
             url: base_url() + "mail/",
-
             type: "get",
             async: true,
         }).done(function(response) {
@@ -270,5 +287,6 @@ $('#email-notificator').on('click', function(e) {
 });
 
 $('.estado-venta').on('change', function() {
+    console.log('redibujar');
     historial_ventas_table.draw();
 });

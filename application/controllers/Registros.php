@@ -75,7 +75,7 @@ class Registros extends CI_Controller
                 $data['title'] = "Ingresos";
                 $data['body'] = "ingresos";
                 $ingreso = $this->Opciones_ingreso_model->from()->db
-                                                        ->select('nombre')
+                                                        ->select('nombre, cuenta, tarjeta')
                                                         ->where(['id_opcion_ingreso' => $id])
                                                         ->get()
                                                         ->result();
@@ -170,7 +170,17 @@ class Registros extends CI_Controller
                     ->setCellValue('G6', $init_date)
                     ->setCellValue('H6', 'al')
                     ->setCellValue('I6', $end_date);
+                    if($ingreso->cuenta || $ingreso->tarjeta){
+                         $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('G3', 'Banco: ')
+                        ->setCellValue('G4', 'Cuenta: ')
+                        ->setCellValue('G5', 'Tarjeta: ')
+                        ->setCellValue('H3', $ingreso->nombre)
+                        ->setCellValue('H4', $ingreso->cuenta)
+                        ->setCellValue('H5', $ingreso->tarjeta);
+                    }
                     $objPHPExcel->setActiveSheetIndex(0)->getStyle('E3:E5')->applyFromArray($styleArray);
+                    $objPHPExcel->setActiveSheetIndex(0)->getStyle('G3:G5')->applyFromArray($styleArray);
                     $objPHPExcel->setActiveSheetIndex(0)->getStyle('F6')->applyFromArray($styleArray);
                     $objPHPExcel->setActiveSheetIndex(0)->getStyle('H6')->applyFromArray($styleArray);
                     //Draw logo
