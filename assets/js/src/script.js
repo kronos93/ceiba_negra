@@ -1,9 +1,9 @@
-require('datatables.net-dt/css/jquery.dataTables.css');
-require('datatables.net-responsive-dt/css/responsive.dataTables.css');
-require('sweetalert/dist/sweetalert.css');
+import 'datatables.net-dt/css/jquery.dataTables.css';
+import 'datatables.net-responsive-dt/css/responsive.dataTables.css';
+import 'datatables.net-buttons-dt/css/buttons.dataTables.css';
+import 'sweetalert/dist/sweetalert.css';
 
 import $ from 'jquery';
-
 import { base_url } from './utils/util';
 import './config';
 import { format_numeric } from './components/components'; //Temporal

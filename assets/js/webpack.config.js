@@ -34,26 +34,33 @@ const config = {
     entry: entry,
     plugins: plugins,
     module: {
-        loaders: [{
+        rules: [{
                 test: /\.js$/,
-                loaders: ['babel-loader'],
-                exclude: /node_modules/
+                exclude: /node_modules/,
+                loader: "babel-loader"
             },
             {
                 test: /\.css$/,
-                loaders: ['style-loader', 'css-loader']
+                use: ['style-loader', 'css-loader']
             },
             {
                 test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
-                loaders: ['url-loader'],
+                use: [{
+                    loader: "url-loader"
+                }]
+            },
+            {
+                test: /datatables\.net.*\.js$/,
+                use: [{ loader: 'imports-loader?define=>false' }]
             }
+
         ]
     },
     output: {
         path: resolve(__dirname, './dist'),
-        /* publicPath: "http://localhost:3030/dist/",*/
+        publicPath: "http://localhost:3030/dist/",
         /* publicPath: "http://localhost/ceiba_negra/assets/js/dist/",*/
-        publicPath: "http://dev.huertoslaceiba.com/assets/js/dist/",
+        /*publicPath: "http://dev.huertoslaceiba.com/assets/js/dist/",*/
         /*"publicPath": "http://huertoslaceiba.com/assets/js/dist/",*/
         filename: "bundle.js"
     }

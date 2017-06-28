@@ -1,7 +1,31 @@
-import '../configs/datatables';
+/*import '../configs/datatables';*/
+/**/
+/*require('datatables.net-responsive');
+require('datatables.net-buttons');
+require('datatables.net-buttons/js/buttons.print.js');*/
+
+
+import $ from 'jquery';
+import dt from 'datatables.net';
+import dt_r from 'datatables.net-responsive';
+import dt_buttons from 'datatables.net-buttons';
+import dt_button_print from 'datatables.net-buttons/js/buttons.print.js';
+import dt_button_html5 from 'datatables.net-buttons/js/buttons.html5.js';
+import dt_button_flash from 'datatables.net-buttons/js/buttons.flash.js';
+dt(window, $);
+dt_r(window, $);
+dt_buttons(window, $);
+dt_button_print(window, $);
+dt_button_html5(window, $);
+dt_button_flash(window, $);
 import { base_url, ajax_msg, multiplicar } from '../utils/util';
 import GenericFrm from '../GenericFrm';
 var huertos_table = $('#huertos-table').DataTable({
+    responsive: true,
+    dom: 'Bfrtip',
+    buttons: [
+        'copy', 'excel', 'pdf', 'print'
+    ],
     "ajax": base_url() + 'ajax/get_huertos_pmz',
     "columns": [ //Atributos para la tabla
         {
