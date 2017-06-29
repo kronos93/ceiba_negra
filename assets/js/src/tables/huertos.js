@@ -3,24 +3,42 @@ import GenericFrm from '../GenericFrm';
 import '../configs/datatables';
 var huertos_table = $('#huertos-table').DataTable({
     dom: '<"container-fluid" <"row" B> >lfrtip',
-    buttons: [{
+    buttons: [
+        /*{
             extend: 'copy',
             text: 'Copiar al portapapeles',
-            /*className: 'btn btn-default',*/
-        },
+            //className: 'btn btn-default',
+        },*/
         {
             extend: 'excel',
             text: 'Descargar en formato excel'
         },
-        {
+        /*{
             extend: 'pdf',
             text: 'Descargar en formato PDF'
-        },
-        {
+        },*/
+        /*{
             extend: 'print',
             text: 'Imprimir área visible'
+        },*/
+        {
+            text: 'Huertos disponibles',
+            action: function(e, dt, node, config) {
+                dt.ajax.reload();
+            }
         },
-
+        {
+            text: 'Huertos cancelados',
+            action: function(e, dt, node, config) {
+                dt.ajax.reload();
+            }
+        },
+        {
+            text: 'Huertos vendidos',
+            action: function(e, dt, node, config) {
+                dt.ajax.reload();
+            }
+        },
     ],
     "ajax": base_url() + 'ajax/get_huertos_pmz',
     "columns": [ //Atributos para la tabla
