@@ -49,9 +49,12 @@ const config = {
                     loader: "url-loader"
                 }]
             },
+            //Configuración especial para datatables y archivos.js
             {
                 test: /datatables\.net.*\.js$/,
-                use: [{ loader: 'imports-loader?define=>false' }]
+                use: [{
+                    loader: 'imports-loader?define=>false'
+                }]
             }
 
         ]

@@ -11,7 +11,7 @@
 				<table id="huertos-table" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
 					<thead>
 						<tr>
-                            <th data-visible="false">Id. Huerto</th>
+                            <!--<th data-visible="false">Id. Huerto</th>-->
 							<th>Manzana</th>
 							<th>Huerto</th>
 							<th>Superficie</th>	
