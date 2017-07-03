@@ -4,9 +4,11 @@ import GenericFrm from '../GenericFrm';
 //MANZANAS
 //Estructura de Datatable para las Manzanas (La tabla de vista)
 var manzanas_table = $('#manzanas-table').DataTable({
-    /*"processing": true,
-    "serverSide": true,
-    "pageLength": 25,*/
+    dom: '<"container-fluid" <"row" B> >lfrtip',
+    buttons: [{
+        extend: 'excel',
+        text: 'Descargar en formato excel'
+    }, ],
     "ajax": base_url() + 'ajax/get_manzanas', //URL de datos
     "columns": [ //Atributos para la tabla
         {

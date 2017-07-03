@@ -24,19 +24,28 @@ var huertos_table = $('#huertos-table').DataTable({
         {
             text: 'Huertos disponibles',
             action: function(e, dt, node, config) {
-                dt.ajax.reload();
+                window.open(
+                    base_url() + 'reportes/huertos_disponibles',
+                    '_blank' // <- This is what makes it open in a new window.
+                );
             }
         },
         {
             text: 'Huertos cancelados',
             action: function(e, dt, node, config) {
-                dt.ajax.reload();
+                window.open(
+                    base_url() + 'reportes/huertos_cancelados',
+                    '_blank' // <- This is what makes it open in a new window.
+                );
             }
         },
         {
             text: 'Huertos vendidos',
             action: function(e, dt, node, config) {
-                dt.ajax.reload();
+                window.open(
+                    base_url() + 'reportes/huertos_vendidos',
+                    '_blank' // <- This is what makes it open in a new window.
+                );
             }
         },
     ],

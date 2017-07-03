@@ -76,4 +76,8 @@ class Manzana_model extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
+    public function from(){
+        $this->db->from($this->tabla);        
+        return $this;
+    }
 }

@@ -1,6 +1,6 @@
 import { base_url } from '../utils/util';
 import '../configs/datatables';
-
+import swal from 'sweetalert';
 $(document).ready(function() {
     var table = $('#example').DataTable();
     // Event listener to the two range filtering inputs to redraw on input
