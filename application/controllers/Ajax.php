@@ -564,6 +564,7 @@ class Ajax extends CI_Controller
             ];
             $new_id_opcion_ingreso = $this->Opciones_ingreso_model->insert($data)->insert_id();
             $new_opcion_ingreso = $this->Opciones_ingreso_model->where(['id_opcion_ingreso' => $new_id_opcion_ingreso])->get();
+            $new_opcion_ingreso[0]->ingreso = 0; //Cada núeva opción de ingreso debe empezar con ingreso en 0
             echo json_encode($new_opcion_ingreso);
         } else {
             echo validation_errors();
@@ -1768,7 +1769,7 @@ class Ajax extends CI_Controller
                 if ($this->ion_auth->update($user->id, $data)) {
                     // redirect them back to the admin page if admin, or to the base url if non admin
                     //$this->session->set_flashdata('message', $this->ion_auth->messages() );
-                    $newUser = $this->ion_auth->user($user->id)->row();
+                    $newUser = $this->ion_auth->select('CONCAT(first_name," ", last_name) as name, id, email, phone, first_name, last_name')->user($user->id)->row();
                     $newUser->btn_activar_desactivar = '<a href="'.base_url().'auth/deactivate/'.$user->id.'" class="btn btn-success" data-target="#userModal" data-toggle="modal">Activo</a>';
                     $newUser->btn_editar = '<a href="'.base_url().'auth/edit_user/'.$user->id.'" class="btn btn-info" data-target="#userModal" data-toggle="modal" data-btn-type="edit">Editar Usuario</a>';
                     $grupo = "<ul>";
@@ -1780,26 +1781,8 @@ class Ajax extends CI_Controller
                     $response = [];
                     array_push($response, $newUser);
                     echo json_encode($response);
-                    /*if ($this->ion_auth->is_admin())
-                    {
-                        redirect('auth', 'refresh');
-                    }
-                    else
-                    {
-                        redirect('/', 'refresh');
-                    }*/
                 } else {
-                    // redirect them back to the admin page if admin, or to the base url if non admin
                     echo $this->ion_auth->errors();
-                    /*$this->session->set_flashdata('message', $this->ion_auth->errors() );
-                    if ($this->ion_auth->is_admin())
-                    {
-                        redirect('auth', 'refresh');
-                    }
-                    else
-                    {
-                        redirect('/', 'refresh');
-                    }*/
                 }
             } else {
                 echo validation_errors();

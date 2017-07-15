@@ -3,6 +3,8 @@ import '../configs/datatables';
 import { base_url, ajax_msg } from '../utils/util';
 import GenericFrm from '../GenericFrm';
 import Inputmask from 'inputmask';
+Inputmask({ "mask": "999-9999-9999", 'autoUnmask': true }).mask('.cuenta-banco');
+Inputmask({ "mask": "9999-9999-9999-9999", 'autoUnmask': true }).mask('.tarjeta');
 //OPCIONES DE INGRESO
 var opciones_de_ingreso_table = $('#opciones-de-ingreso-table').DataTable({
     "ajax": base_url() + 'ajax/get_opciones_de_ingreso',

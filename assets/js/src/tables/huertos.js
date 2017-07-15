@@ -10,7 +10,7 @@ var huertos_table = $('#huertos-table').DataTable({
             //className: 'btn btn-default',
         },*/
         {
-            extend: 'excel',
+            extend: 'excelHtml5',
             text: 'Descargar en formato excel'
         },
         /*{

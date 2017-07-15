@@ -6,7 +6,7 @@ import GenericFrm from '../GenericFrm';
 var manzanas_table = $('#manzanas-table').DataTable({
     dom: '<"container-fluid" <"row" B> >lfrtip',
     buttons: [{
-        extend: 'excel',
+        extend: 'excelHtml5',
         text: 'Descargar en formato excel'
     }, ],
     "ajax": base_url() + 'ajax/get_manzanas', //URL de datos

@@ -39,7 +39,10 @@ var historial_ventas_table = $('#historial-ventas-table').DataTable({
         { "data": "estado" },
         { "data": "nombre_cliente" },
         { "data": "descripcion" },
-        { "data": "retraso" },
+        {
+            "data": "retraso",
+            "type": "num",
+        },
         { "data": "detalles" }, {
             "data": "precio",
             "render": $.fn.dataTable.render.number(',', '.', 2, '$'),

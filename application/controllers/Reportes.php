@@ -102,7 +102,7 @@ class Reportes extends CI_Controller
                                         <tr>
                                             <td><strong>{$nombre_cliente}</strong></td>
                                             <td>
-                                                <p> Este pagaré forma pare te una serie numerdada de 1 al {$n_historial}  y todos estan sujetos a la condición de que, al no pagarse cualquiera de ellos a su vencimiento, serán exigibles todos los que le sigan en número, además de los ya vencidos,
+                                                <p> EEste pagaré forma parte de una serie numerada de 1 al {$n_historial}  y todos estan sujetos a la condición de que, al no pagarse cualquiera de ellos a su vencimiento, serán exigibles todos los que le sigan en número, además de los ya vencidos,
                                                     desde la fecha de vencimiento de este documento hasta el día de su liquidación, causará intereses moratorios al tipo de {$historial->porcentaje_penalizacion}% por cada día de de pago incumplido, pagado en esta ciudad.
                                                 </p>
                                             </td>
@@ -335,48 +335,34 @@ class Reportes extends CI_Controller
         ->setCellValue('A8', 'Contrato: '.$this->utils->getInitials($venta->nombre_cliente).'-'.$venta->id_venta)
         ->setCellValue('A9', 'Manzana (s): '.$venta->manzanas)
         ->setCellValue('E7', 'Fecha de emisión: '.Carbon::today()->format('d-m-Y'))
-        ->setCellValue('E9', 'Huertos (s): '.$venta->descripcion)
-        /*
-        ->setCellValue('E5', 'INFORMDE DE: '.$ingreso->nombre)
-        ->setCellValue('F6', 'Fecha')
-        ->setCellValue('G6', $init_date)
-        ->setCellValue('H6', 'al')
-        ->setCellValue('I6', $end_date)*/;
+        ->setCellValue('E9', 'Huertos (s): '.$venta->descripcion);
         $objPHPExcel->setActiveSheetIndex(0)->getStyle('C3:C4')->applyFromArray($styleArray);
-        /*$objPHPExcel->setActiveSheetIndex(0)->getStyle('F6')->applyFromArray($styleArray);
-        $objPHPExcel->setActiveSheetIndex(0)->getStyle('H6')->applyFromArray($styleArray);*/
-        //Draw logo
-        $objDrawing = new PHPExcel_Worksheet_Drawing();
-        $objDrawing->setName('Logo');
-        $objDrawing->setDescription('Logo');
         
-        try {
-            $logo = dirname(__FILE__) . '/../../assets/img/logos/logo.png'; // Provide path to your logo file
-        } catch (Exception $e) {
-            $logo = dirname(__FILE__) . '\..\..\assets\img\logos\logo.png'; // Provide path to your logo file
-        } catch (Exception $e) {
-            echo 'Excepción capturada: ',  $e->getMessage(), "\n";
-        }
+        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('A7:D7');
+        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('A8:D8');
+        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('A9:D9');
+        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('E7:G7');
+        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('E9:G9');
+        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('C3:E3');
+        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('C4:E4');
         
-        $objDrawing->setPath($logo);
-        /*$objDrawing->setOffsetX(8);    // setOffsetX works properly
-        $objDrawing->setOffsetY(300);  //setOffsetY has no effect*/
-        $objDrawing->setCoordinates('A1');
-        $objDrawing->setHeight(90); // logo height
-        $objDrawing->setOffsetX(8);
-        $objDrawing->getShadow()->setVisible(true);
-        $objDrawing->getShadow()->setDirection(45);
-        $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
-
         $i=11;
+        $style = array(
+            'alignment' => array(
+                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                'wrap' => true
+            )
+        );
         $objPHPExcel->getActiveSheet()->setCellValue("A{$i}", "Quincena");
-        $objPHPExcel->getActiveSheet()->setCellValue("B{$i}", "Fecha de pago");
+        $objPHPExcel->getActiveSheet()->setCellValue("B{$i}", "Fecha");
         $objPHPExcel->getActiveSheet()->setCellValue("C{$i}", "Cantidad a pagar");
         $objPHPExcel->getActiveSheet()->setCellValue("D{$i}", "Días retrasados");
         $objPHPExcel->getActiveSheet()->setCellValue("E{$i}", "% de penalización por día retrasado");
         $objPHPExcel->getActiveSheet()->setCellValue("F{$i}", "Penalización por día retrasado");
         $objPHPExcel->getActiveSheet()->setCellValue("G{$i}", "Penalización por días retrasado");
         $objPHPExcel->getActiveSheet()->setCellValue("H{$i}", "Total a pagar");
+        $objPHPExcel->getActiveSheet()->getStyle("A{$i}:H{$i}")->applyFromArray($style);
         $now =Carbon::now();
         $total_p = 0;
         $total_a = 0;
@@ -413,35 +399,62 @@ class Reportes extends CI_Controller
         }
         $i = $i+2;
         $objPHPExcel->getActiveSheet()->setCellValue("A{$i}", "Total de pagos retrasados: ");
-        $objPHPExcel->getActiveSheet()->setCellValue("B{$i}", $total_a);
-        $objPHPExcel->getActiveSheet()->getStyle("B{$i}")->getNumberFormat()
+        $objPHPExcel->getActiveSheet()->setCellValue("C{$i}", $total_a);
+        $objPHPExcel->getActiveSheet()->getStyle("C{$i}")->getNumberFormat()
                                                                  ->setFormatCode('$#,##0.00');
-        $i = $i+1;
-        $objPHPExcel->getActiveSheet()->setCellValue("A{$i}", "Total de las penalidades: ");
-        $objPHPExcel->getActiveSheet()->setCellValue("B{$i}", $total_p);
-        $objPHPExcel->getActiveSheet()->getStyle("B{$i}")->getNumberFormat()
-                                                                 ->setFormatCode('$#,##0.00');
+        $objPHPExcel->setActiveSheetIndex(0)->mergeCells("A{$i}:B{$i}");
+        $objPHPExcel->getActiveSheet()->getStyle("A{$i}:C{$i}")->applyFromArray($style);
+        $objPHPExcel->getActiveSheet()->getRowDimension($i)->setRowHeight(40);
         
         $i = $i+1;
-        $objPHPExcel->getActiveSheet()->setCellValue("A{$i}", "Total a pagar: ");
-        $objPHPExcel->getActiveSheet()->setCellValue("B{$i}", $total_p + $total_a);
-        $objPHPExcel->getActiveSheet()->getStyle("B{$i}")->getNumberFormat()
+        $objPHPExcel->getActiveSheet()->setCellValue("A{$i}", "Total de las penalidades: ");
+        $objPHPExcel->getActiveSheet()->setCellValue("C{$i}", $total_p);
+        $objPHPExcel->getActiveSheet()->getStyle("C{$i}")->getNumberFormat()
                                                                  ->setFormatCode('$#,##0.00');
-        $objPHPExcel->setActiveSheetIndex(0)->getStyle("A{$i}:B{$i}")->applyFromArray($styleArray);
+        $objPHPExcel->setActiveSheetIndex(0)->mergeCells("A{$i}:B{$i}");
+        $objPHPExcel->getActiveSheet()->getStyle("A{$i}:C{$i}")->applyFromArray($style);
+        $objPHPExcel->getActiveSheet()->getRowDimension($i)->setRowHeight(40);
+
+        $i = $i+1;
+        $objPHPExcel->getActiveSheet()->setCellValue("A{$i}", "Total a pagar: ");
+        $objPHPExcel->getActiveSheet()->setCellValue("C{$i}", $total_p + $total_a);
+        $objPHPExcel->getActiveSheet()->getStyle("C{$i}")->getNumberFormat()
+                                                                 ->setFormatCode('$#,##0.00');
+        $objPHPExcel->setActiveSheetIndex(0)->mergeCells("A{$i}:B{$i}");
+        $objPHPExcel->setActiveSheetIndex(0)->getStyle("A{$i}:C{$i}")->applyFromArray($styleArray);
+        $objPHPExcel->getActiveSheet()->getStyle("A{$i}:C{$i}")->applyFromArray($style);
+        $objPHPExcel->getActiveSheet()->getRowDimension($i)->setRowHeight(40);
         // Rename worksheet
         $objPHPExcel->getActiveSheet()->setTitle('Estado_de_cuenta');
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $objPHPExcel->setActiveSheetIndex(0);
 
-        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
-
+        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(10);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(10);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(15);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(10);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(12);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(12);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(15);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(15);
+        
+        $objDrawing = new PHPExcel_Worksheet_Drawing();
+        $objDrawing->setName('Logo');
+        $objDrawing->setDescription('Logo');
+        try {
+            $logo = dirname(__FILE__) . '/../../assets/img/logos/logo.png'; // Provide path to your logo file
+        } catch (Exception $e) {
+            $logo = dirname(__FILE__) . '\..\..\assets\img\logos\logo.png'; // Provide path to your logo file
+        } catch (Exception $e) {
+            echo 'Excepción capturada: ',  $e->getMessage(), "\n";
+        }
+        
+        $objDrawing->setPath($logo);
+        $objDrawing->setCoordinates('A1');
+        $objDrawing->setWidthAndHeight(90,90);
+        $objDrawing->setResizeProportional(false);
+        $objDrawing->getShadow()->setVisible(true);
+        $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
         
         // Redirect output to a client’s web browser (Excel5)
         header('Content-Type: application/vnd.ms-excel');
