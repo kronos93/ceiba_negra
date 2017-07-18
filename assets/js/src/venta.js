@@ -5,7 +5,7 @@ import swal from 'sweetalert';
 import NumeroALetras from './utils/NumeroALetras.js';
 
 import 'jquery-steps/build/jquery.steps';
-import 'jquery-validation/dist/jquery.validate'
+import 'jquery-validation/dist/jquery.validate';
 import 'jquery-mask-plugin/dist/jquery.mask';
 import 'jquery-ui/ui/widgets/datepicker';
 import './configs/datepicker';

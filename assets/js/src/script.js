@@ -46,9 +46,13 @@ if ($('#reservas-table').length > 0) {
 }
 //Import script para dt de ingresos /bancos/caja
 if ($('#historial-ingresos-table').length > 0) {
-
     require.ensure([], function(require) {
         require('./tables/historial_ingresos');
+    });
+}
+if ($('#pagos-table').length > 0) {
+    require.ensure([], function(require) {
+        require('./tables/pagos');
     });
 }
 if ($('#users-table').length > 0) {
@@ -73,13 +77,13 @@ if ($('#comisiones-per-lider-table').length > 0) {
     });
 }
 //Reacomodar
-/*
-import { phone } from './components/components.js';*/
-/*phone();*/
-/*import './tables/pagos';
- */
 
-/*if ($('#frm-venta').length) {
+import { phone } from './components/components.js';
+phone();
+import './tables/pagos';
+
+
+if ($('#frm-venta').length) {
     require.ensure([], function(require) {
         require("./venta.js");
     });
@@ -97,7 +101,7 @@ if ($('#shopCartSale').length) {
     });
 }
 
-*/
+
 if (module.hot) {
     module.hot.accept();
 }

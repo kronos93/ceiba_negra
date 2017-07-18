@@ -1,6 +1,7 @@
 import { base_url, ajax_msg } from '../utils/util';
 
 import GenericFrm from '../GenericFrm';
+import '../configs/datatables';
 import moment from 'moment';
 import swa from 'sweetalert';
 import 'jquery-mask-plugin/dist/jquery.mask';
