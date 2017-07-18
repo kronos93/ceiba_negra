@@ -4,13 +4,9 @@ const webpack = require('webpack');
 var DEVELOPMENT = process.env.NODE_ENV === 'development';
 var PRODUCTION = process.env.NODE_ENV === 'production';
 console.log(process.env.NODE_ENV);
-var entry = PRODUCTION ? [
-    './src/script.js',
-] : [
-    'webpack/hot/dev-server',
-    'webpack-dev-server/client?http://localhost:3030',
-    './src/script.js',
-];
+var entry = PRODUCTION ? { 'main': ['./src/script.js'], } : {
+    'main': ['./src/script.js'],
+};
 
 var plugins =
     PRODUCTION ? [
@@ -60,12 +56,13 @@ const config = {
         ]
     },
     output: {
+        filename: 'js/[name].bundle.js', //Archivo o carpeta + nombre del archivo de salida
+        chunkFilename: 'js/[name].bundle.js',
         path: resolve(__dirname, './dist'),
         publicPath: "http://localhost:3030/dist/",
         /* publicPath: "http://localhost/ceiba_negra/assets/js/dist/",*/
         /*publicPath: "http://dev.huertoslaceiba.com/assets/js/dist/",*/
         /* "publicPath": "http://huertoslaceiba.com/assets/js/dist/", */
-        filename: "bundle.js"
     }
 };
 
