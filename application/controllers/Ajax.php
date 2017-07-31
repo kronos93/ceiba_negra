@@ -666,6 +666,56 @@ class Ajax extends CI_Controller
         $response->data = $reservas; // Atributo de la clase generico para el dataTable
         echo json_encode($response); //Response JSON
     }
+    public function update_reserva(){
+        header("Content-type: application/json; charset=utf-8"); //Header generico
+        $response = new stdClass(); //Clase generica
+        $fecha = Carbon::createFromFormat('d-m-Y', $this->input->post('expira'));
+        $this->Reserva_model->db
+                            ->where([
+                                'id_reserva' => $this->input->post('id_reserva')
+                            ])
+                            ->update(
+                                $this->Reserva_model->from(),
+                                [
+                                    'expira' => $fecha->format('Y-m-d')
+                                ]
+                            );
+        $reservas = $this->Reserva_model->db
+                            ->select("  reservas.id_reserva, 
+                                        CONCAT(lider.first_name, ' ',lider.last_name ) AS nombre_lider,
+                                        GROUP_CONCAT('Mz. ',manzanas.manzana, ' Ht. ', huertos.huerto) AS descripcion,
+                                        reservas.email,
+                                        reservas.phone,
+                                        reservas.comment,
+                                        reservas.precio,
+                                        reservas.enganche,
+                                        reservas.abono,
+                                        DATE_FORMAT(reservas.expira,'%Y-%m-%d') as expira
+                                        ")
+                            ->join('users AS lider', 'reservas.id_lider = lider.id', 'left')
+                            ->from($this->Reserva_model->from())
+                            ->join('huertos_reservas', 'reservas.id_reserva = huertos_reservas.id_reserva', 'inner')
+                            ->join('huertos', 'huertos_reservas.id_huerto = huertos.id_huerto', 'inner')
+                            ->join('manzanas', 'huertos.id_manzana = manzanas.id_manzana', 'inner')
+                            ->where([
+                                'reservas.id_reserva' => $this->input->post('id_reserva')
+                            ])
+                            ->group_by('reservas.id_reserva')
+                            ->get()->result();
+       
+        foreach ($reservas as $key => $reserva) {
+            $reservas[$key]->detalles = '';
+            $reservas[$key]->detalles .= "<p><strong>Correo: </strong>".$reserva->email."<p>";
+            $reservas[$key]->detalles .= "<p><strong>Teléfono: </strong><span class='phone'>".$reserva->phone."</span><p>";
+            $reservas[$key]->detalles .= "<p><strong>Precio: </strong>$".number_format($reserva->precio, 2)."<p>";
+            $reservas[$key]->detalles .= "<p><strong>Enganche: </strong>$".number_format($reserva->enganche, 2)."<p>";
+            $reservas[$key]->detalles .= "<p><strong>Abono: </strong>$".number_format($reserva->abono, 2)."<p>";
+            $reservas[$key]->detalles .= "<p><strong>Comentarios: </strong>".$reserva->comment."<p>";
+            $reservas[$key]->is_admin = $this->ion_auth->in_group('administrador');
+        }
+        $response->data = array_pop($reservas); // Atributo de la clase generico para el dataTable
+        echo json_encode($response); //Response JSON 
+    }
     public function get_reservas_eliminadas()
     {
         header("Content-type: application/json; charset=utf-8"); //Header generico

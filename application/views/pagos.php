@@ -112,7 +112,7 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="form-group col-xs-12 col-sm-6">
-                                <label class="">Fecha:</label>
+                                <label class="">Fecha:<?php if ($this->ion_auth->in_group('administrador')) : ?> <span class="btn btn-warning" id="btn-mod-date">Modificar limite de fecha</span><?php endif; ?></label>
                                 <input type="text" id="fecha_pago" name="fecha_pago" data-min-date="" class="form-control datepicker" readonly/>
                             </div>
                             <div class="form-group col-xs-12 col-sm-6">

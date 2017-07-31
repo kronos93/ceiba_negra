@@ -40,4 +40,7 @@ class Reserva_model extends CI_Model {
         $this->db->from($this->table);
         return $this->db->count_all_results();
     }
+    public function from(){
+        return $this->table;
+    }
 }

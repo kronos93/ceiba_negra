@@ -28,8 +28,8 @@
     </li>
     {{{link}}}
 </script>
- <!-- <script type="text/javascript" src="<?= base_url() ?>assets/js/dist/bundle.js"></script>  -->
-  <script type="text/javascript" src="http://localhost:3030/dist/js/main.bundle.js"></script>  
+  <script type="text/javascript" src="<?= base_url() ?>assets/js/dist/main.bundle.a9e9f9.js"></script>  
+  <!-- <script type="text/javascript" src="http://localhost:3030/dist/js/main.bundle.js"></script>   -->
 </body>
 
 </html>
