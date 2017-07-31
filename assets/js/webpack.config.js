@@ -56,13 +56,13 @@ const config = {
         ]
     },
     output: {
-        filename: 'js/[name].bundle.js', //Archivo o carpeta + nombre del archivo de salida
-        chunkFilename: 'js/[name].bundle.js',
+        filename: '[name].bundle.[hash:6].js', //Archivo o carpeta + nombre del archivo de salida
+        chunkFilename: '[name].bundle.[hash:6].js',
         path: resolve(__dirname, './dist'),
-        publicPath: "http://localhost:3030/dist/",
-        /* publicPath: "http://localhost/ceiba_negra/assets/js/dist/",*/
+        /* publicPath: "http://localhost:3030/dist/", */
+        /* publicPath: "http://localhost/ceiba_negra/assets/js/dist/", */
         /*publicPath: "http://dev.huertoslaceiba.com/assets/js/dist/",*/
-        /* "publicPath": "http://huertoslaceiba.com/assets/js/dist/", */
+        "publicPath": "http://huertoslaceiba.com/assets/js/dist/",
     }
 };
 

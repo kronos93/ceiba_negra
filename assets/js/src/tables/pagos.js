@@ -108,6 +108,11 @@ $('#pagoModal').on('shown.bs.modal', function(e) {
                 }
 
             }
+            $('#btn-mod-date').on('click', function() {
+
+                $('#fecha_pago').datepicker('option', 'minDate', null);
+            });
+            $("#MyDatepicker").datepicker("option", "minDate", null);
             /*EXTRA */
             $('#pago').autoNumeric('set', response.abono);
             $('#id_lider').val(response.id_lider);
@@ -124,6 +129,7 @@ $('#pagoModal').on('shown.bs.modal', function(e) {
         .fail(function(response) {
             swal("¡Error!", "La operación que intentó realizar ha fallado, contactar al administador sí el error persiste", "error");
         });
+
 });
 $("#frm-pago").on('submit', function(e) {
     e.preventDefault();
