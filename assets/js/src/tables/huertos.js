@@ -1,6 +1,5 @@
 import { base_url, ajax_msg, multiplicar } from '../utils/util';
 import GenericFrm from '../GenericFrm';
-import '../configs/datatables';
 var huertos_table = $('#huertos-table').DataTable({
     dom: '<"container-fluid" <"row" B> >lfrtip',
     buttons: [

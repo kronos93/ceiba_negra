@@ -863,6 +863,9 @@ class Ajax extends CI_Controller
                     Cliente: {$folio_repetido[0]->nombre_cliente}";
                     exit();
                 }
+            } else if ($this->input->post('pago') <= 0){
+                echo "Esta intentanto insertar un registro con un valor de 0";
+                exit();
             }
 
             $fecha = Carbon::createFromFormat('d-m-Y', $this->input->post('fecha_pago'));

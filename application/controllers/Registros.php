@@ -283,46 +283,51 @@ class Registros extends CI_Controller
     }
     public function pagos($id_venta)
     {
-        $data['title'] = "Pagos";
-        $data['body'] = "pagos";
-        $data['pagos'] = $this->Historial_model->select('historial.id_historial,
-														 CONCAT(cliente.first_name," ",cliente.last_name) AS nombre_cliente,
-														 CONCAT(lider.first_name," ",lider.last_name) AS nombre_lider,
-														 IF( opciones_ingreso.id_opcion_ingreso != 1, 
-															 CONCAT(opciones_ingreso.nombre, " - " ,opciones_ingreso.cuenta),
-															 opciones_ingreso.nombre) as nombre,
-														 historial.concepto,
-														 historial.abono,
-														 DATE_FORMAT(historial.fecha,"%d-%m-%Y") AS fecha,
-														 historial.estado,
-														 DATE_FORMAT(historial.fecha_pago,"%d-%m-%Y") AS fecha_pago, 
-														 IF( historial.estado = 0 , DATEDIFF( CURRENT_DATE() , historial.fecha ) , DATEDIFF( historial.fecha_pago ,historial.fecha ) ) as daysAccumulated,
-														 historial.pago,
-														 historial.comision,
-														 historial.penalizacion,
-														 (historial.pago + historial.penalizacion - historial.comision) as total,
-                                                         ventas.estado AS estado_venta')
-                                                ->join('ventas', 'historial.id_venta = ventas.id_venta', 'left')
-                                                ->join('users AS cliente', 'ventas.id_cliente = cliente.id', 'left')
-                                                ->join('users AS lider', 'historial.id_lider = lider.id', 'left')
-                                                ->join('opciones_ingreso', 'historial.id_ingreso = opciones_ingreso.id_opcion_ingreso', 'left')
-                                                ->where(['historial.id_venta' => $id_venta])
-                                                ->where(['historial.estado !=' => 2])
-                                                ->get();
-        foreach ($data['pagos'] as $key => $ingreso) {
-            if ($ingreso->estado == 0) {
-                $fecha = Carbon::createFromFormat('d-m-Y', $ingreso->fecha);
-                $today = Carbon::createFromFormat('Y-m-d', Carbon::today()->format('Y-m-d'));
-                $data['pagos'][$key]->diff = $fecha->diff($today);
-            } else {
-                $fecha = Carbon::createFromFormat('d-m-Y', $ingreso->fecha);
-                $fecha_pago = Carbon::createFromFormat('d-m-Y', $ingreso->fecha_pago);
-                $data['pagos'][$key]->diff = $fecha->diff($fecha_pago);
+        if (!$this->ion_auth->logged_in()) {
+            // redirect them to the login page
+            redirect('auth/login', 'refresh');
+        } else {
+            $data['title'] = "Pagos";
+            $data['body'] = "pagos";
+            $data['pagos'] = $this->Historial_model->select('historial.id_historial,
+                                                            CONCAT(cliente.first_name," ",cliente.last_name) AS nombre_cliente,
+                                                            CONCAT(lider.first_name," ",lider.last_name) AS nombre_lider,
+                                                            IF( opciones_ingreso.id_opcion_ingreso != 1, 
+                                                                CONCAT(opciones_ingreso.nombre, " - " ,opciones_ingreso.cuenta),
+                                                                opciones_ingreso.nombre) as nombre,
+                                                            historial.concepto,
+                                                            historial.abono,
+                                                            DATE_FORMAT(historial.fecha,"%d-%m-%Y") AS fecha,
+                                                            historial.estado,
+                                                            DATE_FORMAT(historial.fecha_pago,"%d-%m-%Y") AS fecha_pago, 
+                                                            IF( historial.estado = 0 , DATEDIFF( CURRENT_DATE() , historial.fecha ) , DATEDIFF( historial.fecha_pago ,historial.fecha ) ) as daysAccumulated,
+                                                            historial.pago,
+                                                            historial.comision,
+                                                            historial.penalizacion,
+                                                            (historial.pago + historial.penalizacion - historial.comision) as total,
+                                                            ventas.estado AS estado_venta')
+                                                    ->join('ventas', 'historial.id_venta = ventas.id_venta', 'left')
+                                                    ->join('users AS cliente', 'ventas.id_cliente = cliente.id', 'left')
+                                                    ->join('users AS lider', 'historial.id_lider = lider.id', 'left')
+                                                    ->join('opciones_ingreso', 'historial.id_ingreso = opciones_ingreso.id_opcion_ingreso', 'left')
+                                                    ->where(['historial.id_venta' => $id_venta])
+                                                    ->where(['historial.estado !=' => 2])
+                                                    ->get();
+            foreach ($data['pagos'] as $key => $ingreso) {
+                if ($ingreso->estado == 0) {
+                    $fecha = Carbon::createFromFormat('d-m-Y', $ingreso->fecha);
+                    $today = Carbon::createFromFormat('Y-m-d', Carbon::today()->format('Y-m-d'));
+                    $data['pagos'][$key]->diff = $fecha->diff($today);
+                } else {
+                    $fecha = Carbon::createFromFormat('d-m-Y', $ingreso->fecha);
+                    $fecha_pago = Carbon::createFromFormat('d-m-Y', $ingreso->fecha_pago);
+                    $data['pagos'][$key]->diff = $fecha->diff($fecha_pago);
+                }
             }
+            $data['lideres'] = $this->ion_auth->users(3)->result();
+            $data['ingresos'] = $this->Opciones_ingreso_model->get();
+            $this->load->view('templates/template', $data);
         }
-        $data['lideres'] = $this->ion_auth->users(3)->result();
-        $data['ingresos'] = $this->Opciones_ingreso_model->get();
-        $this->load->view('templates/template', $data);
     }
     public function comisiones()
     {

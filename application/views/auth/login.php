@@ -6,7 +6,7 @@
     <!-- Viewport for Responsivity -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
     <title>Iniciar sesión</title>
-    <link rel="icon" type="image/png" href="<?= base_url() ?>icon.png" />
+    <?php $this->load->view('templates/presentation.php') ?>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>assets/css/estilos.min.css">
 </head>
@@ -26,7 +26,14 @@
             </div>
         </div>
         <div class="wrap-login__body">
-            <div class="login-form">
+        <?php if($message) { ?>
+                <div id="infoMessage" class="alert alert-danger">
+                    <div class="text-center"><i class="fa fa-info-circle fa-2x"></i></div>
+                    <?= $message ?>
+                </div>
+                <!-- Mensajes de error -->
+                <?php unset($message); } ?>
+            <div class="login-form">                
                 <div class="container-fluid">
                     <?= form_open("auth/login") ?>
                         <div class="row">
@@ -54,8 +61,7 @@
                                 <?= form_submit('submit', lang('login_submit_btn'),'class="btn btn-submit-login"') ?>
                                     <!-- Boton enviar -->
                             </div>
-                            <div class="form-group col-xs-12 col-sm-5
-							">
+                            <div class="form-group col-xs-12 col-sm-5">
                                 <?php echo lang('login_remember_label', 'remember');?>
                                 <!-- Label recordarme -->
                                 <?php echo form_checkbox('remember', '1', FALSE, 'id="remember"');?>
@@ -71,22 +77,17 @@
                         <?=  form_close();?>
                 </div>
             </div>
-            <?php if($message) { ?>
-            <div id="infoMessage" class="alert alert-danger">
-                <i class="fa fa-info-circle fa-2x"></i>
-                <?= $message ?>
-            </div>
-            <!-- Mensajes de error -->
-            <?php unset($message); } ?>
+            
         </div>
     </div>
     <footer>
         <div class="container-fluid container">
             <div class="row">
                 <div class="col-xs-12">
-                    <p>Derechos Reservados Huertos La Ceiba
+                    <h6>&#x24B8; Derechos Reservados Huertos La Ceiba
                         <?= Date('Y') ?>
-                    </p>
+                    </h6>
+                    <h6>Develop by <a href="http://devexteam.com" target="blank">[Devex]<sub>Team</sub></a></h6>
                 </div>
             </div>
         </div>

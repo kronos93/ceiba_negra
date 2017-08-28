@@ -1,4 +1,3 @@
-import '../configs/datatables';
 import { base_url, ajax_msg } from '../utils/util';
 import GenericFrm from '../GenericFrm';
 let opciones_de_pago = $('#opciones-pago-table').DataTable({

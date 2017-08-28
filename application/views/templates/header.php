@@ -6,7 +6,7 @@
     <title>
         <?= $title ?>
     </title>
-    <link rel="icon" type="image/png" href="<?= base_url() ?>icon.png" />
+    <?php $this->load->view('templates/presentation.php') ?>
     <!-- Viewport for Responsivity -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">

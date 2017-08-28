@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "description": "",
     "main": "script.js",
+    "jshintConfig ": ".jshintrc",
     "scripts": {
         "dev": "webpack -w",
         "build": "webpack -p --env.prod --env.min"
@@ -20,6 +21,8 @@
         "babel-preset-es2015": "^6.22.0",
         "babel-preset-stage-0": "^6.22.0",
         "css-loader": "^0.28.5",
+        "favicons-webpack-plugin": "0.0.7",
+        "html-webpack-plugin": "^2.30.1",
         "imports-loader": "^0.7.1",
         "style-loader": "^0.18.2",
         "url-loader": "^0.5.9",
@@ -37,14 +40,14 @@
         "datatables.net-dt": "^1.10.15",
         "datatables.net-responsive": "^2.1.1",
         "datatables.net-responsive-dt": "^2.1.1",
-        "inputmask": "^3.3.7",
+        "inputmask": "^3.3.8",
         "jquery": "^3.1.1",
         "jquery-mask-plugin": "^1.14.11",
         "jquery-steps": "^1.1.0",
         "jquery-ui": "^1.12.1",
         "jquery-validation": "^1.17.0",
+        "jszip": "^3.1.4",
         "moment": "^2.17.1",
-        "jszip": "^3.1.3",
         "pdfmake": "^0.1.32",
         "sweetalert": "^1.1.3",
         "tinymce": "^4.6.5"

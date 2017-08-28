@@ -35,49 +35,54 @@ class Venta extends CI_Controller
     }
     public function historial_de_ventas()
     {
-        $data['title'] = "Historial de ventas";
-        $data['body'] = "historial_ventas";
+        if (!$this->ion_auth->logged_in()) {
+            // redirect them to the login page
+            redirect('auth/login', 'refresh');
+        } else {
+            $data['title'] = "Historial de ventas";
+            $data['body'] = "historial_ventas";
 
-        $venta = $this->Venta_model;
-        if ($this->session->flashdata('id_venta')) {
-            $venta->where(['ventas.id_venta' => $this->session->flashdata('id_venta')]);
+            $venta = $this->Venta_model;
+            if ($this->session->flashdata('id_venta')) {
+                $venta->where(['ventas.id_venta' => $this->session->flashdata('id_venta')]);
+            }
+            $data['ventas'] = $venta->select("ventas.id_venta, 
+                                            ventas.version, 
+                                            ventas.precio, 
+                                            ventas.comision, 
+                                            ventas.porcentaje_comision,
+                                            ventas.estado,
+                                            SUM(IF(historial.estado = 0 && DATE(historial.fecha) <= NOW(),1,0)) AS retraso,
+                                            SUM(IF(DATEDIFF( historial.fecha_pago ,historial.fecha) > 0 ,1,0)) AS retrasados,
+                                            SUM(IF(DATEDIFF( historial.fecha_pago ,historial.fecha) < 0 ,1,0)) AS adelantados,
+                                            SUM(IF(historial.estado = 1 && DATE(historial.fecha) = DATE(historial.fecha_pago),1,0)) AS en_tiempo,
+                                            SUM(IF(historial.estado = 1,1,0)) AS realizados,
+                                            SUM(historial.pago) AS pagado, 
+                                            SUM(IF(historial.estado = 1,historial.comision,0)) AS comisionado,
+                                            CONCAT(cliente.first_name,' ',cliente.last_name) AS nombre_cliente,
+                                            cliente.phone,
+                                            cliente.email,
+                                            CONCAT(lider.first_name,' ',lider.last_name) AS nombre_lider,
+                                            CONCAT(user.first_name,' ',user.last_name) AS nombre_user")
+                                    ->join('historial', 'ventas.id_venta = historial.id_venta', 'left')
+                                    ->join('users as cliente', 'ventas.id_cliente = cliente.id', 'left')
+                                    ->join('users as lider', 'ventas.id_lider = lider.id', 'left')
+                                    ->join('users as user', 'ventas.id_usuario = user.id', 'left')
+                                    ->where(['ventas.estado !=' => 4])
+                                    ->group_by('ventas.id_venta')
+                                    ->get();
+            foreach ($data['ventas'] as $key => $venta) {
+                $descripcion = $this->Venta_model->select('GROUP_CONCAT("Mz. ",manzanas.manzana, " Ht. ", huertos.huerto) as descripcion')
+                                                ->join('huertos_ventas', 'ventas.id_venta = huertos_ventas.id_venta', 'inner')
+                                                ->join('huertos', 'huertos_ventas.id_huerto = huertos.id_huerto', 'inner')
+                                                ->join('manzanas', 'huertos.id_manzana = manzanas.id_manzana', 'inner')
+                                                ->where(['ventas.id_venta' => $venta->id_venta])
+                                                ->order_by('manzanas.manzana ASC, huertos.huerto ASC')
+                                                ->get();
+                $data['ventas'][$key]->descripcion = $descripcion[0]->descripcion;
+            }
+            $this->load->view('templates/template', $data);
         }
-        $data['ventas'] = $venta->select("ventas.id_venta, 
-                                          ventas.version, 
-                                          ventas.precio, 
-                                          ventas.comision, 
-                                          ventas.porcentaje_comision,
-                                          ventas.estado,
-                                          SUM(IF(historial.estado = 0 && DATE(historial.fecha) <= NOW(),1,0)) AS retraso,
-                                          SUM(IF(DATEDIFF( historial.fecha_pago ,historial.fecha) > 0 ,1,0)) AS retrasados,
-                                          SUM(IF(DATEDIFF( historial.fecha_pago ,historial.fecha) < 0 ,1,0)) AS adelantados,
-                                          SUM(IF(historial.estado = 1 && DATE(historial.fecha) = DATE(historial.fecha_pago),1,0)) AS en_tiempo,
-                                          SUM(IF(historial.estado = 1,1,0)) AS realizados,
-                                          SUM(historial.pago) AS pagado, 
-                                          SUM(IF(historial.estado = 1,historial.comision,0)) AS comisionado,
-                                          CONCAT(cliente.first_name,' ',cliente.last_name) AS nombre_cliente,
-                                          cliente.phone,
-                                          cliente.email,
-                                          CONCAT(lider.first_name,' ',lider.last_name) AS nombre_lider,
-                                          CONCAT(user.first_name,' ',user.last_name) AS nombre_user")
-                                ->join('historial', 'ventas.id_venta = historial.id_venta', 'left')
-                                ->join('users as cliente', 'ventas.id_cliente = cliente.id', 'left')
-                                ->join('users as lider', 'ventas.id_lider = lider.id', 'left')
-                                ->join('users as user', 'ventas.id_usuario = user.id', 'left')
-                                ->where(['ventas.estado !=' => 4])
-                                ->group_by('ventas.id_venta')
-                                ->get();
-        foreach ($data['ventas'] as $key => $venta) {
-            $descripcion = $this->Venta_model->select('GROUP_CONCAT("Mz. ",manzanas.manzana, " Ht. ", huertos.huerto) as descripcion')
-                                              ->join('huertos_ventas', 'ventas.id_venta = huertos_ventas.id_venta', 'inner')
-                                              ->join('huertos', 'huertos_ventas.id_huerto = huertos.id_huerto', 'inner')
-                                              ->join('manzanas', 'huertos.id_manzana = manzanas.id_manzana', 'inner')
-                                              ->where(['ventas.id_venta' => $venta->id_venta])
-                                              ->order_by('manzanas.manzana ASC, huertos.huerto ASC')
-                                              ->get();
-            $data['ventas'][$key]->descripcion = $descripcion[0]->descripcion;
-        }
-        $this->load->view('templates/template', $data);
     }
     public function generar_contrato()
     {

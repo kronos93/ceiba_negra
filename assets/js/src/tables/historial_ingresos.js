@@ -1,4 +1,4 @@
-import '../configs/datatables';
+/* import '../configs/datatables'; */
 import 'jquery-mask-plugin/dist/jquery.mask';
 import '../configs/datepicker';
 import moment from 'moment';

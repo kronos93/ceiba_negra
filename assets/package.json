@@ -12,12 +12,12 @@
     "bootstrap-styl": "^5.0.8",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.1",
-    "gulp-clean-css": "^3.0.3",
+    "gulp-clean-css": "^3.7.0",
     "gulp-connect": "^5.0.0",
     "gulp-rename": "^1.2.2",
     "gulp-sourcemaps": "^1.9.1",
     "gulp-stylus": "^2.6.0",
-    "jquery-mask-plugin": "^1.14.3",
+    "jquery-mask-plugin": "^1.14.11",
     "nib": "^1.1.2",
     "rupture": "^0.6.2"
   }

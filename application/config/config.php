@@ -24,7 +24,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 
-$config['base_url'] = 'http://localhost/ceiba_negra/';
+
+$config['base_url'] = (function($server) {
+    if ($server === 'localhost' || $server === '192.168.0.4') {
+        return "http://${server}/ceiba_negra/";
+    }
+})($_SERVER['SERVER_NAME']);
 //$config['base_url'] = 'http://huertoslaceiba.com/';
 /*
 |--------------------------------------------------------------------------

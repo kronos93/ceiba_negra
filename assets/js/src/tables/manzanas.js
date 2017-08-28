@@ -1,4 +1,4 @@
-import '../configs/datatables';
+// import '../configs/datatables';
 import { base_url, ajax_msg } from '../utils/util';
 import GenericFrm from '../GenericFrm';
 //MANZANAS

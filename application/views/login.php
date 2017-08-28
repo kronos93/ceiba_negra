@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <!-- Viewport for Responsivity -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-    <title>Iniciar sesión</title>
+    <title>Iniciar sesión xxx</title>
+    
     <link rel="icon" type="image/png" href="<?= base_url() ?>icon.png" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>assets/css/estilos.css">

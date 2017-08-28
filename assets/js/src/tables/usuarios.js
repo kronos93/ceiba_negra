@@ -1,4 +1,4 @@
-import '../configs/datatables';
+
 import 'jquery-mask-plugin/dist/jquery.mask';
 import { phone } from '../components/components';
 import { base_url, ajax_msg } from '../utils/util';

@@ -1,4 +1,3 @@
-import '../configs/datatables';
 import { base_url } from '../utils/util';
 var reservas_table = $('#reservas-eliminadas-table').DataTable({
     "ajax": base_url() + 'ajax/get_reservas_eliminadas',

@@ -1,6 +1,7 @@
 import { resolve } from 'path';
 import webpack from 'webpack';
-
+import FaviconsWebpackPlugin from 'favicons-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 export default (env, argv) => {
     console.log(env);
     const PRODUCTION = (env) ? env.prod : false;
@@ -35,13 +36,20 @@ export default (env, argv) => {
                         loader: 'imports-loader?define=>false'
                     }]
                 }
-
             ]
         },
+        plugins: [
+            new HtmlWebpackPlugin(),
+            new FaviconsWebpackPlugin({
+                logo: '../../img/logos/logo.png',
+                prefix: '../../img/icons/'
+            }),
+        ],
         output: {
             filename: '[name].bundle.js', //Archivo o carpeta + nombre del archivo de salida
-            chunkFilename: '[name].bundle.js',
+            chunkFilename: 'chunks/[name].bundle.js',
             path: resolve(__dirname, 'dist'),
+            publicPath: ((PRODUCTION) ? 'http://192.168.0.4/ceiba_negra/' : 'http://192.168.0.4/ceiba_negra/') + 'assets/js/dist/'
         }
     };
-}
+};

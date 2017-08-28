@@ -1,7 +1,6 @@
-import { base_url } from './utils/util.js';
-import $ from 'jquery';
-import '../mapplic/mapplic.js';
-import { format_numeric } from './components/components';
+import { base_url } from '../utils/util.js';
+import '../../mapplic/mapplic.js';
+import { format_numeric } from '../components/components';
 let mapplic = $('#mapplic').mapplic({
     source: base_url() + 'ajax/get_mapa', // Using mall.json file as map data
     sidebar: true, // hahilita Panel izquierdo

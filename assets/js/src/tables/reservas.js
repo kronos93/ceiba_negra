@@ -1,4 +1,4 @@
-import '../configs/datatables';
+/* import '../configs/datatables'; */
 import 'sweetalert';
 import { base_url, ajax_msg } from '../utils/util';
 import GenericFrm from '../GenericFrm';
