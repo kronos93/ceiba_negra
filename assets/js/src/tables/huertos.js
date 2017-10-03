@@ -23,28 +23,31 @@ var huertos_table = $('#huertos-table').DataTable({
         {
             text: 'Huertos disponibles',
             action: function(e, dt, node, config) {
-                window.open(
-                    base_url() + 'reportes/huertos_disponibles',
-                    '_blank' // <- This is what makes it open in a new window.
-                );
+              window.location.href=`${base_url()}reportes/huertos_disponibles`;
+                // window.open(
+                //     base_url() + 'reportes/huertos_disponibles',
+                //     '_blank' // <- This is what makes it open in a new window.
+                // );
             }
         },
         {
             text: 'Huertos cancelados',
             action: function(e, dt, node, config) {
-                window.open(
-                    base_url() + 'reportes/huertos_cancelados',
-                    '_blank' // <- This is what makes it open in a new window.
-                );
+              window.location.href=`${base_url()}reportes/huertos_cancelados`;
+                // window.open(
+                //     base_url() + 'reportes/huertos_cancelados',
+                //     '_blank' // <- This is what makes it open in a new window.
+                // );
             }
         },
         {
             text: 'Huertos vendidos',
             action: function(e, dt, node, config) {
-                window.open(
-                    base_url() + 'reportes/huertos_vendidos',
-                    '_blank' // <- This is what makes it open in a new window.
-                );
+              window.location.href=`${base_url()}reportes/huertos_vendidos`;
+                // window.open(
+                //     base_url() + 'reportes/huertos_vendidos',
+                //     '_blank' // <- This is what makes it open in a new window.
+                // );
             }
         },
     ],
@@ -123,7 +126,7 @@ $('#huertoModal').on('show.bs.modal', function(e) {
     //Ocultar mensajes de la caja AJAX
     ajax_msg.hidden();
     var button = $(e.relatedTarget); // Boton que despliega el modal (Existe en el datatable)
-    var title = button.data('title'); // Extraer informacipon desde atributos data-* 
+    var title = button.data('title'); // Extraer informacipon desde atributos data-*
     var btnType = button.data('btnType');
     var modal = $(this);
     modal.find('.model-title').html(title);

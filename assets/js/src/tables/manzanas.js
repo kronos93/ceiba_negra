@@ -69,7 +69,7 @@ $('#manzanaModal').on('show.bs.modal', function(e) {
     //Ocultar mensajes de la caja AJAX
     ajax_msg.hidden();
     var button = $(e.relatedTarget); // Boton que despliega el modal (Existe en el datatable)
-    var title = button.data('title'); // Extraer informacipon desde atributos data-* 
+    var title = button.data('title'); // Extraer informacipon desde atributos data-*
     var btnType = button.data('btnType');
     var modal = $(this);
     modal.find('.model-title').html(title);

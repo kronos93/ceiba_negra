@@ -32,31 +32,31 @@ class Ajax extends CI_Controller
         $respuesta->mapwidth = 800;
         $respuesta->mapheight = 600;
         $respuesta->levels = [];
-        
+
         foreach ($categories_mz as $mz) {
             $mz->show = "false";
-            
+
             $level = new stdClass();
             $level->id = "landmarks-{$mz->id}";
             $level->title = "{$mz->title}";
-         
+
             $huerto = $this->Huerto_model->getLevel($mz->manzana);
-            
+
             $level->locations = $huerto;
             $level->map = base_url()."assets/img/mapas/{$mz->id}.svg";
             array_push($respuesta->levels, $level);
         }
         echo json_encode($respuesta);
     }
-    //Herramienta para Max
-    public function guardar_coordenadas()
-    {
-        $manzana = $this->input->post("manzana");
-        $lote = $this->input->post("lote");
-        $where = array('id_manzana' => $manzana, 'huerto' => $lote);
-        $update = array('x' => $this->input->post("x"), 'y' => $this->input->post("y"));
-        $this->Huerto_model->set_coordenadas($where, $update);
-    }
+    //Herramienta para Max //Solo para desarrollo
+    // public function guardar_coordenadas()
+    // {
+    //     $manzana = $this->input->post("manzana");
+    //     $lote = $this->input->post("lote");
+    //     $where = array('id_manzana' => $manzana, 'huerto' => $lote);
+    //     $update = array('x' => $this->input->post("x"), 'y' => $this->input->post("y"));
+    //     $this->Huerto_model->set_coordenadas($where, $update);
+    // }
     //HUERTOS
     public function get_huertos_pmz()
     {
@@ -255,7 +255,7 @@ class Ajax extends CI_Controller
                 'col_oeste' => $this->input->post('col_oeste'),
                 'col_noroeste' => $this->input->post('col_noroeste'),
             ];
-            
+
             $response = $this->Huerto_model->update($set_data, $where);
             if (count($response)) {
                 echo json_encode($response);
@@ -361,7 +361,7 @@ class Ajax extends CI_Controller
                         'col_oeste' => $this->input->post('col_oeste'),
                         'col_noroeste' => $this->input->post('col_noroeste'),
             ];
-            
+
             $manzana = $this->Manzana_model->insert($data);
             echo json_encode($manzana);
         } else {
@@ -492,7 +492,7 @@ class Ajax extends CI_Controller
                 ],
             ],*/
         ];
-        
+
         $this->form_validation->set_rules($config);
         if ($this->form_validation->run()) {
             $data = [
@@ -517,14 +517,14 @@ class Ajax extends CI_Controller
     {
         header("Content-type: application/json; charset=utf-8"); //Header generico
         $response = new stdClass(); //Clase generica
-        $opciones_ingreso = $this->Opciones_ingreso_model->select(' opciones_ingreso.id_opcion_ingreso, 
-																	opciones_ingreso.nombre, 
-																	opciones_ingreso.cuenta, 
+        $opciones_ingreso = $this->Opciones_ingreso_model->select(' opciones_ingreso.id_opcion_ingreso,
+																	opciones_ingreso.nombre,
+																	opciones_ingreso.cuenta,
 																	opciones_ingreso.tarjeta,
 																	SUM( IF(ventas.estado != 3 ,
                                                                             (historial.pago - historial.comision + historial.penalizacion),
                                                                             0
-                                                                            )) as ingreso	
+                                                                            )) as ingreso
 																  ')
                                                          ->join('historial', 'opciones_ingreso.id_opcion_ingreso = historial.id_ingreso', 'left')
                                                          ->join('ventas', 'historial.id_venta = ventas.id_venta', 'left')
@@ -629,14 +629,14 @@ class Ajax extends CI_Controller
         $reservacion = new $this->Reserva_model();
         if ($this->ion_auth->in_group(['lider'])) {
             $reservacion->where(['reservas.id_lider'=> $this->ion_auth->get_user_id()]);
-            
+
             if ($this->session->userdata('id_reserva')) {
                 $reservacion->where(['reservas.id_reserva' => $this->session->userdata('id_reserva')]);
                 $this->session->unset_userdata('id_reserva');
             }
         }
-         
-        $reservas = $reservacion->select("reservas.id_reserva, 
+
+        $reservas = $reservacion->select("reservas.id_reserva,
                                                   CONCAT(lider.first_name, ' ',lider.last_name ) AS nombre_lider,
                                                   GROUP_CONCAT('Mz. ',manzanas.manzana, ' Ht. ', huertos.huerto) AS descripcion,
                                                   reservas.email,
@@ -655,12 +655,12 @@ class Ajax extends CI_Controller
                                         ->get();
         foreach ($reservas as $key => $reserva) {
             $reservas[$key]->detalles = '';
-            $reservas[$key]->detalles .= "<p><strong>Correo: </strong>".$reserva->email."<p>";
-            $reservas[$key]->detalles .= "<p><strong>Teléfono: </strong><span class='phone'>".$reserva->phone."</span><p>";
-            $reservas[$key]->detalles .= "<p><strong>Precio: </strong>$".number_format($reserva->precio, 2)."<p>";
-            $reservas[$key]->detalles .= "<p><strong>Enganche: </strong>$".number_format($reserva->enganche, 2)."<p>";
-            $reservas[$key]->detalles .= "<p><strong>Abono: </strong>$".number_format($reserva->abono, 2)."<p>";
-            $reservas[$key]->detalles .= "<p><strong>Comentarios: </strong>".$reserva->comment."<p>";
+            $reservas[$key]->detalles .= "<p><strong>Correo: </strong> <a href='mailto:{$reserva->email}'>".$reserva->email."</a></p>";
+            $reservas[$key]->detalles .= "<p><strong>Teléfono: </strong> <a href='tel:{$reserva->phone}'><span class='phone'>".$reserva->phone."</span></a></p>";
+            $reservas[$key]->detalles .= "<p><strong>Precio: </strong>$".number_format($reserva->precio, 2)."</p>";
+            $reservas[$key]->detalles .= "<p><strong>Enganche: </strong>$".number_format($reserva->enganche, 2)."</p>";
+            $reservas[$key]->detalles .= "<p><strong>Abono: </strong>$".number_format($reserva->abono, 2)."</p>";
+            $reservas[$key]->detalles .= "<p><strong>Comentarios: </strong>".$reserva->comment."</p>";
             $reservas[$key]->is_admin = $this->ion_auth->in_group('administrador');
         }
         $response->data = $reservas; // Atributo de la clase generico para el dataTable
@@ -681,7 +681,7 @@ class Ajax extends CI_Controller
                                 ]
                             );
         $reservas = $this->Reserva_model->db
-                            ->select("  reservas.id_reserva, 
+                            ->select("  reservas.id_reserva,
                                         CONCAT(lider.first_name, ' ',lider.last_name ) AS nombre_lider,
                                         GROUP_CONCAT('Mz. ',manzanas.manzana, ' Ht. ', huertos.huerto) AS descripcion,
                                         reservas.email,
@@ -702,7 +702,7 @@ class Ajax extends CI_Controller
                             ])
                             ->group_by('reservas.id_reserva')
                             ->get()->result();
-       
+
         foreach ($reservas as $key => $reserva) {
             $reservas[$key]->detalles = '';
             $reservas[$key]->detalles .= "<p><strong>Correo: </strong>".$reserva->email."<p>";
@@ -714,13 +714,13 @@ class Ajax extends CI_Controller
             $reservas[$key]->is_admin = $this->ion_auth->in_group('administrador');
         }
         $response->data = array_pop($reservas); // Atributo de la clase generico para el dataTable
-        echo json_encode($response); //Response JSON 
+        echo json_encode($response); //Response JSON
     }
     public function get_reservas_eliminadas()
     {
         header("Content-type: application/json; charset=utf-8"); //Header generico
         $response = new stdClass(); //Clase generica
-        
+
         $query = $this->ReservaEliminada_model->db->select("reservas_eliminadas.id_reserva_eliminada,
                                                             CONCAT(users.first_name,' ',users.last_name) AS nombre_lider,
                                                             reservas_eliminadas.first_name,
@@ -748,23 +748,23 @@ class Ajax extends CI_Controller
     {
         header("Content-type: application/json; charset=utf-8");
         if ($this->input->post('id_historial')) {
-            $historial = $this->Historial_model ->select('  ventas.id_venta, 
+            $historial = $this->Historial_model ->select('  ventas.id_venta,
                                                             historial.abono,
-															historial.id_lider, 
-															ventas.porcentaje_comision, 
+															historial.id_lider,
+															ventas.porcentaje_comision,
 															ventas.porcentaje_penalizacion,
                                                             ventas.comision AS limite_comision,
 															DATE_FORMAT(historial.fecha,"%d-%m-%Y") as fecha,
-															IF( DATEDIFF( CURRENT_DATE() , historial.fecha ) > 0,  
-																IF( historial.estado = 0 , 
-																	DATEDIFF( CURRENT_DATE() , historial.fecha ), 
-																	0 ) , 
+															IF( DATEDIFF( CURRENT_DATE() , historial.fecha ) > 0,
+																IF( historial.estado = 0 ,
+																	DATEDIFF( CURRENT_DATE() , historial.fecha ),
+																	0 ) ,
 																0) AS daysAccumulated,
 															TRUNCATE( (historial.abono * (ventas.porcentaje_comision / 100)), 2) AS comision,
-															TRUNCATE( (historial.abono * (ventas.porcentaje_penalizacion / 100)) * ( IF( DATEDIFF( CURRENT_DATE() , historial.fecha ) > 0,  
-																																		 IF( historial.estado = 0 , 
-																																			 DATEDIFF( CURRENT_DATE() , historial.fecha ), 
-																																			 0 ) , 
+															TRUNCATE( (historial.abono * (ventas.porcentaje_penalizacion / 100)) * ( IF( DATEDIFF( CURRENT_DATE() , historial.fecha ) > 0,
+																																		 IF( historial.estado = 0 ,
+																																			 DATEDIFF( CURRENT_DATE() , historial.fecha ),
+																																			 0 ) ,
 																																		 0)), 2) AS penalizacion')
                                                 ->join('ventas', 'ventas.id_venta = historial.id_venta', 'left')
                                                 ->where(['id_historial' => $this->input->post('id_historial')])
@@ -782,11 +782,11 @@ class Ajax extends CI_Controller
         header("Content-type: application/json; charset=utf-8");
         if ($this->input->post('id_historial')) {
             //Datos para la comision
-            $historial = $this->Historial_model->select('   historial.abono, 
-															historial.id_lider, 
+            $historial = $this->Historial_model->select('   historial.abono,
+															historial.id_lider,
 															ventas.porcentaje_comision,
                                                             ventas.comision AS limite_comision,
-                                                            ventas.id_venta, 
+                                                            ventas.id_venta,
 															TRUNCATE( (historial.abono * (ventas.porcentaje_comision / 100)), 2) AS comision')
                                                 ->join('ventas', 'ventas.id_venta = historial.id_venta', 'left')
                                                 ->where(['id_historial' => $this->input->post('id_historial')])
@@ -803,7 +803,7 @@ class Ajax extends CI_Controller
     public function get_comision_per_lider()
     {
         $response = new stdClass();
-        $lideres = $this->Venta_model->select(" users.id, 
+        $lideres = $this->Venta_model->select(" users.id,
                                                 IF(users.last_name != NULL OR users.last_name != '',
                                                     CONCAT(users.first_name, ' ' , users.last_name),
                                                     users.first_name) AS nombre,
@@ -812,7 +812,7 @@ class Ajax extends CI_Controller
                                   /*->where('ventas.estado = 0 OR ventas.estado = 1 OR ventas.estado = 2')*/
                                   ->group_by('ventas.id_lider')
                                   ->get();
-        
+
         foreach ($lideres as $key => $lider) {
             $comisiones_pendientes = $this->Historial_model->select("
                                                             SUM(historial.pago * (ventas.porcentaje_comision/100)) AS comisiones_pendientes
@@ -822,7 +822,7 @@ class Ajax extends CI_Controller
                                                                'historial.id_lider' => $lider->id,
                                                            ])
                                                            ->where('(ventas.estado = 0 OR ventas.estado = 1) AND (historial.comision = 0 AND (historial.estado = 1 OR historial.estado = 2))')
-                                                           
+
                                                            ->get();
             $comisiones_pagadas = $this->Historial_model->select("
                                                             SUM(historial.comision) AS comisiones_pagadas
@@ -831,7 +831,7 @@ class Ajax extends CI_Controller
                                                            ->where([
                                                                'historial.id_lider' => $lider->id,
                                                                'historial.comision >' => 0,
-                                                              
+
                                                            ])
                                                            ->where('ventas.estado = 0 OR ventas.estado = 1')
                                                            ->get();
@@ -856,7 +856,7 @@ class Ajax extends CI_Controller
                                                         ->get();
                 $n_folios_repeditos = count($folio_repetido);
                 if ($n_folios_repeditos) {
-                    echo "Existe un folio de banco duplicado, verifique la información. 
+                    echo "Existe un folio de banco duplicado, verifique la información.
                     Folio duplicado: {$this->input->post('folio')}
                     Coincidencias: {$n_folios_repeditos}
                     Fecha :  {$folio_repetido[0]->fecha}
@@ -875,6 +875,8 @@ class Ajax extends CI_Controller
                 'id_ingreso' => $this->input->post('id_ingreso'),
                 'folio' => $this->input->post('folio'),
                 'estado' => 1,
+                'pagado_at' =>  Carbon::now()->toDateTimeString(),
+                'id_usuario' => $this->ion_auth->get_user_id(),
             ];
             if ($this->input->post('confirm_comision') == 'true') {
                 $set_data['comision'] = $this->input->post('comision');
@@ -908,14 +910,14 @@ class Ajax extends CI_Controller
                     $updated_pago = $this->Historial_model->select('historial.id_historial,
                                                                     CONCAT(cliente.first_name," ",cliente.last_name) AS nombre_cliente,
                                                                     CONCAT(lider.first_name," ",lider.last_name) AS nombre_lider,
-                                                                    IF( opciones_ingreso.id_opcion_ingreso != 1, 
+                                                                    IF( opciones_ingreso.id_opcion_ingreso != 1,
                                                                         CONCAT(opciones_ingreso.nombre, " - " ,opciones_ingreso.cuenta),
                                                                         opciones_ingreso.nombre) as nombre,
                                                                     historial.concepto,
                                                                     historial.abono,
                                                                     DATE_FORMAT(historial.fecha,"%d-%m-%Y") as fecha,
                                                                     historial.estado,
-                                                                    DATE_FORMAT(historial.fecha_pago,"%d-%m-%Y") as fecha_pago, 
+                                                                    DATE_FORMAT(historial.fecha_pago,"%d-%m-%Y") as fecha_pago,
                                                                     IF( historial.estado = 0 , DATEDIFF( CURRENT_DATE() , historial.fecha ) , DATEDIFF( historial.fecha_pago ,historial.fecha ) ) as daysAccumulated,
                                                                     historial.pago,
                                                                     historial.comision,
@@ -984,6 +986,8 @@ class Ajax extends CI_Controller
                 'comision' => 0,
                 'penalizacion' => 0,
                 'estado' => 0,
+                'pagado_at' =>  '0000-00-00 00:00:00',
+                'id_usuario' => 0,
             ];
             $estado_venta = $this->Historial_model->select('ventas.estado')
                                                   ->join('ventas', 'historial.id_venta = ventas.id_venta', 'left')
@@ -1000,7 +1004,7 @@ class Ajax extends CI_Controller
                 $pago_final = $this->Historial_model->select('IF(SUM(historial.abono)  > SUM(historial.pago),1,0 ) as pago_final')
                                                     ->where(['id_venta' => $id_venta[0]->id_venta])
                                                     ->get();
-                                                    
+
                 if ($pago_final[0]->pago_final) {
                     $huertos = $this->HuertosVentas_model->select('id_huerto, 1 AS vendido')
                                                         ->where(['id_venta' => $id_venta[0]->id_venta])
@@ -1011,14 +1015,14 @@ class Ajax extends CI_Controller
                     $updated_pago = $this->Historial_model->select('historial.id_historial,
                                                                     CONCAT(cliente.first_name," ",cliente.last_name) AS nombre_cliente,
                                                                     CONCAT(lider.first_name," ",lider.last_name) AS nombre_lider,
-                                                                    IF( opciones_ingreso.id_opcion_ingreso != 1, 
+                                                                    IF( opciones_ingreso.id_opcion_ingreso != 1,
                                                                         CONCAT(opciones_ingreso.nombre, " - " ,opciones_ingreso.cuenta),
                                                                         opciones_ingreso.nombre) as nombre,
                                                                     historial.concepto,
                                                                     historial.abono,
                                                                     DATE_FORMAT(historial.fecha,"%d-%m-%Y") AS fecha,
                                                                     historial.estado,
-                                                                    DATE_FORMAT(historial.fecha_pago,"%d-%m-%Y") AS fecha_pago, 
+                                                                    DATE_FORMAT(historial.fecha_pago,"%d-%m-%Y") AS fecha_pago,
                                                                     IF( historial.estado = 0 , DATEDIFF( CURRENT_DATE() , historial.fecha ) , DATEDIFF( historial.fecha_pago ,historial.fecha ) ) as daysAccumulated,
                                                                     historial.pago,
                                                                     historial.comision,
@@ -1087,14 +1091,14 @@ class Ajax extends CI_Controller
                     $updated_pago = $this->Historial_model->select(' historial.id_historial,
                                                                     CONCAT(cliente.first_name," ",cliente.last_name) AS nombre_cliente,
                                                                     CONCAT(lider.first_name," ",lider.last_name) AS nombre_lider,
-                                                                    IF( opciones_ingreso.id_opcion_ingreso != 1, 
+                                                                    IF( opciones_ingreso.id_opcion_ingreso != 1,
                                                                         CONCAT(opciones_ingreso.nombre, " - " ,opciones_ingreso.cuenta),
                                                                         opciones_ingreso.nombre) as nombre,
                                                                     historial.concepto,
                                                                     historial.abono,
                                                                     DATE_FORMAT(historial.fecha,"%d-%m-%Y") AS fecha,
                                                                     historial.estado,
-                                                                    DATE_FORMAT(historial.fecha_pago,"%d-%m-%Y") AS fecha_pago, 
+                                                                    DATE_FORMAT(historial.fecha_pago,"%d-%m-%Y") AS fecha_pago,
                                                                     IF( historial.estado = 0 , DATEDIFF( CURRENT_DATE() , historial.fecha ) , DATEDIFF( historial.fecha_pago ,historial.fecha ) ) as daysAccumulated,
                                                                     historial.pago,
                                                                     historial.comision,
@@ -1151,16 +1155,16 @@ class Ajax extends CI_Controller
             $like = $this->input->get('query');
             $full_name = "CONCAT(users.first_name,' ',users.last_name)";
             $select = ' users.id AS id_cliente,
-						users.first_name, 
-						users.last_name, 
-						users.email, 
-						users.phone, 
-						users.calle, 
-						users.no_ext, 
-						users.no_int, 
-						users.phone, 
-						users.colonia, 
-						users.municipio, 
+						users.first_name,
+						users.last_name,
+						users.email,
+						users.phone,
+						users.calle,
+						users.no_ext,
+						users.no_int,
+						users.phone,
+						users.colonia,
+						users.municipio,
 						users.estado,
 						users.ciudad,
 						users.cp,
@@ -1178,24 +1182,24 @@ class Ajax extends CI_Controller
         if ($this->input->get('query')) {
             $like = $this->input->get('query');
             $full_name = "CONCAT(users.first_name,' ',users.last_name)";
-            $select = " CONCAT({$full_name}) AS data, 
+            $select = " CONCAT({$full_name}) AS data,
                         CONCAT({$full_name}) AS value,
                         users.id AS id_cliente,
-						users.first_name, 
-						users.last_name, 
-						users.email, 
-						users.phone, 
-						users.calle, 
-						users.no_ext, 
-						users.no_int, 
-						users.phone, 
-						users.colonia, 
-						users.municipio, 
+						users.first_name,
+						users.last_name,
+						users.email,
+						users.phone,
+						users.calle,
+						users.no_ext,
+						users.no_int,
+						users.phone,
+						users.colonia,
+						users.municipio,
 						users.estado,
 						users.ciudad,
 						users.cp,
 						users.lugar_nacimiento,
-						DATE_FORMAT(users.fecha_nacimiento,'%d-%m-%Y') as fecha_nacimiento,                       
+						DATE_FORMAT(users.fecha_nacimiento,'%d-%m-%Y') as fecha_nacimiento,
                         ventas.testigo_1 AS testigo_1,
                         ventas.testigo_2 AS testigo_2,
                         ventas.ciudad_expedicion,
@@ -1219,7 +1223,7 @@ class Ajax extends CI_Controller
 
                  $clientes[$key]->value = $clientes[$key]->value . ' - <strong>$' . number_format($clientes[$key]->pagado, 2).'</strong>';
                  $clientes[$key]->data = $clientes[$key]->data . ' - $' . number_format($clientes[$key]->pagado);
-                
+
                  $clientes[$key]->value = $clientes[$key]->value . ' - <strong>' . $descripcion[0]->descripcion.'</strong>';
                  $clientes[$key]->data = $clientes[$key]->data . ' - ' . $descripcion[0]->descripcion;
             }
@@ -1250,7 +1254,7 @@ class Ajax extends CI_Controller
                     'vendido' => false
             ];
             $huertos = $this->Huerto_model->getHuertosPM($where, "object");
-            
+
             if (count($huertos)) {
                 foreach ($huertos as $huerto) {
                     $data = array(
@@ -1300,7 +1304,7 @@ class Ajax extends CI_Controller
             array_push($respuesta->huertos, $obj);
             $respuesta->enganche +=  $items["enganche"];
             $respuesta->abono +=  $items["abono"];
-            
+
             if (isset($items['id_reserva'])) {
                 $respuesta->is_reserva = true;
                 $respuesta->id_reserva = $items['id_reserva'];
@@ -1318,11 +1322,12 @@ class Ajax extends CI_Controller
         $respuesta->abono = ($respuesta->abono);
         $respuesta->total = ($this->cart->total());
         $respuesta->count = $this->cart->total_items();
-       
+        $respuesta->link = '';
         if ($this->ion_auth->in_group('administrador') || $this->ion_auth->in_group('miembro')) {
-            $respuesta->link = ($this->cart->total_items()>0) ? '<a href="'.base_url().'venta" class="btn btn-success center-block">Vender</a>' : '';
-        } elseif ($this->ion_auth->in_group('lider')) {
-            $respuesta->link = ($this->cart->total_items()>0) ? '<a href="'.base_url().'reserva" class="btn btn-warning center-block">Reservar</a>' : '';
+            $respuesta->link .= ($this->cart->total_items()>0) ? '<a href="'.base_url().'venta" class="btn btn-success center-block">Vender</a>' : '';
+        }
+        if ($this->ion_auth->in_group('miembro') || $this->ion_auth->in_group('lider')) {
+            $respuesta->link .= ($this->cart->total_items()>0) ? '<a href="'.base_url().'reserva" class="btn btn-warning center-block">Reservar</a>' : '';
         }
 
         echo json_encode($respuesta);
@@ -1335,13 +1340,13 @@ class Ajax extends CI_Controller
                 $this->cart->destroy();
                 $huertos_in_reservas = $this->Reserva_model->select("
                                                                      reservas.precio,
-                                                                     reservas.enganche, 
+                                                                     reservas.enganche,
                                                                      reservas.abono,
                                                                      huertos_reservas.id_huerto,
                                                                      reservas.id_reserva,
                                                                      reservas.id_lider,
                                                                      CONCAT(lider.first_name, ' ', lider.last_name) AS nombre_lider,
-                                                                     reservas.first_name, 
+                                                                     reservas.first_name,
                                                                      reservas.last_name,
                                                                      reservas.email,
                                                                      reservas.phone,
@@ -1385,7 +1390,7 @@ class Ajax extends CI_Controller
                                               ->join("manzanas", "huertos.id_manzana = manzanas.id_manzana", 'left')
                                               ->where_in('id_huerto', $huertos_in_reserva)
                                               ->get();
-                
+
                 if (count($huertos)) {
                     foreach ($huertos as $key => $huerto) {
                         $data = array(
@@ -1441,10 +1446,10 @@ class Ajax extends CI_Controller
             }
             $this->Huerto_model->update_batch($huertos, 'id_huerto');
 
-            $venta = $this->Venta_model->select("ventas.id_venta, 
-                                          ventas.version, 
-                                          ventas.precio, 
-										  ventas.comision, 
+            $venta = $this->Venta_model->select("ventas.id_venta,
+                                          ventas.version,
+                                          ventas.precio,
+										  ventas.comision,
                                           ventas.porcentaje_comision,
                                           ventas.estado,
                                           SUM(IF(historial.estado = 0 && DATE(historial.fecha) <= NOW(),1,0)) AS retraso,
@@ -1452,7 +1457,7 @@ class Ajax extends CI_Controller
                                           SUM(IF(DATEDIFF( historial.fecha_pago ,historial.fecha) < 0 ,1,0)) AS adelantados,
                                           SUM(IF(historial.estado = 1 && DATE(historial.fecha) = DATE(historial.fecha_pago),1,0)) AS en_tiempo,
                                           SUM(IF(historial.estado = 1,1,0)) AS realizados,
-                                          SUM(historial.pago) AS pagado, 
+                                          SUM(historial.pago) AS pagado,
                                           SUM(IF(historial.estado = 1,historial.comision,0)) AS comisionado,
                                           CONCAT(cliente.first_name,' ',cliente.last_name) AS nombre_cliente,
                                           cliente.phone,
@@ -1505,10 +1510,10 @@ class Ajax extends CI_Controller
             }
             $huertos_updated = $this->Huerto_model->where(['vendido' => 0])
                                                   ->update_batch($huertos, 'id_huerto');
-            $venta = $this->Venta_model->select("ventas.id_venta, 
-                                          ventas.version, 
-                                          ventas.precio, 
-										  ventas.comision, 
+            $venta = $this->Venta_model->select("ventas.id_venta,
+                                          ventas.version,
+                                          ventas.precio,
+										  ventas.comision,
                                           ventas.porcentaje_comision,
                                           ventas.estado,
                                           SUM(IF(historial.estado = 0 && DATE(historial.fecha) <= NOW(),1,0)) AS retraso,
@@ -1516,7 +1521,7 @@ class Ajax extends CI_Controller
                                           SUM(IF(DATEDIFF( historial.fecha_pago ,historial.fecha) < 0 ,1,0)) AS adelantados,
                                           SUM(IF(historial.estado = 1 && DATE(historial.fecha) = DATE(historial.fecha_pago),1,0)) AS en_tiempo,
                                           SUM(IF(historial.estado = 1,1,0)) AS realizados,
-                                          SUM(historial.pago) AS pagado, 
+                                          SUM(historial.pago) AS pagado,
                                           SUM(IF(historial.estado = 1,historial.comision,0)) AS comisionado,
                                           CONCAT(cliente.first_name,' ',cliente.last_name) AS nombre_cliente,
                                           cliente.phone,
@@ -1590,11 +1595,11 @@ class Ajax extends CI_Controller
             if ($update) {
                 $this->Huerto_model->update_batch($huertos, 'id_huerto');
             }
-            
-            $venta = $this->Venta_model->select("ventas.id_venta, 
-                                          ventas.version, 
-                                          ventas.precio, 
-										  ventas.comision, 
+
+            $venta = $this->Venta_model->select("ventas.id_venta,
+                                          ventas.version,
+                                          ventas.precio,
+										  ventas.comision,
                                           ventas.porcentaje_comision,
                                           ventas.estado,
                                           SUM(IF(historial.estado = 0 && DATE(historial.fecha) <= NOW(),1,0)) AS retraso,
@@ -1602,7 +1607,7 @@ class Ajax extends CI_Controller
                                           SUM(IF(DATEDIFF( historial.fecha_pago ,historial.fecha) < 0 ,1,0)) AS adelantados,
                                           SUM(IF(historial.estado = 1 && DATE(historial.fecha) = DATE(historial.fecha_pago),1,0)) AS en_tiempo,
                                           SUM(IF(historial.estado = 1,1,0)) AS realizados,
-                                          SUM(historial.pago) AS pagado, 
+                                          SUM(historial.pago) AS pagado,
                                           SUM(IF(historial.estado = 1,historial.comision,0)) AS comisionado,
                                           CONCAT(cliente.first_name,' ',cliente.last_name) AS nombre_cliente,
                                           cliente.phone,
@@ -1650,10 +1655,10 @@ class Ajax extends CI_Controller
             $id_venta = $this->input->post("id_venta");
             $this->Venta_model->where(['ventas.id_venta' => $id_venta])
                               ->update(['estado' => 2]);
-            $venta = $this->Venta_model->select("ventas.id_venta, 
-                                          ventas.version, 
-                                          ventas.precio, 
-										  ventas.comision, 
+            $venta = $this->Venta_model->select("ventas.id_venta,
+                                          ventas.version,
+                                          ventas.precio,
+										  ventas.comision,
                                           ventas.porcentaje_comision,
                                           ventas.estado,
                                           SUM(IF(historial.estado = 0 && DATE(historial.fecha) <= NOW(),1,0)) AS retraso,
@@ -1661,7 +1666,7 @@ class Ajax extends CI_Controller
                                           SUM(IF(DATEDIFF( historial.fecha_pago ,historial.fecha) < 0 ,1,0)) AS adelantados,
                                           SUM(IF(historial.estado = 1 && DATE(historial.fecha) = DATE(historial.fecha_pago),1,0)) AS en_tiempo,
                                           SUM(IF(historial.estado = 1,1,0)) AS realizados,
-                                          SUM(historial.pago) AS pagado, 
+                                          SUM(historial.pago) AS pagado,
                                           SUM(IF(historial.estado = 1,historial.comision,0)) AS comisionado,
                                           CONCAT(cliente.first_name,' ',cliente.last_name) AS nombre_cliente,
                                           cliente.phone,
@@ -1910,7 +1915,7 @@ class Ajax extends CI_Controller
         foreach ($data as $input) {
             $where['huertos.' . $input] = $this->input->post($input);
         }
-        
+
         $huertos = $this->Huerto_model->getHuertosPM($where, 'object');
         if (count($huertos)) { //Si el huerto por alguna razón deja de existir, un delete
             if ($huertos[0]->huerto == $this->input->post('huerto')) { //Si el huerto no ha cambiado
@@ -1973,7 +1978,7 @@ class Ajax extends CI_Controller
         $enganche = $this->input->post('enganche');
         $abono = $this->input->post('abono');
 
-        $same_op = $this->Precio_model->from()->db      
+        $same_op = $this->Precio_model->from()->db
                                       ->where([
                                                 'enganche' => $enganche,
                                                 'abono' => $abono,
@@ -1984,6 +1989,6 @@ class Ajax extends CI_Controller
             return false;
         }else{
             return true;
-        } 
+        }
     }
 }

@@ -6,6 +6,8 @@ import Cart from '../Cart';
 import 'jquery-mask-plugin/dist/jquery.mask';
 import 'jquery-ui/ui/widgets/datepicker';
 import '../configs/datepicker';
+import { phone } from '../components/components';
+phone();
 import moment from 'moment';
 moment.locale('es');
 

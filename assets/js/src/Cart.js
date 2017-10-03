@@ -11,8 +11,7 @@ class Cart {
         });
         $(document).off('mouseup').on('mouseup', function(e) {
             var container = $(".my-dropdown");
-            if (!container.is(e.target) // if the target of the click isn't the container...
-                &&
+            if (!container.is(e.target) && // if the target of the click isn't the container...
                 container.has(e.target).length === 0) // ... nor a descendant of the container
             {
                 container.hide();
@@ -126,10 +125,10 @@ class Cart {
             if (name_uri == 'venta' || name_uri == 'reserva') {
                 window.location.href = base_url();
             }
-        };
+        }
         $('.itemCartDelete').off('click').on('click', function(e) {
             var rowid = $(this).val();
-            that.delete(rowid)
+            that.delete(rowid);
             e.stopPropagation();
         });
     }

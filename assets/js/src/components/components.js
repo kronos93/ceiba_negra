@@ -154,6 +154,8 @@ module.exports = {
         }
     },
     format_numeric: function(action) {
+      // console.log($('.superficie'));
+      // console.log($(".currency"));
         if ($('.superficie').length > 0) {
             $('.superficie').autoNumeric(action, {
                 currencySymbol: ' m\u00B2',
@@ -208,7 +210,7 @@ module.exports = {
         $('.tabgroup > div').hide();
         $('.tabgroup > div:first-of-type').show();
         $('.tabs a').click(function(e) {
-            console.log('tab');
+            // console.log('tab');
             e.preventDefault();
             var $this = $(this),
                 tabgroup = '#' + $this.parents('.tabs').data('tabgroup'),

@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-xs-12">
                 <h6>&#x24B8; Derechos Reservados Huertos La Ceiba <?= Date('Y') ?></h6>
-                <h6>Develop by <a href="http://devexteam.com" target="blank">[Devex]<sub>Team</sub></a></h6>
+                <h6>Develop by <a href="https://devexteam.com" target="blank">[Devex]<sub>Team</sub></a></h6>
             </div>
         </div>
     </div>

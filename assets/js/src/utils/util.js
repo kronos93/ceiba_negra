@@ -1,10 +1,12 @@
 module.exports = {
 
     base_url: function() {
-        if (window.location.hostname === 'localhost' || window.location.hostname === '192.168.0.4') {
-            return window.location.origin + '/ceiba_negra/';
+        if (window.location.hostname === 'localhost' || window.location.hostname === '192.168.0.8') {
+          return window.location.origin + '/ceiba_negra/';
+        } else if(window.location.hostname === 'dev.huertoslaceiba.com'){
+          return 'http://dev.huertoslaceiba.com/';
         } else {
-            return 'http://huertoslaceiba.com/';
+          return 'http://huertoslaceiba.com/';
         }
 
     },

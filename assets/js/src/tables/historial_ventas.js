@@ -1,5 +1,5 @@
 import { base_url } from '../utils/util';
-import '../configs/datatables';
+// import '../configs/datatables';
 import swal from 'sweetalert';
 $(document).ready(function() {
     var table = $('#example').DataTable();
@@ -70,7 +70,7 @@ var historial_ventas_table = $('#historial-ventas-table').DataTable({
                     /*console.log("Render data");
                     console.log(full.estado);
                     console.log(full.version);*/
-                    var contrato = '<a href="' + base_url() + 'reportes/contrato/' + full.id_venta + '" class="btn btn-default" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> contrato</a>';
+                    var contrato = '<a href="' + base_url() + 'reportes/contrato/' + full.id_venta + '" class="btn btn-default" download><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Contrato</a>';
                     var pagare_recibo = '<a href="' + base_url() + 'reportes/' + ((full.version == 2) ? 'pagares' : 'recibos') + '/' + full.id_venta + '" class="btn btn-primary" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> ' + ((full.version == 2) ? 'pagares' : 'recibos') + '</a>';
                     var pagos = '<a href="' + base_url() + 'registros/pagos/' + full.id_venta + '" target="_blank" class="btn btn-info"><i class="fa fa-fw fa-eye"></i>pagos</a>';
                     var estado_cta = '<a href="' + base_url() + 'registros/pagos/' + full.id_venta + '" target="_blank" class="btn btn-info">Estado de cta.</a>';

@@ -59,7 +59,7 @@ class Registros extends CI_Controller
     }
     public function ingresos($name = '', $id = '', $init_date = '', $end_date = '', $option = '')
     {
-       
+
         if (!$this->ion_auth->logged_in()) {
         // redirect them to the login page
             redirect('auth/login', 'refresh');
@@ -88,22 +88,22 @@ class Registros extends CI_Controller
                     $data['end_date'] = Carbon::createFromFormat('d-m-Y', $end_date);
                     $data['ingresos'] = $this->Historial_model->select('CONCAT(users.first_name, " ", users.last_name) as nombre_cliente,
                                                                         opciones_ingreso.nombre,
-                                                                        historial.id_historial, 
-                                                                        historial.id_venta, 
-                                                                        historial.pago, 
+                                                                        historial.id_historial,
+                                                                        historial.id_venta,
+                                                                        historial.pago,
                                                                         historial.penalizacion,
-                                                                        historial.comision, 
+                                                                        historial.comision,
                                                                         DATE_FORMAT(historial.fecha_pago,"%d-%m-%Y") AS fecha_pago,
-                                                                        GROUP_CONCAT(DISTINCT manzanas.manzana ORDER BY  manzanas.manzana ASC) as manzanas, 
+                                                                        GROUP_CONCAT(DISTINCT manzanas.manzana ORDER BY  manzanas.manzana ASC) as manzanas,
                                                                         GROUP_CONCAT("Mz. ",manzanas.manzana, " Ht. ", huertos.huerto ORDER BY  manzanas.manzana ASC) as descripcion ')
                                                                 ->join('ventas', 'historial.id_venta = ventas.id_venta', 'left')
                                                                 ->join('users', 'ventas.id_cliente = users.id', 'left')
                                                                 ->join('opciones_ingreso', 'historial.id_ingreso = opciones_ingreso.id_opcion_ingreso', 'left')
-                                                                
+
                                                                 ->join('huertos_ventas', 'ventas.id_venta = huertos_ventas.id_venta', 'left')
                                                                 ->join('huertos', 'huertos_ventas.id_huerto = huertos.id_huerto', 'left')
                                                                 ->join('manzanas', 'huertos.id_manzana = manzanas.id_manzana', 'left')
-                                                                
+
                                                                 ->where(['historial.id_ingreso' => $id,"ventas.estado !=" => 3])
                                                                 ->where("historial.fecha_pago BETWEEN '{$data['init_date']->format('Y-m-d')}' AND '{$data['end_date']->format('Y-m-d')}'")
                                                                 ->order_by('historial.fecha_pago ASC,historial.id_historial ASC')
@@ -112,20 +112,22 @@ class Registros extends CI_Controller
                 } else {
                     $data['ingresos'] = $this->Historial_model->select('
                                                                         CONCAT(users.first_name, " ", users.last_name) as nombre_cliente,
+                                                                        CONCAT(u.first_name, " ", u.last_name) as nombre_cobrador,
                                                                         opciones_ingreso.nombre,
-                                                                        historial.id_historial, 
-                                                                        historial.id_venta, 
-                                                                        historial.pago, 
+                                                                        historial.id_historial,
+                                                                        historial.id_venta,
+                                                                        historial.pago,
                                                                         historial.penalizacion,
-                                                                        historial.comision, 
+                                                                        historial.comision,
                                                                         DATE_FORMAT(historial.fecha_pago,"%d-%m-%Y") AS fecha_pago')
                                                             ->join('ventas', 'historial.id_venta = ventas.id_venta', 'left')
+                                                            ->join('users as u', 'historial.id_usuario = u.id', 'left')
                                                             ->join('users', 'ventas.id_cliente = users.id', 'left')
                                                             ->join('opciones_ingreso', 'historial.id_ingreso = opciones_ingreso.id_opcion_ingreso', 'left')
                                                             ->where(['historial.id_ingreso' => $id,"ventas.estado !=" => 3])
                                                             ->order_by('historial.fecha_pago ASC,historial.id_historial ASC')
                                                             ->get();
-                    
+
                     $data['init_date'] = $this->Historial_model->select('fecha')
                                                                ->order_by('fecha ASC')
                                                                ->limit(1)
@@ -141,7 +143,7 @@ class Registros extends CI_Controller
                     $this->load->view('templates/template', $data);
                 } elseif ($option == 'download_excel') {
                     $objPHPExcel = new PHPExcel();
-                   
+
                     $creator = base_url();
                     $lastModifiedBy = base_url();
                     $styleArray = [
@@ -187,17 +189,17 @@ class Registros extends CI_Controller
                     $objDrawing = new PHPExcel_Worksheet_Drawing();
                     $objDrawing->setName('Logo');
                     $objDrawing->setDescription('Logo');
-                    
+
                     try{
                         $logo = dirname(__FILE__) . '/../../assets/img/logos/logo.png'; // Provide path to your logo file
-                    } 
+                    }
                     catch(Exception $e){
                         $logo = dirname(__FILE__) . '\..\..\assets\img\logos\logo.png'; // Provide path to your logo file
                     }
                     catch (Exception $e) {
                         echo 'Excepción capturada: ',  $e->getMessage(), "\n";
                     }
-                    
+
                     $objDrawing->setPath($logo);
                     /*$objDrawing->setOffsetX(8);    // setOffsetX works properly
                     $objDrawing->setOffsetY(300);  //setOffsetY has no effect*/
@@ -207,7 +209,7 @@ class Registros extends CI_Controller
                     $objDrawing->getShadow()->setVisible(true);
                     $objDrawing->getShadow()->setDirection(45);
                     $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
-                
+
                     /*$objD = new PHPExcel_Worksheet_HeaderFooterDrawing();
                     $objD->setName('PHPExcel logo');
                     $objD->setPath(dirname(__FILE__) . '\..\..\assets\img\logos\logo.png');
@@ -218,7 +220,7 @@ class Registros extends CI_Controller
                     $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
                     $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
                     $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
-                    $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);                    
+                    $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
                     $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
                     $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
                     $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
@@ -254,14 +256,14 @@ class Registros extends CI_Controller
                         $objPHPExcel->getActiveSheet()->getStyle("I{$i}")->getNumberFormat()
                                                                          ->setFormatCode('$#,##0.00');
                     }
-                    
-                     
+
+
                     // Rename worksheet
                     $objPHPExcel->getActiveSheet()->setTitle('Informe-'.$ingreso->nombre);
                     // Set active sheet index to the first sheet, so Excel opens this as the first sheet
                     $objPHPExcel->setActiveSheetIndex(0);
 
-                   
+
                     // Redirect output to a client’s web browser (Excel5)
                     header('Content-Type: application/vnd.ms-excel');
                     header('Content-Disposition: attachment;filename="Informe-'.strtolower($ingreso->nombre).'.xls"');
@@ -292,14 +294,14 @@ class Registros extends CI_Controller
             $data['pagos'] = $this->Historial_model->select('historial.id_historial,
                                                             CONCAT(cliente.first_name," ",cliente.last_name) AS nombre_cliente,
                                                             CONCAT(lider.first_name," ",lider.last_name) AS nombre_lider,
-                                                            IF( opciones_ingreso.id_opcion_ingreso != 1, 
+                                                            IF( opciones_ingreso.id_opcion_ingreso != 1,
                                                                 CONCAT(opciones_ingreso.nombre, " - " ,opciones_ingreso.cuenta),
                                                                 opciones_ingreso.nombre) as nombre,
                                                             historial.concepto,
                                                             historial.abono,
                                                             DATE_FORMAT(historial.fecha,"%d-%m-%Y") AS fecha,
                                                             historial.estado,
-                                                            DATE_FORMAT(historial.fecha_pago,"%d-%m-%Y") AS fecha_pago, 
+                                                            DATE_FORMAT(historial.fecha_pago,"%d-%m-%Y") AS fecha_pago,
                                                             IF( historial.estado = 0 , DATEDIFF( CURRENT_DATE() , historial.fecha ) , DATEDIFF( historial.fecha_pago ,historial.fecha ) ) as daysAccumulated,
                                                             historial.pago,
                                                             historial.comision,
@@ -377,7 +379,7 @@ class Registros extends CI_Controller
                                     ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
                                     ->setKeywords("office 2007 openxml php")
                                     ->setCategory("Test result file");
-        
+
         // Add some data
         $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('E3', 'HUERTOS LA CEIBA')
@@ -388,7 +390,7 @@ class Registros extends CI_Controller
         $objDrawing = new PHPExcel_Worksheet_Drawing();
         $objDrawing->setName('Logo');
         $objDrawing->setDescription('Logo');
-    
+
         $logo = dirname(__FILE__) . '\..\..\assets\img\logos\logo.png'; // Provide path to your logo file
         $objDrawing->setPath($logo);
         /*$objDrawing->setOffsetX(8);    // setOffsetX works properly
@@ -422,6 +424,15 @@ class Registros extends CI_Controller
             foreach($words as $word){
             $inits.=strtoupper(substr($word,0,1));
             }
-        return $inits;	
+        return $inits;
+    }
+    public function celebraciones() {
+      if (!$this->ion_auth->logged_in()) {
+        redirect('auth/login', 'refresh');
+      } else {
+          $data['title'] = "Cumpleaños"; //Titulo de la página -> require
+          $data['body'] = "registros/birthdays";  //Nombre de la vista de cuerpo -> require
+          $this->load->view('templates/template', $data);  //Combina header y footer con body
+      }
     }
 }

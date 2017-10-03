@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 use Carbon\Carbon;
+
 class Reserva extends CI_Controller
 {
     public function __construct()
@@ -14,7 +15,7 @@ class Reserva extends CI_Controller
     public function index()
     {
         if (!$this->ion_auth->logged_in()) {
-        // redirect them to the login page
+            // redirect them to the login page
             redirect('auth/login', 'refresh');
         } else {
             $data['title'] = "Reserva";
@@ -71,7 +72,7 @@ class Reserva extends CI_Controller
         ];
         $this->form_validation->set_rules($config);
         if ($this->form_validation->run()) {
-             $data = [
+            $data = [
                 'id_lider' => $this->ion_auth->get_user_id(),
                 'first_name' => $this->input->post('first_name'),
                 'last_name'   => $this->input->post('last_name'),
@@ -84,10 +85,10 @@ class Reserva extends CI_Controller
                 'fecha' =>  Carbon::today(),
                 'expira' =>  Carbon::today()->addDays(7),
              ];
-             $this->Trans_model->begin();
-             $reserva = $this->Reserva_model->insert($data);
-             
-             if($reserva){
+            $this->Trans_model->begin();
+            $reserva = $this->Reserva_model->insert($data);
+
+            if ($reserva) {
                 $this->session->set_userdata('id_reserva', $reserva);
                 /*var_dump($this->session->flashdata('id_reserva'));*/
                 $huertos_reserva = [];
@@ -109,37 +110,38 @@ class Reserva extends CI_Controller
                     $this->Trans_model->rollback();
                     echo "<p>Error fatal</p>";
                 } else {
-                    if($this->cart->total_items() != $updated_huertos){
+                    if ($this->cart->total_items() != $updated_huertos) {
                         echo "<p>No fue posible actualizar todos los registros, alguien más ha reservado, revise la disponibilidad de los huertos.</p>";
-                    }else{
+                    } else {
                         $this->cart->destroy();
                         $this->Trans_model->commit();
                         echo json_encode(['status' => 200 ,'msg' => 'ok']);
                     }
                 }
-             }else{
-                 echo "<p>Falló la inserción de datos, sí el problema persiste contactar al administrador.</p>";
-             }
+            } else {
+                echo "<p>Falló la inserción de datos, sí el problema persiste contactar al administrador.</p>";
+            }
         } else {
             echo validation_errors();
         }
     }
-    public function eliminar(){
+    public function eliminar()
+    {
         if ($this->input->is_ajax_request()) {
             header("Content-type: application/json; charset=utf-8");
             $this->Trans_model->begin();
             $reservas_to_update = $this->Reserva_model->select('huertos_reservas.id_huerto, 0 AS vendido')
-                                                      ->join('huertos_reservas','huertos_reservas.id_reserva = reservas.id_reserva','left')
+                                                      ->join('huertos_reservas', 'huertos_reservas.id_reserva = reservas.id_reserva', 'left')
                                                       ->where(['reservas.id_reserva' => $this->input->post('id_reserva')])
                                                       ->get();
             /*var_dump($reservas_to_update);
             die();*/
-            $this->Huerto_model->update_batch($reservas_to_update,'id_huerto');
+            $this->Huerto_model->update_batch($reservas_to_update, 'id_huerto');
             $this->Reserva_model->where(['id_reserva' => $this->input->post('id_reserva')])->delete();
             if ($this->Trans_model->status() === false) {
                 $this->Trans_model->rollback();
                 echo "<p>Error de transacción</p>";
-            }else{
+            } else {
                 $this->Trans_model->commit();
                 echo json_encode(['status' => 200 ,'msg' => 'ok']);
             }

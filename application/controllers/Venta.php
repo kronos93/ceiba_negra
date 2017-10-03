@@ -46,10 +46,10 @@ class Venta extends CI_Controller
             if ($this->session->flashdata('id_venta')) {
                 $venta->where(['ventas.id_venta' => $this->session->flashdata('id_venta')]);
             }
-            $data['ventas'] = $venta->select("ventas.id_venta, 
-                                            ventas.version, 
-                                            ventas.precio, 
-                                            ventas.comision, 
+            $data['ventas'] = $venta->select("ventas.id_venta,
+                                            ventas.version,
+                                            ventas.precio,
+                                            ventas.comision,
                                             ventas.porcentaje_comision,
                                             ventas.estado,
                                             SUM(IF(historial.estado = 0 && DATE(historial.fecha) <= NOW(),1,0)) AS retraso,
@@ -57,7 +57,7 @@ class Venta extends CI_Controller
                                             SUM(IF(DATEDIFF( historial.fecha_pago ,historial.fecha) < 0 ,1,0)) AS adelantados,
                                             SUM(IF(historial.estado = 1 && DATE(historial.fecha) = DATE(historial.fecha_pago),1,0)) AS en_tiempo,
                                             SUM(IF(historial.estado = 1,1,0)) AS realizados,
-                                            SUM(historial.pago) AS pagado, 
+                                            SUM(historial.pago) AS pagado,
                                             SUM(IF(historial.estado = 1,historial.comision,0)) AS comisionado,
                                             CONCAT(cliente.first_name,' ',cliente.last_name) AS nombre_cliente,
                                             cliente.phone,
@@ -155,7 +155,7 @@ class Venta extends CI_Controller
         foreach ($this->cart->contents() as $items) {
             $where = ['id_huerto' => $items['id_huerto']];
             $huertos = $this->Huerto_model->getHuertosPM($where, 'object');
-        
+
             foreach ($huertos as $key => $huerto) {
                 $superficie_ht = number_format($huerto->superficie, 2);
                 $colindancias .= "el<strong>&nbsp;huerto {$huerto->huerto}</strong> con una superficie de {$superficie_ht} M<sup>2</sup>, con las Medidas y Colindancias Siguientes: ";
@@ -205,7 +205,7 @@ class Venta extends CI_Controller
         } else {
             $historial = new Historial($precio, $enganche, $abono, $fecha_init, $tipo_historial);
         }
-        
+
         $historial_pagos = "";
         $historial_pagos .= "<table class='pagares-tabla'>";
         $historial_pagos .=    "<thead>";
@@ -250,6 +250,7 @@ class Venta extends CI_Controller
             $historial_pagos .=     "</tr>";
         }
         $pagado = number_format($historial->getPagado(), 2);
+        $historial_pagos .=    "</tbody>";
         $historial_pagos .=    "<tfoot>";
         $historial_pagos .=         "<tr>";
         $historial_pagos .=             "<td>&nbsp;</td>";
@@ -260,7 +261,7 @@ class Venta extends CI_Controller
         $historial_pagos .=             "<td>&nbsp;</td>";
         $historial_pagos .=         "</tr>";
         $historial_pagos .=    "</tfoot>";
-        $historial_pagos .=    "</tbody>";
+        $historial_pagos .="</table>";
         //Una manzana manzana
         if (!$multiple_mz) {
             $complemento_manzana_ii = ', que a continuación se describe';
@@ -299,8 +300,8 @@ class Venta extends CI_Controller
                 'complemento_manzana_ii' => $complemento_manzana_ii, //
                 'complemento_manzana_v' => $complemento_manzana_v, //
                 'manzana_txt' => $manzana_txt, //
-                'colindancias_mz' => $colindancias_mz, //
-                'colindancias_ht' => $colindancias_ht, //
+                'colindancias_mz' => '<div class="mceNonEditable">'.$colindancias_mz.'</div>', //
+                'colindancias_ht' => '<div class="mceNonEditable">'.$colindancias_ht.'</div>', //
                 'precio' => '$'.number_format($precio, 2), //
                 'precio_txt' => $precio, //
                 'enganche' => '$'.number_format($enganche, 2), //
@@ -343,7 +344,7 @@ class Venta extends CI_Controller
         } else {
             $fecha  =  Carbon::createFromFormat('d-m-Y', '01-09-1999');
         }
-        
+
         $additional_data = [
             'first_name' => ucwords($this->input->post('first_name')),
             'last_name' =>  ucwords($this->input->post('last_name')),
@@ -382,7 +383,7 @@ class Venta extends CI_Controller
 
                 'porcentaje_penalizacion' =>  $this->input->post('porcentaje_penalizacion'),
                 'retrasos_permitidos' =>  $this->input->post('maximo_retrasos_permitidos'),
-                
+
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ];
@@ -403,10 +404,10 @@ class Venta extends CI_Controller
             if ($this->input->post('enganche') == $this->input->post('precio')) {
                 $venta['estado'] =  1;
             }
-            
+
             $id_venta = $this->Venta_model->insert($venta);
             if ($id_venta) {
-                
+
                 $db_historial = [];
                 $precio = $this->input->post('precio');
                 $enganche = $this->input->post('enganche');
@@ -438,12 +439,16 @@ class Venta extends CI_Controller
                         $db_pago->pago = $this->input->post('enganche');
                         $db_pago->estado = 1;
                         $db_pago->comision = 0;
+                        $db_pago->pagado_at = Carbon::now()->toDateTimeString();
+                        $db_pago->id_usuario = $this->ion_auth->get_user_id();
                     } else {
                         $db_pago->id_ingreso = 0;
                         $db_pago->fecha_pago = $pago->getFecha()->format('Y-m-d');
                         $db_pago->pago = 0;
                         $db_pago->estado = 0;
                         $db_pago->comision = 0;
+                        $db_pago->pagado_at = null;
+                        $db_pago->id_usuario = 0;
                         if ($pagado < $pagar && $pagar != 0 && ($tipo_historial == '1-15' || $tipo_historial == 'quincena-mes' || $tipo_historial == 'ini-mes')) {
                             $db_pago->id_ingreso = $this->input->post('id_ingreso');
                             $db_pago->pago = $db_pago->abono;
@@ -459,7 +464,7 @@ class Venta extends CI_Controller
                 if($venta['version'] == 2 && $this->input->post('id_venta')){
                     //Cuando se esté migrando un contrato
                     $venta = $this->Venta_model->select("
-                                          SUM(IF(historial.estado = 1,historial.pago,0)) AS pagado, 
+                                          SUM(IF(historial.estado = 1,historial.pago,0)) AS pagado,
                                           SUM(IF(historial.estado = 1,historial.comision,0)) AS comisionado,
                                           ")
                                     ->join('historial', 'ventas.id_venta = historial.id_venta', 'left')
@@ -489,9 +494,9 @@ class Venta extends CI_Controller
                                       ->update(['ventas.estado' => 4]);
                     $this->Venta_model->where(['ventas.id_venta' => $id_venta])
                                       ->update(['ventas.comision' => ($comision_venta + $comisionado)]);
-                    
+
                 }
-                
+
                 $huertos_venta = [];
                 $huertos = [];
                 foreach ($this->cart->contents() as $items) {
@@ -507,7 +512,7 @@ class Venta extends CI_Controller
                     }
                     array_push($huertos, $huerto);
                 }
-                
+
                 $this->HuertosVentas_model->insert_batch($huertos_venta);
                 $this->Huerto_model->update_batch($huertos, 'id_huerto');
                 $this->Historial_model->insert_batch($db_historial);
@@ -531,7 +536,7 @@ class Venta extends CI_Controller
 
                 'porcentaje_penalizacion' =>  $this->input->post('porcentaje_penalizacion'),
                 'retrasos_permitidos' =>  $this->input->post('maximo_retrasos_permitidos'),
-                
+
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ];
@@ -580,11 +585,15 @@ class Venta extends CI_Controller
                         $db_pago->fecha_pago = $pago->getFecha()->format('Y-m-d');
                         $db_pago->pago = $this->input->post('enganche');
                         $db_pago->estado = 1;
+                        $db_pago->pagado_at = Carbon::now()->toDateTimeString();
+                        $db_pago->id_usuario = $this->ion_auth->get_user_id();
                     } else {
                         $db_pago->id_ingreso = 0;
                         $db_pago->fecha_pago = $pago->getFecha()->format('Y-m-d');
                         $db_pago->pago = 0;
                         $db_pago->estado = 0;
+                        $db_pago->pagado_at = NULL;
+                        $db_pago->id_usuario = 0;
                     }
                     array_push($db_historial, $db_pago);
                 }
@@ -595,7 +604,7 @@ class Venta extends CI_Controller
                     $huerto_venta->id_huerto = $items['id_huerto'];
                     array_push($huertos_venta, $huerto_venta);
                 }
-                
+
                 $huertos_venta = [];
                 $huertos = [];
                 foreach ($this->cart->contents() as $items) {
@@ -611,7 +620,7 @@ class Venta extends CI_Controller
                     }
                     array_push($huertos, $huerto);
                 }
-                
+
                 $this->HuertosVentas_model->insert_batch($huertos_venta);
                 $this->Huerto_model->update_batch($huertos, 'id_huerto');
                 $this->Historial_model->insert_batch($db_historial);
@@ -639,7 +648,7 @@ class Pago
     private $concepto;
     private $abono;
     private $pagado;
-    
+
     public function __construct($concepto, $abono, $pagado, $fecha)
     {
         $this->fecha = $fecha;
@@ -684,7 +693,7 @@ class Historial
         $this->total = $total;
         $this->enganche = $enganche;
         $this->abono = $abono;
-        
+
         $this->n_pago = $n_pago;
 
         $this->tipo_historial = $tipo_historial;
@@ -693,11 +702,11 @@ class Historial
         $this->generarHistorial();
         $this->setDates();
     }
-    
+
     public function generarHistorial()
     {
         $abono = $this->enganche;
-        
+
         if ($this->n_pago == 0 || $this->n_pago == $this->n_pago) {
             $fecha = $this->fecha_inicial;
             $concepto = "ENGANCHE";
@@ -757,7 +766,7 @@ class Historial
                     } else {
                         $new_date_end = Carbon::createFromFormat('d-m-Y', $fecha->format('d-m-Y'));
                         $endDay = $new_date_end->endOfMonth()->day;
-                       
+
                         if (($dia + 10) > $endDay) {
                             $fecha = $new_date_end->addDay(1);
                             $next = 'quincena';
@@ -812,7 +821,7 @@ class Historial
                 if ($key === 0) {
                     $this->historial[$key]->setFecha($this->fecha_inicial);
                     $dia = ($this->fecha_inicial->day);
-                    
+
                     if ($dia <= 15-10) { //Revisar las demás condiciones
                         $next = 'quincena';
                         $fecha->startOfMonth();
@@ -979,7 +988,7 @@ class Historial
                 if ($key === 0) {
                     $this->historial[$key]->setFecha($this->fecha_inicial);
                     $dia = ($this->fecha_inicial->day);
-                    
+
                     if ($dia < 15) { //Revisar las demás condiciones
                         $next = 'quincena';
                         $fecha->startOfMonth();
@@ -1011,7 +1020,7 @@ class Historial
                     $new_date_end = Carbon::createFromFormat('d-m-Y', $fecha->format('d-m-Y'));
                     $endDay = $new_date_end->endOfMonth()->day;
 
-                    
+
                     $fecha = $fecha->endOfMonth();
                     $next = 'ini_mes';
                 } else {

@@ -28,7 +28,7 @@ class Huerto_model extends CI_Model
     {
         $this->db->select(" {$this->tabla}.`id_huerto`,
                             {$this->tabla}.`id_precio`,
-                            `manzanas`.`id_manzana`, 
+                            `manzanas`.`id_manzana`,
                             `manzanas`.`manzana`,
                             {$this->tabla}.`huerto`,
                             {$this->tabla}.`superficie`,
@@ -72,39 +72,51 @@ class Huerto_model extends CI_Model
     }
     public function getLevel($mz)
     {
-        $this->db->select(" CONCAT('m',manzanas.manzana,'lote',{$this->tabla}.huerto) as id,         
-                            CONCAT('Huerto ', {$this->tabla}.huerto) as title, 
-                            CONCAT('mz',manzanas.manzana) as category, 
-                            IF( manzanas.disponibilidad = 0,
-                                '#7f8c8d', 
-                                IF( {$this->tabla}.vendido = 0,
+        $this->db->select(" CONCAT('m',
+                                    manzanas.manzana,
+                                    'lote',
+                                    huertos.huerto) AS id,
+                            CONCAT('Huerto ', huertos.huerto) AS title,
+                            CONCAT('mz', manzanas.manzana) AS category,
+                            IF(manzanas.disponibilidad = 0,
+                                '#7f8c8d',
+                                IF(huertos.vendido = 0,
                                     '',
-                                    IF( {$this->tabla}.vendido = 1,
+                                    IF(huertos.vendido = 1,
                                         '#2980b9',
-                                        IF( {$this->tabla}.vendido = 2,
+                                        IF(huertos.vendido = 2,
                                             '#d35400',
-                                            IF( {$this->tabla}.vendido = 3,
+                                            IF(huertos.vendido = 3,
                                                 '#f1c40f',
-                                                '#8e44ad'
-                                              )
-                                          )
-                                    )
-                                )
-                            ) as fill,
-                            CONCAT('<div>Superficie: <span class=\"superficie\">',{$this->tabla}.superficie,'</div>',
-                                   '<div>Precio: <span class=\"currency\">',({$this->tabla}.precio_x_m2 * {$this->tabla}.superficie),'</span></div>') as description,
-                            IF( manzanas.disponibilidad = 0,
+                                                '#8e44ad'))))) AS fill,
+                            CONCAT('<div>Superficie: <span class=\"superficie\">',
+                                    huertos.superficie,
+                                    '</div>',
+                                    '<div>Precio: <span class=\"currency\">',
+                                    (huertos.precio_x_m2 * huertos.superficie),
+                                    '</span></div>',
+                                    IF(huertos.vendido = 0,
+                                        '<div>Estado: Huerto disponible</div>',
+                                        IF(huertos.vendido = 1,
+                                            CONCAT('<div>Estado: Huerto vendido / en proceso de pago</div>','<div><a href=\"./registros/pagos/',ventas.id_venta,'\"><i class=\"fa fa-user\" aria-hidden=\"true\"></i> ',users.first_name,' ',users.last_name,'</a></div>'),
+                                            IF(huertos.vendido = 2,
+                                                CONCAT('<div>Estado: Huerto vendido / saldado en venta</div>','<div><a href=\"./registros/pagos/',ventas.id_venta,'\"><i class=\"fa fa-user\" aria-hidden=\"true\"></i> ',users.first_name,' ',users.last_name,'</a></div>'),
+                                                IF(huertos.vendido = 3,
+                                                    CONCAT('<div>Estado: Huerto vendido / saldado en pagos</div>','<div><a href=\"./registros/pagos/',ventas.id_venta,'\"><i class=\"fa fa-user\" aria-hidden=\"true\"></i> ',users.first_name,' ',users.last_name,'</a></div>'),
+                                                    '<div>Estado: Huerto reservado</div>'))))) AS description,
+                            IF(manzanas.disponibilidad = 0,
                                 '',
-                                IF( {$this->tabla}.vendido = 0 ,
-                                    {$this->tabla}.id_huerto,
-                                    ''
-                                )
-                            ) AS link, 
-                            {$this->tabla}.x,
-                            {$this->tabla}.y ");
-        $this->db->join("manzanas", "{$this->tabla}.id_manzana = manzanas.id_manzana", 'left');
+                                IF(huertos.vendido = 0,
+                                    huertos.id_huerto,
+                                    '')) AS link,
+                            huertos.x,
+                            huertos.y ");
         $this->db->from("{$this->tabla}");
-        $this->db->where( ["manzanas.manzana" => "{$mz}"] );
+        $this->db->join("manzanas", "{$this->tabla}.id_manzana = manzanas.id_manzana", 'left');
+        $this->db->join("huertos_ventas", "huertos.id_huerto = huertos_ventas.id_huerto", 'left');
+        $this->db->join("ventas", "huertos_ventas.id_venta = ventas.id_venta", 'left');
+        $this->db->join("users", "ventas.id_cliente = users.id", 'left');
+        $this->db->where("manzanas.manzana = {$mz} AND (ventas.estado IN (0,1) || ventas.estado IS NULL)");
         $this->db->order_by("CONVERT( {$this->tabla}.huerto ".','."decimal ) ASC");
         $query = $this->db->get();
         return $query->result();
@@ -116,32 +128,39 @@ class Huerto_model extends CI_Model
         $this->db->where($where);
         $this->db->update($this->tabla);
     }
-    public function run_sql($sql){
-        $query = $this->db->query($sql);    
+    public function run_sql($sql)
+    {
+        $query = $this->db->query($sql);
         return $this->db->affected_rows();
     }
-    public function where($condicion){
+    public function where($condicion)
+    {
         $this->db->where($condicion);
         return $this;
     }
-    public function select($select){
+    public function select($select)
+    {
         $this->db->select($select);
         return $this;
     }
-    public function join($table_join,$condicion,$type='left'){
-        $this->db->join($table_join,$condicion,$type);
+    public function join($table_join, $condicion, $type = 'left')
+    {
+        $this->db->join($table_join, $condicion, $type);
         return $this;
     }
-    public function where_in($key,$values){
-        $this->db->where_in($key,$values);
+    public function where_in($key, $values)
+    {
+        $this->db->where_in($key, $values);
         return $this;
     }
-    public function get(){       
-        $this->db->from($this->tabla);        
+    public function get()
+    {
+        $this->db->from($this->tabla);
         $query = $this->db->get();
         return $query->result();
     }
-    public function update_batch($data,$ref){
+    public function update_batch($data, $ref)
+    {
         return $this->db->update_batch($this->tabla, $data, $ref);
     }
 }

@@ -2,36 +2,25 @@ import 'datatables.net-dt/css/jquery.dataTables.css';
 import 'datatables.net-responsive-dt/css/responsive.dataTables.css';
 import 'datatables.net-buttons-dt/css/buttons.dataTables.css';
 import 'sweetalert/dist/sweetalert.css';
-
 import './configs/serializeObject';
-
+//Implementación del carrito
+//Se contempla que el carrito tiene format_init como primera función
+if ($('#shopCartSale').length > 0) {
+  import(/* webpackChunkName: "shop_cart" */ './Cart')
+  .then((Cart) => {
+    let cart = new Cart.default();
+    cart.get(); //Siempre que se encuentre el carrito llamar a la función get()
+  })
+  .catch(err => { console.log(`Sucedio un error al importar el módulo de Carrito: ${err}`); });
+}
 if ($('#mapplic').length > 0) {
-    import( /* webpackChunkName: "mapa" */ './mapa/mapplic').catch(err => { console.log(`Sucedio un error al importar el módulo de Mapplic: ${err}`); });
+  import( /* webpackChunkName: "mapa" */ './mapa/mapplic').catch(err => { console.log(`Sucedio un error al importar el módulo de Mapplic: ${err}`); });
 }
 import './tables/datatables';
-/* 
-//Reacomodar
 
-import { phone } from './components/components.js';
-phone();
-import './tables/pagos';
-
-
-if ($('#frm-venta').length) {
-    require.ensure([], function(require) {
-        require("./venta.js");
-    });
+if ($('#frm-venta').length > 0) {
+  import( /* webpackChunkName: "frm_venta" */ './venta').catch(err => { console.log(`Sucedio un error al importar el módulo de Venta: ${err}`); });
 }
-if ($('#frm-reserva').length) {
-    require.ensure([], function(require) {
-        require('./reserva.js');
-    });
+if ($('#frm-reserva').length > 0) {
+  import( /* webpackChunkName: "frm_reserva" */ './reserva').catch(err => { console.log(`Sucedio un error al importar el módulo de Reservas: ${err}`); });
 }
-if ($('#shopCartSale').length) {
-    require.ensure([], function(require) {
-        var Cart = require('./Cart');
-        var cart = new Cart.default();
-        cart.get();
-    });
-}
- */

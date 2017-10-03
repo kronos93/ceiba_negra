@@ -5,29 +5,30 @@
         border: 1px solid #999;
         background: #FFF;
     }
-    
+
     .autocomplete-suggestion {
         padding: 2px 5px;
         white-space: normal;
     }
-    
+
     .autocomplete-selected {
         background: #F0F0F0;
     }
-    
+
     .autocomplete-suggestions strong {
         font-weight: normal;
         color: #3399FF;
     }
-    
+
     .autocomplete-group {
         padding: 2px 5px;
     }
-    
+
     .autocomplete-group strong {
         display: block;
         border-bottom: 1px solid #000;
     }
+
     </style>
     <div class="container-fluid container">
         <div class="row">
@@ -66,7 +67,7 @@
                                                     <input id="saldos_clientes_autocomplete" type="text" class="form-control" name="saldos" />
                                                     <div class="input-group-addon"><span class="fa fa-search"></span></div>
                                                 </div>
-                                            </div>                                            
+                                            </div>
                                         </div>
                                     </section>
                                 </div>

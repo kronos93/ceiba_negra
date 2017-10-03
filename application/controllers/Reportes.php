@@ -37,11 +37,11 @@ class Reportes extends CI_Controller
             $html.= $venta->contrato_html;
             $html.= "</div>";
             $html.= "</body></html>";
-                      
+
             $option = array('optimizationLevel' => HTMLMinify::OPTIMIZATION_ADVANCED);
             $HTMLMinify = new HTMLMinify($html, $option);
             $output = $HTMLMinify->process();
-            
+
             $dompdf = new Dompdf();
             $dompdf->loadHtml($output);
             // (Optional) Setup the paper size and orientation
@@ -102,7 +102,7 @@ class Reportes extends CI_Controller
                                         <tr>
                                             <td><strong>{$nombre_cliente}</strong></td>
                                             <td>
-                                                <p> EEste pagaré forma parte de una serie numerada de 1 al {$n_historial}  y todos estan sujetos a la condición de que, al no pagarse cualquiera de ellos a su vencimiento, serán exigibles todos los que le sigan en número, además de los ya vencidos,
+                                                <p> Este pagaré forma parte de una serie numerada de 1 al {$n_historial}  y todos estan sujetos a la condición de que, al no pagarse cualquiera de ellos a su vencimiento, serán exigibles todos los que le sigan en número, además de los ya vencidos,
                                                     desde la fecha de vencimiento de este documento hasta el día de su liquidación, causará intereses moratorios al tipo de {$historial->porcentaje_penalizacion}% por cada día de de pago incumplido, pagado en esta ciudad.
                                                 </p>
                                             </td>
@@ -118,7 +118,7 @@ class Reportes extends CI_Controller
                             <link rel='stylesheet' type='text/css' href='".base_url().'assets/css/pagares.min.css'."' />
                         </head>
                         <body>
-                            {$pagares}                
+                            {$pagares}
                         </body>
                      </html>";
             $option = array('optimizationLevel' => HTMLMinify::OPTIMIZATION_ADVANCED);
@@ -165,7 +165,7 @@ class Reportes extends CI_Controller
                     $txt_huertos.= "Huerto No. {$huerto->huerto} MZ. {$huerto->manzana}";
                 }
             }
-                                     
+
             $recibos = "";
             $n = "";
             $n_historial = "";
@@ -248,7 +248,7 @@ class Reportes extends CI_Controller
                     $page_break = 0;
                 }
             }
-            
+
             $html = "<html>
                         <head>
                             <title>Recibos - {$nombre_cliente}</title>
@@ -261,7 +261,7 @@ class Reportes extends CI_Controller
             $option = array('optimizationLevel' => HTMLMinify::OPTIMIZATION_ADVANCED);
             $HTMLMinify = new HTMLMinify($html, $option);
             $output = $HTMLMinify->process();
-            
+
             $options = new Options();
             $options->set('isRemoteEnabled', true);
             $options->set('defaultFont', 'Helvetica');
@@ -288,14 +288,14 @@ class Reportes extends CI_Controller
                                             ->result();
         $venta = $this->Venta_model->from()->db
                                      ->select("
-                                        CONCAT(users.first_name, ' ', users.last_name) AS nombre_cliente, 
+                                        CONCAT(users.first_name, ' ', users.last_name) AS nombre_cliente,
                                         ventas.id_venta,
                                         ventas.porcentaje_penalizacion,
-                                        GROUP_CONCAT(DISTINCT manzanas.manzana ORDER BY  manzanas.manzana ASC) as manzanas, 
+                                        GROUP_CONCAT(DISTINCT manzanas.manzana ORDER BY  manzanas.manzana ASC) as manzanas,
                                         GROUP_CONCAT('Mz. ',manzanas.manzana,   ' Ht. ', huertos.huerto ORDER BY  manzanas.manzana ASC) as descripcion
                                      ")
                                      ->join('users', 'ventas.id_cliente = users.id', 'left')
-                                     
+
                                      ->join('huertos_ventas', 'ventas.id_venta = huertos_ventas.id_venta', 'left')
                                      ->join('huertos', 'huertos_ventas.id_huerto = huertos.id_huerto', 'left')
                                      ->join('manzanas', 'huertos.id_manzana = manzanas.id_manzana', 'left')
@@ -307,7 +307,7 @@ class Reportes extends CI_Controller
 
         $venta = array_pop($venta);
         $objPHPExcel = new PHPExcel();
-                   
+
         $creator = base_url();
         $lastModifiedBy = base_url();
         $styleArray = [
@@ -337,7 +337,7 @@ class Reportes extends CI_Controller
         ->setCellValue('E7', 'Fecha de emisión: '.Carbon::today()->format('d-m-Y'))
         ->setCellValue('E9', 'Huertos (s): '.$venta->descripcion);
         $objPHPExcel->setActiveSheetIndex(0)->getStyle('C3:C4')->applyFromArray($styleArray);
-        
+
         $objPHPExcel->setActiveSheetIndex(0)->mergeCells('A7:D7');
         $objPHPExcel->setActiveSheetIndex(0)->mergeCells('A8:D8');
         $objPHPExcel->setActiveSheetIndex(0)->mergeCells('A9:D9');
@@ -345,7 +345,7 @@ class Reportes extends CI_Controller
         $objPHPExcel->setActiveSheetIndex(0)->mergeCells('E9:G9');
         $objPHPExcel->setActiveSheetIndex(0)->mergeCells('C3:E3');
         $objPHPExcel->setActiveSheetIndex(0)->mergeCells('C4:E4');
-        
+
         $i=11;
         $style = array(
             'alignment' => array(
@@ -405,7 +405,7 @@ class Reportes extends CI_Controller
         $objPHPExcel->setActiveSheetIndex(0)->mergeCells("A{$i}:B{$i}");
         $objPHPExcel->getActiveSheet()->getStyle("A{$i}:C{$i}")->applyFromArray($style);
         $objPHPExcel->getActiveSheet()->getRowDimension($i)->setRowHeight(40);
-        
+
         $i = $i+1;
         $objPHPExcel->getActiveSheet()->setCellValue("A{$i}", "Total de las penalidades: ");
         $objPHPExcel->getActiveSheet()->setCellValue("C{$i}", $total_p);
@@ -437,7 +437,7 @@ class Reportes extends CI_Controller
         $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(12);
         $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(15);
         $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(15);
-        
+
         $objDrawing = new PHPExcel_Worksheet_Drawing();
         $objDrawing->setName('Logo');
         $objDrawing->setDescription('Logo');
@@ -448,14 +448,14 @@ class Reportes extends CI_Controller
         } catch (Exception $e) {
             echo 'Excepción capturada: ',  $e->getMessage(), "\n";
         }
-        
+
         $objDrawing->setPath($logo);
         $objDrawing->setCoordinates('A1');
         $objDrawing->setWidthAndHeight(90,90);
         $objDrawing->setResizeProportional(false);
         $objDrawing->getShadow()->setVisible(true);
         $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
-        
+
         // Redirect output to a client’s web browser (Excel5)
         header('Content-Type: application/vnd.ms-excel');
         header('Content-Disposition: attachment;filename="Estado_de_cuenta_'.strtolower(str_replace(' ', '_', $venta->nombre_cliente)).'.xls"');
@@ -483,7 +483,7 @@ class Reportes extends CI_Controller
                                                    ->result();
 
         $objPHPExcel = new PHPExcel();
-                   
+
         $creator = base_url();
         $lastModifiedBy = base_url();
         $styleArray = [
@@ -516,7 +516,7 @@ class Reportes extends CI_Controller
         $objDrawing = new PHPExcel_Worksheet_Drawing();
         $objDrawing->setName('Logo');
         $objDrawing->setDescription('Logo');
-        
+
         try {
             $logo = dirname(__FILE__) . '/../../assets/img/logos/logo.png'; // Provide path to your logo file
         } catch (Exception $e) {
@@ -524,7 +524,7 @@ class Reportes extends CI_Controller
         } catch (Exception $e) {
             echo 'Excepción capturada: ',  $e->getMessage(), "\n";
         }
-        
+
         $objDrawing->setPath($logo);
         /*$objDrawing->setOffsetX(8);    // setOffsetX works properly
         $objDrawing->setOffsetY(300);  //setOffsetY has no effect*/
@@ -561,7 +561,7 @@ class Reportes extends CI_Controller
 
         // Rename worksheet
         $objPHPExcel->getActiveSheet()->setTitle('huertos_disponibles');
-        
+
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $objPHPExcel->setActiveSheetIndex(0);
         $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
@@ -589,7 +589,7 @@ class Reportes extends CI_Controller
     public function huertos_cancelados()
     {
         $ventas_canceladas = $this->Venta_model->from()->db
-                                               ->select('ventas.id_venta, 
+                                               ->select('ventas.id_venta,
                                                          CONCAT(users.first_name, " ", users.last_name) AS nombre,
                                                          IF(historial.estado = 1, SUM(historial.pago),SUM(0)) AS pagado,
                                                          IF(historial.estado = 1, SUM(historial.comision),SUM(0)) AS comision,
@@ -603,13 +603,13 @@ class Reportes extends CI_Controller
                                                ->get_compiled_select();
         $huertos_cancelados = $this->Venta_model->db
                                                 ->select('
-                                                            ventas.id_venta, 
-                                                            ventas.nombre, 
-                                                            ventas.pagado, 
-                                                            ventas.comision, 
-                                                            ventas.penalizacion, 
+                                                            ventas.id_venta,
+                                                            ventas.nombre,
+                                                            ventas.pagado,
+                                                            ventas.comision,
+                                                            ventas.penalizacion,
                                                             ventas.fecha,
-                                                            GROUP_CONCAT(DISTINCT manzanas.manzana ORDER BY  manzanas.manzana ASC) as manzanas, 
+                                                            GROUP_CONCAT(DISTINCT manzanas.manzana ORDER BY  manzanas.manzana ASC) as manzanas,
                                                             GROUP_CONCAT("Mz. ",manzanas.manzana, " Ht. ", huertos.huerto ORDER BY  manzanas.manzana ASC) as descripcion ')
                                                 ->from("({$ventas_canceladas}) AS ventas")
                                                 ->join('huertos_ventas' ,'ventas.id_venta = huertos_ventas.id_venta','inner')
@@ -617,9 +617,9 @@ class Reportes extends CI_Controller
                                                 ->join('manzanas' ,'huertos.id_manzana = manzanas.id_manzana','inner')
                                                 ->group_by('ventas.id_venta')
                                                 ->get()
-                                                ->result();                                   
+                                                ->result();
         $objPHPExcel = new PHPExcel();
-                   
+
         $creator = base_url();
         $lastModifiedBy = base_url();
         $styleArray = [
@@ -652,7 +652,7 @@ class Reportes extends CI_Controller
         $objDrawing = new PHPExcel_Worksheet_Drawing();
         $objDrawing->setName('Logo');
         $objDrawing->setDescription('Logo');
-        
+
         try {
             $logo = dirname(__FILE__) . '/../../assets/img/logos/logo.png'; // Provide path to your logo file
         } catch (Exception $e) {
@@ -660,7 +660,7 @@ class Reportes extends CI_Controller
         } catch (Exception $e) {
             echo 'Excepción capturada: ',  $e->getMessage(), "\n";
         }
-        
+
         $objDrawing->setPath($logo);
         /*$objDrawing->setOffsetX(8);    // setOffsetX works properly
         $objDrawing->setOffsetY(300);  //setOffsetY has no effect*/
@@ -677,7 +677,7 @@ class Reportes extends CI_Controller
         $objPHPExcel->getActiveSheet()->setCellValue("C{$i}", "Contrato");
         $objPHPExcel->getActiveSheet()->setCellValue("D{$i}", "Manzanas");
         $objPHPExcel->getActiveSheet()->setCellValue("E{$i}", "Huertos");
-        $objPHPExcel->getActiveSheet()->setCellValue("F{$i}", "Pagado");    
+        $objPHPExcel->getActiveSheet()->setCellValue("F{$i}", "Pagado");
         $objPHPExcel->getActiveSheet()->setCellValue("G{$i}", "Comisiones");
         $objPHPExcel->getActiveSheet()->setCellValue("H{$i}", "Penalizaciones");
         $objPHPExcel->getActiveSheet()->setCellValue("I{$i}", "Ingreso total");
@@ -705,7 +705,7 @@ class Reportes extends CI_Controller
 
         // Rename worksheet
         $objPHPExcel->getActiveSheet()->setTitle('huertos_cancelados');
-        
+
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $objPHPExcel->setActiveSheetIndex(0);
         $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
@@ -735,11 +735,14 @@ class Reportes extends CI_Controller
     public function huertos_vendidos()
     {
         $ventas_canceladas = $this->Venta_model->from()->db
-                                               ->select('ventas.id_venta, 
+                                               ->select('ventas.id_venta,
                                                          CONCAT(users.first_name, " ", users.last_name) AS nombre,
                                                          IF(historial.estado = 1, SUM(historial.pago),SUM(0)) AS pagado,
                                                          IF(historial.estado = 1, SUM(historial.comision),SUM(0)) AS comision,
                                                          IF(historial.estado = 1, SUM(historial.penalizacion),SUM(0)) AS penalizacion,
+                                                         SUM(IF(historial.estado = 0, historial.abono, 0)) as deuda,
+                                                         SUM(IF(historial.fecha <= DATE_FORMAT(NOW(),"%Y-%m-%d"), historial.abono, 0)) as pago_esperado,
+                                                         SUM(historial.abono) as costo,
                                                          historial.fecha')
                                                ->join('users','ventas.id_cliente = users.id','inner')
                                                ->join('historial','ventas.id_venta = historial.id_venta','inner')
@@ -749,13 +752,16 @@ class Reportes extends CI_Controller
                                                ->get_compiled_select();
         $huertos_cancelados = $this->Venta_model->db
                                                 ->select('
-                                                            ventas.id_venta, 
-                                                            ventas.nombre, 
-                                                            ventas.pagado, 
-                                                            ventas.comision, 
-                                                            ventas.penalizacion, 
+                                                            ventas.id_venta,
+                                                            ventas.nombre,
+                                                            ventas.pagado,
+                                                            ventas.comision,
+                                                            ventas.penalizacion,
+                                                            ventas.deuda,
+                                                            ventas.pago_esperado,
+                                                            ventas.costo,
                                                             ventas.fecha,
-                                                            GROUP_CONCAT(DISTINCT manzanas.manzana ORDER BY  manzanas.manzana ASC) as manzanas, 
+                                                            GROUP_CONCAT(DISTINCT manzanas.manzana ORDER BY  manzanas.manzana ASC) as manzanas,
                                                             GROUP_CONCAT("Mz. ",manzanas.manzana, " Ht. ", huertos.huerto ORDER BY  manzanas.manzana ASC) as descripcion ')
                                                 ->from("({$ventas_canceladas}) AS ventas")
                                                 ->join('huertos_ventas' ,'ventas.id_venta = huertos_ventas.id_venta','inner')
@@ -763,9 +769,9 @@ class Reportes extends CI_Controller
                                                 ->join('manzanas' ,'huertos.id_manzana = manzanas.id_manzana','inner')
                                                 ->group_by('ventas.id_venta')
                                                 ->get()
-                                                ->result();       
+                                                ->result();
         $objPHPExcel = new PHPExcel();
-                   
+
         $creator = base_url();
         $lastModifiedBy = base_url();
         $styleArray = [
@@ -798,7 +804,7 @@ class Reportes extends CI_Controller
         $objDrawing = new PHPExcel_Worksheet_Drawing();
         $objDrawing->setName('Logo');
         $objDrawing->setDescription('Logo');
-        
+
         try {
             $logo = dirname(__FILE__) . '/../../assets/img/logos/logo.png'; // Provide path to your logo file
         } catch (Exception $e) {
@@ -806,7 +812,7 @@ class Reportes extends CI_Controller
         } catch (Exception $e) {
             echo 'Excepción capturada: ',  $e->getMessage(), "\n";
         }
-        
+
         $objDrawing->setPath($logo);
         /*$objDrawing->setOffsetX(8);    // setOffsetX works properly
         $objDrawing->setOffsetY(300);  //setOffsetY has no effect*/
@@ -823,11 +829,14 @@ class Reportes extends CI_Controller
         $objPHPExcel->getActiveSheet()->setCellValue("C{$i}", "Contrato");
         $objPHPExcel->getActiveSheet()->setCellValue("D{$i}", "Manzanas");
         $objPHPExcel->getActiveSheet()->setCellValue("E{$i}", "Huertos");
-        $objPHPExcel->getActiveSheet()->setCellValue("F{$i}", "Pagado");    
+        $objPHPExcel->getActiveSheet()->setCellValue("F{$i}", "Pagado");
         $objPHPExcel->getActiveSheet()->setCellValue("G{$i}", "Comisiones");
         $objPHPExcel->getActiveSheet()->setCellValue("H{$i}", "Penalizaciones");
         $objPHPExcel->getActiveSheet()->setCellValue("I{$i}", "Ingreso total");
-        $objPHPExcel->setActiveSheetIndex(0)->getStyle("A{$i}:I{$i}")->applyFromArray($styleArray);
+        $objPHPExcel->getActiveSheet()->setCellValue("J{$i}", "Pago pendiente");
+        $objPHPExcel->getActiveSheet()->setCellValue("K{$i}", "Ingreso esperado");
+        $objPHPExcel->getActiveSheet()->setCellValue("L{$i}", "Costo de venta");
+        $objPHPExcel->setActiveSheetIndex(0)->getStyle("A{$i}:L{$i}")->applyFromArray($styleArray);
         foreach($huertos_cancelados as $huertos){
             $i++;
             $objPHPExcel->getActiveSheet()->setCellValue("A{$i}", Carbon::createFromFormat('Y-m-d', $huertos->fecha)->format('d-m-Y'));
@@ -847,11 +856,20 @@ class Reportes extends CI_Controller
             $objPHPExcel->getActiveSheet()->setCellValue("I{$i}",  $huertos->pagado - $huertos->comision + $huertos->penalizacion);
             $objPHPExcel->getActiveSheet()->getStyle("I{$i}")->getNumberFormat()
                                           ->setFormatCode('$#,##0.00');
+            $objPHPExcel->getActiveSheet()->setCellValue("J{$i}",  $huertos->deuda);
+            $objPHPExcel->getActiveSheet()->getStyle("J{$i}")->getNumberFormat()
+                                          ->setFormatCode('$#,##0.00');
+            $objPHPExcel->getActiveSheet()->setCellValue("K{$i}",  $huertos->pago_esperado);
+            $objPHPExcel->getActiveSheet()->getStyle("K{$i}")->getNumberFormat()
+                                          ->setFormatCode('$#,##0.00');
+            $objPHPExcel->getActiveSheet()->setCellValue("L{$i}",  $huertos->costo);
+            $objPHPExcel->getActiveSheet()->getStyle("L{$i}")->getNumberFormat()
+                                          ->setFormatCode('$#,##0.00');
         }
 
         // Rename worksheet
         $objPHPExcel->getActiveSheet()->setTitle('huertos_vendidos');
-        
+
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $objPHPExcel->setActiveSheetIndex(0);
         $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
@@ -863,6 +881,9 @@ class Reportes extends CI_Controller
         $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
 
         // Redirect output to a client’s web browser (Excel5)
         header('Content-Type: application/vnd.ms-excel');

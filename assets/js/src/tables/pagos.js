@@ -109,8 +109,7 @@ $('#pagoModal').on('shown.bs.modal', function(e) {
 
             }
             $('#btn-mod-date').on('click', function() {
-
-                $('#fecha_pago').datepicker('option', 'minDate', null);
+                $('#fecha_pago').datepicker('option', 'minDate', null).datepicker('show');
             });
             $("#MyDatepicker").datepicker("option", "minDate", null);
             /*EXTRA */

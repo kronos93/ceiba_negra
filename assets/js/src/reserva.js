@@ -1,7 +1,10 @@
 import { base_url } from './utils/util';
-import 'jquery-validation/dist/jquery.validate'
+import swal from 'sweetalert';
+import 'jquery-validation/dist/jquery.validate';
 import 'jquery-mask-plugin/dist/jquery.mask';
 import './configs/validator';
+import { phone } from './components/components';
+phone();
 var form_reserva = $("#frm-reserva");
 form_reserva.validate({
     errorPlacement: function errorPlacement(error, element) { element.before(error); },

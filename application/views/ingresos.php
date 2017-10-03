@@ -1,7 +1,7 @@
 <main class="wrap-main">
 	<div class="container-fluid container">
 		<div class="row">
-			<div class="col-xs-12">				
+			<div class="col-xs-12">
 				<legend>
 					Ingresos
 				</legend>
@@ -24,36 +24,36 @@
                     </div>
                    <div class="clearfix"></div>
                 </form>
-                
+
 				<table id="historial-ingresos-table" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
 					<thead>
-						<tr>							
-							<th class="all">Nombre </th>	
+						<tr>
+							<th class="all">Nombre </th>
                             <th>Fecha de ingreso / pago</th>
                             <th>Ingreso</th>
                             <th>Comision</th>
-                            <th>Penalizacion</th>	
-                            <th class="all">Total</th>													
+                            <th>Penalizacion</th>
+                            <th class="all">Total</th>
                         </tr>
 					</thead>
                     <tbody>
-                        <?php 
+                        <?php
                         $total = 0;
                         $pagos = 0;
                         $total_comision = 0;
                         $total_penalizacion = 0;
-                        foreach($ingresos as $ingreso){ 
+                        foreach($ingresos as $ingreso){
                         ?>
                         <tr>
-                            <!--<td><?= $ingreso->id_historial ?> </td>  -->                     
-                            <td><?= $ingreso->nombre ?> <a data-toggle="popover" title="Cliente:" data-placement="top" data-content="<p><?= $ingreso->nombre_cliente ?></p>"><span class="fa fa-info-circle fa-lg fa-fw"></span></a></td>
+                            <!--<td><?= $ingreso->id_historial ?> </td>  -->
+                            <td><?= $ingreso->nombre ?> <a data-toggle="popover" title="Datos:" data-placement="top" data-content="<p>Cliente: <?= $ingreso->nombre_cliente ?></p> <p>Cobró: <?= $ingreso->nombre_cobrador ?></p>"><span class="fa fa-info-circle fa-lg fa-fw"></span></a></td>
                             <td><?= $ingreso->fecha_pago ?> </td>
-                            <td>$<?= number_format($ingreso->pago,2) ?> </td>                            
+                            <td>$<?= number_format($ingreso->pago,2) ?> </td>
                             <td>$<?= number_format($ingreso->comision,2) ?> </td>
                             <td>$<?= number_format($ingreso->penalizacion,2) ?> </td>
-                            <td>$<?= number_format($ingreso->pago + $ingreso->penalizacion - $ingreso->comision,2)?> </td>                            
+                            <td>$<?= number_format($ingreso->pago + $ingreso->penalizacion - $ingreso->comision,2)?> </td>
                         </tr>
-                        <?php 
+                        <?php
                             $pagos += $ingreso->pago;
                             $total += $ingreso->pago + $ingreso->penalizacion - $ingreso->comision;
                             $total_comision += $ingreso->comision;
@@ -61,7 +61,7 @@
                         }
                         ?>
                     </tbody>
-                    <tfoot>                    
+                    <tfoot>
                         <tr>
                             <td></td>
                             <td></td>

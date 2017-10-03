@@ -226,3 +226,7 @@ textarea {
     font-weight: 400;
     color: #000;
 }
+.mceNonEditable{
+  background: #3498db;
+  border-radius: 4.3px;
+}
