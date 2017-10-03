@@ -2,7 +2,7 @@
     <div class="container-fluid container">
         <div class="row">
             <div class="col-xs-12">
-                <table id="pagos-table" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
+                <table id="pagos-table" class="table responsive table-striped table-bordered" cellspacing="0" width="100%">
                     <thead>
                         <tr>
                             <th data-visible="false">Id. Historial</th>
@@ -43,22 +43,22 @@
                                     <?= ($pago->estado == 0) ? 'Pendiente' : 'Pagado'?>
                                 </td>
                                 <td>
-                                    <?php 
-                                       
-                                        if ($pago->estado == 0) { 
-                                            if($pago->daysAccumulated > 0) { 
+                                    <?php
+
+                                        if ($pago->estado == 0) {
+                                            if($pago->daysAccumulated > 0) {
                                                 echo '<span class="label label-danger">Tiene un retraso en pago de:</span>' . $pago->diff->format('%y año(s) %m mes(es) y %d día(s).');
-                                               
+
                                             } else if($pago->daysAccumulated == 0){
                                                 echo '<span class="label label-warning">Hoy es día de pago.</span>';
-                                                
+
                                             }else{
                                                 echo '<span class="label label-success">Aun no es fecha de pago</span>. Faltan: '. $pago->diff->format('%y año(s) %m mes(es) y %d día(s).');
-                                                            
+
                                             }
                                         } else if ($pago->estado == 1){
-                                            if($pago->daysAccumulated > 0) { 
-                                                echo 'Realizó el pago con un retraso de: ' . $pago->diff->format('%y año(s) %m mes(es) y %d día(s).');                             
+                                            if($pago->daysAccumulated > 0) {
+                                                echo 'Realizó el pago con un retraso de: ' . $pago->diff->format('%y año(s) %m mes(es) y %d día(s).');
                                             } else if($pago->daysAccumulated == 0) {
                                                 echo 'Pagado en tiempo.';
                                             } else if($pago->daysAccumulated < 0) {
@@ -74,7 +74,7 @@
                                 ?>
                                 </td>
                                 <td>
-                                    <?php 
+                                    <?php
                                 if($pago->estado_venta == 0 || $pago->estado_venta == 1){
                                     if ($pago->estado == 0) {
                                         echo '<button class="btn btn-success" data-toggle="modal" data-target="#pagoModal">Registrar pago</button> ' ;
@@ -84,13 +84,13 @@
                                         }
                                         if($pago->comision == 0 ) {
                                             echo '<button class="btn btn-warning" data-toggle="modal" data-target="#pagoComisionModal">Registrar comisión</button> ';
-                                        }                                            
+                                        }
                                     }
                                 }
                                 ?>
                                 </td>
                             </tr>
-                            <?php 
+                            <?php
                     endforeach;
                 ?>
                     </tbody>
