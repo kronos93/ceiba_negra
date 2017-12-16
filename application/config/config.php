@@ -26,7 +26,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 $config['base_url'] = (function($server) {
-    if ($server === 'localhost' || $server === '192.168.0.4') {
+    if ($server === 'localhost' || $server === '192.168.0.10') {
       return "http://${server}/ceiba_negra/";
     } else if ($server === 'huertoslaceiba.com'){
       return "http://huertoslaceiba.com/";

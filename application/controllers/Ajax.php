@@ -655,7 +655,15 @@ class Ajax extends CI_Controller
                                         ->get();
         foreach ($reservas as $key => $reserva) {
             $reservas[$key]->detalles = '';
-            $reservas[$key]->detalles .= "<p><strong>Correo: </strong> <a href='mailto:{$reserva->email}'>".$reserva->email."</a></p>";
+            $subjectFormMail = 'Felicidades se ha efectuado la reserva de huerto';
+            $bodyForMail = 'Estimado cliente, nos complace informar que se ha realizado la reserva de su huerto en los terrenos de huertos la ceiba.%0D%0A';
+            $bodyForMail.= 'Los datos registrados son:%0D%0A';
+            $bodyForMail.= "Precio: ".currency($reserva->precio)."%0D%0A";
+            $bodyForMail.= "Enganche: ".currency($reserva->enganche)."%0D%0A";
+            $bodyForMail.= "Abono: ".currency($reserva->abono)."%0D%0A";
+            $bodyForMail.= "Se solicita su presencia en las oficinas de \"Huertos la ceiba\" antes de la fecha: {$reserva->expira} para la generación y firma del contrato, de no cumplir con su asistencia a la fecha marcada esta reserva ya no será valida y el huerto podrá ser vendido a otro usuario%0D%0A";
+            $bodyForMail.= "Nota*: Cantidades en moneda Mexicana (MXN)%0D%0A";
+            $reservas[$key]->detalles .= "<p><strong>Correo: </strong> <a href='mailto:{$reserva->email}?subject=${subjectFormMail}&body=${bodyForMail}'>".$reserva->email."</a></p>";
             $reservas[$key]->detalles .= "<p><strong>Teléfono: </strong> <a href='tel:{$reserva->phone}'><span class='phone'>".$reserva->phone."</span></a></p>";
             $reservas[$key]->detalles .= "<p><strong>Precio: </strong>$".number_format($reserva->precio, 2)."</p>";
             $reservas[$key]->detalles .= "<p><strong>Enganche: </strong>$".number_format($reserva->enganche, 2)."</p>";

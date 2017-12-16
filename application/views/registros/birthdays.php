@@ -14,7 +14,7 @@
           <tbody>
             <?php foreach($this->celebraciones->birthdays() as $users): ?>
             <tr>
-              <td><?= $users->first_name ?> <?= $users->last_name ?></td>
+              <td><a href="mailto:<?= $users->email?>?subject=Un feliz cumpleaños le desea el equipo de Huertos la ceiba&body=Por medio de la presente le extendemos un cordial saludo a usted <?= $users->first_name ?> <?= $users->last_name ?>, deseandole un feliz día en compañia de sus seres queridos."><?= $users->first_name ?> <?= $users->last_name ?></a></td>
               <td>Hoy cumple: <?= Carbon\Carbon::createFromFormat('Y-m-d', $users->fecha_nacimiento)->diffInYears(Carbon\Carbon::now()) ?> años</td>
               <td><?= Carbon\Carbon::createFromFormat('Y-m-d', $users->fecha_nacimiento)->format('d-m-Y') ?></td>
             </tr>

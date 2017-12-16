@@ -28,6 +28,8 @@
     </li>
     <?php endif;?>
     <li><a href="<?= base_url() ?>registros/reservas/">Reservas<span id="reservas-badge" class="badge badge-info"><?= $this->reservas->total() ?></span></a></li>
+    <?php if ($this->ion_auth->in_group('administrador')) : ?>
     <li><a href="<?= base_url() ?>registros/celebraciones/"><i class="fa fa-birthday-cake" aria-hidden="true"></i> Cumpleaños <span id="reservas-badge" class="badge badge-info"><?= count($this->celebraciones->birthdays()) ?></span></a></li>
+    <?php endif;?>
 </ul>
 <?php endif; ?>

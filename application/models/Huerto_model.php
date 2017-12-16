@@ -72,6 +72,7 @@ class Huerto_model extends CI_Model
     }
     public function getLevel($mz)
     {
+        $description = $this->ion_auth->in_group('administrador') ? "<a href=\"./registros/pagos/',ventas.id_venta,'\"><i class=\"fa fa-user\" aria-hidden=\"true\"></i> ',users.first_name,' ',users.last_name,'</a>" : "";
         $this->db->select(" CONCAT('m',
                                     manzanas.manzana,
                                     'lote',
@@ -98,11 +99,11 @@ class Huerto_model extends CI_Model
                                     IF(huertos.vendido = 0,
                                         '<div>Estado: Huerto disponible</div>',
                                         IF(huertos.vendido = 1,
-                                            CONCAT('<div>Estado: Huerto vendido / en proceso de pago</div>','<div><a href=\"./registros/pagos/',ventas.id_venta,'\"><i class=\"fa fa-user\" aria-hidden=\"true\"></i> ',users.first_name,' ',users.last_name,'</a></div>'),
+                                            CONCAT('<div>Estado: Huerto vendido / en proceso de pago</div>','<div>{$description}</div>'),
                                             IF(huertos.vendido = 2,
-                                                CONCAT('<div>Estado: Huerto vendido / saldado en venta</div>','<div><a href=\"./registros/pagos/',ventas.id_venta,'\"><i class=\"fa fa-user\" aria-hidden=\"true\"></i> ',users.first_name,' ',users.last_name,'</a></div>'),
+                                                CONCAT('<div>Estado: Huerto vendido / saldado en venta</div>','<div>{$description}</div>'),
                                                 IF(huertos.vendido = 3,
-                                                    CONCAT('<div>Estado: Huerto vendido / saldado en pagos</div>','<div><a href=\"./registros/pagos/',ventas.id_venta,'\"><i class=\"fa fa-user\" aria-hidden=\"true\"></i> ',users.first_name,' ',users.last_name,'</a></div>'),
+                                                    CONCAT('<div>Estado: Huerto vendido / saldado en pagos</div>','<div>{$description}</div>'),
                                                     '<div>Estado: Huerto reservado</div>'))))) AS description,
                             IF(manzanas.disponibilidad = 0,
                                 '',

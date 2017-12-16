@@ -7,11 +7,11 @@ import './configs/serializeObject';
 //Se contempla que el carrito tiene format_init como primera función
 if ($('#shopCartSale').length > 0) {
   import(/* webpackChunkName: "shop_cart" */ './Cart')
-  .then((Cart) => {
-    let cart = new Cart.default();
-    cart.get(); //Siempre que se encuentre el carrito llamar a la función get()
-  })
-  .catch(err => { console.log(`Sucedio un error al importar el módulo de Carrito: ${err}`); });
+    .then((Cart) => {
+      let cart = new Cart.default();
+      cart.get(); //Siempre que se encuentre el carrito llamar a la función get()
+    })
+    .catch(err => { console.log(`Sucedio un error al importar el módulo de Carrito: ${err}`); });
 }
 if ($('#mapplic').length > 0) {
   import( /* webpackChunkName: "mapa" */ './mapa/mapplic').catch(err => { console.log(`Sucedio un error al importar el módulo de Mapplic: ${err}`); });
