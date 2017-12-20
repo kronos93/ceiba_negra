@@ -280,10 +280,12 @@ class Reportes extends CI_Controller
     {
         $historials = $this->Historial_model->from()->db
                                             ->select("
-                                                concepto, fecha, abono
+                                                concepto, fecha, abono, estado, pago
                                             ")
-                                            ->where(['id_venta' => $id])
-                                            ->where(['estado' => 0])
+                                            ->where([
+                                              'id_venta' => $id,
+                                              //'fecha_pago  <=' => Carbon::now()->format('Y-m-d'),
+                                            ])
                                             ->get()
                                             ->result();
         $venta = $this->Venta_model->from()->db
@@ -352,7 +354,7 @@ class Reportes extends CI_Controller
                 'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
                 'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
                 'wrap' => true
-            )
+            ),
         );
         $objPHPExcel->getActiveSheet()->setCellValue("A{$i}", "Quincena");
         $objPHPExcel->getActiveSheet()->setCellValue("B{$i}", "Fecha");
@@ -366,14 +368,26 @@ class Reportes extends CI_Controller
         $now =Carbon::now();
         $total_p = 0;
         $total_a = 0;
+        $lastPay = new stdClass();
+        $lastPay->date = 'No ha realizado pago alguno';
+        $lastPay->concepto = 'Sin registro de pago';
+        $totalAbonado = 0;
+        $pendienteASaldar = 0;
+        $quincena = 0;
+        $hasPay = false;
         foreach ($historials as $historial) {
             $fecha = Carbon::createFromFormat('Y-m-d', $historial->fecha);
             $diff = $fecha->diffInDays($now, false);
-            if ($diff > 0) {
+            $daysForExtraCoding = $fecha->diffInDaysFiltered(function(Carbon $date) {
+                                                              return !$date->isWeekend();
+                                                            }, $now,false); //No cuenta días futuros
+
+
+            if (!$historial->estado && $daysForExtraCoding > 0) {
                 $i++;
                 $porcentaje_p = $venta->porcentaje_penalizacion/100; //Porcentaje de la penalización
                 $p_x_dia = $historial->abono * ($porcentaje_p);      //Cálculo de la penalización por día
-                $p_t = $p_x_dia*$diff;                               //Cálculo de la penalización acumulada por días
+                $p_t = $p_x_dia*$daysForExtraCoding;                               //Cálculo de la penalización acumulada por días
                 $total_p+= $p_t;
                 $deuda = $p_t + $historial->abono;                   //Deuda total de penalizaciones más el pago pendiente
                 $total_a += $historial->abono;
@@ -384,7 +398,7 @@ class Reportes extends CI_Controller
                 $objPHPExcel->getActiveSheet()->setCellValue("C{$i}", $historial->abono);
                 $objPHPExcel->getActiveSheet()->getStyle("C{$i}")->getNumberFormat()
                                                                  ->setFormatCode('$#,##0.00');
-                $objPHPExcel->getActiveSheet()->setCellValue("D{$i}", $diff);
+                $objPHPExcel->getActiveSheet()->setCellValue("D{$i}", $daysForExtraCoding);
                 $objPHPExcel->getActiveSheet()->setCellValue("E{$i}", $venta->porcentaje_penalizacion);
                 $objPHPExcel->getActiveSheet()->setCellValue("F{$i}", $p_x_dia);
                 $objPHPExcel->getActiveSheet()->getStyle("F{$i}")->getNumberFormat()
@@ -395,6 +409,18 @@ class Reportes extends CI_Controller
                 $objPHPExcel->getActiveSheet()->setCellValue("H{$i}", $deuda);
                 $objPHPExcel->getActiveSheet()->getStyle("H{$i}")->getNumberFormat()
                                                                  ->setFormatCode('$#,##0.00');
+            } else if($historial->estado == 1){
+              //Obtener el último pago
+              $hasPay = true;
+              $lastPay->date = Carbon::createFromFormat('Y-m-d', $historial->fecha);
+              $lastPay->concepto = $historial->concepto;
+              $totalAbonado = bcadd($totalAbonado, $historial->pago,2);
+            }
+            if($historial->estado == 0){
+              $pendienteASaldar = bcadd($pendienteASaldar, $historial->abono,2);
+            }
+            if($diff >= 0){
+              $quincena =  $historial->concepto;
             }
         }
         $i = $i+2;
@@ -422,6 +448,52 @@ class Reportes extends CI_Controller
                                                                  ->setFormatCode('$#,##0.00');
         $objPHPExcel->setActiveSheetIndex(0)->mergeCells("A{$i}:B{$i}");
         $objPHPExcel->setActiveSheetIndex(0)->getStyle("A{$i}:C{$i}")->applyFromArray($styleArray);
+        $objPHPExcel->getActiveSheet()->getStyle("A{$i}:C{$i}")->applyFromArray($style);
+        $objPHPExcel->getActiveSheet()->getRowDimension($i)->setRowHeight(40);
+        $i++;
+        //Nuevos datos
+        $objPHPExcel->getActiveSheet()->setCellValue("A{$i}", "Resumen: ");
+        $objPHPExcel->setActiveSheetIndex(0)->mergeCells("A{$i}:D{$i}");
+        $resumenStyle = [
+            'font' => [
+                'bold' => true,
+                'size' => 14
+            ],
+            'alignment' => [
+              'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+              'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+              'wrap' => true
+            ]
+        ];
+        $objPHPExcel->getActiveSheet()->getStyle("A{$i}:C{$i}")->applyFromArray($resumenStyle);
+        $objPHPExcel->getActiveSheet()->getRowDimension($i)->setRowHeight(40);
+
+        $i++;
+        $objPHPExcel->getActiveSheet()->setCellValue("A{$i}", "Última fecha en que pagó: ");
+        $objPHPExcel->setActiveSheetIndex(0)->mergeCells("A{$i}:B{$i}");
+        $objPHPExcel->getActiveSheet()->setCellValue("C{$i}", ($hasPay) ? $lastPay->date->format('d-m-Y') : 'No se registra alguna fecha de pago');
+        $objPHPExcel->getActiveSheet()->setCellValue("D{$i}", $lastPay->concepto);
+        $objPHPExcel->getActiveSheet()->getStyle("A{$i}:D{$i}")->applyFromArray($style);
+        $objPHPExcel->getActiveSheet()->getRowDimension($i)->setRowHeight(40);
+
+        $i++;
+        $objPHPExcel->getActiveSheet()->setCellValue("A{$i}", "Total de abonos: ");
+        $objPHPExcel->setActiveSheetIndex(0)->mergeCells("A{$i}:B{$i}");
+        $objPHPExcel->getActiveSheet()->setCellValue("C{$i}",$totalAbonado);
+        $objPHPExcel->getActiveSheet()->getStyle("C{$i}")->getNumberFormat()->setFormatCode('$#,##0.00');
+        $objPHPExcel->getActiveSheet()->getStyle("A{$i}:C{$i}")->applyFromArray($style);
+        $objPHPExcel->getActiveSheet()->getRowDimension($i)->setRowHeight(40);
+        $i++;
+        $objPHPExcel->getActiveSheet()->setCellValue("A{$i}", "Saldo por alquilar: ");
+        $objPHPExcel->setActiveSheetIndex(0)->mergeCells("A{$i}:B{$i}");
+        $objPHPExcel->getActiveSheet()->setCellValue("C{$i}",$pendienteASaldar);
+        $objPHPExcel->getActiveSheet()->getStyle("C{$i}")->getNumberFormat()->setFormatCode('$#,##0.00');
+        $objPHPExcel->getActiveSheet()->getStyle("A{$i}:C{$i}")->applyFromArray($style);
+        $objPHPExcel->getActiveSheet()->getRowDimension($i)->setRowHeight(40);
+        $i++;
+        $objPHPExcel->getActiveSheet()->setCellValue("A{$i}", "No. de quincena: ");
+        $objPHPExcel->setActiveSheetIndex(0)->mergeCells("A{$i}:B{$i}");
+        $objPHPExcel->getActiveSheet()->setCellValue("C{$i}",str_replace('PAGO ','',$quincena));
         $objPHPExcel->getActiveSheet()->getStyle("A{$i}:C{$i}")->applyFromArray($style);
         $objPHPExcel->getActiveSheet()->getRowDimension($i)->setRowHeight(40);
         // Rename worksheet
@@ -473,6 +545,7 @@ class Reportes extends CI_Controller
 
     public function huertos_disponibles()
     {
+      if($this->ion_auth->logged_in() && $this->ion_auth->in_group(['administrador'])){
         $huertos_disponibles = $this->Manzana_model->from()->db
                                                    ->select('manzanas.manzana, huertos.huerto,huertos.superficie, huertos.precio_x_m2, (huertos.superficie * huertos.precio_x_m2) AS precio')
                                                    ->join('huertos', 'manzanas.id_manzana = huertos.id_manzana', 'inner')
@@ -584,10 +657,14 @@ class Reportes extends CI_Controller
         header('Pragma: public'); // HTTP/1.0
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
         $objWriter->save('php://output');
+      } else {
+        redirect('registros/huertos');
+      }
     }
 
     public function huertos_cancelados()
     {
+      if($this->ion_auth->logged_in() && $this->ion_auth->in_group(['administrador'])){
         $ventas_canceladas = $this->Venta_model->from()->db
                                                ->select('ventas.id_venta,
                                                          CONCAT(users.first_name, " ", users.last_name) AS nombre,
@@ -641,11 +718,11 @@ class Reportes extends CI_Controller
         $objPHPExcel->getDefaultStyle()->getFont()->setSize(12);
         // Add some data
         $objPHPExcel->setActiveSheetIndex(0)
-        ->setCellValue('E3', 'HUERTOS LA CEIBA')
-        ->setCellValue('E4', 'FRANCISCO ENRIQUE MARTINEZ CORDERO')
-        ->setCellValue('E6', 'Huertos cancelados')
-        ->setCellValue('F6', 'Fecha de emisión')
-        ->setCellValue('G6', Carbon::today()->format('d-m-Y'));
+          ->setCellValue('E3', 'HUERTOS LA CEIBA')
+          ->setCellValue('E4', 'FRANCISCO ENRIQUE MARTINEZ CORDERO')
+          ->setCellValue('E6', 'Huertos cancelados')
+          ->setCellValue('F6', 'Fecha de emisión')
+          ->setCellValue('G6', Carbon::today()->format('d-m-Y'));
         $objPHPExcel->setActiveSheetIndex(0)->getStyle('E3:E6')->applyFromArray($styleArray);
         $objPHPExcel->setActiveSheetIndex(0)->getStyle('F6')->applyFromArray($styleArray);
         //Draw logo
@@ -730,21 +807,31 @@ class Reportes extends CI_Controller
         header('Pragma: public'); // HTTP/1.0
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
         $objWriter->save('php://output');
+      } else {
+        redirect('registros/huertos');
+      }
     }
 
     public function huertos_vendidos()
     {
+      if($this->ion_auth->logged_in() && $this->ion_auth->in_group(['administrador'])){
         $ventas_canceladas = $this->Venta_model->from()->db
                                                ->select('ventas.id_venta,
-                                                         CONCAT(users.first_name, " ", users.last_name) AS nombre,
-                                                         IF(historial.estado = 1, SUM(historial.pago),SUM(0)) AS pagado,
-                                                         IF(historial.estado = 1, SUM(historial.comision),SUM(0)) AS comision,
-                                                         IF(historial.estado = 1, SUM(historial.penalizacion),SUM(0)) AS penalizacion,
+                                                         ventas.abono,
+                                                         CONCAT(cliente.first_name, " ", cliente.last_name) AS nombre_cliente,
+                                                         CONCAT(lider.first_name, " ", lider.last_name) AS nombre_lider,
+                                                         SUM(IF(historial.estado = 1, historial.pago,0)) AS pagado,
+                                                         SUM(IF(historial.estado = 1, historial.comision, 0)) AS comision,
+                                                         SUM(IF(historial.estado = 1, historial.penalizacion, 0)) AS penalizacion,
                                                          SUM(IF(historial.estado = 0, historial.abono, 0)) as deuda,
+                                                         SUM(IF(historial.fecha <= DATE_FORMAT(NOW(),"%Y-%m-%d") AND historial.estado = 0, 1, 0)) as pagos_atrasados,
                                                          SUM(IF(historial.fecha <= DATE_FORMAT(NOW(),"%Y-%m-%d"), historial.abono, 0)) as pago_esperado,
                                                          SUM(historial.abono) as costo,
+                                                         MAX(IF(historial.estado = 1, historial.fecha_pago, null )) as lasted_pay,
+                                                         MAX(IF(historial.estado = 1, historial.pagado_at, null )) as lasted_pay_real,
                                                          historial.fecha')
-                                               ->join('users','ventas.id_cliente = users.id','inner')
+                                               ->join('users as cliente','ventas.id_cliente = cliente.id','inner')
+                                               ->join('users as lider','ventas.id_lider = lider.id','inner')
                                                ->join('historial','ventas.id_venta = historial.id_venta','inner')
                                                ->where("ventas.estado = 0 OR ventas.estado = 1")
                                                ->group_by('ventas.id_venta')
@@ -753,21 +840,27 @@ class Reportes extends CI_Controller
         $huertos_cancelados = $this->Venta_model->db
                                                 ->select('
                                                             ventas.id_venta,
-                                                            ventas.nombre,
+                                                            ventas.abono,
+                                                            ventas.nombre_lider,
+                                                            ventas.nombre_cliente,
                                                             ventas.pagado,
                                                             ventas.comision,
                                                             ventas.penalizacion,
                                                             ventas.deuda,
+                                                            ventas.pagos_atrasados,
                                                             ventas.pago_esperado,
                                                             ventas.costo,
+                                                            ventas.lasted_pay,
+                                                            ventas.lasted_pay_real,
                                                             ventas.fecha,
                                                             GROUP_CONCAT(DISTINCT manzanas.manzana ORDER BY  manzanas.manzana ASC) as manzanas,
-                                                            GROUP_CONCAT("Mz. ",manzanas.manzana, " Ht. ", huertos.huerto ORDER BY  manzanas.manzana ASC) as descripcion ')
+                                                            GROUP_CONCAT("Ht. ", huertos.huerto ORDER BY  manzanas.manzana ASC) as descripcion ')
                                                 ->from("({$ventas_canceladas}) AS ventas")
                                                 ->join('huertos_ventas' ,'ventas.id_venta = huertos_ventas.id_venta','inner')
                                                 ->join('huertos' ,'huertos_ventas.id_huerto = huertos.id_huerto','inner')
                                                 ->join('manzanas' ,'huertos.id_manzana = manzanas.id_manzana','inner')
                                                 ->group_by('ventas.id_venta')
+                                                ->order_by('manzanas.id_manzana ASC')
                                                 ->get()
                                                 ->result();
         $objPHPExcel = new PHPExcel();
@@ -777,7 +870,7 @@ class Reportes extends CI_Controller
         $styleArray = [
             'font' => [
                 'bold' => true,
-                'size' => 14
+                'size' => 10
             ]
         ];
         // Set document properties
@@ -790,16 +883,16 @@ class Reportes extends CI_Controller
                         ->setKeywords("")
                         ->setCategory("");
         $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial');
-        $objPHPExcel->getDefaultStyle()->getFont()->setSize(12);
+        $objPHPExcel->getDefaultStyle()->getFont()->setSize(10);
         // Add some data
         $objPHPExcel->setActiveSheetIndex(0)
-        ->setCellValue('E3', 'HUERTOS LA CEIBA')
-        ->setCellValue('E4', 'FRANCISCO ENRIQUE MARTINEZ CORDERO')
-        ->setCellValue('E6', 'Huertos vendidos')
-        ->setCellValue('F6', 'Fecha de emisión')
-        ->setCellValue('G6', Carbon::today()->format('d-m-Y'));
-        $objPHPExcel->setActiveSheetIndex(0)->getStyle('E3:E6')->applyFromArray($styleArray);
-        $objPHPExcel->setActiveSheetIndex(0)->getStyle('F6')->applyFromArray($styleArray);
+        ->setCellValue('F3', 'HUERTOS LA CEIBA')
+        ->setCellValue('F4', 'FRANCISCO ENRIQUE MARTINEZ CORDERO')
+        ->setCellValue('F6', 'Huertos vendidos')
+        ->setCellValue('F7', 'Fecha de emisión')
+        ->setCellValue('G7', Carbon::today()->format('d-m-Y'));
+        $objPHPExcel->setActiveSheetIndex(0)->getStyle('F3:F7')->applyFromArray($styleArray);
+        $objPHPExcel->setActiveSheetIndex(0)->getStyle('G7')->applyFromArray($styleArray);
         //Draw logo
         $objDrawing = new PHPExcel_Worksheet_Drawing();
         $objDrawing->setName('Logo');
@@ -824,46 +917,74 @@ class Reportes extends CI_Controller
         $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
 
         $i=11;
-        $objPHPExcel->getActiveSheet()->setCellValue("A{$i}", "Fecha");
-        $objPHPExcel->getActiveSheet()->setCellValue("B{$i}", "Nombre");
-        $objPHPExcel->getActiveSheet()->setCellValue("C{$i}", "Contrato");
-        $objPHPExcel->getActiveSheet()->setCellValue("D{$i}", "Manzanas");
-        $objPHPExcel->getActiveSheet()->setCellValue("E{$i}", "Huertos");
-        $objPHPExcel->getActiveSheet()->setCellValue("F{$i}", "Pagado");
-        $objPHPExcel->getActiveSheet()->setCellValue("G{$i}", "Comisiones");
-        $objPHPExcel->getActiveSheet()->setCellValue("H{$i}", "Penalizaciones");
-        $objPHPExcel->getActiveSheet()->setCellValue("I{$i}", "Ingreso total");
-        $objPHPExcel->getActiveSheet()->setCellValue("J{$i}", "Pago pendiente");
-        $objPHPExcel->getActiveSheet()->setCellValue("K{$i}", "Ingreso esperado");
-        $objPHPExcel->getActiveSheet()->setCellValue("L{$i}", "Costo de venta");
-        $objPHPExcel->setActiveSheetIndex(0)->getStyle("A{$i}:L{$i}")->applyFromArray($styleArray);
+        $objPHPExcel->getActiveSheet()->setCellValue("A{$i}", "Fecha de alta");
+        $objPHPExcel->getActiveSheet()->setCellValue("B{$i}", "Lider / Vendedor");
+        $objPHPExcel->getActiveSheet()->setCellValue("C{$i}", "Nombre de cliente");
+        $objPHPExcel->getActiveSheet()->setCellValue("D{$i}", "Contrato");
+        $objPHPExcel->getActiveSheet()->setCellValue("E{$i}", "Manzanas");
+        $objPHPExcel->getActiveSheet()->setCellValue("F{$i}", "Huertos");
+        $objPHPExcel->getActiveSheet()->setCellValue("G{$i}", "Precio de venta");
+        $objPHPExcel->getActiveSheet()->setCellValue("H{$i}", "Cantidad que abona");
+        $objPHPExcel->getActiveSheet()->setCellValue("I{$i}", "Total abonado");
+        $objPHPExcel->getActiveSheet()->setCellValue("J{$i}", "Pagado en comisiones");
+        $objPHPExcel->getActiveSheet()->setCellValue("K{$i}", "Penalizaciones cobradas");
+        $objPHPExcel->getActiveSheet()->setCellValue("L{$i}", "Ingreso total");
+        $objPHPExcel->getActiveSheet()->setCellValue("M{$i}", "Saldo por liquidar");
+        $objPHPExcel->getActiveSheet()->setCellValue("N{$i}", "No. Pagos atrasados");
+        $objPHPExcel->getActiveSheet()->setCellValue("O{$i}", "Cantidad de atrasos");
+        $objPHPExcel->getActiveSheet()->setCellValue("P{$i}", "Última fecha que pagó / Contrato");
+        $objPHPExcel->getActiveSheet()->setCellValue("Q{$i}", "Última fecha que pagó / Registro");
+        $objPHPExcel->getActiveSheet()->setCellValue("R{$i}", "Ingreso esperado");
+        $objPHPExcel->setActiveSheetIndex(0)->getStyle("A{$i}:R{$i}")->applyFromArray(
+          array(
+              'alignment' => array(
+              'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+              'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+              'wrap' => true
+              ),
+              'font' => [
+                'bold' => true,
+                'size' => 10
+              ]
+        ));
         foreach($huertos_cancelados as $huertos){
             $i++;
             $objPHPExcel->getActiveSheet()->setCellValue("A{$i}", Carbon::createFromFormat('Y-m-d', $huertos->fecha)->format('d-m-Y'));
-            $objPHPExcel->getActiveSheet()->setCellValue("B{$i}",  $huertos->nombre);
-            $objPHPExcel->getActiveSheet()->setCellValue("C{$i}",  $this->utils->getInitials($huertos->nombre).'-'.$huertos->id_venta);
-            $objPHPExcel->getActiveSheet()->setCellValue("D{$i}",  $huertos->manzanas);
-            $objPHPExcel->getActiveSheet()->setCellValue("E{$i}",  $huertos->descripcion);
-            $objPHPExcel->getActiveSheet()->setCellValue("F{$i}",  $huertos->pagado);
-            $objPHPExcel->getActiveSheet()->getStyle("F{$i}")->getNumberFormat()
-                                          ->setFormatCode('$#,##0.00');
-            $objPHPExcel->getActiveSheet()->setCellValue("G{$i}",  $huertos->comision);
+            $objPHPExcel->getActiveSheet()->setCellValue("B{$i}",  $huertos->nombre_lider);
+            $objPHPExcel->getActiveSheet()->setCellValue("C{$i}",  $huertos->nombre_cliente);
+            $objPHPExcel->getActiveSheet()->setCellValue("D{$i}",  $this->utils->getInitials($huertos->nombre_cliente).'-'.$huertos->id_venta);
+            $objPHPExcel->getActiveSheet()->setCellValue("E{$i}",  $huertos->manzanas);
+            $objPHPExcel->getActiveSheet()->setCellValue("F{$i}",  $huertos->descripcion);
+            $objPHPExcel->getActiveSheet()->setCellValue("G{$i}",  $huertos->costo);
             $objPHPExcel->getActiveSheet()->getStyle("G{$i}")->getNumberFormat()
                                           ->setFormatCode('$#,##0.00');
-            $objPHPExcel->getActiveSheet()->setCellValue("H{$i}",  $huertos->penalizacion);
+            $objPHPExcel->getActiveSheet()->setCellValue("H{$i}",  $huertos->abono); //Sin contemplar cargos extras
             $objPHPExcel->getActiveSheet()->getStyle("H{$i}")->getNumberFormat()
                                           ->setFormatCode('$#,##0.00');
-            $objPHPExcel->getActiveSheet()->setCellValue("I{$i}",  $huertos->pagado - $huertos->comision + $huertos->penalizacion);
+            $objPHPExcel->getActiveSheet()->setCellValue("I{$i}",  $huertos->pagado); //Sin contemplar cargos extras
             $objPHPExcel->getActiveSheet()->getStyle("I{$i}")->getNumberFormat()
                                           ->setFormatCode('$#,##0.00');
-            $objPHPExcel->getActiveSheet()->setCellValue("J{$i}",  $huertos->deuda);
+            $objPHPExcel->getActiveSheet()->setCellValue("J{$i}",  $huertos->comision);
             $objPHPExcel->getActiveSheet()->getStyle("J{$i}")->getNumberFormat()
                                           ->setFormatCode('$#,##0.00');
-            $objPHPExcel->getActiveSheet()->setCellValue("K{$i}",  $huertos->pago_esperado);
+            $objPHPExcel->getActiveSheet()->setCellValue("K{$i}",  $huertos->penalizacion);
             $objPHPExcel->getActiveSheet()->getStyle("K{$i}")->getNumberFormat()
                                           ->setFormatCode('$#,##0.00');
-            $objPHPExcel->getActiveSheet()->setCellValue("L{$i}",  $huertos->costo);
+            $objPHPExcel->getActiveSheet()->setCellValue("L{$i}",  bcadd(bcsub($huertos->pagado,$huertos->comision,2),$huertos->penalizacion,2));
             $objPHPExcel->getActiveSheet()->getStyle("L{$i}")->getNumberFormat()
+                                          ->setFormatCode('$#,##0.00');
+            $objPHPExcel->getActiveSheet()->setCellValue("M{$i}",  $huertos->deuda);
+            $objPHPExcel->getActiveSheet()->getStyle("M{$i}")->getNumberFormat()
+                                          ->setFormatCode('$#,##0.00');
+            $objPHPExcel->getActiveSheet()->setCellValue("N{$i}",  $huertos->pagos_atrasados);
+
+            $objPHPExcel->getActiveSheet()->setCellValue("O{$i}", bcsub($huertos->pago_esperado,$huertos->pagado,2));
+            $objPHPExcel->getActiveSheet()->getStyle("O{$i}")->getNumberFormat()
+                                          ->setFormatCode('$#,##0.00');
+            $objPHPExcel->getActiveSheet()->setCellValue("P{$i}",  ($huertos->lasted_pay != null ? Carbon::createFromFormat('Y-m-d', $huertos->lasted_pay)->format('d-m-Y') : 'Sin pago'));
+            $objPHPExcel->getActiveSheet()->setCellValue("Q{$i}",   ($huertos->lasted_pay_real != null && $huertos->lasted_pay_real != "0000-00-00 00:00:00") ? Carbon::createFromFormat('Y-m-d H:i:s', $huertos->lasted_pay_real)->format('d-m-Y H:i:s') : 'Sin pago');
+            $objPHPExcel->getActiveSheet()->setCellValue("R{$i}",  $huertos->pago_esperado);
+            $objPHPExcel->getActiveSheet()->getStyle("R{$i}")->getNumberFormat()
                                           ->setFormatCode('$#,##0.00');
         }
 
@@ -872,19 +993,24 @@ class Reportes extends CI_Controller
 
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $objPHPExcel->setActiveSheetIndex(0);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
-
+        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(10);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(35);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(45);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(15);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(10);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(70);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(15);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(15);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(15);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(15);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(15);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(15);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('M')->setWidth(15);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('N')->setWidth(15);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('O')->setWidth(15);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('P')->setWidth(15);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('Q')->setWidth(20);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('R')->setWidth(15);
         // Redirect output to a client’s web browser (Excel5)
         header('Content-Type: application/vnd.ms-excel');
         header('Content-Disposition: attachment;filename="huertos_vendidos.xls"');
@@ -898,5 +1024,8 @@ class Reportes extends CI_Controller
         header('Pragma: public'); // HTTP/1.0
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
         $objWriter->save('php://output');
+      } else {
+        redirect('registros/huertos');
+      }
     }
 }

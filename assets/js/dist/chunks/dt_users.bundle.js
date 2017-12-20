@@ -1,6 +1,6 @@
 webpackJsonp([7],{
 
-/***/ 183:
+/***/ 186:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -158,18 +158,17 @@ exports.default = GenericFrm;
 
 /***/ }),
 
-/***/ 185:
+/***/ 188:
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
  * jquery.mask.js
- * @version: v1.14.11
+ * @version: v1.14.13
  * @author: Igor Escobar
  *
- * Created by Igor Escobar on 2012-03-10. Please report any bug at http://blog.igorescobar.com
+ * Created by Igor Escobar on 2012-03-10. Please report any bug at github.com/igorescobar/jQuery-Mask-Plugin
  *
- * Copyright (c) 2012 Igor Escobar http://blog.igorescobar.com
+ * Copyright (c) 2012 Igor Escobar http://igorescobar.com
  *
  * The MIT License (http://www.opensource.org/licenses/mit-license.php)
  *
@@ -199,10 +198,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /* jshint maxcomplexity:17 */
 /* global define */
 
-
-
 // UMD (Universal Module Definition) patterns for JavaScript modules that work everywhere.
-// https://github.com/umdjs/umd/blob/master/jqueryPluginCommonjs.js
+// https://github.com/umdjs/umd/blob/master/templates/jqueryPlugin.js
 (function (factory, jQuery, Zepto) {
 
     if (true) {
@@ -217,6 +214,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }
 
 }(function ($) {
+    'use strict';
 
     var Mask = function (el, mask, options) {
 
@@ -395,11 +393,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                         }
                     }
 
+                    // if the cursor is at the end keep it there
                     if (caretPosNew > oldValL) {
-                      // if the cursor is at the end keep it there
-                      caretPosNew = newValL;
-                    }
-                    else if (caretPosOld >= caretPosNew && caretPosOld !== oldValL) {
+                      caretPosNew = newValL * 10;
+                    } else if (caretPosOld >= caretPosNew && caretPosOld !== oldValL) {
                         if (!p.maskDigitPosMapOld[caretPosNew])  {
                           var caretPos = caretPosNew;
                           caretPosNew -= maskDigitsBeforeCaretAllOld - maskDigitsBeforeCaretAll;
@@ -426,6 +423,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     var newVal   = p.getMasked(),
                         caretPos = p.getCaret();
 
+                    // this is a compensation to devices/browsers that don't compensate
+                    // caret positioning the right way
                     setTimeout(function() {
                       p.setCaret(p.calculateCaretPosition());
                     }, 10);
@@ -475,7 +474,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                              if (translation.recursive) {
                                 if (resetPos === -1) {
                                     resetPos = m;
-                                } else if (m === lastMaskChar) {
+                                } else if (m === lastMaskChar && m !== resetPos) {
                                     m = resetPos - offset;
                                 }
 
@@ -772,13 +771,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 "use strict";
 
 
-__webpack_require__(185);
+__webpack_require__(188);
 
 var _components = __webpack_require__(63);
 
 var _util = __webpack_require__(42);
 
-var _GenericFrm = __webpack_require__(183);
+var _GenericFrm = __webpack_require__(186);
 
 var _GenericFrm2 = _interopRequireDefault(_GenericFrm);
 
@@ -905,7 +904,7 @@ exports.f = __webpack_require__(38) ? Object.defineProperty : function definePro
 module.exports = {
 
     base_url: function base_url() {
-        if (window.location.hostname === 'localhost' || window.location.hostname === '192.168.0.8') {
+        if (window.location.hostname === 'localhost' || window.location.hostname === '192.168.0.10') {
             return window.location.origin + '/ceiba_negra/';
         } else if (window.location.hostname === 'dev.huertoslaceiba.com') {
             return 'http://dev.huertoslaceiba.com/';

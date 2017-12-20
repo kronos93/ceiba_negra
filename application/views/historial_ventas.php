@@ -106,7 +106,7 @@
                                 <?php
                                 if ($venta->estado == 0 || $venta->estado == 1|| $venta->estado== 2) :
                                /* echo "<h2>".$venta->version."</h2>" ;*/
-                                
+
                                 ?>
                                     <a href="<?= base_url(); ?>reportes/contrato/<?= $venta->id_venta; ?>" class="btn btn-default" download><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Contrato</a>
                                     <a href="<?= base_url(); ?>reportes/estado_de_cuenta/<?= $venta->id_venta; ?>" target="_blank" class="btn btn-info">Estado de cta.</a>
@@ -118,6 +118,9 @@
                                     ?>
                                         <button title="Cancelar Contrato" class="btn btn-warning cancelar-venta"><span class="fa fa-ban fa-lg"></span> Cancelar</button>
                                         <button title="Eliminar Contrato" class="btn btn-danger eliminar-venta"><span class="fa fa-trash fa-lg"></span> Eliminar</button>
+                                        <button title="Eliminar Contrato" class="btn btn-primary notificar-retraso" data-venta="<?= $venta->id_venta; ?>"><span class="fa fa-exclamation-circle"></span> Notificar retraso <span class="fa fa-envelope-square"></span></button>
+                                        <?php if($venta->retraso > 0): ?>
+                                        <?php endif; ?>
                                         <?php
                                     endif;
                                     ?>

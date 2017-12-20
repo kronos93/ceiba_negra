@@ -1,6 +1,6 @@
 webpackJsonp([12],{
 
-/***/ 181:
+/***/ 184:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39,18 +39,17 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 185:
+/***/ 188:
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
  * jquery.mask.js
- * @version: v1.14.11
+ * @version: v1.14.13
  * @author: Igor Escobar
  *
- * Created by Igor Escobar on 2012-03-10. Please report any bug at http://blog.igorescobar.com
+ * Created by Igor Escobar on 2012-03-10. Please report any bug at github.com/igorescobar/jQuery-Mask-Plugin
  *
- * Copyright (c) 2012 Igor Escobar http://blog.igorescobar.com
+ * Copyright (c) 2012 Igor Escobar http://igorescobar.com
  *
  * The MIT License (http://www.opensource.org/licenses/mit-license.php)
  *
@@ -80,10 +79,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /* jshint maxcomplexity:17 */
 /* global define */
 
-
-
 // UMD (Universal Module Definition) patterns for JavaScript modules that work everywhere.
-// https://github.com/umdjs/umd/blob/master/jqueryPluginCommonjs.js
+// https://github.com/umdjs/umd/blob/master/templates/jqueryPlugin.js
 (function (factory, jQuery, Zepto) {
 
     if (true) {
@@ -98,6 +95,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }
 
 }(function ($) {
+    'use strict';
 
     var Mask = function (el, mask, options) {
 
@@ -276,11 +274,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                         }
                     }
 
+                    // if the cursor is at the end keep it there
                     if (caretPosNew > oldValL) {
-                      // if the cursor is at the end keep it there
-                      caretPosNew = newValL;
-                    }
-                    else if (caretPosOld >= caretPosNew && caretPosOld !== oldValL) {
+                      caretPosNew = newValL * 10;
+                    } else if (caretPosOld >= caretPosNew && caretPosOld !== oldValL) {
                         if (!p.maskDigitPosMapOld[caretPosNew])  {
                           var caretPos = caretPosNew;
                           caretPosNew -= maskDigitsBeforeCaretAllOld - maskDigitsBeforeCaretAll;
@@ -307,6 +304,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     var newVal   = p.getMasked(),
                         caretPos = p.getCaret();
 
+                    // this is a compensation to devices/browsers that don't compensate
+                    // caret positioning the right way
                     setTimeout(function() {
                       p.setCaret(p.calculateCaretPosition());
                     }, 10);
@@ -356,7 +355,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                              if (translation.recursive) {
                                 if (resetPos === -1) {
                                     resetPos = m;
-                                } else if (m === lastMaskChar) {
+                                } else if (m === lastMaskChar && m !== resetPos) {
                                     m = resetPos - offset;
                                 }
 
@@ -647,7 +646,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ 192:
+/***/ 195:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -682,19 +681,19 @@ var _sweetAlertInitialize$getModal$getOverlay$getInput$setFocusStyle$openModal$r
 
 // Handle button events and keyboard events
 
-var _handleButton$handleConfirm$handleCancel = __webpack_require__(194);
+var _handleButton$handleConfirm$handleCancel = __webpack_require__(197);
 
-var _handleKeyDown = __webpack_require__(195);
+var _handleKeyDown = __webpack_require__(198);
 
 var _handleKeyDown2 = _interopRequireWildcard(_handleKeyDown);
 
 // Default values
 
-var _defaultParams = __webpack_require__(181);
+var _defaultParams = __webpack_require__(184);
 
 var _defaultParams2 = _interopRequireWildcard(_defaultParams);
 
-var _setParameters = __webpack_require__(196);
+var _setParameters = __webpack_require__(199);
 
 var _setParameters2 = _interopRequireWildcard(_setParameters);
 
@@ -957,7 +956,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 193:
+/***/ 196:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1006,7 +1005,7 @@ module.exports = exports["default"];
 
 /***/ }),
 
-/***/ 194:
+/***/ 197:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1148,7 +1147,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 195:
+/***/ 198:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1234,7 +1233,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 196:
+/***/ 199:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1466,7 +1465,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 237:
+/***/ 240:
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -3076,7 +3075,7 @@ return $;
 
 /***/ }),
 
-/***/ 276:
+/***/ 279:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3112,15 +3111,15 @@ jQuery.extend(jQuery.validator.messages, {
 
 var _util = __webpack_require__(42);
 
-var _sweetalert = __webpack_require__(192);
+var _sweetalert = __webpack_require__(195);
 
 var _sweetalert2 = _interopRequireDefault(_sweetalert);
 
-__webpack_require__(237);
+__webpack_require__(240);
 
-__webpack_require__(185);
+__webpack_require__(188);
 
-__webpack_require__(276);
+__webpack_require__(279);
 
 var _components = __webpack_require__(63);
 
@@ -3201,7 +3200,7 @@ form_reserva.on('submit', function (e) {
 module.exports = {
 
     base_url: function base_url() {
-        if (window.location.hostname === 'localhost' || window.location.hostname === '192.168.0.8') {
+        if (window.location.hostname === 'localhost' || window.location.hostname === '192.168.0.10') {
             return window.location.origin + '/ceiba_negra/';
         } else if (window.location.hostname === 'dev.huertoslaceiba.com') {
             return 'http://dev.huertoslaceiba.com/';
@@ -3578,7 +3577,7 @@ var _hexToRgb = __webpack_require__(51);
 
 var _removeClass$getTopMargin$fadeIn$show$addClass = __webpack_require__(46);
 
-var _defaultParams = __webpack_require__(181);
+var _defaultParams = __webpack_require__(184);
 
 var _defaultParams2 = _interopRequireWildcard(_defaultParams);
 
@@ -3586,7 +3585,7 @@ var _defaultParams2 = _interopRequireWildcard(_defaultParams);
  * Add modal + overlay to DOM
  */
 
-var _injectedHTML = __webpack_require__(193);
+var _injectedHTML = __webpack_require__(196);
 
 var _injectedHTML2 = _interopRequireWildcard(_injectedHTML);
 
