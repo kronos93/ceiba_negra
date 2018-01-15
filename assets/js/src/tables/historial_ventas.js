@@ -297,9 +297,10 @@ $('#historial-ventas-table').on('click', '.notificar-retraso', function (e) {
       btn.attr('disabled', true);
       swal('Enviando notificación...');
     }
-  }).done(function (response) {
-
   })
+    .done(function (response) {
+      swal('Se ha notificado al cliente...');
+    })
     .fail(function (response) {
       swal('No ha sido posible notificar al cliente...');
     }).always(function () {

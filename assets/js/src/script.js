@@ -15,6 +15,7 @@ if ($('#shopCartSale').length > 0) {
 }
 if ($('#mapplic').length > 0) {
   import( /* webpackChunkName: "mapa" */ './mapa/mapplic').catch(err => { console.log(`Sucedio un error al importar el módulo de Mapplic: ${err}`); });
+  import( /* webpackChunkName: "fullscreen-mapa" */ './mapa/fullscreen').catch(err => { console.log(`Sucedio un error al importar el módulo de fullscreen mapa: ${err}`); });
 }
 import './tables/datatables';
 
