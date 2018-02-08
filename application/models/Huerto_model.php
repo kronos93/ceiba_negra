@@ -79,7 +79,7 @@ class Huerto_model extends CI_Model
                                     huertos.huerto) AS id,
                             CONCAT('Huerto ', huertos.huerto) AS title,
                             CONCAT('mz', manzanas.manzana) AS category,
-                            IF(manzanas.disponibilidad = 0,
+                            IF( manzanas.disponibilidad = 0,
                                 '#7f8c8d',
                                 IF(huertos.vendido = 0,
                                     '',
@@ -89,7 +89,12 @@ class Huerto_model extends CI_Model
                                             '#d35400',
                                             IF(huertos.vendido = 3,
                                                 '#f1c40f',
-                                                '#8e44ad'))))) AS fill,
+                                                '#8e44ad'
+                                            )
+                                        )
+                                    )
+                                )
+                            ) AS fill,
                             CONCAT('<div>Superficie: <span class=\"superficie\">',
                                     huertos.superficie,
                                     '</div>',
@@ -117,7 +122,7 @@ class Huerto_model extends CI_Model
         $this->db->join("huertos_ventas", "huertos.id_huerto = huertos_ventas.id_huerto", 'left');
         $this->db->join("ventas", "huertos_ventas.id_venta = ventas.id_venta", 'left');
         $this->db->join("users", "ventas.id_cliente = users.id", 'left');
-        $this->db->where("manzanas.manzana = {$mz} AND (ventas.estado IN (0,1) || ventas.estado IS NULL)");
+        $this->db->where("manzanas.manzana = {$mz}");
         $this->db->order_by("CONVERT( {$this->tabla}.huerto ".','."decimal ) ASC");
         $query = $this->db->get();
         return $query->result();

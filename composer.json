@@ -12,13 +12,13 @@
     },
     "require": {
         "php": ">=5.2.4",
-        "nesbot/carbon": "^1.21",
+        "nesbot/carbon": "^1.22",
         "zaininnari/html-minifier": "^0.4.2",
         "mailgun/mailgun-php": "^2.1",
         "php-http/guzzle6-adapter": "^1.1",
         "php-http/message": "^1.5",
-        "phpmailer/phpmailer": "^5.2",
-        "dompdf/dompdf": "^0.8.0",
+        "phpmailer/phpmailer": "^6.0",
+        "dompdf/dompdf": "^0.8.2",
         "mailin-api/mailin-api-php": "^1.0",
         "phpoffice/phpexcel": "^1.8"
     },

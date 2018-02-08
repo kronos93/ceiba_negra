@@ -70,6 +70,7 @@
                                             echo '<div>Comisión: $' . number_format($pago->comision,2) .'</div>';
                                             echo '<div>Penalización: $' . number_format($pago->penalizacion,2) .'</div>';
                                             echo '<div>Total: $' . number_format($pago->total,2) .'</div>';
+                                            echo '<div>Registrado por: ' . $pago->nombre_usuario .'</div>';
                                         }
                                 ?>
                                 </td>

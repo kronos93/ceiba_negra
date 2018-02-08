@@ -702,7 +702,7 @@ class Reportes extends CI_Controller
         $styleArray = [
             'font' => [
                 'bold' => true,
-                'size' => 14
+                'size' => 10
             ]
         ];
         // Set document properties
@@ -715,15 +715,19 @@ class Reportes extends CI_Controller
                         ->setKeywords("")
                         ->setCategory("");
         $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial');
-        $objPHPExcel->getDefaultStyle()->getFont()->setSize(12);
+        $objPHPExcel->getDefaultStyle()->getFont()->setSize(10);
         // Add some data
         $objPHPExcel->setActiveSheetIndex(0)
-          ->setCellValue('E3', 'HUERTOS LA CEIBA')
-          ->setCellValue('E4', 'FRANCISCO ENRIQUE MARTINEZ CORDERO')
-          ->setCellValue('E6', 'Huertos cancelados')
-          ->setCellValue('F6', 'Fecha de emisión')
+          ->setCellValue('D3', 'HUERTOS LA CEIBA')
+          ->setCellValue('D4', 'FRANCISCO ENRIQUE MARTINEZ CORDERO')
+          ->setCellValue('D5', 'Huertos cancelados')
+          ->setCellValue('D6', 'Fecha de emisión')
           ->setCellValue('G6', Carbon::today()->format('d-m-Y'));
-        $objPHPExcel->setActiveSheetIndex(0)->getStyle('E3:E6')->applyFromArray($styleArray);
+        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('D3:F3');
+        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('D4:F4');
+        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('D5:F5');
+        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('D6:F6');
+        $objPHPExcel->setActiveSheetIndex(0)->getStyle('D3:D6')->applyFromArray($styleArray);
         $objPHPExcel->setActiveSheetIndex(0)->getStyle('F6')->applyFromArray($styleArray);
         //Draw logo
         $objDrawing = new PHPExcel_Worksheet_Drawing();
@@ -758,7 +762,18 @@ class Reportes extends CI_Controller
         $objPHPExcel->getActiveSheet()->setCellValue("G{$i}", "Comisiones");
         $objPHPExcel->getActiveSheet()->setCellValue("H{$i}", "Penalizaciones");
         $objPHPExcel->getActiveSheet()->setCellValue("I{$i}", "Ingreso total");
-        $objPHPExcel->setActiveSheetIndex(0)->getStyle("A{$i}:I{$i}")->applyFromArray($styleArray);
+        $objPHPExcel->setActiveSheetIndex(0)->getStyle("A{$i}:I{$i}")->applyFromArray(
+          array(
+              'alignment' => array(
+              'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+              'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+              'wrap' => true
+              ),
+              'font' => [
+                'bold' => true,
+                'size' => 10
+              ]
+        ));
         foreach($huertos_cancelados as $huertos){
             $i++;
             $objPHPExcel->getActiveSheet()->setCellValue("A{$i}", Carbon::createFromFormat('Y-m-d', $huertos->fecha)->format('d-m-Y'));
@@ -785,15 +800,15 @@ class Reportes extends CI_Controller
 
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $objPHPExcel->setActiveSheetIndex(0);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(10);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(35);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(25);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(15);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(20);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(15);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(15);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(15);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(15);
         // Redirect output to a client’s web browser (Excel5)
         header('Content-Type: application/vnd.ms-excel');
         header('Content-Disposition: attachment;filename="huertos_cancelados.xls"');

@@ -930,10 +930,12 @@ class Ajax extends CI_Controller
                                                                     historial.pago,
                                                                     historial.comision,
                                                                     historial.penalizacion,
-                                                                    (historial.pago + historial.penalizacion - historial.comision) as total')
+                                                                    (historial.pago + historial.penalizacion - historial.comision) as total,
+                                                                    CONCAT(user.first_name, " ", user.last_name) AS register_by')
                                                         ->join('ventas', 'historial.id_venta = ventas.id_venta', 'left')
                                                         ->join('users AS cliente', 'ventas.id_cliente = cliente.id', 'left')
                                                         ->join('users AS lider', 'historial.id_lider = lider.id', 'left')
+                                                        ->join('users AS user', 'historial.id_usuario = user.id', 'left')
                                                         ->join('opciones_ingreso', 'historial.id_ingreso = opciones_ingreso.id_opcion_ingreso', 'left')
                                                         ->where(['id_historial' => $this->input->post('id_historial')])
                                                         ->get();
@@ -963,6 +965,7 @@ class Ajax extends CI_Controller
                         $detalles .= '<div>Comisión: $' . number_format($pago->comision, 2) .'</div>';
                         $detalles .= '<div>Penalización: $' . number_format($pago->penalizacion, 2) .'</div>';
                         $detalles .= '<div>Total: $' . number_format($pago->total, 2) .'</div>';
+                        $detalles .= '<div>Registrado por: '.$pago->register_by.'</div>';
                     }
                     $updated_pago[0]->estado = ($updated_pago[0]->estado == 0) ? 'Pendiente' : 'Pagado';
                     $updated_pago[0]->detalles = $detalles;
@@ -1457,7 +1460,7 @@ class Ajax extends CI_Controller
             $venta = $this->Venta_model->select("ventas.id_venta,
                                           ventas.version,
                                           ventas.precio,
-										  ventas.comision,
+										                      ventas.comision,
                                           ventas.porcentaje_comision,
                                           ventas.estado,
                                           SUM(IF(historial.estado = 0 && DATE(historial.fecha) <= NOW(),1,0)) AS retraso,

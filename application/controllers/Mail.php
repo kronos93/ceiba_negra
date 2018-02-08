@@ -1,7 +1,8 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 use Carbon\Carbon;
-use PHPMailer\PHPMailerAutoload;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 use Sendinblue\Mailin;
 class Mail extends CI_Controller
 {
@@ -286,18 +287,27 @@ class Mail extends CI_Controller
     }
 
     public function gmail(){
+      echo (extension_loaded('openssl')?'SSL loaded':'SSL not loaded');
       $mail = new PHPMailer;
+      $mail->SMTPOptions = array(
+        'ssl' => array(
+            'verify_peer' => false,
+            'verify_peer_name' => false,
+            'allow_self_signed' => true
+        )
+      );
       //Tell PHPMailer to use SMTP
       $mail->isSMTP();
       //Enable SMTP debugging
       // 0 = off (for production use)
       // 1 = client messages
       // 2 = client and server messages
-      $mail->SMTPDebug = (ENVIRONMENT === 'production') ? 0 : 2;
+      $mail->SMTPDebug = 4;
       //Set the hostname of the mail server
-      $mail->Host = 'smtp.gmail.com';
+      $mail->Host = gethostbyname('smtp.gmail.com');
+      $mail->SMTPAutoTLS = false;
       // use
-      // $mail->Host = gethostbyname('smtp.gmail.com');
+      //$mail->Host = gethostbyname('smtp.gmail.com');
       // if your network does not support SMTP over IPv6
       //Set the SMTP port number - 587 for authenticated TLS, a.k.a. RFC4409 SMTP submission
       $mail->Port = 587;
@@ -310,9 +320,9 @@ class Mail extends CI_Controller
       //Password to use for SMTP authentication
       $mail->Password = "s919397a";
       //Set who the message is to be sent from
-      $mail->setFrom('samuel.rojas.t93@gmail.com', 'Huertos la ceiba');
+      $mail->setFrom('samuel.rojas.t93@gmail.com', 'Samuel Rojas');
       //Set an alternative reply-to address
-      $mail->addReplyTo('samuel.rojas.t93@gmail.com', 'First Last');
+      //$mail->addReplyTo('samuel.rojas.t93@gmail.com', 'First Last');
       //Set who the message is to be sent to
       $mail->addAddress('samuel_-_rojas@hotmail.com', 'Samuel Rojas');
       //Set the subject line

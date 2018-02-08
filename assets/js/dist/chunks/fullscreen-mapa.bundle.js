@@ -1,1 +1,1 @@
-webpackJsonp([16],{36:function(e,n,t){"use strict";var u="";"requestFullscreen"in document.documentElement?u="requestFullscreen":"mozRequestFullScreen"in document.documentElement?u="mozRequestFullScreen":"webkitRequestFullscreen"in document.documentElement?u="webkitRequestFullscreen":u="msRequestFullscreen",document.getElementById("img-fullscreen-map").addEventListener("click",function(){this[u]()})}});
+webpackJsonp([16],{36:function(c,n,s){"use strict"}});
