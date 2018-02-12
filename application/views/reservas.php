@@ -5,7 +5,7 @@
 				<legend>
 					Reservas
 				</legend>
-				<table id="reservas-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+				<table id="reservas-table" class="table table-striped table-bordered display compact hover stripe" cellspacing="0" width="100%">
 					<thead>
 						<tr>
 							<th data-visible="false">Id. reserva</th>

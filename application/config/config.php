@@ -24,15 +24,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 $config['base_url'] = (function($server) {
-    if ($server === 'localhost' || $server === '192.168.0.10') {
+    if ($server === 'localhost' || $server === '192.168.0.7') {
       return "http://${server}/ceiba_negra/";
     } else if ($server === 'huertoslaceiba.com'){
       return "http://huertoslaceiba.com/";
     } else {
       return "http://dev.huertoslaceiba.com/";
     }
-})($_SERVER['SERVER_NAME']));
-$config['base_url'] = 'http://huertoslaceiba.com/';
+})($_SERVER['SERVER_NAME']);
+
+// $config['base_url'] = 'http://huertoslaceiba.com/';
 /*
 |--------------------------------------------------------------------------
 | Index File

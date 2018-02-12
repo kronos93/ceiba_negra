@@ -73,7 +73,7 @@ class Huerto_model extends CI_Model
     public function getLevel($mz)
     {
         $description = $this->ion_auth->in_group('administrador') ? "<a href=\"./registros/pagos/',ventas.id_venta,'\"><i class=\"fa fa-user\" aria-hidden=\"true\"></i> ',users.first_name,' ',users.last_name,'</a>" : "";
-        $this->db->select(" CONCAT('m',
+        $query = $this->db->select(" CONCAT('m',
                                     manzanas.manzana,
                                     'lote',
                                     huertos.huerto) AS id,
@@ -116,16 +116,17 @@ class Huerto_model extends CI_Model
                                     huertos.id_huerto,
                                     '')) AS link,
                             huertos.x,
-                            huertos.y ");
-        $this->db->from("{$this->tabla}");
-        $this->db->join("manzanas", "{$this->tabla}.id_manzana = manzanas.id_manzana", 'left');
-        $this->db->join("huertos_ventas", "huertos.id_huerto = huertos_ventas.id_huerto", 'left');
-        $this->db->join("ventas", "huertos_ventas.id_venta = ventas.id_venta", 'left');
-        $this->db->join("users", "ventas.id_cliente = users.id", 'left');
-        $this->db->where("manzanas.manzana = {$mz}");
-        $this->db->order_by("CONVERT( {$this->tabla}.huerto ".','."decimal ) ASC");
-        $query = $this->db->get();
-        return $query->result();
+                            huertos.y ")
+                            ->from("{$this->tabla}")
+                            ->join("manzanas", "{$this->tabla}.id_manzana = manzanas.id_manzana", 'left')
+                            ->join("huertos_ventas", "huertos.id_huerto = huertos_ventas.id_huerto", 'left')
+                            ->join("ventas", "huertos_ventas.id_venta = ventas.id_venta", 'left')
+                            ->join("users", "ventas.id_cliente = users.id", 'left')
+                            ->where("manzanas.manzana = {$mz}")
+                            ->order_by("CONVERT( {$this->tabla}.huerto ".','."decimal ) ASC")
+                            ->get_compiled_select();
+        $levels = $this->db->select('id, description, fill, category , link,title, x, y')->from("(${query}) as levels")->group_by('id')->get();
+        return $levels->result();
     }
 
     public function set_coordenadas($where, $update)
