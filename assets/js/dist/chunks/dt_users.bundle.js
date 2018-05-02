@@ -1,6 +1,6 @@
 webpackJsonp([7],{
 
-/***/ 189:
+/***/ 193:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -158,12 +158,12 @@ exports.default = GenericFrm;
 
 /***/ }),
 
-/***/ 191:
+/***/ 195:
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
  * jquery.mask.js
- * @version: v1.14.13
+ * @version: v1.14.15
  * @author: Igor Escobar
  *
  * Created by Igor Escobar on 2012-03-10. Please report any bug at github.com/igorescobar/jQuery-Mask-Plugin
@@ -420,14 +420,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 var keyCode = el.data('mask-keycode');
 
                 if ($.inArray(keyCode, jMask.byPassKeys) === -1) {
-                    var newVal   = p.getMasked(),
+                    var newVal = p.getMasked(),
                         caretPos = p.getCaret();
 
                     // this is a compensation to devices/browsers that don't compensate
                     // caret positioning the right way
                     setTimeout(function() {
                       p.setCaret(p.calculateCaretPosition());
-                    }, 10);
+                    }, $.jMaskGlobals.keyStrokeCompensation);
 
                     p.val(newVal);
                     p.setCaret(caretPos);
@@ -561,6 +561,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         jMask.options = options;
         jMask.remove = function() {
             var caret = p.getCaret();
+            if (jMask.options.placeholder) {
+                el.removeAttr('placeholder');
+            }
+            if (el.data('mask-maxlength')) {
+                el.removeAttr('maxlength');
+            }
             p.destroyEvents();
             p.val(jMask.getCleanVal());
             p.setCaret(caret);
@@ -615,7 +621,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 }
 
                 if (maxlength) {
-                    el.attr('maxlength', mask.length);
+                    el.attr('maxlength', mask.length).data('mask-maxlength', true);
                 }
 
                 p.destroyEvents();
@@ -734,6 +740,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         dataMask: true,
         watchInterval: 300,
         watchInputs: true,
+        keyStrokeCompensation: 10,
         // old versions of chrome dont work great with input event
         useInput: !/Chrome\/[2-4][0-9]|SamsungBrowser/.test(window.navigator.userAgent) && eventSupported('input'),
         watchDataMask: false,
@@ -771,13 +778,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 "use strict";
 
 
-__webpack_require__(191);
+__webpack_require__(195);
 
 var _components = __webpack_require__(65);
 
 var _util = __webpack_require__(44);
 
-var _GenericFrm = __webpack_require__(189);
+var _GenericFrm = __webpack_require__(193);
 
 var _GenericFrm2 = _interopRequireDefault(_GenericFrm);
 
