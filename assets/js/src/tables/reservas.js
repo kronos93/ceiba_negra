@@ -20,13 +20,26 @@ var reservas_table = $('#reservas-table').DataTable({
   },
   "ajax": base_url() + 'ajax/get_reservas',
   "columns": [ //Atributos para la tabla
-    { "data": "id_reserva" },
-    { "data": "nombre_lider" },
-    { "data": "descripcion" },
-    { "data": "detalles" },
+    {
+      "data": "id_reserva",
+      "width": "0",
+    },
+    {
+      "data": "nombre_lider",
+      "width": "15%",
+    },
+    {
+      "data": "descripcion",
+      "width": "15%",
+    },
+    {
+      "data": "detalles",
+      "width": "30%",
+    },
     {
       "data": "expira",
-      "render": $.fn.dataTable.render.moment('DD-MM-YYYY')
+      "render": $.fn.dataTable.render.moment('DD-MM-YYYY'),
+      "width": "10%",
     },
     {
       "data": "",
@@ -39,7 +52,8 @@ var reservas_table = $('#reservas-table').DataTable({
         } else {
           return btn_eliminar;
         }
-      }
+      },
+      "width": "30%",
     }
   ],
   columnDefs: [ //

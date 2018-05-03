@@ -49,7 +49,7 @@ export default (env, argv) => {
       filename: '[name].bundle.js', //Archivo o carpeta + nombre del archivo de salida
       chunkFilename: 'chunks/[name].bundle.js',
       path: resolve(__dirname, 'dist'),
-      publicPath: ((PRODUCTION) ? 'http://huertoslaceiba.com/' : 'http://192.168.0.10/ceiba_negra/') + 'assets/js/dist/'
+      publicPath: ((PRODUCTION) ? 'http://huertoslaceiba.com/' : 'http://192.168.1.250/ceiba_negra/') + 'assets/js/dist/'
     }
   };
 };

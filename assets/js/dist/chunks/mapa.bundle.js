@@ -3535,7 +3535,7 @@ exports.f = __webpack_require__(40) ? Object.defineProperty : function definePro
 module.exports = {
 
     base_url: function base_url() {
-        if (window.location.hostname === 'localhost' || window.location.hostname === '192.168.0.10') {
+        if (window.location.hostname === 'localhost' || window.location.hostname === '192.168.0.10' || window.location.hostname === '192.168.1.250') {
             return window.location.origin + '/ceiba_negra/';
         } else if (window.location.hostname === 'dev.huertoslaceiba.com') {
             return 'http://dev.huertoslaceiba.com/';

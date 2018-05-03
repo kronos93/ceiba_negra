@@ -214,9 +214,22 @@ var reservas_table = $('#reservas-table').DataTable({
   },
   "ajax": (0, _util.base_url)() + 'ajax/get_reservas',
   "columns": [//Atributos para la tabla
-  { "data": "id_reserva" }, { "data": "nombre_lider" }, { "data": "descripcion" }, { "data": "detalles" }, {
+  {
+    "data": "id_reserva",
+    "width": "0"
+  }, {
+    "data": "nombre_lider",
+    "width": "15%"
+  }, {
+    "data": "descripcion",
+    "width": "15%"
+  }, {
+    "data": "detalles",
+    "width": "30%"
+  }, {
     "data": "expira",
-    "render": $.fn.dataTable.render.moment('DD-MM-YYYY')
+    "render": $.fn.dataTable.render.moment('DD-MM-YYYY'),
+    "width": "10%"
   }, {
     "data": "",
     "render": function render(data, type, full, meta) {
@@ -228,7 +241,8 @@ var reservas_table = $('#reservas-table').DataTable({
       } else {
         return btn_eliminar;
       }
-    }
+    },
+    "width": "30%"
   }],
   columnDefs: [//
   {
@@ -4940,7 +4954,7 @@ exports.f = __webpack_require__(40) ? Object.defineProperty : function definePro
 module.exports = {
 
     base_url: function base_url() {
-        if (window.location.hostname === 'localhost' || window.location.hostname === '192.168.0.10') {
+        if (window.location.hostname === 'localhost' || window.location.hostname === '192.168.0.10' || window.location.hostname === '192.168.1.250') {
             return window.location.origin + '/ceiba_negra/';
         } else if (window.location.hostname === 'dev.huertoslaceiba.com') {
             return 'http://dev.huertoslaceiba.com/';
