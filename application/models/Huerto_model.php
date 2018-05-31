@@ -72,66 +72,41 @@ class Huerto_model extends CI_Model
     }
     public function getLevel($mz)
     {
-        $id = "CONCAT('m',manzanas.manzana,'lote',huertos.huerto) AS id";
-        $title = "CONCAT('Huerto ', huertos.huerto) AS title";
-        $category = "CONCAT('mz', manzanas.manzana) AS category";
-        //Background of huerto
+        $id = "CONCAT('m',{$mz->manzana},'lote',h.huerto) AS id";
+        $title = "CONCAT('Huerto ', h.huerto) AS title";
+        $category = "CONCAT('mz', {$mz->manzana}) AS category";
+
         /**
+         * Background huerto
          * 0: Libre
-         * 1: Venta normal
+         * 1: Venta normal / Proceso de pago
          * 2: Saldado en venta
          * 3: Saldado en pagos
          * 4: Reservado
          */
-        $fill = " IF( manzanas.disponibilidad = 0, '#7f8c8d',
-                    IF(huertos.vendido = 0, '',
-                      IF(huertos.vendido = 1, '#2980b9',
-                        IF(huertos.vendido = 2, '#d35400',
-                          IF(huertos.vendido = 3, '#f1c40f',
+        $fill = " IF( {$mz->disponibilidad} = 0, '#7f8c8d',
+                    IF(h.vendido = 0, '',
+                      IF(h.vendido = 1, '#2980b9',
+                        IF(h.vendido = 2, '#d35400',
+                          IF(h.vendido = 3, '#f1c40f',
                             '#8e44ad'
                             )
                           )
                         )
                       )
                     ) AS fill";
-        $linkDescription = $this->ion_auth->in_group('administrador') ? "<a href=\"./registros/pagos/',ventas.id_venta,'\"><i class=\"fa fa-user\" aria-hidden=\"true\"></i> ',users.first_name,' ',users.last_name,'</a>" : "";
-        $description = " CONCAT('<div>Superficie: <span class=\"superficie\">', huertos.superficie, '</div>',
-                                '<div>Precio: <span class=\"currency\">', (huertos.precio_x_m2 * huertos.superficie),'</span></div>',
-                                IF(huertos.vendido = 0, '<div>Estado: Huerto disponible</div>',
-                                  IF(huertos.vendido = 1, CONCAT('<div>Estado: Huerto vendido / en proceso de pago</div>','<div>{$linkDescription}</div>'),
-                                    IF(huertos.vendido = 2, CONCAT('<div>Estado: Huerto vendido / saldado en venta</div>','<div>{$linkDescription}</div>'),
-                                      IF(huertos.vendido = 3, CONCAT('<div>Estado: Huerto vendido / saldado en pagos</div>','<div>{$linkDescription}</div>'),
-                                        '<div>Estado: Huerto reservado</div>'
-                                      )
-                                    )
-                                  )
-                                )
-                              ) AS description";
-        $link = " IF(manzanas.disponibilidad = 0, '',
-                    IF(huertos.vendido = 0, huertos.id_huerto,
-                      ''
-                      )
-                    ) AS link";
         $query = $this->db->select("$id,
                                     $title,
                                     $category,
                                     $fill,
-                                    $description,
-                                    $link,
-                                    huertos.x,
-                                    huertos.y,
-                                    huertos.huerto,
-                                    huertos.id_huerto,
-                                    huertos_ventas.id_venta")
-                            ->from("{$this->tabla}")
-                            ->join("manzanas", "{$this->tabla}.id_manzana = manzanas.id_manzana", 'left')
-                            ->join("huertos_ventas", "huertos.id_huerto = huertos_ventas.id_huerto", 'left')
-                            ->join("ventas", "huertos_ventas.id_venta = ventas.id_venta", 'left')
-                            ->join("users", "ventas.id_cliente = users.id", 'left')
-                            ->where("manzanas.manzana = {$mz}")
-                            ->get_compiled_select();
-        $levels = $this->db->select('id, description, fill, category , link,title, x, y')->from("(${query}) as levels")->order_by("CONVERT(huerto,decimal) ASC")->group_by('id_huerto,id_venta')->get();
-        return $levels->result();
+                                    h.x,
+                                    h.y,
+                                    h.huerto")
+                          ->from("{$this->tabla} AS h")
+                          ->where("h.id_manzana = {$mz->_db_id}")
+                          ->get();
+        // $levels = $this->db->select('id, description, fill, category , link,title, x, y')->from("(${query}) as levels")->order_by("CONVERT(huerto,decimal) ASC")->group_by('id_huerto,id_venta')->get();
+        return $query->result();
     }
 
     public function set_coordenadas($where, $update)

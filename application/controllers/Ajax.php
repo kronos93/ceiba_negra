@@ -27,11 +27,11 @@ class Ajax extends CI_Controller
     {
         header("Content-type: application/json; charset=utf-8");
         $categories_mz = $this->Manzana_model->categories_mz();
-        $respuesta = new stdClass();
-        $respuesta->categories = $categories_mz;
-        $respuesta->mapwidth = 800;
-        $respuesta->mapheight = 600;
-        $respuesta->levels = [];
+        $response = new stdClass();
+        $response->categories = $categories_mz;
+        $response->mapwidth = 800;
+        $response->mapheight = 600;
+        $response->levels = [];
 
         foreach ($categories_mz as $mz) {
             $mz->show = "false";
@@ -40,13 +40,13 @@ class Ajax extends CI_Controller
             $level->id = "landmarks-{$mz->id}";
             $level->title = "{$mz->title}";
 
-            $huerto = $this->Huerto_model->getLevel($mz->manzana);
+            $huerto = $this->Huerto_model->getLevel($mz);
 
             $level->locations = $huerto;
             $level->map = base_url()."assets/img/mapas/{$mz->id}.svg";
-            array_push($respuesta->levels, $level);
+            array_push($response->levels, $level);
         }
-        echo json_encode($respuesta);
+        echo json_encode($response);
     }
     //Herramienta para Max //Solo para desarrollo
     // public function guardar_coordenadas()
