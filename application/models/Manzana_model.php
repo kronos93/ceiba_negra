@@ -48,9 +48,11 @@ class Manzana_model extends CI_Model
     public function categories_mz()
     {
         $this->db->select(" CONCAT('mz',manzana) AS id,
-                            CONCAT('Manzana ',manzana) AS title, 
+                            CONCAT('Manzana ',manzana) AS title,
                             IF(disponibilidad !=0,'#3fbb9b','#7f8c8d') AS color,
-                            manzana
+                            manzana,
+                            id_manzana AS _bd_id,
+                            disponibilidad
                         ");
         $this->db->order_by('manzana', 'ASC');
         $this->db->from($this->tabla);
@@ -63,7 +65,7 @@ class Manzana_model extends CI_Model
         $query = $this->db->get($this->tabla);
         return $query->result();
     }
-    public function where($where){        
+    public function where($where){
         $this->where = $where;
         return $this;
     }
@@ -71,13 +73,13 @@ class Manzana_model extends CI_Model
         $this->select = $select;
         return $this;
     }
-    public function get_() {       
-        $this->db->from($this->tabla);        
+    public function get_() {
+        $this->db->from($this->tabla);
         $query = $this->db->get();
         return $query->result();
     }
     public function from(){
-        $this->db->from($this->tabla);        
+        $this->db->from($this->tabla);
         return $this;
     }
 }

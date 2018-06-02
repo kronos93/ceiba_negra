@@ -40,7 +40,7 @@ class Ajax extends CI_Controller
             $level->id = "landmarks-{$mz->id}";
             $level->title = "{$mz->title}";
 
-            $huerto = $this->Huerto_model->getLevel($mz->manzana);
+            $huerto = $this->Huerto_model->getLevel($mz);
 
             $level->locations = $huerto;
             $level->map = base_url()."assets/img/mapas/{$mz->id}.svg";

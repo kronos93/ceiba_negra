@@ -87,6 +87,7 @@ class Registros extends CI_Controller
                     $data['init_date'] = Carbon::createFromFormat('d-m-Y', $init_date);
                     $data['end_date'] = Carbon::createFromFormat('d-m-Y', $end_date);
                     $data['ingresos'] = $this->Historial_model->select('CONCAT(users.first_name, " ", users.last_name) as nombre_cliente,
+                                                                        CONCAT(u.first_name, " ", u.last_name) as nombre_cobrador,
                                                                         opciones_ingreso.nombre,
                                                                         historial.id_historial,
                                                                         historial.id_venta,
@@ -98,6 +99,7 @@ class Registros extends CI_Controller
                                                                         GROUP_CONCAT("Mz. ",manzanas.manzana, " Ht. ", huertos.huerto ORDER BY  manzanas.manzana ASC) as descripcion ')
                                                                 ->join('ventas', 'historial.id_venta = ventas.id_venta', 'left')
                                                                 ->join('users', 'ventas.id_cliente = users.id', 'left')
+                                                                ->join('users as u', 'historial.id_usuario = u.id', 'left')
                                                                 ->join('opciones_ingreso', 'historial.id_ingreso = opciones_ingreso.id_opcion_ingreso', 'left')
 
                                                                 ->join('huertos_ventas', 'ventas.id_venta = huertos_ventas.id_venta', 'left')
