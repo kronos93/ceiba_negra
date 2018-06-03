@@ -51,7 +51,7 @@ class Manzana_model extends CI_Model
                             CONCAT('Manzana ',manzana) AS title,
                             IF(disponibilidad !=0,'#3fbb9b','#7f8c8d') AS color,
                             manzana,
-                            id_manzana as _db_id,
+                            id_manzana AS _bd_id,
                             disponibilidad
                         ");
         $this->db->order_by('manzana', 'ASC');

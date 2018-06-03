@@ -1,6 +1,6 @@
 webpackJsonp([13],{
 
-/***/ 187:
+/***/ 191:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39,7 +39,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 198:
+/***/ 202:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -74,19 +74,19 @@ var _sweetAlertInitialize$getModal$getOverlay$getInput$setFocusStyle$openModal$r
 
 // Handle button events and keyboard events
 
-var _handleButton$handleConfirm$handleCancel = __webpack_require__(200);
+var _handleButton$handleConfirm$handleCancel = __webpack_require__(204);
 
-var _handleKeyDown = __webpack_require__(201);
+var _handleKeyDown = __webpack_require__(205);
 
 var _handleKeyDown2 = _interopRequireWildcard(_handleKeyDown);
 
 // Default values
 
-var _defaultParams = __webpack_require__(187);
+var _defaultParams = __webpack_require__(191);
 
 var _defaultParams2 = _interopRequireWildcard(_defaultParams);
 
-var _setParameters = __webpack_require__(202);
+var _setParameters = __webpack_require__(206);
 
 var _setParameters2 = _interopRequireWildcard(_setParameters);
 
@@ -349,7 +349,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 199:
+/***/ 203:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -398,7 +398,7 @@ module.exports = exports["default"];
 
 /***/ }),
 
-/***/ 200:
+/***/ 204:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -540,7 +540,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 201:
+/***/ 205:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -626,7 +626,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 202:
+/***/ 206:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -866,7 +866,7 @@ module.exports = exports['default'];
 
 var _util = __webpack_require__(44);
 
-var _sweetalert = __webpack_require__(198);
+var _sweetalert = __webpack_require__(202);
 
 var _sweetalert2 = _interopRequireDefault(_sweetalert);
 
@@ -1159,7 +1159,7 @@ $('.estado-venta').on('change', function () {
 module.exports = {
 
     base_url: function base_url() {
-        if (window.location.hostname === 'localhost' || window.location.hostname === '192.168.0.10') {
+        if (window.location.hostname === 'localhost' || window.location.hostname === '192.168.0.10' || window.location.hostname === '192.168.1.250') {
             return window.location.origin + '/ceiba_negra/';
         } else if (window.location.hostname === 'dev.huertoslaceiba.com') {
             return 'http://dev.huertoslaceiba.com/';
@@ -1536,7 +1536,7 @@ var _hexToRgb = __webpack_require__(53);
 
 var _removeClass$getTopMargin$fadeIn$show$addClass = __webpack_require__(48);
 
-var _defaultParams = __webpack_require__(187);
+var _defaultParams = __webpack_require__(191);
 
 var _defaultParams2 = _interopRequireWildcard(_defaultParams);
 
@@ -1544,7 +1544,7 @@ var _defaultParams2 = _interopRequireWildcard(_defaultParams);
  * Add modal + overlay to DOM
  */
 
-var _injectedHTML = __webpack_require__(199);
+var _injectedHTML = __webpack_require__(203);
 
 var _injectedHTML2 = _interopRequireWildcard(_injectedHTML);
 

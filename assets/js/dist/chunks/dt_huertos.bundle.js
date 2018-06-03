@@ -1,6 +1,6 @@
 webpackJsonp([10],{
 
-/***/ 189:
+/***/ 193:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -166,7 +166,7 @@ exports.default = GenericFrm;
 
 var _util = __webpack_require__(44);
 
-var _GenericFrm = __webpack_require__(189);
+var _GenericFrm = __webpack_require__(193);
 
 var _GenericFrm2 = _interopRequireDefault(_GenericFrm);
 
@@ -373,7 +373,7 @@ exports.f = __webpack_require__(40) ? Object.defineProperty : function definePro
 module.exports = {
 
     base_url: function base_url() {
-        if (window.location.hostname === 'localhost' || window.location.hostname === '192.168.0.10') {
+        if (window.location.hostname === 'localhost' || window.location.hostname === '192.168.0.10' || window.location.hostname === '192.168.1.250') {
             return window.location.origin + '/ceiba_negra/';
         } else if (window.location.hostname === 'dev.huertoslaceiba.com') {
             return 'http://dev.huertoslaceiba.com/';

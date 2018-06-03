@@ -75,16 +75,15 @@ class Huerto_model extends CI_Model
         $id = "CONCAT('m',{$mz->manzana},'lote',h.huerto) AS id";
         $title = "CONCAT('Huerto ', h.huerto) AS title";
         $category = "CONCAT('mz', {$mz->manzana}) AS category";
-
         /**
-         * Background huerto
-         * 0: Libre
-         * 1: Venta normal / Proceso de pago
-         * 2: Saldado en venta
-         * 3: Saldado en pagos
-         * 4: Reservado
-         */
-        $fill = " IF( {$mz->disponibilidad} = 0, '#7f8c8d',
+          * Background huerto
+          * 0: Libre
+          * 1: Venta normal
+          * 2: Saldado en venta
+          * 3: Saldado en pagos
+          * 4: Reservado
+          **/
+        $fill = " IF({$mz->disponibilidad} = 0, '#7f8c8d',
                     IF(h.vendido = 0, '',
                       IF(h.vendido = 1, '#2980b9',
                         IF(h.vendido = 2, '#d35400',
@@ -95,18 +94,52 @@ class Huerto_model extends CI_Model
                         )
                       )
                     ) AS fill";
-        $query = $this->db->select("$id,
+      // Habilita/Deshabilita el boton de venta
+      $link = " IF({$mz->disponibilidad} = 0, '',
+                    IF(h.vendido = 0, h.id_huerto,
+                      ''
+                      )
+                    ) AS link";
+      // $linkDescription = $this->ion_auth->in_group('administrador') ? "<a href=\"./registros/pagos/',ventas.id_venta,'\"><i class=\"fa fa-user\" aria-hidden=\"true\"></i> ',users.first_name,' ',users.last_name,'</a>" : "";
+      $description = " CONCAT('<div>Superficie: <span class=\"superficie\">', h.superficie, '</div>',
+                              '<div>Precio: <span class=\"currency\">', (h.precio_x_m2 * h.superficie),'</span></div>',
+                              IF(h.vendido = 0, '<div>Estado: Huerto disponible</div>',
+                                IF(h.vendido = 1, CONCAT('<div>Estado: Huerto vendido / en proceso de pago</div>'),
+                                  IF(h.vendido = 2, CONCAT('<div>Estado: Huerto vendido / saldado en venta</div>'),
+                                    IF(h.vendido = 3, CONCAT('<div>Estado: Huerto vendido / saldado en pagos</div>'),
+                                      '<div>Estado: Huerto reservado</div>'
+                                    )
+                                  )
+                                )
+                              )
+                            ) AS description";
+      $levels = $this->db->select("$id,
                                     $title,
                                     $category,
                                     $fill,
+                                    $link,
+                                    $description,
+                                    h.id_huerto,
+                                    h.huerto,
                                     h.x,
-                                    h.y,
-                                    h.huerto")
+                                    h.y")
                           ->from("{$this->tabla} AS h")
-                          ->where("h.id_manzana = {$mz->_db_id}")
-                          ->get();
-        // $levels = $this->db->select('id, description, fill, category , link,title, x, y')->from("(${query}) as levels")->order_by("CONVERT(huerto,decimal) ASC")->group_by('id_huerto,id_venta')->get();
-        return $query->result();
+                          ->where("h.id_manzana = {$mz->_bd_id}")
+                          ->get()->result();
+        foreach($levels as $key => $h){
+          $contract = $this->db->select("CONCAT('<a href=\"./registros/pagos/',v.id_venta,'\"><i class=\"fa fa-user\" aria-hidden=\"true\"></i>',u.first_name,' ',u.last_name,'</a>') AS linkContract")
+                               ->from('huertos_ventas AS hv')
+                               ->join('ventas AS v','v.id_venta = hv.id_venta','left')
+                               ->join('users AS u','u.id = v.id_cliente','left')
+                               ->where("hv.id_huerto = {$h->id_huerto} AND v.id_venta IS NOT NULL")
+                               ->get()->result();
+          if(count($contract)){
+            $c = array_pop($contract);
+            $levels[$key]->description .= "<div>{$c->linkContract}</div>";
+
+          }
+        }
+        return $levels;
     }
 
     public function set_coordenadas($where, $update)
