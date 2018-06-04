@@ -125,21 +125,23 @@ class Huerto_model extends CI_Model
                                     h.y")
                           ->from("{$this->tabla} AS h")
                           ->where("h.id_manzana = {$mz->_bd_id}")
+                          ->order_by("CONVERT(h.huerto ".','."decimal ) ASC")
                           ->get()->result();
-        foreach($levels as $key => $h){
-          $contract = $this->db->select("CONCAT('<a href=\"./registros/pagos/',v.id_venta,'\"><i class=\"fa fa-user\" aria-hidden=\"true\"></i>',u.first_name,' ',u.last_name,'</a>') AS linkContract")
-                               ->from('huertos_ventas AS hv')
-                               ->join('ventas AS v','v.id_venta = hv.id_venta','left')
-                               ->join('users AS u','u.id = v.id_cliente','left')
-                               ->where("hv.id_huerto = {$h->id_huerto} AND v.id_venta IS NOT NULL")
-                               ->get()->result();
-          if(count($contract)){
-            $c = array_pop($contract);
-            $levels[$key]->description .= "<div>{$c->linkContract}</div>";
+      //Obtener contratos por huerto
+      foreach($levels as $key => $h){
+        $contract = $this->db->select("CONCAT('<a href=\"./registros/pagos/',v.id_venta,'\"><i class=\"fa fa-user\" aria-hidden=\"true\"></i>',u.first_name,' ',u.last_name,'</a>') AS linkContract")
+                              ->from('huertos_ventas AS hv')
+                              ->join('ventas AS v','v.id_venta = hv.id_venta AND (v.estado = 0 OR v.estado = 1)','left')
+                              ->join('users AS u','u.id = v.id_cliente','left')
+                              ->where("hv.id_huerto = {$h->id_huerto} AND v.id_venta IS NOT NULL")
+                              ->get()->result();
+        if(count($contract)){
+          $c = array_pop($contract);
+          $levels[$key]->description .= "<div>{$c->linkContract}</div>";
 
-          }
         }
-        return $levels;
+      }
+      return $levels;
     }
 
     public function set_coordenadas($where, $update)

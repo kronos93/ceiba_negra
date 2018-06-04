@@ -1,4 +1,11 @@
 <main class="wrap-main">
+    <article class="container">
+      <span class="label" style="background:#35AD0E; font-size:12px;">Huerto libre</span>
+      <span class="label" style="background:#2980b9; font-size:12px;">Huerto vendido a crédito</span>
+      <span class="label" style="background:#d35400; font-size:12px;">Huerto saldado (venta directa)</span>
+      <span class="label" style="background:#f1c40f; font-size:12px;">Huerto saldado (en pagos)</span>
+      <span class="label" style="background:#8e44ad; font-size:12px;">Huerto reservado</span>
+    </article>
     <section id="mapa">
         <div class="container-fluid container">
             <div class="row">
@@ -36,7 +43,7 @@
             </div>
         </div>
     </section>
-    <section class="container-fluid">
+    <section class="container">
       <div class="row">
         <div class="col-md-4">
           <picture>

@@ -51,7 +51,7 @@ var huertos_table = $('#huertos-table').DataTable({
       }
     },
   ],
-  "ajax": base_url() + 'ajax/get_huertos_pmz',
+  "ajax": base_url() + 'xhr/huertos/get_huertos',
   "columns": [ //Atributos para la tabla
     {
       "data": "manzana",
@@ -84,10 +84,24 @@ var huertos_table = $('#huertos-table').DataTable({
     }, {
       "data": "vendido", //Supa kawaiesko funcion para el render
       "render": function (data, type, full, meta) {
+        /**
+          * Background huerto
+          * 0: Libre
+          * 1: Venta normal
+          * 2: Saldado en venta
+          * 3: Saldado en pagos
+          * 4: Reservado
+          **/
         if (!parseInt(data)) {
-          return '<span class="label label-primary">No vendido</span>';
-        } else {
-          return '<span class="label label-success">Vendido</span>';
+          return '<span class="label" style="background:#35AD0E;">Huerto libre</span>';
+        } else if (parseInt(data) == 1) {
+          return '<span class="label" style="background:#2980b9;">Huerto vendido a crédito</span>';
+        } else if (parseInt(data) == 2) {
+          return '<span class="label" style="background:#d35400;">Huerto saldado (venta directa)</span>';
+        } else if (parseInt(data) == 3) {
+          return '<span class="label" style="background:#f1c40f;">Huerto saldado (en pagos)</span>';
+        } else if (parseInt(data) == 4) {
+          return '<span class="label" style="background:#8e44ad;">Huerto reservado</span>';
         }
 
       }
